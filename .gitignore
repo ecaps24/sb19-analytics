@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Temp files
+temp_*.csv
+nul
+*.txt
+
+# OCR debug images
+OCR/
+
+# IDE/Editor
+.claude/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SB19 Analytics Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7488911178615185" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: radial-gradient(1200px 800px at 10% -10%, #60a5fa33 0%, transparent 60%),
+                        radial-gradient(1400px 900px at 100% 0%, #3b82f633 0%, transparent 60%),
+                        linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #111827 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 16px;
+            color: #e5e7eb;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: rgba(17, 24, 39, 0.7);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card h3 {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            color: #f9fafb;
+        }
+
+        .growth {
+            font-size: 0.85rem;
+            color: #34d399;
+        }
+
+        .growth.negative {
+            color: #f87171;
+        }
+
+        .chart-container {
+            background: rgba(17, 24, 39, 0.7);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #e5e7eb;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 280px;
+        }
+
+        .charts-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .chart-half {
+            min-width: 0;
+        }
+
+        .chart-half.chart-main {
+            flex: 3;
+        }
+
+        .chart-half.chart-table {
+            flex: 2;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            color: #d1d5db;
+        }
+
+        .filter-group select, .filter-group button {
+            background: #111827;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e5e7eb;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .filter-group button:hover {
+            background: #1f2937;
+        }
+
+        .tracks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .album-card {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .album-header {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .album-header h3 {
+            font-size: 0.95rem;
+            color: #60a5fa;
+            margin-bottom: 4px;
+        }
+
+        .album-header span {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .track-list {
+            padding: 8px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .track-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .track-item:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .track-title {
+            font-size: 0.85rem;
+            color: #e5e7eb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-collab {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .track-streams {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #34d399;
+            margin-left: 12px;
+        }
+
+        .comparison-table {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        th {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+            font-weight: 600;
+            color: #d1d5db;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-size: 0.9rem;
+            color: #e5e7eb;
+        }
+
+        tbody tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 32px;
+            color: #e5e7eb;
+            font-size: 1.05rem;
+        }
+
+        .error {
+            background: #ef4444;
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: rgba(229, 231, 235, 0.85);
+            margin-top: 16px;
+            font-size: 0.85rem;
+        }
+
+        .top-tracks-table {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .section-title {
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: rgba(96, 165, 250, 0.3);
+            border-color: #60a5fa;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .charts-row {
+                flex-direction: column;
+            }
+            .chart-wrapper {
+                height: 250px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SB19 Analytics Dashboard</h1>
+            <p>Spotify Performance Tracking</p>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading dashboard data...
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="dashboard" style="display: none;">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Current Monthly Listeners</h3>
+                    <div class="stat-value" id="current-listeners">-</div>
+                    <div class="growth" id="listeners-change">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>All-Time High</h3>
+                    <div class="stat-value" id="all-time-high">2,828,289</div>
+                    <div class="growth" id="ath-date">Peak reached</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Tracks</h3>
+                    <div class="stat-value" id="total-tracks">-</div>
+                    <div class="growth" id="tracks-info">On Spotify</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Streams</h3>
+                    <div class="stat-value" id="total-streams">-</div>
+                    <div class="growth" id="streams-info">All tracks combined</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Top Track</h3>
+                    <div class="stat-value" id="top-track">-</div>
+                    <div class="growth" id="top-track-streams">-</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Period Change</h3>
+                    <div class="stat-value" id="period-change">-</div>
+                    <div class="growth" id="period-info">Selected range</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label for="rangePreset">Date Range:</label>
+                    <select id="rangePreset">
+                        <option value="all">All Data</option>
+                        <option value="last7" selected>Last 7 days</option>
+                        <option value="last30">Last 30 days</option>
+                        <option value="mtd">Month to date</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="compareFilter">Compare to:</label>
+                    <select id="compareFilter">
+                        <option value="none">None</option>
+                        <option value="BINI">BINI</option>
+                        <option value="Pablo">Pablo</option>
+                        <option value="Josh Cullen">Josh</option>
+                        <option value="STELL">Stell</option>
+                        <option value="felip">Felip</option>
+                        <option value="Justin">Justin</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button id="refreshBtn">Refresh</button>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="charts-row" style="align-items: flex-start;">
+                <!-- Left Column: Album/Era Chart + Tracks Table -->
+                <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                    <div class="chart-container" style="margin-bottom: 0;">
+                        <div class="chart-title">Streams by Album/Era</div>
+                        <div class="chart-wrapper" style="height: 250px;">
+                            <canvas id="albumChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
+                        <div class="section-title">
+                            <span>Top Tracks by Total Streams</span>
+                            <span id="album-filter-label" style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
+                            <button id="clearFilterBtn" style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear Filter</button>
+                        </div>
+                        <div id="tracks-view">
+                            <table id="topTracksTable" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 35px; text-align: center;">#</th>
+                                        <th style="text-align: left;">Track</th>
+                                        <th style="width: 110px; text-align: right; white-space: nowrap;">Total Streams</th>
+                                        <th style="width: 70px; text-align: center;">Spotify</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="top-tracks-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Member Stats Chart + Member Tracks -->
+                <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                    <div class="chart-container" style="margin-bottom: 0;">
+                        <div class="chart-title">Solo Streams by Member</div>
+                        <div class="chart-wrapper" style="height: 250px;">
+                            <canvas id="memberChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
+                        <div class="section-title">
+                            <span>Solo Tracks by Member</span>
+                            <span id="member-filter-label" style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
+                            <button id="clearMemberFilterBtn" style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear Filter</button>
+                        </div>
+                        <div id="member-tracks-view">
+                            <table id="memberTracksTable" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 35px; text-align: center;">#</th>
+                                        <th style="text-align: left;">Track</th>
+                                        <th style="width: 110px; text-align: right; white-space: nowrap;">Total Streams</th>
+                                        <th style="width: 70px; text-align: center;">Spotify</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="member-tracks-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden views for album/year breakdown -->
+            <div id="album-view" style="display: none;"></div>
+            <div id="year-view" style="display: none;"></div>
+
+            <div class="contact-developer" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.15); text-align: center; color: rgba(229, 231, 235, 0.7); font-size: 0.85rem;">
+                <div style="margin-bottom: 16px; padding: 16px 24px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; display: inline-block;">
+                    <div style="font-size: 1rem; font-weight: 600; color: #f3f4f6; margin-bottom: 8px;">💖 Support this project</div>
+                    <div style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                        <a href="https://buymeacoffee.com/ecapsdev" target="_blank" style="color: #1a1a2e; background: #fbbf24; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">☕ Buy Me a Coffee</a>
+                        <span style="color: #34d399; font-weight: 500; background: rgba(52, 211, 153, 0.2); padding: 8px 16px; border-radius: 8px;">GCash: 09602738858</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    Contact the developer:
+                    <a href="mailto:ecapsdev@gmail.com" style="color: #60a5fa; text-decoration: none;">ecapsdev@gmail.com</a>
+                    |
+                    <a href="https://x.com/esbinsights" target="_blank" style="color: #60a5fa; text-decoration: none;">@esbinsights</a>
+                </div>
+            </div>
+
+            <div class="last-updated" id="last-updated">
+                Last updated: -
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SB19Dashboard {
+            constructor() {
+                this.listenersData = [];
+                this.streamsData = [];
+                this.tracksMetadata = [];
+                this.charts = {};
+                this.rangePreset = 'last7';
+                this.compareFilter = 'none';
+                this.albumFilter = null; // For filtering tracks by album
+                this.memberFilter = null; // For filtering tracks by member
+                // Member configuration with display names and Spotify URLs
+                this.members = [
+                    { name: 'Pablo', dataName: 'Pablo', color: 'rgba(251, 146, 60, 0.8)', borderColor: '#fb923c', spotifyUrl: 'https://open.spotify.com/artist/4bavIt9eD9RR7V6BQCW6Me' },
+                    { name: 'Josh', dataName: 'Josh Cullen', color: 'rgba(52, 211, 153, 0.8)', borderColor: '#34d399', spotifyUrl: 'https://open.spotify.com/artist/3b3DYR8gKc53bvP3bTW2jT' },
+                    { name: 'Stell', dataName: 'STELL', color: 'rgba(248, 113, 113, 0.8)', borderColor: '#f87171', spotifyUrl: 'https://open.spotify.com/artist/0GWmH00GDvMCSBk5ybghD4' },
+                    { name: 'Felip', dataName: 'felip', color: 'rgba(251, 191, 36, 0.8)', borderColor: '#fbbf24', spotifyUrl: 'https://open.spotify.com/artist/3fVNhpt0u1mAH0BjMTWo2j' },
+                    { name: 'Justin', dataName: 'Justin', color: 'rgba(45, 212, 191, 0.8)', borderColor: '#2dd4bf', spotifyUrl: 'https://open.spotify.com/artist/4SfQqPGrJMYOvMaD6Z88T1' }
+                ];
+                this.init();
+            }
+
+            async init() {
+                try {
+                    await this.loadData();
+                    this.setupEventListeners();
+                    this.render();
+                    this.showDashboard();
+                } catch (error) {
+                    console.error('Dashboard error:', error);
+                    this.showError('Failed to load dashboard: ' + error.message);
+                }
+            }
+
+            parseCSVLine(line) {
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (inQuotes) {
+                        if (char === '"') {
+                            if (i + 1 < line.length && line[i + 1] === '"') {
+                                current += '"';
+                                i++;
+                            } else {
+                                inQuotes = false;
+                            }
+                        } else {
+                            current += char;
+                        }
+                    } else {
+                        if (char === '"') {
+                            inQuotes = true;
+                        } else if (char === ',') {
+                            values.push(current);
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                }
+                values.push(current);
+                return values;
+            }
+
+            async loadData() {
+                // Load monthly listeners
+                const listenersResponse = await fetch('./monthly_listeners.csv?t=' + Date.now());
+                if (listenersResponse.ok) {
+                    const csv = await listenersResponse.text();
+                    this.listenersData = this.parseListenersCSV(csv);
+                }
+
+                // Load tracks metadata
+                const tracksResponse = await fetch('./tracks.csv?t=' + Date.now());
+                if (tracksResponse.ok) {
+                    const csv = await tracksResponse.text();
+                    this.tracksMetadata = this.parseTracksMetadataCSV(csv);
+                }
+
+                // Load streams data from sb19_streams_results.csv
+                const streamsResponse = await fetch('./sb19_streams_results.csv?t=' + Date.now());
+                if (streamsResponse.ok) {
+                    const csv = await streamsResponse.text();
+                    this.streamsData = this.parseStreamsCSV(csv);
+                }
+
+                console.log('Data loaded:', {
+                    listeners: this.listenersData.length,
+                    tracks: this.tracksMetadata.length,
+                    streams: this.streamsData.length
+                });
+                // Debug: check if spotify_url is being loaded
+                if (this.streamsData.length > 0) {
+                    console.log('Sample stream data:', this.streamsData[0]);
+                    console.log('Has spotify_url:', !!this.streamsData[0].spotify_url);
+                }
+            }
+
+            parseListenersCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+                const headers = this.parseCSVLine(lines[0]);
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i]);
+                    const row = {};
+                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+
+                    const artist = row.artist_name || '';
+                    const listeners = parseInt((row.monthly_listeners || '0').replace(/,/g, ''));
+                    // Handle both old format (data_date) and new format (timestamp)
+                    let dataDate = row.data_date || row.timestamp || '';
+
+                    // Convert timestamp format (20251105_042257) to date string
+                    if (dataDate && dataDate.includes('_') && dataDate.length >= 8) {
+                        const year = dataDate.substring(0, 4);
+                        const month = dataDate.substring(4, 6);
+                        const day = dataDate.substring(6, 8);
+                        dataDate = `${year}-${month}-${day}`;
+                    }
+
+                    if (artist && !isNaN(listeners) && listeners > 0 && dataDate &&
+                        !artist.includes('Unknown') && !artist.includes('Unsupported')) {
+                        data.push({
+                            artist_name: artist,
+                            monthly_listeners: listeners,
+                            data_date: dataDate
+                        });
+                    }
+                }
+                return data.sort((a, b) => new Date(a.data_date) - new Date(b.data_date));
+            }
+
+            parseTracksMetadataCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+                const headers = this.parseCSVLine(lines[0]);
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i]);
+                    const row = {};
+                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+
+                    data.push({
+                        title: row['Song Title'] || '',
+                        artist: row['Artist'] || 'SB19',
+                        year: parseInt(row['Year']) || 0,
+                        album: row['Album/EP/Single'] || 'Single',
+                        collaborators: row['Collaborating Artist(s)'] || '',
+                        spotify_url: row['Spotify Link'] || ''
+                    });
+                }
+                return data;
+            }
+
+            parseStreamsCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+                const headers = this.parseCSVLine(lines[0]);
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i]);
+                    const row = {};
+                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+
+                    // Handle sb19_streams_results.csv format
+                    const streams = parseInt((row.streams || row.total_streams || '0').replace(/,/g, ''));
+                    const dailyStreams = parseInt((row.daily_streams || '0').replace(/,/g, ''));
+                    const songTitle = row.song_title || '';
+                    const artist = row.artist || row.artist_name || 'SB19';
+                    const year = parseInt(row.year) || 0;
+                    const album = row.album || '';
+                    const collaborators = row.collaborating_artists || '';
+                    const timestamp = row.timestamp || '';
+
+                    if (songTitle && !isNaN(streams) && streams > 0) {
+                        data.push({
+                            song_title: songTitle,
+                            artist_name: artist.replace(' - Spotify Top Songs', ''),
+                            total_streams: streams,
+                            daily_streams: dailyStreams,
+                            year: year,
+                            album: album,
+                            collaborators: collaborators,
+                            data_date: timestamp,
+                            spotify_url: row['spotify_link'] || row['Spotify Link'] || ''
+                        });
+                    }
+                }
+                return data;
+            }
+
+            setupEventListeners() {
+                document.getElementById('rangePreset').addEventListener('change', (e) => {
+                    this.rangePreset = e.target.value;
+                    this.render();
+                });
+
+                document.getElementById('compareFilter').addEventListener('change', (e) => {
+                    this.compareFilter = e.target.value;
+                    this.render();
+                });
+
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    location.reload();
+                });
+
+                // Tab buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.switchView(e.target.dataset.view);
+                    });
+                });
+
+                // Clear album filter button
+                document.getElementById('clearFilterBtn').addEventListener('click', () => {
+                    this.albumFilter = null;
+                    document.getElementById('album-filter-label').textContent = '';
+                    document.getElementById('clearFilterBtn').style.display = 'none';
+
+                    // Reset chart colors to original
+                    if (this.charts.album && this.albumChartColors) {
+                        this.charts.album.data.datasets[0].backgroundColor = this.albumChartColors.slice();
+                        this.charts.album.update();
+                    }
+
+                    this.populateTopTracks();
+                });
+
+                // Clear member filter button
+                document.getElementById('clearMemberFilterBtn').addEventListener('click', () => {
+                    this.memberFilter = null;
+                    document.getElementById('member-filter-label').textContent = '';
+                    document.getElementById('clearMemberFilterBtn').style.display = 'none';
+
+                    // Reset chart colors to original
+                    if (this.charts.member && this.memberChartColors) {
+                        this.charts.member.data.datasets[0].backgroundColor = this.memberChartColors.slice();
+                        this.charts.member.update();
+                    }
+
+                    this.populateMemberTracks();
+                });
+            }
+
+            switchView(view) {
+                document.getElementById('tracks-view').style.display = view === 'all' ? 'block' : 'none';
+                document.getElementById('album-view').style.display = view === 'album' ? 'block' : 'none';
+                document.getElementById('year-view').style.display = view === 'year' ? 'block' : 'none';
+
+                if (view === 'album') this.renderAlbumView();
+                if (view === 'year') this.renderYearView();
+            }
+
+            getFilteredListeners() {
+                let data = this.listenersData.filter(d =>
+                    d.artist_name === 'SB19' ||
+                    (this.compareFilter !== 'none' && d.artist_name === this.compareFilter)
+                );
+
+                if (this.rangePreset !== 'all') {
+                    const allDates = [...new Set(data.map(d => d.data_date.split(' ')[0]))].sort();
+                    let startIdx = 0;
+
+                    if (this.rangePreset === 'last7') {
+                        startIdx = Math.max(0, allDates.length - 7);
+                    } else if (this.rangePreset === 'last30') {
+                        startIdx = Math.max(0, allDates.length - 30);
+                    } else if (this.rangePreset === 'mtd') {
+                        const latest = new Date(allDates[allDates.length - 1]);
+                        const startOfMonth = new Date(latest.getFullYear(), latest.getMonth(), 1);
+                        for (let i = 0; i < allDates.length; i++) {
+                            if (new Date(allDates[i]) >= startOfMonth) {
+                                startIdx = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    const validDates = allDates.slice(startIdx);
+                    data = data.filter(d => validDates.includes(d.data_date.split(' ')[0]));
+                }
+
+                return data;
+            }
+
+            getLatestStreams() {
+                // Get all SB19 streams data
+                const sb19Streams = this.streamsData.filter(d =>
+                    d.artist_name === 'SB19' || d.artist_name.includes('SB19')
+                );
+
+                // Get latest entry per track (by highest streams count since timestamps may be same)
+                const latestByTrack = {};
+                sb19Streams.forEach(d => {
+                    const key = d.song_title;
+                    if (!latestByTrack[key] || d.total_streams > latestByTrack[key].total_streams) {
+                        latestByTrack[key] = d;
+                    }
+                });
+
+                return Object.values(latestByTrack).sort((a, b) => b.total_streams - a.total_streams);
+            }
+
+            render() {
+                this.updateStats();
+                this.populateTopTracks();
+                this.createAlbumChart();
+                this.createMemberChart();
+                this.populateMemberTracks();
+            }
+
+            updateStats() {
+                const filteredData = this.getFilteredListeners();
+                const sb19Data = filteredData.filter(d => d.artist_name === 'SB19');
+                const latestStreams = this.getLatestStreams();
+
+                // Current listeners
+                const sortedSB19 = sb19Data.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
+                const latest = sortedSB19[0];
+                const previous = sortedSB19[1];
+
+                if (latest) {
+                    document.getElementById('current-listeners').textContent = latest.monthly_listeners.toLocaleString();
+                    if (previous) {
+                        const change = latest.monthly_listeners - previous.monthly_listeners;
+                        const changeEl = document.getElementById('listeners-change');
+                        changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toLocaleString()} from yesterday`;
+                        changeEl.className = change >= 0 ? 'growth' : 'growth negative';
+                    }
+                }
+
+                // Total tracks
+                document.getElementById('total-tracks').textContent = this.tracksMetadata.length;
+
+                // Total streams
+                const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
+                document.getElementById('total-streams').textContent = totalStreams.toLocaleString();
+
+                // Top track
+                if (latestStreams.length > 0) {
+                    document.getElementById('top-track').textContent = latestStreams[0].song_title;
+                    document.getElementById('top-track-streams').textContent =
+                        latestStreams[0].total_streams.toLocaleString() + ' streams';
+                }
+
+                // Period change
+                if (sb19Data.length >= 2) {
+                    const oldest = sb19Data.reduce((a, b) =>
+                        new Date(a.data_date) < new Date(b.data_date) ? a : b
+                    );
+                    const periodChange = latest.monthly_listeners - oldest.monthly_listeners;
+                    const periodChangeEl = document.getElementById('period-change');
+                    periodChangeEl.textContent = `${periodChange >= 0 ? '+' : ''}${periodChange.toLocaleString()}`;
+                    periodChangeEl.style.color = periodChange >= 0 ? '#34d399' : '#ef4444';
+                }
+
+                // Last updated
+                if (latest) {
+                    document.getElementById('last-updated').textContent =
+                        `Last updated: ${new Date(latest.data_date).toLocaleString()}`;
+                }
+            }
+
+            formatNumber(num) {
+                if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B';
+                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+                return num.toString();
+            }
+
+            createListenersChart() {
+                const ctx = document.getElementById('listenersChart').getContext('2d');
+                const filteredData = this.getFilteredListeners();
+
+                const allDates = [...new Set(filteredData.map(d => d.data_date.split(' ')[0]))].sort();
+                const artists = [...new Set(filteredData.map(d => d.artist_name))];
+
+                const labels = allDates.map(d => {
+                    const date = new Date(d);
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                });
+
+                const datasets = [];
+                const colors = {
+                    'SB19': { bg: 'rgba(96, 165, 250, 0.8)', border: '#60a5fa', line: '#60a5fa' },
+                    'BINI': { bg: 'rgba(167, 139, 250, 0.8)', border: '#a78bfa', line: '#a78bfa' },
+                    'Pablo': { bg: 'rgba(251, 146, 60, 0.8)', border: '#fb923c', line: '#fb923c' },
+                    'Josh Cullen': { bg: 'rgba(52, 211, 153, 0.8)', border: '#34d399', line: '#34d399' },
+                    'STELL': { bg: 'rgba(248, 113, 113, 0.8)', border: '#f87171', line: '#f87171' },
+                    'felip': { bg: 'rgba(251, 191, 36, 0.8)', border: '#fbbf24', line: '#fbbf24' },
+                    'Justin': { bg: 'rgba(45, 212, 191, 0.8)', border: '#2dd4bf', line: '#2dd4bf' }
+                };
+
+                artists.forEach(artist => {
+                    const color = colors[artist] || { bg: 'rgba(156,163,175,0.8)', border: '#9ca3af' };
+                    const values = allDates.map(date => {
+                        const record = filteredData.find(d =>
+                            d.artist_name === artist && d.data_date.startsWith(date)
+                        );
+                        return record ? record.monthly_listeners : null;
+                    });
+
+                    datasets.push({
+                        label: artist,
+                        data: values,
+                        backgroundColor: color.bg,
+                        borderColor: color.border,
+                        borderWidth: 2,
+                        borderRadius: 4,
+                        fill: false,
+                        tension: 0.3
+                    });
+                });
+
+                if (this.charts.listeners) {
+                    this.charts.listeners.destroy();
+                }
+
+                this.charts.listeners = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#9ca3af', maxRotation: 0 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => this.formatNumber(v)
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: this.compareFilter !== 'none',
+                                labels: { color: '#e5e7eb' }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
+                                }
+                            },
+                            datalabels: { display: false }
+                        }
+                    }
+                });
+            }
+
+            populateDailyTable() {
+                const tbody = document.getElementById('daily-table');
+                const sb19Data = this.getFilteredListeners().filter(d => d.artist_name === 'SB19');
+                const sortedData = sb19Data.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
+
+                tbody.innerHTML = sortedData.slice(0, 15).map((d, i) => {
+                    const prev = sortedData[i + 1];
+                    const change = prev ? d.monthly_listeners - prev.monthly_listeners : 0;
+                    const changeClass = change >= 0 ? 'growth' : 'growth negative';
+                    const date = new Date(d.data_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                    return `
+                        <tr>
+                            <td style="padding: 6px 8px;">${date}</td>
+                            <td style="padding: 6px 8px; text-align: right; font-weight: 600;">${d.monthly_listeners.toLocaleString()}</td>
+                            <td style="padding: 6px 8px; text-align: right;">
+                                <span class="${changeClass}">${change >= 0 ? '+' : ''}${change.toLocaleString()}</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            populateTopTracks() {
+                const tbody = document.getElementById('top-tracks-body');
+                let latestStreams = this.getLatestStreams();
+
+                // Apply album filter if set
+                if (this.albumFilter) {
+                    latestStreams = latestStreams.filter(track => {
+                        let album = track.album || '';
+                        if (!album) {
+                            const meta = this.tracksMetadata.find(m =>
+                                m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                                track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                            );
+                            album = meta ? meta.album : '';
+                        }
+                        return album === this.albumFilter;
+                    });
+                }
+
+                // Calculate totals
+                const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
+
+                const trackRows = latestStreams.map((track, i) => {
+                    // Use album and collaborators from streams data directly, fallback to metadata
+                    let album = track.album || '';
+                    let collab = track.collaborators ? `feat. ${track.collaborators}` : '';
+
+                    // Fallback to metadata if not in streams data
+                    if (!album || !collab) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        if (meta) {
+                            album = album || meta.album || '';
+                            collab = collab || (meta.collaborators ? `feat. ${meta.collaborators}` : '');
+                        }
+                    }
+
+                    // Get Spotify URL from streams data or fallback to metadata
+                    let spotifyUrl = track.spotify_url || '';
+                    if (!spotifyUrl) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        if (meta && meta.spotify_url) {
+                            spotifyUrl = meta.spotify_url;
+                        }
+                    }
+                    const playButton = spotifyUrl
+                        ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
+                        : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
+
+                    return `
+                        <tr>
+                            <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
+                            <td style="padding: 8px 10px;">
+                                <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
+                                <div style="font-size: 0.7rem; color: #9ca3af;">${album}${collab ? ' - ' + collab : ''}</div>
+                            </td>
+                            <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: #34d399;">
+                                ${track.total_streams.toLocaleString()}
+                            </td>
+                            <td style="padding: 8px 10px; text-align: center;">
+                                ${playButton}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Add total row
+                const totalRow = `
+                    <tr style="background: rgba(96, 165, 250, 0.15); border-top: 2px solid rgba(96, 165, 250, 0.3);">
+                        <td style="padding: 10px 10px; text-align: center; font-weight: 700; color: #60a5fa;"></td>
+                        <td style="padding: 10px 10px; font-weight: 700; color: #60a5fa;">TOTAL (${latestStreams.length} tracks)</td>
+                        <td style="padding: 10px 10px; text-align: right; font-weight: 700; color: #34d399;">
+                            ${totalStreams.toLocaleString()}
+                        </td>
+                        <td style="padding: 10px 10px; text-align: center;"></td>
+                    </tr>
+                `;
+
+                tbody.innerHTML = trackRows + totalRow;
+            }
+
+            renderAlbumView() {
+                const container = document.getElementById('album-view');
+                const latestStreams = this.getLatestStreams();
+
+                // Group by album - use album from streams data directly
+                const albumGroups = {};
+                latestStreams.forEach(track => {
+                    // Use album from streams data, fallback to metadata
+                    let album = track.album || '';
+                    if (!album) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        album = meta ? meta.album : 'Other';
+                    }
+                    if (!albumGroups[album]) {
+                        albumGroups[album] = { tracks: [], totalStreams: 0 };
+                    }
+                    albumGroups[album].tracks.push(track);
+                    albumGroups[album].totalStreams += track.total_streams;
+                });
+
+                // Sort albums by total streams
+                const sortedAlbums = Object.entries(albumGroups)
+                    .sort((a, b) => b[1].totalStreams - a[1].totalStreams);
+
+                container.innerHTML = `
+                    <div class="tracks-grid" style="padding: 16px;">
+                        ${sortedAlbums.map(([album, data]) => `
+                            <div class="album-card">
+                                <div class="album-header">
+                                    <h3>${album}</h3>
+                                    <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
+                                </div>
+                                <div class="track-list">
+                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => `
+                                        <div class="track-item">
+                                            <div class="track-info">
+                                                <div class="track-title">${t.song_title}</div>
+                                                ${t.collaborators ? `<div class="track-collab">feat. ${t.collaborators}</div>` : ''}
+                                            </div>
+                                            <div class="track-streams">${t.total_streams.toLocaleString()}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            renderYearView() {
+                const container = document.getElementById('year-view');
+                const latestStreams = this.getLatestStreams();
+
+                // Group by year - use year from streams data directly
+                const yearGroups = {};
+                latestStreams.forEach(track => {
+                    // Use year from streams data, fallback to metadata
+                    let year = track.year || 0;
+                    if (!year) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        year = meta ? meta.year : 'Unknown';
+                    }
+                    if (!yearGroups[year]) {
+                        yearGroups[year] = { tracks: [], totalStreams: 0 };
+                    }
+                    yearGroups[year].tracks.push(track);
+                    yearGroups[year].totalStreams += track.total_streams;
+                });
+
+                // Sort years descending
+                const sortedYears = Object.entries(yearGroups)
+                    .filter(([year]) => year !== 'Unknown' && year !== '0' && parseInt(year) > 0)
+                    .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
+
+                container.innerHTML = `
+                    <div class="tracks-grid" style="padding: 16px;">
+                        ${sortedYears.map(([year, data]) => `
+                            <div class="album-card">
+                                <div class="album-header">
+                                    <h3>${year}</h3>
+                                    <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
+                                </div>
+                                <div class="track-list">
+                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => `
+                                        <div class="track-item">
+                                            <div class="track-info">
+                                                <div class="track-title">${t.song_title}</div>
+                                                <div class="track-collab">${t.album || ''}</div>
+                                            </div>
+                                            <div class="track-streams">${t.total_streams.toLocaleString()}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            createAlbumChart() {
+                const ctx = document.getElementById('albumChart').getContext('2d');
+                const latestStreams = this.getLatestStreams();
+
+                // Group by album - use album from streams data directly
+                const albumStreams = {};
+                latestStreams.forEach(track => {
+                    let album = track.album || '';
+                    if (!album) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        album = meta ? meta.album : 'Other';
+                    }
+                    albumStreams[album] = (albumStreams[album] || 0) + track.total_streams;
+                });
+
+                const sortedAlbums = Object.entries(albumStreams)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 8);
+
+                const colors = [
+                    'rgba(96, 165, 250, 0.8)',
+                    'rgba(52, 211, 153, 0.8)',
+                    'rgba(251, 146, 60, 0.8)',
+                    'rgba(167, 139, 250, 0.8)',
+                    'rgba(248, 113, 113, 0.8)',
+                    'rgba(250, 204, 21, 0.8)',
+                    'rgba(236, 72, 153, 0.8)',
+                    'rgba(148, 163, 184, 0.8)'
+                ];
+
+                if (this.charts.album) {
+                    this.charts.album.destroy();
+                }
+
+                const albumLabels = sortedAlbums.map(a => a[0]);
+                const self = this;
+
+                // Store original colors for highlighting
+                this.albumChartColors = colors.slice();
+                const grayedOut = 'rgba(100, 100, 100, 0.3)';
+
+                // Get current background colors based on filter
+                const getBackgroundColors = () => {
+                    if (!self.albumFilter) return self.albumChartColors.slice();
+                    return albumLabels.map((label, i) =>
+                        label === self.albumFilter ? self.albumChartColors[i] : grayedOut
+                    );
+                };
+
+                this.charts.album = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: albumLabels,
+                        datasets: [{
+                            data: sortedAlbums.map(a => a[1]),
+                            backgroundColor: getBackgroundColors(),
+                            borderRadius: 6,
+                            hoverBackgroundColor: colors.map(c => c.replace('0.8', '1'))
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                const albumName = albumLabels[index];
+
+                                // Toggle: if clicking same bar, clear filter
+                                if (self.albumFilter === albumName) {
+                                    self.albumFilter = null;
+                                    document.getElementById('album-filter-label').textContent = '';
+                                    document.getElementById('clearFilterBtn').style.display = 'none';
+                                    self.charts.album.data.datasets[0].backgroundColor = self.albumChartColors.slice();
+                                } else {
+                                    self.albumFilter = albumName;
+                                    document.getElementById('album-filter-label').textContent = `(${albumName})`;
+                                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                                    self.charts.album.data.datasets[0].backgroundColor = albumLabels.map((label, i) =>
+                                        label === albumName ? self.albumChartColors[i] : grayedOut
+                                    );
+                                }
+                                self.charts.album.update();
+                                self.populateTopTracks();
+                            }
+                        },
+                        onHover: (event, elements) => {
+                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => v.toLocaleString()
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#e5e7eb',
+                                    font: { size: 11 }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
+                                }
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'right',
+                                color: '#e5e7eb',
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                formatter: (value) => this.formatNumber(value),
+                                padding: { left: 6 }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            getMemberStreamsData() {
+                // Get streams data for each member's solo tracks
+                const memberData = [];
+
+                this.members.forEach(member => {
+                    // Find tracks by this member (solo artist)
+                    const memberTracks = this.streamsData.filter(d => {
+                        const artistName = d.artist_name || '';
+                        return artistName === member.dataName ||
+                               artistName.toLowerCase() === member.dataName.toLowerCase();
+                    });
+
+                    // Get latest entry per track
+                    const latestByTrack = {};
+                    memberTracks.forEach(d => {
+                        const key = d.song_title;
+                        if (!latestByTrack[key] || d.total_streams > latestByTrack[key].total_streams) {
+                            latestByTrack[key] = { ...d, memberName: member.name, memberColor: member.color, memberBorderColor: member.borderColor };
+                        }
+                    });
+
+                    const tracks = Object.values(latestByTrack).sort((a, b) => b.total_streams - a.total_streams);
+                    const totalStreams = tracks.reduce((sum, t) => sum + t.total_streams, 0);
+
+                    if (tracks.length > 0) {
+                        memberData.push({
+                            ...member,
+                            tracks: tracks,
+                            totalStreams: totalStreams,
+                            trackCount: tracks.length
+                        });
+                    }
+                });
+
+                // Sort by total streams descending
+                return memberData.sort((a, b) => b.totalStreams - a.totalStreams);
+            }
+
+            createMemberChart() {
+                const ctx = document.getElementById('memberChart').getContext('2d');
+                const memberData = this.getMemberStreamsData();
+
+                if (memberData.length === 0) {
+                    return;
+                }
+
+                const labels = memberData.map(m => m.name);
+                const data = memberData.map(m => m.totalStreams);
+                const colors = memberData.map(m => m.color);
+
+                if (this.charts.member) {
+                    this.charts.member.destroy();
+                }
+
+                // Store original colors for highlighting
+                this.memberChartColors = colors.slice();
+                const grayedOut = 'rgba(100, 100, 100, 0.3)';
+                const self = this;
+
+                // Get current background colors based on filter
+                const getBackgroundColors = () => {
+                    if (!self.memberFilter) return self.memberChartColors.slice();
+                    return labels.map((label, i) =>
+                        label === self.memberFilter ? self.memberChartColors[i] : grayedOut
+                    );
+                };
+
+                this.charts.member = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: getBackgroundColors(),
+                            borderRadius: 6,
+                            hoverBackgroundColor: colors.map(c => c.replace('0.8', '1'))
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                const memberName = labels[index];
+
+                                // Toggle: if clicking same bar, clear filter
+                                if (self.memberFilter === memberName) {
+                                    self.memberFilter = null;
+                                    document.getElementById('member-filter-label').textContent = '';
+                                    document.getElementById('clearMemberFilterBtn').style.display = 'none';
+                                    self.charts.member.data.datasets[0].backgroundColor = self.memberChartColors.slice();
+                                } else {
+                                    self.memberFilter = memberName;
+                                    document.getElementById('member-filter-label').textContent = `(${memberName})`;
+                                    document.getElementById('clearMemberFilterBtn').style.display = 'inline-block';
+                                    self.charts.member.data.datasets[0].backgroundColor = labels.map((label, i) =>
+                                        label === memberName ? self.memberChartColors[i] : grayedOut
+                                    );
+                                }
+                                self.charts.member.update();
+                                self.populateMemberTracks();
+                            }
+                        },
+                        onHover: (event, elements) => {
+                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => this.formatNumber(v)
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#e5e7eb',
+                                    font: { size: 12, weight: '600' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
+                                }
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'right',
+                                color: '#e5e7eb',
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                formatter: (value) => this.formatNumber(value),
+                                padding: { left: 6 }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            populateMemberTracks() {
+                const tbody = document.getElementById('member-tracks-body');
+                const memberData = this.getMemberStreamsData();
+
+                if (memberData.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #9ca3af;">No member solo tracks available</td></tr>';
+                    return;
+                }
+
+                // Get all tracks, optionally filtered by member
+                let allTracks = [];
+                memberData.forEach(member => {
+                    if (!this.memberFilter || this.memberFilter === member.name) {
+                        member.tracks.forEach(track => {
+                            allTracks.push({
+                                ...track,
+                                memberName: member.name,
+                                memberColor: member.borderColor
+                            });
+                        });
+                    }
+                });
+
+                // Sort by streams
+                allTracks.sort((a, b) => b.total_streams - a.total_streams);
+
+                // Calculate totals
+                const totalStreams = allTracks.reduce((sum, t) => sum + t.total_streams, 0);
+
+                const trackRows = allTracks.map((track, i) => {
+                    // Get Spotify URL
+                    let spotifyUrl = track.spotify_url || '';
+                    if (!spotifyUrl) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        if (meta && meta.spotify_url) {
+                            spotifyUrl = meta.spotify_url;
+                        }
+                    }
+                    const playButton = spotifyUrl
+                        ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
+                        : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
+
+                    return `
+                        <tr>
+                            <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
+                            <td style="padding: 8px 10px;">
+                                <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
+                                <div style="font-size: 0.7rem; color: ${track.memberColor}; display: flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: ${track.memberColor};"></span>
+                                    ${track.memberName}
+                                </div>
+                            </td>
+                            <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: #34d399;">
+                                ${track.total_streams.toLocaleString()}
+                            </td>
+                            <td style="padding: 8px 10px; text-align: center;">
+                                ${playButton}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Add total row
+                const totalRow = `
+                    <tr style="background: rgba(96, 165, 250, 0.15); border-top: 2px solid rgba(96, 165, 250, 0.3);">
+                        <td style="padding: 10px 10px; text-align: center; font-weight: 700; color: #60a5fa;"></td>
+                        <td style="padding: 10px 10px; font-weight: 700; color: #60a5fa;">TOTAL (${allTracks.length} tracks)</td>
+                        <td style="padding: 10px 10px; text-align: right; font-weight: 700; color: #34d399;">
+                            ${totalStreams.toLocaleString()}
+                        </td>
+                        <td style="padding: 10px 10px; text-align: center;"></td>
+                    </tr>
+                `;
+
+                tbody.innerHTML = trackRows + totalRow;
+            }
+
+            showDashboard() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            }
+
+            showError(message) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = message;
+            }
+        }
+
+        // Initialize dashboard
+        new SB19Dashboard();
+    </script>
+</body>
+</html>
