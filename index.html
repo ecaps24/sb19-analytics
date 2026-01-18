@@ -1434,17 +1434,20 @@
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
                 const rankChanges = {};
+                const previousRanks = {};
                 Object.keys(endRanks).forEach(track => {
                     const currentRank = endRanks[track];
                     const previousRank = startRanks[track];
                     if (previousRank) {
                         rankChanges[track] = previousRank - currentRank; // Positive means moved up
+                        previousRanks[track] = previousRank;
                     } else {
                         rankChanges[track] = null; // New entry
+                        previousRanks[track] = null;
                     }
                 });
 
-                return rankChanges;
+                return { rankChanges, previousRanks };
             }
 
             render() {
@@ -1648,7 +1651,7 @@
                 const tbody = document.getElementById('top-tracks-body');
                 let latestStreams = this.getLatestStreams();
                 const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
-                const rankChanges = this.getRankChanges();
+                const { rankChanges, previousRanks } = this.getRankChanges();
 
                 // Update column header with sort icon
                 const headerEl = document.getElementById('change-header');
@@ -1727,6 +1730,7 @@
                     // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
                     const rankChange = rankChanges[track.song_title];
+                    const prevRank = previousRanks[track.song_title];
 
                     let changeHtml = '';
                     if (change !== 0 || rankChange) {
@@ -1737,7 +1741,8 @@
                         if (rankChange !== null && rankChange !== 0) {
                             const rankClass = rankChange > 0 ? 'up' : 'down';
                             const arrow = rankChange > 0 ? '▲' : '▼';
-                            rankHtml = `<span class="rank-change ${rankClass}">${arrow}${Math.abs(rankChange)}</span>`;
+                            const prevRankText = prevRank ? `<span style="color: #6b7280; font-size: 0.7rem; margin-left: 2px;">(#${prevRank})</span>` : '';
+                            rankHtml = `<span class="rank-change ${rankClass}">${arrow}${Math.abs(rankChange)}${prevRankText}</span>`;
                         } else if (rankChange === 0) {
                             rankHtml = `<span class="rank-change same">―</span>`;
                         }
@@ -2375,23 +2380,26 @@
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
                 const rankChanges = {};
+                const previousRanks = {};
                 Object.keys(endRanks).forEach(track => {
                     const currentRank = endRanks[track];
                     const previousRank = startRanks[track];
                     if (previousRank) {
                         rankChanges[track] = previousRank - currentRank;
+                        previousRanks[track] = previousRank;
                     } else {
                         rankChanges[track] = null;
+                        previousRanks[track] = null;
                     }
                 });
 
-                return { changes, rankChanges, label };
+                return { changes, rankChanges, previousRanks, label };
             }
 
             populateMemberTracks() {
                 const tbody = document.getElementById('member-tracks-body');
                 const memberData = this.getMemberStreamsData();
-                const { changes: periodChanges, rankChanges, label: changeLabel } = this.getMemberPeriodChange();
+                const { changes: periodChanges, rankChanges, previousRanks, label: changeLabel } = this.getMemberPeriodChange();
 
                 // Update column header
                 const headerEl = document.getElementById('member-change-header');
@@ -2459,6 +2467,7 @@
                     // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
                     const rankChange = rankChanges[track.song_title];
+                    const prevRank = previousRanks[track.song_title];
 
                     let changeHtml = '';
                     if (change !== 0 || rankChange) {
@@ -2469,7 +2478,8 @@
                         if (rankChange !== null && rankChange !== 0) {
                             const rankClass = rankChange > 0 ? 'up' : 'down';
                             const arrow = rankChange > 0 ? '▲' : '▼';
-                            rankHtml = `<span class="rank-change ${rankClass}">${arrow}${Math.abs(rankChange)}</span>`;
+                            const prevRankText = prevRank ? `<span style="color: #6b7280; font-size: 0.7rem; margin-left: 2px;">(#${prevRank})</span>` : '';
+                            rankHtml = `<span class="rank-change ${rankClass}">${arrow}${Math.abs(rankChange)}${prevRankText}</span>`;
                         } else if (rankChange === 0) {
                             rankHtml = `<span class="rank-change same">―</span>`;
                         }
