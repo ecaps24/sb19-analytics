@@ -2310,8 +2310,11 @@
 
             getMemberPeriodChange() {
                 // Get member streams by date for period comparisons
-                const memberNames = this.members.map(m => m.dataName);
-                const memberStreams = this.streamsData.filter(d => memberNames.includes(d.artist_name));
+                const memberNamesLower = this.members.map(m => m.dataName.toLowerCase());
+                const memberStreams = this.streamsData.filter(d => {
+                    const artistName = (d.artist_name || '').toLowerCase();
+                    return memberNamesLower.includes(artistName);
+                });
 
                 const byDate = {};
                 memberStreams.forEach(d => {
