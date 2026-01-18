@@ -500,13 +500,22 @@ class SB19TrackStreamsRPA:
                 print(f"[WARN] Browser launch failed for {song_title}.")
                 self.force_close_edge()
                 if attempt == max_retries:
-                    # Save with 0 streams on final failure
-                    print(f"[ERROR] Saving with streams=0 for quick review.")
-                    self.save_track_result(
-                        run_timestamp, song_title, artist, year, album, collab,
-                        spotify_link, "0", 0, last_screenshot_path or "",
-                    )
-                    return False
+                    # Use previous day's streams instead of 0
+                    previous_streams = self._get_previous_streams(song_title, artist)
+                    if previous_streams:
+                        print(f"[FALLBACK] Browser failed. Using previous day's streams: {previous_streams:,}")
+                        self.save_track_result(
+                            run_timestamp, song_title, artist, year, album, collab,
+                            spotify_link, str(previous_streams), 0, last_screenshot_path or "",
+                        )
+                        return True
+                    else:
+                        print(f"[ERROR] Browser failed. No previous data available.")
+                        self.save_track_result(
+                            run_timestamp, song_title, artist, year, album, collab,
+                            spotify_link, "0", 0, last_screenshot_path or "",
+                        )
+                        return False
                 continue
 
             window = None
@@ -519,11 +528,22 @@ class SB19TrackStreamsRPA:
                 if not screenshot_path:
                     print(f"[WARN] Screenshot capture failed for {song_title}.")
                     if attempt == max_retries:
-                        print(f"[ERROR] Saving with streams=0 for quick review.")
-                        self.save_track_result(
-                            run_timestamp, song_title, artist, year, album, collab,
-                            spotify_link, "0", 0, last_screenshot_path,
-                        )
+                        # Use previous day's streams instead of 0
+                        previous_streams = self._get_previous_streams(song_title, artist)
+                        if previous_streams:
+                            print(f"[FALLBACK] Screenshot failed. Using previous day's streams: {previous_streams:,}")
+                            self.save_track_result(
+                                run_timestamp, song_title, artist, year, album, collab,
+                                spotify_link, str(previous_streams), 0, last_screenshot_path,
+                            )
+                            return True
+                        else:
+                            print(f"[ERROR] Screenshot failed. No previous data available.")
+                            self.save_track_result(
+                                run_timestamp, song_title, artist, year, album, collab,
+                                spotify_link, "0", 0, last_screenshot_path,
+                            )
+                            return False
                     continue
 
                 # Close Edge window before OCR processing
@@ -548,13 +568,24 @@ class SB19TrackStreamsRPA:
                             time.sleep(2)
                             continue  # Retry
                         else:
-                            print(f"[ERROR] Invalid streams after {max_retries} retries. Saving with streams=0.")
-                            self._save_debug_text(slug, screenshot_timestamp, f"VALIDATION FAILED: {validation_msg}\n\n{ocr_text}", self.output_dir)
-                            self.save_track_result(
-                                run_timestamp, song_title, artist, year, album, collab,
-                                spotify_link, "0", 0, screenshot_path,
-                            )
-                            return False
+                            # Use previous day's streams instead of 0
+                            previous_streams = self._get_previous_streams(song_title, artist)
+                            if previous_streams:
+                                print(f"[FALLBACK] Using previous day's streams: {previous_streams:,}")
+                                self._save_debug_text(slug, screenshot_timestamp, f"VALIDATION FAILED: {validation_msg}\n\n{ocr_text}", self.output_dir)
+                                self.save_track_result(
+                                    run_timestamp, song_title, artist, year, album, collab,
+                                    spotify_link, str(previous_streams), 0, screenshot_path,
+                                )
+                                return True
+                            else:
+                                print(f"[ERROR] Invalid streams after {max_retries} retries. No previous data available.")
+                                self._save_debug_text(slug, screenshot_timestamp, f"VALIDATION FAILED: {validation_msg}\n\n{ocr_text}", self.output_dir)
+                                self.save_track_result(
+                                    run_timestamp, song_title, artist, year, album, collab,
+                                    spotify_link, "0", 0, screenshot_path,
+                                )
+                                return False
 
                     # Valid streams - calculate daily and save
                     daily_streams = self._calculate_daily_streams(streams_int, song_title, artist)
@@ -579,13 +610,24 @@ class SB19TrackStreamsRPA:
                         time.sleep(2)
                         continue  # Retry
                     else:
-                        print(f"[ERROR] OCR failed after {max_retries} retries. Saving with streams=0.")
-                        self._save_debug_text(slug, screenshot_timestamp, ocr_text, self.output_dir)
-                        self.save_track_result(
-                            run_timestamp, song_title, artist, year, album, collab,
-                            spotify_link, "0", 0, screenshot_path,
-                        )
-                        return False
+                        # Use previous day's streams instead of 0
+                        previous_streams = self._get_previous_streams(song_title, artist)
+                        if previous_streams:
+                            print(f"[FALLBACK] OCR failed. Using previous day's streams: {previous_streams:,}")
+                            self._save_debug_text(slug, screenshot_timestamp, ocr_text, self.output_dir)
+                            self.save_track_result(
+                                run_timestamp, song_title, artist, year, album, collab,
+                                spotify_link, str(previous_streams), 0, screenshot_path,
+                            )
+                            return True
+                        else:
+                            print(f"[ERROR] OCR failed after {max_retries} retries. No previous data available.")
+                            self._save_debug_text(slug, screenshot_timestamp, ocr_text, self.output_dir)
+                            self.save_track_result(
+                                run_timestamp, song_title, artist, year, album, collab,
+                                spotify_link, "0", 0, screenshot_path,
+                            )
+                            return False
             finally:
                 # Always ensure Edge is closed after each attempt
                 if window is not None:
