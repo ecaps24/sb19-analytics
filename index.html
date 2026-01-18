@@ -462,7 +462,7 @@
                                         <th style="width: 35px; text-align: center;">#</th>
                                         <th style="text-align: left;">Track</th>
                                         <th style="width: 110px; text-align: right; white-space: nowrap;">Total Streams</th>
-                                        <th style="width: 80px; text-align: right; white-space: nowrap;">Daily +/-</th>
+                                        <th id="change-header" style="width: 80px; text-align: right; white-space: nowrap;">Change</th>
                                         <th style="width: 70px; text-align: center;">Spotify</th>
                                     </tr>
                                 </thead>
@@ -863,26 +863,53 @@
                 return byDate;
             }
 
-            getDailyChange() {
+            getPeriodChange() {
                 const streamsByDate = this.getStreamsByDate();
-                const dates = Object.keys(streamsByDate).sort().reverse();
+                const allDates = Object.keys(streamsByDate).sort();
 
-                if (dates.length < 2) return {};
+                if (allDates.length < 2) return { changes: {}, label: 'Change' };
 
-                const today = dates[0];
-                const yesterday = dates[1];
+                let startDate, endDate, label;
 
-                const todayData = streamsByDate[today] || {};
-                const yesterdayData = streamsByDate[yesterday] || {};
+                if (this.rangePreset === 'last7') {
+                    const recentDates = allDates.slice(-7);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                    label = '7d +/-';
+                } else if (this.rangePreset === 'last30') {
+                    const recentDates = allDates.slice(-30);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                    label = '30d +/-';
+                } else if (this.rangePreset === 'mtd') {
+                    const latestDate = allDates[allDates.length - 1];
+                    const year = latestDate.substring(0, 4);
+                    const month = latestDate.substring(4, 6);
+                    const startOfMonth = `${year}${month}01`;
+                    const mtdDates = allDates.filter(d => d >= startOfMonth);
+                    startDate = mtdDates[0];
+                    endDate = mtdDates[mtdDates.length - 1];
+                    label = 'MTD +/-';
+                } else {
+                    // All data
+                    startDate = allDates[0];
+                    endDate = allDates[allDates.length - 1];
+                    label = 'Total +/-';
+                }
+
+                const startData = streamsByDate[startDate] || {};
+                const endData = streamsByDate[endDate] || {};
 
                 const changes = {};
-                Object.keys(todayData).forEach(track => {
-                    const todayStreams = todayData[track]?.total_streams || 0;
-                    const yesterdayStreams = yesterdayData[track]?.total_streams || 0;
-                    changes[track] = todayStreams - yesterdayStreams;
+                // Get all unique tracks from both periods
+                const allTracks = new Set([...Object.keys(startData), ...Object.keys(endData)]);
+                allTracks.forEach(track => {
+                    const endStreams = endData[track]?.total_streams || 0;
+                    const startStreams = startData[track]?.total_streams || 0;
+                    changes[track] = endStreams - startStreams;
                 });
 
-                return changes;
+                return { changes, label };
             }
 
             render() {
@@ -1065,7 +1092,10 @@
             populateTopTracks() {
                 const tbody = document.getElementById('top-tracks-body');
                 let latestStreams = this.getLatestStreams();
-                const dailyChanges = this.getDailyChange();
+                const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
+
+                // Update column header
+                document.getElementById('change-header').textContent = changeLabel;
 
                 // Apply album filter if set
                 if (this.albumFilter) {
@@ -1084,7 +1114,7 @@
 
                 // Calculate totals
                 const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
-                const totalDailyChange = latestStreams.reduce((sum, t) => sum + (dailyChanges[t.song_title] || 0), 0);
+                const totalPeriodChange = latestStreams.reduce((sum, t) => sum + (periodChanges[t.song_title] || 0), 0);
 
                 const trackRows = latestStreams.map((track, i) => {
                     // Use album and collaborators from streams data directly, fallback to metadata
@@ -1118,8 +1148,8 @@
                         ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
                         : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
 
-                    // Daily change
-                    const change = dailyChanges[track.song_title] || 0;
+                    // Period change
+                    const change = periodChanges[track.song_title] || 0;
                     const changeColor = change > 0 ? '#34d399' : change < 0 ? '#f87171' : '#9ca3af';
                     const changeText = change !== 0 ? `${change > 0 ? '+' : ''}${change.toLocaleString()}` : '-';
 
@@ -1144,8 +1174,8 @@
                 }).join('');
 
                 // Add total row
-                const totalChangeColor = totalDailyChange > 0 ? '#34d399' : totalDailyChange < 0 ? '#f87171' : '#9ca3af';
-                const totalChangeText = totalDailyChange !== 0 ? `${totalDailyChange > 0 ? '+' : ''}${totalDailyChange.toLocaleString()}` : '-';
+                const totalChangeColor = totalPeriodChange > 0 ? '#34d399' : totalPeriodChange < 0 ? '#f87171' : '#9ca3af';
+                const totalChangeText = totalPeriodChange !== 0 ? `${totalPeriodChange > 0 ? '+' : ''}${totalPeriodChange.toLocaleString()}` : '-';
 
                 const totalRow = `
                     <tr style="background: rgba(96, 165, 250, 0.15); border-top: 2px solid rgba(96, 165, 250, 0.3);">
