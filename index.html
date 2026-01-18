@@ -1843,13 +1843,13 @@
                         label: 'Monthly Listeners',
                         data: data.slice(), // Same position as bars
                         type: 'line',
-                        borderColor: '#a78bfa',
-                        backgroundColor: '#a78bfa',
-                        pointBackgroundColor: colors,
-                        pointBorderColor: '#fff',
+                        borderColor: '#0f172a',
+                        backgroundColor: '#fff',
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#0f172a',
                         pointBorderWidth: 2,
-                        pointRadius: 6,
-                        pointHoverRadius: 8,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
                         showLine: false,
                         xAxisID: 'x',
                         order: 1,
@@ -1857,14 +1857,16 @@
                             display: true,
                             anchor: 'end',
                             align: 'right',
-                            color: '#a78bfa',
-                            font: { size: 10, weight: '600' },
+                            color: '#fff',
+                            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+                            borderRadius: 4,
+                            font: { size: 9, weight: '600' },
                             formatter: (value, ctx) => {
                                 const memberName = labels[ctx.dataIndex];
                                 const listenerVal = listenersMap[memberName];
-                                return listenerVal ? this.formatNumber(listenerVal) : '';
+                                return listenerVal ? `${this.formatNumber(listenerVal)} listeners` : '';
                             },
-                            padding: { left: 45 }
+                            padding: { top: 3, bottom: 3, left: 6, right: 6 }
                         }
                     });
                 }
