@@ -452,7 +452,8 @@
                     <label for="rangePreset">Date Range:</label>
                     <select id="rangePreset">
                         <option value="all">All Data</option>
-                        <option value="last7" selected>Last 7 days</option>
+                        <option value="last1" selected>1 Day</option>
+                        <option value="last7">Last 7 days</option>
                         <option value="last30">Last 30 days</option>
                         <option value="mtd">Month to date</option>
                     </select>
@@ -572,7 +573,7 @@
                 this.streamsData = [];
                 this.tracksMetadata = [];
                 this.charts = {};
-                this.rangePreset = 'last7';
+                this.rangePreset = 'last1';
                 this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
                 this.memberFilter = null; // For filtering tracks by member
@@ -894,7 +895,9 @@
                     const allDates = [...new Set(data.map(d => d.data_date.split(' ')[0]))].sort();
                     let startIdx = 0;
 
-                    if (this.rangePreset === 'last7') {
+                    if (this.rangePreset === 'last1') {
+                        startIdx = Math.max(0, allDates.length - 2);
+                    } else if (this.rangePreset === 'last7') {
                         startIdx = Math.max(0, allDates.length - 7);
                     } else if (this.rangePreset === 'last30') {
                         startIdx = Math.max(0, allDates.length - 30);
@@ -965,7 +968,12 @@
 
                 let startDate, endDate, label;
 
-                if (this.rangePreset === 'last7') {
+                if (this.rangePreset === 'last1') {
+                    const recentDates = allDates.slice(-2);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                    label = '1d +/-';
+                } else if (this.rangePreset === 'last7') {
                     const recentDates = allDates.slice(-7);
                     startDate = recentDates[0];
                     endDate = recentDates[recentDates.length - 1];
@@ -1014,7 +1022,11 @@
 
                 let startDate, endDate;
 
-                if (this.rangePreset === 'last7') {
+                if (this.rangePreset === 'last1') {
+                    const recentDates = allDates.slice(-2);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                } else if (this.rangePreset === 'last7') {
                     const recentDates = allDates.slice(-7);
                     startDate = recentDates[0];
                     endDate = recentDates[recentDates.length - 1];
@@ -1843,7 +1855,12 @@
 
                 let startDate, endDate, label;
 
-                if (this.rangePreset === 'last7') {
+                if (this.rangePreset === 'last1') {
+                    const recentDates = allDates.slice(-2);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                    label = '1d +/-';
+                } else if (this.rangePreset === 'last7') {
                     const recentDates = allDates.slice(-7);
                     startDate = recentDates[0];
                     endDate = recentDates[recentDates.length - 1];
