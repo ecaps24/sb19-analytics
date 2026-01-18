@@ -482,10 +482,7 @@ class SB19TrackStreamsRPA:
                 print(f"Featuring: {collab.encode('ascii', 'replace').decode()}")
         print(separator)
 
-        # Check if already scraped today (unless force=True)
-        if not force and self._is_already_scraped_today(song_title, artist):
-            print(f"[SKIP] Already scraped today. Use --force to re-scrape.")
-            return False
+        # Always scrape - dashboard will use latest entry per track
 
         slug = self._slugify(artist, song_title, year)
 
@@ -652,14 +649,10 @@ class SB19TrackStreamsRPA:
         print(f"Run timestamp: {run_timestamp}")
         print(f"Today's date: {self.today_date}")
         print(f"Total tracks in list: {len(tracks)}")
-        if force:
-            print("[MODE] Force mode enabled - will re-scrape all tracks")
-        else:
-            print("[MODE] Normal mode - will skip tracks already scraped today")
+        print("[MODE] Always scrape - dashboard uses latest entry per track")
         print()
 
         processed = 0
-        skipped = 0
         failed = 0
 
         for idx, track in enumerate(tracks, start=1):
@@ -667,8 +660,6 @@ class SB19TrackStreamsRPA:
             result = self.process_track(track, run_timestamp, force=force)
             if result:
                 processed += 1
-            elif self._is_already_scraped_today(track["song_title"], track["artist"]):
-                skipped += 1
             else:
                 failed += 1
 
@@ -676,7 +667,6 @@ class SB19TrackStreamsRPA:
         print("Run Complete!")
         print("=" * 70)
         print(f"Processed: {processed}")
-        print(f"Skipped (already done today): {skipped}")
         print(f"Failed: {failed}")
         print(f"Results CSV: {self.results_csv_path}")
         print(f"Screenshots: {self.output_dir}")
