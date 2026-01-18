@@ -1125,17 +1125,20 @@
                     albumGroups[album].totalStreams += track.total_streams;
                 });
 
-                // Define main albums that should always appear first
+                // Define main albums that should always appear first (sorted by streams among themselves)
                 const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
 
-                // Sort albums with main albums at top
+                // Sort albums with main albums at top, sorted by streams within main albums
                 const sortedAlbums = Object.entries(albumGroups)
                     .sort((a, b) => {
-                        const aIsMain = mainAlbums.indexOf(a[0]);
-                        const bIsMain = mainAlbums.indexOf(b[0]);
-                        if (aIsMain !== -1 && bIsMain !== -1) return aIsMain - bIsMain;
-                        if (aIsMain !== -1) return -1;
-                        if (bIsMain !== -1) return 1;
+                        const aIsMain = mainAlbums.includes(a[0]);
+                        const bIsMain = mainAlbums.includes(b[0]);
+                        // If both are main albums, sort by streams descending
+                        if (aIsMain && bIsMain) return b[1].totalStreams - a[1].totalStreams;
+                        // Main albums come first
+                        if (aIsMain) return -1;
+                        if (bIsMain) return 1;
+                        // Otherwise sort by streams
                         return b[1].totalStreams - a[1].totalStreams;
                     });
 
@@ -1235,22 +1238,18 @@
                     albumStreams[album] = (albumStreams[album] || 0) + track.total_streams;
                 });
 
-                // Define main albums that should always appear first
+                // Define main albums that should always appear first (sorted by streams among themselves)
                 const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
 
                 const sortedAlbums = Object.entries(albumStreams)
                     .sort((a, b) => {
-                        const aIsMain = mainAlbums.indexOf(a[0]);
-                        const bIsMain = mainAlbums.indexOf(b[0]);
-
-                        // If both are main albums, sort by their defined order
-                        if (aIsMain !== -1 && bIsMain !== -1) {
-                            return aIsMain - bIsMain;
-                        }
-                        // If only a is a main album, it comes first
-                        if (aIsMain !== -1) return -1;
-                        // If only b is a main album, it comes first
-                        if (bIsMain !== -1) return 1;
+                        const aIsMain = mainAlbums.includes(a[0]);
+                        const bIsMain = mainAlbums.includes(b[0]);
+                        // If both are main albums, sort by streams descending
+                        if (aIsMain && bIsMain) return b[1] - a[1];
+                        // Main albums come first
+                        if (aIsMain) return -1;
+                        if (bIsMain) return 1;
                         // Otherwise sort by streams
                         return b[1] - a[1];
                     })
