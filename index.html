@@ -400,6 +400,239 @@
             border-color: #60a5fa;
         }
 
+        /* Song Detail View Styles */
+        .song-detail-container {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        .song-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .song-back-btn {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .song-back-btn:hover {
+            background: rgba(96, 165, 250, 0.2);
+        }
+
+        .song-title-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .song-title-section h2 {
+            font-size: 1.5rem;
+            color: #f9fafb;
+            margin: 0;
+        }
+
+        .song-spotify-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1DB954;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .song-spotify-btn:hover {
+            background: #1ed760;
+        }
+
+        .song-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .song-tab-btn {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .song-tab-btn:hover {
+            background: rgba(96, 165, 250, 0.1);
+            color: #e5e7eb;
+        }
+
+        .song-tab-btn.active {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .song-tab-panel {
+            min-height: 300px;
+        }
+
+        .song-streams-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .song-stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .song-stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .song-stat-value {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        .song-chart-wrapper {
+            height: 300px;
+            position: relative;
+        }
+
+        .lyrics-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #e5e7eb;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .lyrics-credits {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .history-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .history-background {
+            color: #e5e7eb;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .history-milestones {
+            list-style: none;
+            padding: 0;
+        }
+
+        .history-milestones li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 12px;
+        }
+
+        .milestone-date {
+            color: #60a5fa;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .milestone-text {
+            color: #e5e7eb;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .credits-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .credits-section h4 {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .credits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .credits-list li {
+            padding: 6px 0;
+            color: #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .no-content {
+            color: #9ca3af;
+            text-align: center;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        .clickable-track {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clickable-track:hover {
+            background: rgba(96, 165, 250, 0.1) !important;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.5rem;
@@ -568,6 +801,71 @@
             <div id="album-view" style="display: none;"></div>
             <div id="year-view" style="display: none;"></div>
 
+            <!-- Song Detail View -->
+            <div id="song-detail-view" class="song-detail-container" style="display: none;">
+                <div class="song-detail-header">
+                    <button id="songBackBtn" class="song-back-btn">Back to Dashboard</button>
+                    <div class="song-title-section">
+                        <h2 id="songDetailTitle">Song Title</h2>
+                        <a id="songDetailSpotify" href="#" target="_blank" class="song-spotify-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                            Play on Spotify
+                        </a>
+                    </div>
+                </div>
+
+                <div class="song-tabs">
+                    <button class="song-tab-btn active" data-tab="streams">Streams History</button>
+                    <button class="song-tab-btn" data-tab="lyrics">Lyrics</button>
+                    <button class="song-tab-btn" data-tab="history">History</button>
+                    <button class="song-tab-btn" data-tab="credits">Credits</button>
+                </div>
+
+                <div class="song-tab-content">
+                    <div id="songTabStreams" class="song-tab-panel active">
+                        <div class="song-streams-stats">
+                            <div class="song-stat-item">
+                                <span class="song-stat-label">Period Total</span>
+                                <span id="songPeriodTotal" class="song-stat-value">-</span>
+                            </div>
+                            <div class="song-stat-item">
+                                <span class="song-stat-label">Daily Average</span>
+                                <span id="songDailyAvg" class="song-stat-value">-</span>
+                            </div>
+                            <div class="song-stat-item">
+                                <span class="song-stat-label">Best Day</span>
+                                <span id="songBestDay" class="song-stat-value">-</span>
+                            </div>
+                            <div class="song-stat-item">
+                                <span class="song-stat-label">Days Tracked</span>
+                                <span id="songDaysTracked" class="song-stat-value">-</span>
+                            </div>
+                        </div>
+                        <div class="song-chart-wrapper">
+                            <canvas id="songStreamsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="songTabLyrics" class="song-tab-panel" style="display: none;">
+                        <div id="songLyricsContent" class="lyrics-container">
+                            <p class="no-content">Lyrics not available yet.</p>
+                        </div>
+                    </div>
+
+                    <div id="songTabHistory" class="song-tab-panel" style="display: none;">
+                        <div id="songHistoryContent" class="history-container">
+                            <p class="no-content">History not available yet.</p>
+                        </div>
+                    </div>
+
+                    <div id="songTabCredits" class="song-tab-panel" style="display: none;">
+                        <div id="songCreditsContent" class="credits-grid">
+                            <p class="no-content">Credits not available yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="contact-developer" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.15); text-align: center; color: rgba(229, 231, 235, 0.7); font-size: 0.85rem;">
                 <div style="margin-bottom: 16px; padding: 16px 24px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; display: inline-block;">
                     <div style="font-size: 1rem; font-weight: 600; color: #f3f4f6; margin-bottom: 8px;">💖 Support this project</div>
@@ -606,6 +904,8 @@
                 this.memberSortColumn = 'streams'; // Default sort for member tracks
                 this.memberSortDirection = 'desc';
                 this.showMemberListeners = false; // Toggle for monthly listeners on member chart
+                this.songMetadata = {}; // Song metadata (lyrics, history, credits)
+                this.currentSong = null; // Currently viewed song
                 // Map listener CSV names (case-insensitive) to member dataNames
                 this.listenerNameMap = {
                     'pablo': 'Pablo',
@@ -628,9 +928,11 @@
             async init() {
                 try {
                     await this.loadData();
+                    await this.loadSongMetadata();
                     this.setupEventListeners();
                     this.render();
                     this.showDashboard();
+                    this.handleHashChange(); // Check for song in URL on page load
                 } catch (error) {
                     console.error('Dashboard error:', error);
                     this.showError('Failed to load dashboard: ' + error.message);
@@ -700,6 +1002,20 @@
                 if (this.streamsData.length > 0) {
                     console.log('Sample stream data:', this.streamsData[0]);
                     console.log('Has spotify_url:', !!this.streamsData[0].spotify_url);
+                }
+            }
+
+            async loadSongMetadata() {
+                try {
+                    const response = await fetch('./song_metadata.json?t=' + Date.now());
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.songMetadata = data.songs || {};
+                        console.log('Song metadata loaded:', Object.keys(this.songMetadata).length, 'songs');
+                    }
+                } catch (error) {
+                    console.log('No song metadata file found or error loading:', error.message);
+                    this.songMetadata = {};
                 }
             }
 
@@ -889,6 +1205,25 @@
                     this.showMemberListeners = e.target.checked;
                     this.createMemberChart();
                 });
+
+                // Song detail back button
+                document.getElementById('songBackBtn').addEventListener('click', () => {
+                    this.closeSongDetail();
+                });
+
+                // Song detail tab switching
+                document.querySelectorAll('.song-tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const tab = e.target.dataset.tab;
+                        document.querySelectorAll('.song-tab-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        document.querySelectorAll('.song-tab-panel').forEach(panel => panel.style.display = 'none');
+                        document.getElementById('songTab' + tab.charAt(0).toUpperCase() + tab.slice(1)).style.display = 'block';
+                    });
+                });
+
+                // Hash change listener for URL routing
+                window.addEventListener('hashchange', () => this.handleHashChange());
             }
 
             updateSortIcons() {
@@ -1416,7 +1751,7 @@
                     }
 
                     return `
-                        <tr>
+                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}')">
                             <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
                             <td style="padding: 8px 10px;">
                                 <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
@@ -1428,7 +1763,7 @@
                             <td style="padding: 8px 10px; text-align: right;">
                                 ${changeHtml}
                             </td>
-                            <td style="padding: 8px 10px; text-align: center;">
+                            <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
                                 ${playButton}
                             </td>
                         </tr>
@@ -2148,7 +2483,7 @@
                     }
 
                     return `
-                        <tr>
+                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}')">
                             <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
                             <td style="padding: 8px 10px;">
                                 <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
@@ -2163,7 +2498,7 @@
                             <td style="padding: 8px 10px; text-align: right;">
                                 ${changeHtml}
                             </td>
-                            <td style="padding: 8px 10px; text-align: center;">
+                            <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
                                 ${playButton}
                             </td>
                         </tr>
@@ -2191,6 +2526,285 @@
                 tbody.innerHTML = trackRows + totalRow;
             }
 
+            // Song Detail Methods
+            getHistoricalDailyStreams(songTitle) {
+                // Get all stream records for this song across dates
+                const songStreams = this.streamsData.filter(d => d.song_title === songTitle);
+
+                // Group by date
+                const byDate = {};
+                songStreams.forEach(d => {
+                    const dateKey = d.data_date ? d.data_date.substring(0, 8) : '';
+                    if (!dateKey) return;
+                    if (!byDate[dateKey] || d.total_streams > byDate[dateKey].total_streams) {
+                        byDate[dateKey] = d;
+                    }
+                });
+
+                const sortedDates = Object.keys(byDate).sort();
+                const dailyStreams = [];
+
+                for (let i = 1; i < sortedDates.length; i++) {
+                    const prevDate = sortedDates[i - 1];
+                    const currDate = sortedDates[i];
+                    const prevStreams = byDate[prevDate].total_streams;
+                    const currStreams = byDate[currDate].total_streams;
+                    const diff = currStreams - prevStreams;
+
+                    // Format date for display
+                    const year = currDate.substring(0, 4);
+                    const month = currDate.substring(4, 6);
+                    const day = currDate.substring(6, 8);
+                    const dateObj = new Date(`${year}-${month}-${day}`);
+                    const label = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                    dailyStreams.push({
+                        date: currDate,
+                        label: label,
+                        streams: diff,
+                        totalStreams: currStreams
+                    });
+                }
+
+                return dailyStreams;
+            }
+
+            openSongDetail(songTitle) {
+                this.currentSong = songTitle;
+                window.location.hash = `song/${encodeURIComponent(songTitle)}`;
+
+                // Hide dashboard content, show song detail
+                document.querySelector('.stats-grid').style.display = 'none';
+                document.querySelector('.filter-bar').style.display = 'none';
+                document.querySelector('.charts-row').style.display = 'none';
+                document.querySelector('.contact-developer').style.display = 'none';
+                document.querySelector('.last-updated').style.display = 'none';
+                document.getElementById('song-detail-view').style.display = 'block';
+
+                this.renderSongDetail();
+            }
+
+            closeSongDetail() {
+                this.currentSong = null;
+                window.location.hash = '';
+
+                // Show dashboard content, hide song detail
+                document.querySelector('.stats-grid').style.display = '';
+                document.querySelector('.filter-bar').style.display = '';
+                document.querySelector('.charts-row').style.display = '';
+                document.querySelector('.contact-developer').style.display = '';
+                document.querySelector('.last-updated').style.display = '';
+                document.getElementById('song-detail-view').style.display = 'none';
+
+                // Destroy song chart if exists
+                if (this.charts.songStreams) {
+                    this.charts.songStreams.destroy();
+                    this.charts.songStreams = null;
+                }
+            }
+
+            handleHashChange() {
+                const hash = window.location.hash;
+                if (hash.startsWith('#song/')) {
+                    const songTitle = decodeURIComponent(hash.replace('#song/', ''));
+                    if (songTitle && songTitle !== this.currentSong) {
+                        this.openSongDetail(songTitle);
+                    }
+                } else if (this.currentSong) {
+                    this.closeSongDetail();
+                }
+            }
+
+            renderSongDetail() {
+                if (!this.currentSong) return;
+
+                const songTitle = this.currentSong;
+
+                // Find song data
+                const latestStreams = this.getLatestStreams();
+                const songData = latestStreams.find(t => t.song_title === songTitle);
+                const metadata = this.songMetadata[songTitle] || {};
+
+                // Update header
+                document.getElementById('songDetailTitle').textContent = songTitle;
+
+                // Get Spotify URL
+                let spotifyUrl = songData?.spotify_url || '';
+                if (!spotifyUrl) {
+                    const meta = this.tracksMetadata.find(m =>
+                        m.title.toLowerCase() === songTitle.toLowerCase() ||
+                        songTitle.toLowerCase().includes(m.title.toLowerCase())
+                    );
+                    if (meta && meta.spotify_url) {
+                        spotifyUrl = meta.spotify_url;
+                    }
+                }
+
+                const spotifyBtn = document.getElementById('songDetailSpotify');
+                if (spotifyUrl) {
+                    spotifyBtn.href = spotifyUrl;
+                    spotifyBtn.style.display = 'inline-flex';
+                } else {
+                    spotifyBtn.style.display = 'none';
+                }
+
+                // Render all tabs
+                this.renderSongStreamsChart();
+                this.renderSongLyrics(metadata);
+                this.renderSongHistory(metadata);
+                this.renderSongCredits(metadata);
+
+                // Reset to streams tab
+                document.querySelectorAll('.song-tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.song-tab-btn[data-tab="streams"]').classList.add('active');
+                document.querySelectorAll('.song-tab-panel').forEach(panel => panel.style.display = 'none');
+                document.getElementById('songTabStreams').style.display = 'block';
+            }
+
+            renderSongStreamsChart() {
+                const dailyStreams = this.getHistoricalDailyStreams(this.currentSong);
+
+                // Calculate stats
+                const periodTotal = dailyStreams.reduce((sum, d) => sum + d.streams, 0);
+                const daysTracked = dailyStreams.length;
+                const dailyAvg = daysTracked > 0 ? Math.round(periodTotal / daysTracked) : 0;
+                const bestDay = dailyStreams.reduce((best, d) => d.streams > best.streams ? d : best, { streams: 0, label: '-' });
+
+                // Update stats
+                document.getElementById('songPeriodTotal').textContent = periodTotal >= 0 ? '+' + periodTotal.toLocaleString() : periodTotal.toLocaleString();
+                document.getElementById('songDailyAvg').textContent = dailyAvg >= 0 ? '+' + dailyAvg.toLocaleString() : dailyAvg.toLocaleString();
+                document.getElementById('songBestDay').textContent = bestDay.streams > 0 ? `+${bestDay.streams.toLocaleString()} (${bestDay.label})` : '-';
+                document.getElementById('songDaysTracked').textContent = daysTracked.toString();
+
+                // Create chart
+                const ctx = document.getElementById('songStreamsChart').getContext('2d');
+
+                if (this.charts.songStreams) {
+                    this.charts.songStreams.destroy();
+                }
+
+                const colors = dailyStreams.map(d => d.streams >= 0 ? 'rgba(52, 211, 153, 0.8)' : 'rgba(248, 113, 113, 0.8)');
+                const borderColors = dailyStreams.map(d => d.streams >= 0 ? '#34d399' : '#f87171');
+
+                this.charts.songStreams = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: dailyStreams.map(d => d.label),
+                        datasets: [{
+                            label: 'Daily Streams Added',
+                            data: dailyStreams.map(d => d.streams),
+                            backgroundColor: colors,
+                            borderColor: borderColors,
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#9ca3af', maxRotation: 45 }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => this.formatNumber(v)
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => {
+                                        const value = ctx.parsed.y;
+                                        return `${value >= 0 ? '+' : ''}${value.toLocaleString()} streams`;
+                                    }
+                                }
+                            },
+                            datalabels: { display: false }
+                        }
+                    }
+                });
+            }
+
+            renderSongLyrics(metadata) {
+                const container = document.getElementById('songLyricsContent');
+
+                if (metadata.lyrics && metadata.lyrics.text) {
+                    let html = `<div class="lyrics-text">${metadata.lyrics.text}</div>`;
+                    if (metadata.lyrics.credits) {
+                        html += `<div class="lyrics-credits">${metadata.lyrics.credits}</div>`;
+                    }
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<p class="no-content">Lyrics not available yet.</p>';
+                }
+            }
+
+            renderSongHistory(metadata) {
+                const container = document.getElementById('songHistoryContent');
+
+                if (metadata.history && (metadata.history.background || (metadata.history.milestones && metadata.history.milestones.length > 0))) {
+                    let html = '';
+
+                    if (metadata.history.background) {
+                        html += `<div class="history-background">${metadata.history.background}</div>`;
+                    }
+
+                    if (metadata.history.milestones && metadata.history.milestones.length > 0) {
+                        html += '<ul class="history-milestones">';
+                        metadata.history.milestones.forEach(m => {
+                            html += `<li><span class="milestone-date">${m.date || ''}</span><span class="milestone-text">${m.text || m}</span></li>`;
+                        });
+                        html += '</ul>';
+                    }
+
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<p class="no-content">History not available yet.</p>';
+                }
+            }
+
+            renderSongCredits(metadata) {
+                const container = document.getElementById('songCreditsContent');
+
+                if (metadata.credits) {
+                    const sections = [];
+
+                    if (metadata.credits.writers && metadata.credits.writers.length > 0) {
+                        sections.push({ title: 'Writers', items: metadata.credits.writers });
+                    }
+                    if (metadata.credits.producers && metadata.credits.producers.length > 0) {
+                        sections.push({ title: 'Producers', items: metadata.credits.producers });
+                    }
+                    if (metadata.credits.musicians && metadata.credits.musicians.length > 0) {
+                        sections.push({ title: 'Musicians', items: metadata.credits.musicians });
+                    }
+                    if (metadata.credits.engineers && metadata.credits.engineers.length > 0) {
+                        sections.push({ title: 'Engineers', items: metadata.credits.engineers });
+                    }
+
+                    if (sections.length > 0) {
+                        container.innerHTML = sections.map(section => `
+                            <div class="credits-section">
+                                <h4>${section.title}</h4>
+                                <ul class="credits-list">
+                                    ${section.items.map(item => `<li>${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('');
+                    } else {
+                        container.innerHTML = '<p class="no-content">Credits not available yet.</p>';
+                    }
+                } else {
+                    container.innerHTML = '<p class="no-content">Credits not available yet.</p>';
+                }
+            }
+
             showDashboard() {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
@@ -2203,8 +2817,8 @@
             }
         }
 
-        // Initialize dashboard
-        new SB19Dashboard();
+        // Initialize dashboard (store globally for onclick access)
+        window.dashboard = new SB19Dashboard();
     </script>
 </body>
 </html>

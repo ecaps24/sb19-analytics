@@ -1,0 +1,55 @@
+{
+  "songs": {
+    "Gento": {
+      "title": "Gento",
+      "lyrics": {
+        "text": "",
+        "credits": ""
+      },
+      "history": {
+        "background": "",
+        "milestones": []
+      },
+      "credits": {
+        "writers": [],
+        "producers": [],
+        "musicians": [],
+        "engineers": []
+      }
+    },
+    "MAPA": {
+      "title": "MAPA",
+      "lyrics": {
+        "text": "",
+        "credits": ""
+      },
+      "history": {
+        "background": "",
+        "milestones": []
+      },
+      "credits": {
+        "writers": [],
+        "producers": [],
+        "musicians": [],
+        "engineers": []
+      }
+    },
+    "Bazinga": {
+      "title": "Bazinga",
+      "lyrics": {
+        "text": "",
+        "credits": ""
+      },
+      "history": {
+        "background": "",
+        "milestones": []
+      },
+      "credits": {
+        "writers": [],
+        "producers": [],
+        "musicians": [],
+        "engineers": []
+      }
+    }
+  }
+}
