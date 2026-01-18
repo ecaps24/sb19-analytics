@@ -1831,13 +1831,17 @@
                 }];
 
                 // Add listeners dataset if toggle is on
-                let listenersData = [];
+                let listenersMap = {};
                 if (this.showMemberListeners) {
                     const listeners = this.getLatestMemberListeners(dataNames);
-                    listenersData = dataNames.map(name => listeners[name] || null);
+                    // Store listeners for tooltip/datalabel display
+                    dataNames.forEach((name, i) => {
+                        listenersMap[labels[i]] = listeners[name] || null;
+                    });
+                    // Use streams data for positioning (dots at end of bars)
                     datasets.push({
                         label: 'Monthly Listeners',
-                        data: listenersData,
+                        data: data.slice(), // Same position as bars
                         type: 'line',
                         borderColor: '#a78bfa',
                         backgroundColor: '#a78bfa',
@@ -1847,19 +1851,24 @@
                         pointRadius: 6,
                         pointHoverRadius: 8,
                         showLine: false,
-                        xAxisID: 'x2',
+                        xAxisID: 'x',
                         order: 1,
                         datalabels: {
                             display: true,
-                            anchor: 'start',
-                            align: 'left',
+                            anchor: 'end',
+                            align: 'right',
                             color: '#a78bfa',
                             font: { size: 10, weight: '600' },
-                            formatter: (value) => value ? this.formatNumber(value) : '',
-                            padding: { right: 6 }
+                            formatter: (value, ctx) => {
+                                const memberName = labels[ctx.dataIndex];
+                                const listenerVal = listenersMap[memberName];
+                                return listenerVal ? this.formatNumber(listenerVal) : '';
+                            },
+                            padding: { left: 45 }
                         }
                     });
                 }
+                this.listenersMap = listenersMap;
 
                 // Build scales
                 const scales = {
@@ -1879,13 +1888,6 @@
                         }
                     }
                 };
-
-                // Add hidden secondary x-axis for listeners if toggle is on
-                if (this.showMemberListeners) {
-                    scales.x2 = {
-                        display: false
-                    };
-                }
 
                 this.charts.member = new Chart(ctx, {
                     type: 'bar',
@@ -1930,7 +1932,9 @@
                                 callbacks: {
                                     label: (ctx) => {
                                         if (ctx.dataset.label === 'Monthly Listeners') {
-                                            return `${ctx.parsed.x.toLocaleString()} monthly listeners`;
+                                            const memberName = labels[ctx.dataIndex];
+                                            const listenerVal = self.listenersMap[memberName];
+                                            return listenerVal ? `${listenerVal.toLocaleString()} monthly listeners` : '';
                                         }
                                         return `${ctx.parsed.x.toLocaleString()} streams (click to filter)`;
                                     }
