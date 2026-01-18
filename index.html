@@ -309,6 +309,41 @@
             font-size: 0.85rem;
         }
 
+        .sortable-header:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .sort-icon {
+            font-size: 0.7rem;
+            margin-left: 4px;
+            opacity: 0.5;
+        }
+
+        .sort-icon.active {
+            opacity: 1;
+            color: #60a5fa;
+        }
+
+        .rank-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .rank-change.up {
+            color: #34d399;
+        }
+
+        .rank-change.down {
+            color: #f87171;
+        }
+
+        .rank-change.same {
+            color: #9ca3af;
+        }
+
         .top-tracks-table {
             background: rgba(17, 24, 39, 0.7);
             border-radius: 12px;
@@ -460,9 +495,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 35px; text-align: center;">#</th>
-                                        <th style="text-align: left;">Track</th>
-                                        <th style="width: 110px; text-align: right; white-space: nowrap;">Total Streams</th>
-                                        <th id="change-header" style="width: 80px; text-align: right; white-space: nowrap;">Change</th>
+                                        <th data-sort="title" style="text-align: left; cursor: pointer;" class="sortable-header">Track <span class="sort-icon"></span></th>
+                                        <th data-sort="streams" style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header">Total Streams <span class="sort-icon"></span></th>
+                                        <th id="change-header" data-sort="change" style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header">Change <span class="sort-icon"></span></th>
                                         <th style="width: 70px; text-align: center;">Spotify</th>
                                     </tr>
                                 </thead>
@@ -540,6 +575,8 @@
                 this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
                 this.memberFilter = null; // For filtering tracks by member
+                this.sortColumn = 'streams'; // Default sort by streams
+                this.sortDirection = 'desc'; // Default descending
                 // Member configuration with display names and Spotify URLs
                 this.members = [
                     { name: 'Pablo', dataName: 'Pablo', color: 'rgba(251, 146, 60, 0.8)', borderColor: '#fb923c', spotifyUrl: 'https://open.spotify.com/artist/4bavIt9eD9RR7V6BQCW6Me' },
@@ -779,6 +816,33 @@
 
                     this.populateMemberTracks();
                 });
+
+                // Sortable column headers
+                document.querySelectorAll('#topTracksTable .sortable-header').forEach(header => {
+                    header.addEventListener('click', (e) => {
+                        const sortKey = header.dataset.sort;
+                        if (this.sortColumn === sortKey) {
+                            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            this.sortColumn = sortKey;
+                            this.sortDirection = 'desc';
+                        }
+                        this.updateSortIcons();
+                        this.populateTopTracks();
+                    });
+                });
+            }
+
+            updateSortIcons() {
+                document.querySelectorAll('#topTracksTable .sort-icon').forEach(icon => {
+                    icon.textContent = '';
+                    icon.classList.remove('active');
+                });
+                const activeHeader = document.querySelector(`#topTracksTable [data-sort="${this.sortColumn}"] .sort-icon`);
+                if (activeHeader) {
+                    activeHeader.textContent = this.sortDirection === 'asc' ? '▲' : '▼';
+                    activeHeader.classList.add('active');
+                }
             }
 
             switchView(view) {
@@ -909,7 +973,62 @@
                     changes[track] = endStreams - startStreams;
                 });
 
-                return { changes, label };
+                return { changes, label, startDate, endDate };
+            }
+
+            getRankChanges() {
+                const streamsByDate = this.getStreamsByDate();
+                const allDates = Object.keys(streamsByDate).sort();
+
+                if (allDates.length < 2) return {};
+
+                let startDate, endDate;
+
+                if (this.rangePreset === 'last7') {
+                    const recentDates = allDates.slice(-7);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                } else if (this.rangePreset === 'last30') {
+                    const recentDates = allDates.slice(-30);
+                    startDate = recentDates[0];
+                    endDate = recentDates[recentDates.length - 1];
+                } else if (this.rangePreset === 'mtd') {
+                    const latestDate = allDates[allDates.length - 1];
+                    const year = latestDate.substring(0, 4);
+                    const month = latestDate.substring(4, 6);
+                    const startOfMonth = `${year}${month}01`;
+                    const mtdDates = allDates.filter(d => d >= startOfMonth);
+                    startDate = mtdDates[0];
+                    endDate = mtdDates[mtdDates.length - 1];
+                } else {
+                    startDate = allDates[0];
+                    endDate = allDates[allDates.length - 1];
+                }
+
+                const startData = streamsByDate[startDate] || {};
+                const endData = streamsByDate[endDate] || {};
+
+                // Get rankings for start and end dates
+                const startRanks = Object.entries(startData)
+                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                    .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
+
+                const endRanks = Object.entries(endData)
+                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                    .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
+
+                const rankChanges = {};
+                Object.keys(endRanks).forEach(track => {
+                    const currentRank = endRanks[track];
+                    const previousRank = startRanks[track];
+                    if (previousRank) {
+                        rankChanges[track] = previousRank - currentRank; // Positive means moved up
+                    } else {
+                        rankChanges[track] = null; // New entry
+                    }
+                });
+
+                return rankChanges;
             }
 
             render() {
@@ -1113,9 +1232,15 @@
                 const tbody = document.getElementById('top-tracks-body');
                 let latestStreams = this.getLatestStreams();
                 const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
+                const rankChanges = this.getRankChanges();
 
-                // Update column header
-                document.getElementById('change-header').textContent = changeLabel;
+                // Update column header with sort icon
+                const headerEl = document.getElementById('change-header');
+                const sortIcon = headerEl.querySelector('.sort-icon');
+                headerEl.childNodes[0].textContent = changeLabel + ' ';
+
+                // Update sort icons
+                this.updateSortIcons();
 
                 // Apply album filter if set
                 if (this.albumFilter) {
@@ -1131,6 +1256,21 @@
                         return album === this.albumFilter;
                     });
                 }
+
+                // Apply sorting
+                const sortMultiplier = this.sortDirection === 'asc' ? 1 : -1;
+                latestStreams.sort((a, b) => {
+                    if (this.sortColumn === 'title') {
+                        return sortMultiplier * a.song_title.localeCompare(b.song_title);
+                    } else if (this.sortColumn === 'streams') {
+                        return sortMultiplier * (a.total_streams - b.total_streams);
+                    } else if (this.sortColumn === 'change') {
+                        const changeA = periodChanges[a.song_title] || 0;
+                        const changeB = periodChanges[b.song_title] || 0;
+                        return sortMultiplier * (changeA - changeB);
+                    }
+                    return 0;
+                });
 
                 // Calculate totals
                 const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
@@ -1168,10 +1308,31 @@
                         ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
                         : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
 
-                    // Period change
+                    // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
-                    const changeColor = change > 0 ? '#34d399' : change < 0 ? '#f87171' : '#9ca3af';
-                    const changeText = change !== 0 ? `${change > 0 ? '+' : ''}${change.toLocaleString()}` : '-';
+                    const rankChange = rankChanges[track.song_title];
+
+                    let changeHtml = '';
+                    if (change !== 0 || rankChange) {
+                        const changeColor = change > 0 ? '#34d399' : change < 0 ? '#f87171' : '#9ca3af';
+                        const changeText = change !== 0 ? `${change > 0 ? '+' : ''}${change.toLocaleString()}` : '0';
+
+                        let rankHtml = '';
+                        if (rankChange !== null && rankChange !== 0) {
+                            const rankClass = rankChange > 0 ? 'up' : 'down';
+                            const arrow = rankChange > 0 ? '▲' : '▼';
+                            rankHtml = `<span class="rank-change ${rankClass}">${arrow}${Math.abs(rankChange)}</span>`;
+                        } else if (rankChange === 0) {
+                            rankHtml = `<span class="rank-change same">―</span>`;
+                        }
+
+                        changeHtml = `<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                            <span style="color: ${changeColor}; font-weight: 600;">${changeText}</span>
+                            ${rankHtml}
+                        </div>`;
+                    } else {
+                        changeHtml = `<span style="color: #9ca3af;">-</span>`;
+                    }
 
                     return `
                         <tr>
@@ -1183,8 +1344,8 @@
                             <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: #34d399;">
                                 ${track.total_streams.toLocaleString()}
                             </td>
-                            <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: ${changeColor};">
-                                ${changeText}
+                            <td style="padding: 8px 10px; text-align: right;">
+                                ${changeHtml}
                             </td>
                             <td style="padding: 8px 10px; text-align: center;">
                                 ${playButton}
