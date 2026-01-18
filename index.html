@@ -924,6 +924,7 @@
                 const filteredData = this.getFilteredListeners();
                 const sb19Data = filteredData.filter(d => d.artist_name === 'SB19');
                 const latestStreams = this.getLatestStreams();
+                const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
 
                 // Current listeners
                 const sortedSB19 = sb19Data.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
@@ -943,26 +944,45 @@
                 // Total tracks
                 document.getElementById('total-tracks').textContent = this.tracksMetadata.length;
 
-                // Total streams
+                // Total streams with period change
                 const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
+                const totalPeriodChange = latestStreams.reduce((sum, t) => sum + (periodChanges[t.song_title] || 0), 0);
                 document.getElementById('total-streams').textContent = totalStreams.toLocaleString();
-
-                // Top track
-                if (latestStreams.length > 0) {
-                    document.getElementById('top-track').textContent = latestStreams[0].song_title;
-                    document.getElementById('top-track-streams').textContent =
-                        latestStreams[0].total_streams.toLocaleString() + ' streams';
+                const streamsInfoEl = document.getElementById('streams-info');
+                if (totalPeriodChange !== 0) {
+                    streamsInfoEl.textContent = `${totalPeriodChange >= 0 ? '+' : ''}${totalPeriodChange.toLocaleString()} (${changeLabel.replace(' +/-', '')})`;
+                    streamsInfoEl.className = totalPeriodChange >= 0 ? 'growth' : 'growth negative';
+                } else {
+                    streamsInfoEl.textContent = 'All tracks combined';
+                    streamsInfoEl.className = 'growth';
                 }
 
-                // Period change
-                if (sb19Data.length >= 2) {
-                    const oldest = sb19Data.reduce((a, b) =>
-                        new Date(a.data_date) < new Date(b.data_date) ? a : b
-                    );
-                    const periodChange = latest.monthly_listeners - oldest.monthly_listeners;
-                    const periodChangeEl = document.getElementById('period-change');
-                    periodChangeEl.textContent = `${periodChange >= 0 ? '+' : ''}${periodChange.toLocaleString()}`;
-                    periodChangeEl.style.color = periodChange >= 0 ? '#34d399' : '#ef4444';
+                // Top track with period change
+                if (latestStreams.length > 0) {
+                    const topTrack = latestStreams[0];
+                    const topTrackChange = periodChanges[topTrack.song_title] || 0;
+                    document.getElementById('top-track').textContent = topTrack.song_title;
+                    const topTrackEl = document.getElementById('top-track-streams');
+                    if (topTrackChange !== 0) {
+                        topTrackEl.textContent = `${topTrack.total_streams.toLocaleString()} (${topTrackChange >= 0 ? '+' : ''}${topTrackChange.toLocaleString()})`;
+                        topTrackEl.className = topTrackChange >= 0 ? 'growth' : 'growth negative';
+                    } else {
+                        topTrackEl.textContent = topTrack.total_streams.toLocaleString() + ' streams';
+                        topTrackEl.className = 'growth';
+                    }
+                }
+
+                // Period change (streams)
+                const periodChangeEl = document.getElementById('period-change');
+                const periodInfoEl = document.getElementById('period-info');
+                if (totalPeriodChange !== 0) {
+                    periodChangeEl.textContent = `${totalPeriodChange >= 0 ? '+' : ''}${totalPeriodChange.toLocaleString()}`;
+                    periodChangeEl.style.color = totalPeriodChange >= 0 ? '#34d399' : '#ef4444';
+                    periodInfoEl.textContent = `Streams (${changeLabel.replace(' +/-', '')})`;
+                } else {
+                    periodChangeEl.textContent = '-';
+                    periodChangeEl.style.color = '#9ca3af';
+                    periodInfoEl.textContent = 'Selected range';
                 }
 
                 // Last updated
