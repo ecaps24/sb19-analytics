@@ -1392,7 +1392,7 @@
                 const streamsByDate = this.getStreamsByDate();
                 const allDates = Object.keys(streamsByDate).sort();
 
-                if (allDates.length < 2) return {};
+                if (allDates.length < 2) return { rankChanges: {}, previousRanks: {} };
 
                 let startDate, endDate;
 
@@ -2325,7 +2325,7 @@
                 });
 
                 const allDates = Object.keys(byDate).sort();
-                if (allDates.length < 2) return { changes: {}, rankChanges: {}, label: 'Change' };
+                if (allDates.length < 2) return { changes: {}, rankChanges: {}, previousRanks: {}, label: 'Change' };
 
                 let startDate, endDate, label;
 
