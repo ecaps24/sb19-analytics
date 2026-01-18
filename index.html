@@ -324,6 +324,20 @@
             color: #60a5fa;
         }
 
+        /* Sticky table footer for totals */
+        #topTracksTable tfoot,
+        #memberTracksTable tfoot {
+            position: sticky;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        #topTracksTable tfoot tr,
+        #memberTracksTable tfoot tr {
+            background: #1e293b !important;
+            border-top: 2px solid rgba(96, 165, 250, 0.3);
+        }
+
         .rank-change {
             display: inline-flex;
             align-items: center;
@@ -530,6 +544,81 @@
         .song-chart-wrapper {
             height: 300px;
             position: relative;
+        }
+
+        .song-history-table {
+            margin-top: 24px;
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .song-history-table .table-header {
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: rgba(17, 24, 39, 0.5);
+        }
+
+        .song-history-table .table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .song-history-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .song-history-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .song-history-table thead th {
+            padding: 10px 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #9ca3af;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+            text-align: left;
+        }
+
+        .song-history-table thead th:not(:first-child) {
+            text-align: right;
+        }
+
+        .song-history-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .song-history-table tbody tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .song-history-table tbody td {
+            padding: 10px 16px;
+            font-size: 0.875rem;
+            color: #e5e7eb;
+        }
+
+        .song-history-table tbody td:not(:first-child) {
+            text-align: right;
+        }
+
+        .song-history-table .positive {
+            color: #34d399;
+        }
+
+        .song-history-table .negative {
+            color: #f87171;
         }
 
         .lyrics-container {
@@ -754,6 +843,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="top-tracks-body"></tbody>
+                                <tfoot id="top-tracks-foot"></tfoot>
                             </table>
                         </div>
                     </div>
@@ -791,6 +881,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="member-tracks-body"></tbody>
+                                <tfoot id="member-tracks-foot"></tfoot>
                             </table>
                         </div>
                     </div>
@@ -843,6 +934,22 @@
                         </div>
                         <div class="song-chart-wrapper">
                             <canvas id="songStreamsChart"></canvas>
+                        </div>
+                        <div class="song-history-table">
+                            <div class="table-header">Historical Data</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Daily Change</th>
+                                            <th>Total Streams</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="songHistoricalTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -1775,12 +1882,13 @@
                     `;
                 }).join('');
 
-                // Add total row
+                // Add total row to tfoot (sticky)
+                const tfoot = document.getElementById('top-tracks-foot');
                 const totalChangeColor = totalPeriodChange > 0 ? '#34d399' : totalPeriodChange < 0 ? '#f87171' : '#9ca3af';
                 const totalChangeText = totalPeriodChange !== 0 ? `${totalPeriodChange > 0 ? '+' : ''}${totalPeriodChange.toLocaleString()}` : '-';
 
                 const totalRow = `
-                    <tr style="background: rgba(96, 165, 250, 0.15); border-top: 2px solid rgba(96, 165, 250, 0.3);">
+                    <tr style="background: rgba(96, 165, 250, 0.15);">
                         <td style="padding: 10px 10px; text-align: center; font-weight: 700; color: #60a5fa;"></td>
                         <td style="padding: 10px 10px; font-weight: 700; color: #60a5fa;">TOTAL (${latestStreams.length} tracks)</td>
                         <td style="padding: 10px 10px; text-align: right; font-weight: 700; color: #34d399;">
@@ -1793,7 +1901,8 @@
                     </tr>
                 `;
 
-                tbody.innerHTML = trackRows + totalRow;
+                tbody.innerHTML = trackRows;
+                tfoot.innerHTML = totalRow;
             }
 
             renderAlbumView() {
@@ -2518,12 +2627,13 @@
                     `;
                 }).join('');
 
-                // Add total row
+                // Add total row to tfoot (sticky)
+                const tfoot = document.getElementById('member-tracks-foot');
                 const totalChangeColor = totalPeriodChange > 0 ? '#34d399' : totalPeriodChange < 0 ? '#f87171' : '#9ca3af';
                 const totalChangeText = totalPeriodChange !== 0 ? `${totalPeriodChange > 0 ? '+' : ''}${totalPeriodChange.toLocaleString()}` : '-';
 
                 const totalRow = `
-                    <tr style="background: rgba(96, 165, 250, 0.15); border-top: 2px solid rgba(96, 165, 250, 0.3);">
+                    <tr style="background: rgba(96, 165, 250, 0.15);">
                         <td style="padding: 10px 10px; text-align: center; font-weight: 700; color: #60a5fa;"></td>
                         <td style="padding: 10px 10px; font-weight: 700; color: #60a5fa;">TOTAL (${allTracks.length} tracks)</td>
                         <td style="padding: 10px 10px; text-align: right; font-weight: 700; color: #34d399;">
@@ -2536,7 +2646,8 @@
                     </tr>
                 `;
 
-                tbody.innerHTML = trackRows + totalRow;
+                tbody.innerHTML = trackRows;
+                tfoot.innerHTML = totalRow;
             }
 
             // Song Detail Methods
@@ -2742,6 +2853,21 @@
                         }
                     }
                 });
+
+                // Render historical data table
+                const tableBody = document.getElementById('songHistoricalTableBody');
+                const reversedStreams = [...dailyStreams].reverse(); // Most recent first
+                tableBody.innerHTML = reversedStreams.map(d => {
+                    const changeClass = d.streams >= 0 ? 'positive' : 'negative';
+                    const changePrefix = d.streams >= 0 ? '+' : '';
+                    return `
+                        <tr>
+                            <td>${d.label}</td>
+                            <td class="${changeClass}">${changePrefix}${d.streams.toLocaleString()}</td>
+                            <td>${d.totalStreams.toLocaleString()}</td>
+                        </tr>
+                    `;
+                }).join('');
             }
 
             renderSongLyrics(metadata) {
