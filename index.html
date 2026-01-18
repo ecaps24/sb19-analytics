@@ -1729,8 +1729,8 @@
 
                     // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
-                    const rankChange = rankChanges[track.song_title];
-                    const prevRank = previousRanks[track.song_title];
+                    const rankChange = rankChanges ? rankChanges[track.song_title] : null;
+                    const prevRank = previousRanks ? previousRanks[track.song_title] : null;
 
                     let changeHtml = '';
                     if (change !== 0 || rankChange) {
@@ -2466,8 +2466,8 @@
 
                     // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
-                    const rankChange = rankChanges[track.song_title];
-                    const prevRank = previousRanks[track.song_title];
+                    const rankChange = rankChanges ? rankChanges[track.song_title] : null;
+                    const prevRank = previousRanks ? previousRanks[track.song_title] : null;
 
                     let changeHtml = '';
                     if (change !== 0 || rankChange) {
