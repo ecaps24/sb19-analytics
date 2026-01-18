@@ -529,7 +529,13 @@
                 <!-- Right Column: Member Stats Chart + Member Tracks -->
                 <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
                     <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="chart-title">Solo Streams by Member</div>
+                        <div class="chart-title" style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                            <span>Solo Streams by Member</span>
+                            <label style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
+                                <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
+                                <span>Show Listeners</span>
+                            </label>
+                        </div>
                         <div class="chart-wrapper" style="height: 250px;">
                             <canvas id="memberChart"></canvas>
                         </div>
@@ -599,6 +605,15 @@
                 this.sortDirection = 'desc'; // Default descending
                 this.memberSortColumn = 'streams'; // Default sort for member tracks
                 this.memberSortDirection = 'desc';
+                this.showMemberListeners = false; // Toggle for monthly listeners on member chart
+                // Map listener CSV names (case-insensitive) to member dataNames
+                this.listenerNameMap = {
+                    'pablo': 'Pablo',
+                    'josh cullen': 'Josh Cullen',
+                    'stell': 'STELL',
+                    'felip': 'felip',
+                    'justin': 'Justin'
+                };
                 // Member configuration with display names and Spotify URLs
                 this.members = [
                     { name: 'Pablo', dataName: 'Pablo', color: 'rgba(251, 146, 60, 0.8)', borderColor: '#fb923c', spotifyUrl: 'https://open.spotify.com/artist/4bavIt9eD9RR7V6BQCW6Me' },
@@ -867,6 +882,12 @@
                         this.updateSortIcons();
                         this.populateMemberTracks();
                     });
+                });
+
+                // Toggle monthly listeners on member chart
+                document.getElementById('showListenersToggle').addEventListener('change', (e) => {
+                    this.showMemberListeners = e.target.checked;
+                    this.createMemberChart();
                 });
             }
 
@@ -1386,7 +1407,7 @@
                             rankHtml = `<span class="rank-change same">―</span>`;
                         }
 
-                        changeHtml = `<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                        changeHtml = `<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; gap: 6px;">
                             <span style="color: ${changeColor}; font-weight: 600;">${changeText}</span>
                             ${rankHtml}
                         </div>`;
@@ -1742,6 +1763,32 @@
                 return memberData.sort((a, b) => b.totalStreams - a.totalStreams);
             }
 
+            getLatestMemberListeners(memberDataNames) {
+                // Get the latest monthly listeners for each member
+                const listeners = {};
+
+                memberDataNames.forEach(dataName => {
+                    // Find matching listener entries (case-insensitive)
+                    const matchingEntries = this.listenersData.filter(d => {
+                        const listenerName = d.artist_name.toLowerCase();
+                        const mappedName = this.listenerNameMap[listenerName];
+                        return mappedName === dataName;
+                    });
+
+                    if (matchingEntries.length > 0) {
+                        // Get the latest entry by timestamp
+                        const latest = matchingEntries.reduce((a, b) =>
+                            a.timestamp > b.timestamp ? a : b
+                        );
+                        listeners[dataName] = latest.monthly_listeners;
+                    } else {
+                        listeners[dataName] = null;
+                    }
+                });
+
+                return listeners;
+            }
+
             createMemberChart() {
                 const ctx = document.getElementById('memberChart').getContext('2d');
                 const memberData = this.getMemberStreamsData();
@@ -1753,6 +1800,7 @@
                 const labels = memberData.map(m => m.name);
                 const data = memberData.map(m => m.totalStreams);
                 const colors = memberData.map(m => m.color);
+                const dataNames = memberData.map(m => m.dataName);
 
                 if (this.charts.member) {
                     this.charts.member.destroy();
@@ -1771,16 +1819,96 @@
                     );
                 };
 
+                // Build datasets array
+                const datasets = [{
+                    label: 'Streams',
+                    data: data,
+                    backgroundColor: getBackgroundColors(),
+                    borderRadius: 6,
+                    hoverBackgroundColor: colors.map(c => c.replace('0.8', '1')),
+                    xAxisID: 'x',
+                    order: 2
+                }];
+
+                // Add listeners dataset if toggle is on
+                let listenersData = [];
+                if (this.showMemberListeners) {
+                    const listeners = this.getLatestMemberListeners(dataNames);
+                    listenersData = dataNames.map(name => listeners[name] || null);
+                    datasets.push({
+                        label: 'Monthly Listeners',
+                        data: listenersData,
+                        type: 'line',
+                        borderColor: '#a78bfa',
+                        backgroundColor: '#a78bfa',
+                        pointBackgroundColor: colors,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        showLine: false,
+                        xAxisID: 'x2',
+                        order: 1,
+                        datalabels: {
+                            display: true,
+                            anchor: 'start',
+                            align: 'left',
+                            color: '#a78bfa',
+                            font: { size: 10, weight: '600' },
+                            formatter: (value) => value ? this.formatNumber(value) : '',
+                            padding: { right: 6 }
+                        }
+                    });
+                }
+
+                // Build scales
+                const scales = {
+                    x: {
+                        position: 'bottom',
+                        grid: { color: 'rgba(255,255,255,0.06)' },
+                        ticks: {
+                            color: '#9ca3af',
+                            callback: (v) => this.formatNumber(v)
+                        },
+                        title: this.showMemberListeners ? {
+                            display: true,
+                            text: 'Streams',
+                            color: '#9ca3af',
+                            font: { size: 10 }
+                        } : { display: false }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: {
+                            color: '#e5e7eb',
+                            font: { size: 12, weight: '600' }
+                        }
+                    }
+                };
+
+                // Add secondary x-axis for listeners if toggle is on
+                if (this.showMemberListeners) {
+                    scales.x2 = {
+                        position: 'top',
+                        grid: { display: false },
+                        ticks: {
+                            color: '#a78bfa',
+                            callback: (v) => this.formatNumber(v)
+                        },
+                        title: {
+                            display: true,
+                            text: 'Monthly Listeners',
+                            color: '#a78bfa',
+                            font: { size: 10 }
+                        }
+                    };
+                }
+
                 this.charts.member = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: getBackgroundColors(),
-                            borderRadius: 6,
-                            hoverBackgroundColor: colors.map(c => c.replace('0.8', '1'))
-                        }]
+                        datasets: datasets
                     },
                     options: {
                         responsive: true,
@@ -1812,27 +1940,17 @@
                         onHover: (event, elements) => {
                             event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
                         },
-                        scales: {
-                            x: {
-                                grid: { color: 'rgba(255,255,255,0.06)' },
-                                ticks: {
-                                    color: '#9ca3af',
-                                    callback: (v) => this.formatNumber(v)
-                                }
-                            },
-                            y: {
-                                grid: { display: false },
-                                ticks: {
-                                    color: '#e5e7eb',
-                                    font: { size: 12, weight: '600' }
-                                }
-                            }
-                        },
+                        scales: scales,
                         plugins: {
-                            legend: { display: false },
+                            legend: { display: this.showMemberListeners, labels: { color: '#e5e7eb' } },
                             tooltip: {
                                 callbacks: {
-                                    label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
+                                    label: (ctx) => {
+                                        if (ctx.dataset.label === 'Monthly Listeners') {
+                                            return `${ctx.parsed.x.toLocaleString()} monthly listeners`;
+                                        }
+                                        return `${ctx.parsed.x.toLocaleString()} streams (click to filter)`;
+                                    }
                                 }
                             },
                             datalabels: {
@@ -1843,7 +1961,11 @@
                                     size: 11,
                                     weight: '600'
                                 },
-                                formatter: (value) => this.formatNumber(value),
+                                formatter: (value, ctx) => {
+                                    // Only show datalabels for bar (streams) dataset
+                                    if (ctx.dataset.label === 'Monthly Listeners') return '';
+                                    return this.formatNumber(value);
+                                },
                                 padding: { left: 6 }
                             }
                         }
@@ -2023,7 +2145,7 @@
                             rankHtml = `<span class="rank-change same">―</span>`;
                         }
 
-                        changeHtml = `<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                        changeHtml = `<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; gap: 6px;">
                             <span style="color: ${changeColor}; font-weight: 600;">${changeText}</span>
                             ${rankHtml}
                         </div>`;
