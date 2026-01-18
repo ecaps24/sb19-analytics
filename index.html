@@ -1125,9 +1125,19 @@
                     albumGroups[album].totalStreams += track.total_streams;
                 });
 
-                // Sort albums by total streams
+                // Define main albums that should always appear first
+                const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+
+                // Sort albums with main albums at top
                 const sortedAlbums = Object.entries(albumGroups)
-                    .sort((a, b) => b[1].totalStreams - a[1].totalStreams);
+                    .sort((a, b) => {
+                        const aIsMain = mainAlbums.indexOf(a[0]);
+                        const bIsMain = mainAlbums.indexOf(b[0]);
+                        if (aIsMain !== -1 && bIsMain !== -1) return aIsMain - bIsMain;
+                        if (aIsMain !== -1) return -1;
+                        if (bIsMain !== -1) return 1;
+                        return b[1].totalStreams - a[1].totalStreams;
+                    });
 
                 container.innerHTML = `
                     <div class="tracks-grid" style="padding: 16px;">
@@ -1225,8 +1235,25 @@
                     albumStreams[album] = (albumStreams[album] || 0) + track.total_streams;
                 });
 
+                // Define main albums that should always appear first
+                const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+
                 const sortedAlbums = Object.entries(albumStreams)
-                    .sort((a, b) => b[1] - a[1])
+                    .sort((a, b) => {
+                        const aIsMain = mainAlbums.indexOf(a[0]);
+                        const bIsMain = mainAlbums.indexOf(b[0]);
+
+                        // If both are main albums, sort by their defined order
+                        if (aIsMain !== -1 && bIsMain !== -1) {
+                            return aIsMain - bIsMain;
+                        }
+                        // If only a is a main album, it comes first
+                        if (aIsMain !== -1) return -1;
+                        // If only b is a main album, it comes first
+                        if (bIsMain !== -1) return 1;
+                        // Otherwise sort by streams
+                        return b[1] - a[1];
+                    })
                     .slice(0, 8);
 
                 const colors = [
