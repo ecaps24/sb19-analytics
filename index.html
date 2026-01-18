@@ -1869,13 +1869,7 @@
                         ticks: {
                             color: '#9ca3af',
                             callback: (v) => this.formatNumber(v)
-                        },
-                        title: this.showMemberListeners ? {
-                            display: true,
-                            text: 'Streams',
-                            color: '#9ca3af',
-                            font: { size: 10 }
-                        } : { display: false }
+                        }
                     },
                     y: {
                         grid: { display: false },
@@ -1886,21 +1880,10 @@
                     }
                 };
 
-                // Add secondary x-axis for listeners if toggle is on
+                // Add hidden secondary x-axis for listeners if toggle is on
                 if (this.showMemberListeners) {
                     scales.x2 = {
-                        position: 'top',
-                        grid: { display: false },
-                        ticks: {
-                            color: '#a78bfa',
-                            callback: (v) => this.formatNumber(v)
-                        },
-                        title: {
-                            display: true,
-                            text: 'Monthly Listeners',
-                            color: '#a78bfa',
-                            font: { size: 10 }
-                        }
+                        display: false
                     };
                 }
 
@@ -1942,7 +1925,7 @@
                         },
                         scales: scales,
                         plugins: {
-                            legend: { display: this.showMemberListeners, labels: { color: '#e5e7eb' } },
+                            legend: { display: false },
                             tooltip: {
                                 callbacks: {
                                     label: (ctx) => {
