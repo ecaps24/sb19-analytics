@@ -2032,9 +2032,10 @@
             createAlbumChart() {
                 const ctx = document.getElementById('albumChart').getContext('2d');
                 const latestStreams = this.getLatestStreams();
+                const { changes: periodChanges } = this.getPeriodChange();
 
                 // Group by album - use album from streams data directly
-                const albumStreams = {};
+                const albumData = {};
                 latestStreams.forEach(track => {
                     let album = track.album || '';
                     if (!album) {
@@ -2044,7 +2045,17 @@
                         );
                         album = meta ? meta.album : 'Other';
                     }
-                    albumStreams[album] = (albumStreams[album] || 0) + track.total_streams;
+                    if (!albumData[album]) {
+                        albumData[album] = { streams: 0, change: 0 };
+                    }
+                    albumData[album].streams += track.total_streams;
+                    albumData[album].change += periodChanges[track.song_title] || 0;
+                });
+
+                // Convert to entries format for compatibility
+                const albumStreams = {};
+                Object.entries(albumData).forEach(([album, data]) => {
+                    albumStreams[album] = data.streams;
                 });
 
                 // Define main albums that should always appear first (sorted by streams among themselves)
@@ -2085,6 +2096,7 @@
                 }
 
                 const albumLabels = sortedAlbums.map(a => a[0]);
+                const albumChanges = sortedAlbums.map(a => albumData[a[0]]?.change || 0);
                 const self = this;
 
                 // Store original colors for highlighting
@@ -2171,7 +2183,15 @@
                                     size: 11,
                                     weight: '600'
                                 },
-                                formatter: (value) => this.formatNumber(value),
+                                formatter: (value, context) => {
+                                    const change = albumChanges[context.dataIndex];
+                                    const formattedValue = this.formatNumber(value);
+                                    if (change !== 0) {
+                                        const sign = change >= 0 ? '+' : '';
+                                        return `${formattedValue} (${sign}${this.formatNumber(change)})`;
+                                    }
+                                    return formattedValue;
+                                },
                                 padding: { left: 6 }
                             }
                         }
@@ -2247,6 +2267,7 @@
             createMemberChart() {
                 const ctx = document.getElementById('memberChart').getContext('2d');
                 const memberData = this.getMemberStreamsData();
+                const { changes: memberPeriodChanges } = this.getMemberPeriodChange();
 
                 if (memberData.length === 0) {
                     return;
@@ -2256,6 +2277,11 @@
                 const data = memberData.map(m => m.totalStreams);
                 const colors = memberData.map(m => m.color);
                 const dataNames = memberData.map(m => m.dataName);
+
+                // Calculate total change per member
+                const memberChanges = memberData.map(m => {
+                    return m.tracks.reduce((sum, track) => sum + (memberPeriodChanges[track.song_title] || 0), 0);
+                });
 
                 if (this.charts.member) {
                     this.charts.member.destroy();
@@ -2413,7 +2439,13 @@
                                 formatter: (value, ctx) => {
                                     // Only show datalabels for bar (streams) dataset
                                     if (ctx.dataset.label === 'Monthly Listeners') return '';
-                                    return this.formatNumber(value);
+                                    const change = memberChanges[ctx.dataIndex];
+                                    const formattedValue = this.formatNumber(value);
+                                    if (change !== 0) {
+                                        const sign = change >= 0 ? '+' : '';
+                                        return `${formattedValue} (${sign}${this.formatNumber(change)})`;
+                                    }
+                                    return formattedValue;
                                 },
                                 padding: { left: 6 }
                             }
