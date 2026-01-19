@@ -2175,7 +2175,8 @@
                                     label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
                                 }
                             },
-                            datalabels: {
+                            datalabels: [{
+                                // Total streams
                                 anchor: 'end',
                                 align: 'right',
                                 color: '#e5e7eb',
@@ -2183,17 +2184,28 @@
                                     size: 11,
                                     weight: '600'
                                 },
+                                formatter: (value) => this.formatNumber(value),
+                                padding: { left: 6 }
+                            }, {
+                                // Change (smaller, green)
+                                anchor: 'end',
+                                align: 'right',
+                                color: '#34d399',
+                                font: {
+                                    size: 9,
+                                    weight: '600'
+                                },
                                 formatter: (value, context) => {
                                     const change = albumChanges[context.dataIndex];
-                                    const formattedValue = this.formatNumber(value);
                                     if (change !== 0) {
                                         const sign = change >= 0 ? '+' : '';
-                                        return `${formattedValue} (${sign}${this.formatNumber(change)})`;
+                                        return ` ${sign}${this.formatNumber(change)}`;
                                     }
-                                    return formattedValue;
+                                    return '';
                                 },
-                                padding: { left: 6 }
-                            }
+                                offset: 40,
+                                padding: { left: 0 }
+                            }]
                         }
                     },
                     plugins: [ChartDataLabels]
@@ -2428,7 +2440,8 @@
                                     }
                                 }
                             },
-                            datalabels: {
+                            datalabels: [{
+                                // Total streams
                                 anchor: 'end',
                                 align: 'right',
                                 color: '#e5e7eb',
@@ -2437,18 +2450,31 @@
                                     weight: '600'
                                 },
                                 formatter: (value, ctx) => {
-                                    // Only show datalabels for bar (streams) dataset
                                     if (ctx.dataset.label === 'Monthly Listeners') return '';
-                                    const change = memberChanges[ctx.dataIndex];
-                                    const formattedValue = this.formatNumber(value);
-                                    if (change !== 0) {
-                                        const sign = change >= 0 ? '+' : '';
-                                        return `${formattedValue} (${sign}${this.formatNumber(change)})`;
-                                    }
-                                    return formattedValue;
+                                    return this.formatNumber(value);
                                 },
                                 padding: { left: 6 }
-                            }
+                            }, {
+                                // Change (smaller, green)
+                                anchor: 'end',
+                                align: 'right',
+                                color: '#34d399',
+                                font: {
+                                    size: 9,
+                                    weight: '600'
+                                },
+                                formatter: (value, ctx) => {
+                                    if (ctx.dataset.label === 'Monthly Listeners') return '';
+                                    const change = memberChanges[ctx.dataIndex];
+                                    if (change !== 0) {
+                                        const sign = change >= 0 ? '+' : '';
+                                        return ` ${sign}${this.formatNumber(change)}`;
+                                    }
+                                    return '';
+                                },
+                                offset: 40,
+                                padding: { left: 0 }
+                            }]
                         }
                     },
                     plugins: [ChartDataLabels]
