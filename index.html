@@ -2175,37 +2175,39 @@
                                     label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
                                 }
                             },
-                            datalabels: [{
-                                // Total streams
-                                anchor: 'end',
-                                align: 'right',
-                                color: '#e5e7eb',
-                                font: {
-                                    size: 11,
-                                    weight: '600'
-                                },
-                                formatter: (value) => this.formatNumber(value),
-                                padding: { left: 6 }
-                            }, {
-                                // Change (smaller, green)
-                                anchor: 'end',
-                                align: 'right',
-                                color: '#34d399',
-                                font: {
-                                    size: 9,
-                                    weight: '600'
-                                },
-                                formatter: (value, context) => {
-                                    const change = albumChanges[context.dataIndex];
-                                    if (change !== 0) {
-                                        const sign = change >= 0 ? '+' : '';
-                                        return ` ${sign}${this.formatNumber(change)}`;
+                            datalabels: {
+                                labels: {
+                                    total: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: '#e5e7eb',
+                                        font: {
+                                            size: 11,
+                                            weight: '600'
+                                        },
+                                        formatter: (value) => this.formatNumber(value),
+                                        padding: { left: 6 }
+                                    },
+                                    change: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: '#34d399',
+                                        font: {
+                                            size: 9,
+                                            weight: '600'
+                                        },
+                                        formatter: (value, context) => {
+                                            const change = albumChanges[context.dataIndex];
+                                            if (change !== 0) {
+                                                const sign = change >= 0 ? '+' : '';
+                                                return `${sign}${this.formatNumber(change)}`;
+                                            }
+                                            return null;
+                                        },
+                                        offset: 45
                                     }
-                                    return '';
-                                },
-                                offset: 40,
-                                padding: { left: 0 }
-                            }]
+                                }
+                            }
                         }
                     },
                     plugins: [ChartDataLabels]
@@ -2440,41 +2442,43 @@
                                     }
                                 }
                             },
-                            datalabels: [{
-                                // Total streams
-                                anchor: 'end',
-                                align: 'right',
-                                color: '#e5e7eb',
-                                font: {
-                                    size: 11,
-                                    weight: '600'
-                                },
-                                formatter: (value, ctx) => {
-                                    if (ctx.dataset.label === 'Monthly Listeners') return '';
-                                    return this.formatNumber(value);
-                                },
-                                padding: { left: 6 }
-                            }, {
-                                // Change (smaller, green)
-                                anchor: 'end',
-                                align: 'right',
-                                color: '#34d399',
-                                font: {
-                                    size: 9,
-                                    weight: '600'
-                                },
-                                formatter: (value, ctx) => {
-                                    if (ctx.dataset.label === 'Monthly Listeners') return '';
-                                    const change = memberChanges[ctx.dataIndex];
-                                    if (change !== 0) {
-                                        const sign = change >= 0 ? '+' : '';
-                                        return ` ${sign}${this.formatNumber(change)}`;
+                            datalabels: {
+                                labels: {
+                                    total: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: '#e5e7eb',
+                                        font: {
+                                            size: 11,
+                                            weight: '600'
+                                        },
+                                        formatter: (value, ctx) => {
+                                            if (ctx.dataset.label === 'Monthly Listeners') return null;
+                                            return this.formatNumber(value);
+                                        },
+                                        padding: { left: 6 }
+                                    },
+                                    change: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: '#34d399',
+                                        font: {
+                                            size: 9,
+                                            weight: '600'
+                                        },
+                                        formatter: (value, ctx) => {
+                                            if (ctx.dataset.label === 'Monthly Listeners') return null;
+                                            const change = memberChanges[ctx.dataIndex];
+                                            if (change !== 0) {
+                                                const sign = change >= 0 ? '+' : '';
+                                                return `${sign}${this.formatNumber(change)}`;
+                                            }
+                                            return null;
+                                        },
+                                        offset: 45
                                     }
-                                    return '';
-                                },
-                                offset: 40,
-                                padding: { left: 0 }
-                            }]
+                                }
+                            }
                         }
                     },
                     plugins: [ChartDataLabels]
