@@ -1489,7 +1489,13 @@
                 allTracks.forEach(track => {
                     const endStreams = endData[track]?.total_streams || 0;
                     const startStreams = startData[track]?.total_streams || 0;
-                    changes[track] = endStreams - startStreams;
+                    // Only calculate change if track exists in BOTH periods
+                    // Otherwise change would equal total streams (misleading)
+                    if (startData[track] && endData[track]) {
+                        changes[track] = endStreams - startStreams;
+                    } else {
+                        changes[track] = 0; // No change data available
+                    }
                 });
 
                 return { changes, label, startDate, endDate };
@@ -2479,7 +2485,13 @@
                 allTracks.forEach(track => {
                     const endStreams = endData[track]?.total_streams || 0;
                     const startStreams = startData[track]?.total_streams || 0;
-                    changes[track] = endStreams - startStreams;
+                    // Only calculate change if track exists in BOTH periods
+                    // Otherwise change would equal total streams (misleading)
+                    if (startData[track] && endData[track]) {
+                        changes[track] = endStreams - startStreams;
+                    } else {
+                        changes[track] = 0; // No change data available
+                    }
                 });
 
                 // Calculate rank changes
