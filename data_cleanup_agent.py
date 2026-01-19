@@ -12,6 +12,7 @@ This agent validates and cleans up data used in the dashboard by:
 import csv
 import os
 import sys
+import subprocess
 from datetime import datetime, timedelta
 from collections import defaultdict
 from typing import Dict, List, Tuple, Optional, Any
@@ -587,7 +588,195 @@ class DataCleanupAgent:
 
         print(f"  Found {duplicate_count} duplicate entry issues")
 
-    def run_all_checks(self):
+    def check_zero_change_tracks(self) -> List[Dict]:
+        """Check for tracks with zero change between the last two days (likely OCR fallback)"""
+        print("\nChecking for zero-change tracks...")
+
+        zero_change_tracks = []
+
+        # Group streams by track (spotify_link as unique identifier)
+        tracks_by_link: Dict[str, List[Dict]] = defaultdict(list)
+
+        for row in self.streams_data:
+            spotify_link = row.get('spotify_link', '').strip()
+            if spotify_link:
+                tracks_by_link[spotify_link].append(row)
+
+        # Sort each track's history by timestamp
+        for link in tracks_by_link:
+            tracks_by_link[link].sort(key=lambda x: x.get('timestamp', ''))
+
+        # Get the two most recent dates in the data
+        all_dates = set()
+        for row in self.streams_data:
+            date_key = self._get_date_key(row.get('timestamp', ''))
+            if date_key:
+                all_dates.add(date_key)
+
+        if len(all_dates) < 2:
+            print("  Not enough dates to check for zero-change")
+            return zero_change_tracks
+
+        sorted_dates = sorted(all_dates, reverse=True)
+        latest_date = sorted_dates[0]
+        previous_date = sorted_dates[1]
+
+        print(f"  Comparing {latest_date} vs {previous_date}")
+
+        for link, history in tracks_by_link.items():
+            # Get entries for the two most recent dates
+            latest_entry = None
+            previous_entry = None
+
+            for row in history:
+                date_key = self._get_date_key(row.get('timestamp', ''))
+                if date_key == latest_date:
+                    latest_entry = row
+                elif date_key == previous_date:
+                    previous_entry = row
+
+            if latest_entry and previous_entry:
+                latest_streams = self._parse_int(latest_entry.get('streams', '0'))
+                previous_streams = self._parse_int(previous_entry.get('streams', '0'))
+
+                # Zero change indicates likely OCR fallback
+                if latest_streams == previous_streams and latest_streams > 0:
+                    song_title = latest_entry.get('song_title', '').strip()
+                    artist = latest_entry.get('artist', '').strip()
+
+                    zero_change_tracks.append({
+                        'song_title': song_title,
+                        'artist': artist,
+                        'spotify_link': link,
+                        'streams': latest_streams,
+                        'date': latest_date
+                    })
+
+                    self._add_issue(
+                        'zero_change',
+                        'warning',
+                        f"Zero change for '{song_title}' by {artist}: "
+                        f"{latest_streams:,} streams unchanged from {previous_date} to {latest_date}",
+                        {
+                            'song_title': song_title,
+                            'artist': artist,
+                            'spotify_link': link,
+                            'streams': latest_streams,
+                            'previous_date': previous_date,
+                            'latest_date': latest_date
+                        }
+                    )
+
+        print(f"  Found {len(zero_change_tracks)} zero-change tracks")
+        return zero_change_tracks
+
+    def get_zero_change_tracks(self) -> List[Dict]:
+        """Get list of zero-change tracks with full metadata for RPA"""
+        zero_change = self.check_zero_change_tracks()
+
+        # Enrich with track metadata from tracks.csv
+        tracks_meta = {}
+        for track in self.tracks_data:
+            link = track.get('Spotify Link', '').strip()
+            if link:
+                tracks_meta[link] = track
+
+        enriched_tracks = []
+        for item in zero_change:
+            link = item['spotify_link']
+            if link in tracks_meta:
+                meta = tracks_meta[link]
+                enriched_tracks.append({
+                    'song_title': meta.get('Song Title', item['song_title']),
+                    'artist': meta.get('Artist', item['artist']),
+                    'year': meta.get('Year', ''),
+                    'album': meta.get('Album/EP/Single', ''),
+                    'collaborating_artists': meta.get('Collaborating Artist(s)', ''),
+                    'spotify_link': link,
+                    'streams': item['streams']
+                })
+
+        return enriched_tracks
+
+    def fix_zero_change_tracks(self, dry_run: bool = False) -> Tuple[int, int]:
+        """
+        Fix zero-change tracks by running the RPA scraper.
+
+        Returns: (processed_count, failed_count)
+        """
+        zero_change = self.get_zero_change_tracks()
+
+        if not zero_change:
+            print("\nNo zero-change tracks to fix.")
+            return 0, 0
+
+        print(f"\nFound {len(zero_change)} zero-change tracks to fix")
+
+        if dry_run:
+            print("\n[DRY RUN] Would fix the following tracks:")
+            for track in zero_change:
+                print(f"  - {track['song_title']} by {track['artist']}")
+            return len(zero_change), 0
+
+        # Create temporary CSV for RPA
+        temp_csv_path = os.path.join(self.data_dir, 'temp_zero_change_tracks.csv')
+
+        with open(temp_csv_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Song Title', 'Artist', 'Year', 'Album/EP/Single',
+                           'Collaborating Artist(s)', 'Spotify Link', 'Streams'])
+            for track in zero_change:
+                writer.writerow([
+                    track['song_title'],
+                    track['artist'],
+                    track['year'],
+                    track['album'],
+                    track['collaborating_artists'],
+                    track['spotify_link'],
+                    ''
+                ])
+
+        print(f"Created temporary track list: {temp_csv_path}")
+        print(f"\nRunning RPA for {len(zero_change)} tracks...")
+        print("=" * 60)
+
+        # Run the RPA script
+        rpa_script = os.path.join(self.data_dir, 'sb19_tracks_streams_rpa.py')
+
+        if not os.path.exists(rpa_script):
+            print(f"ERROR: RPA script not found: {rpa_script}")
+            return 0, len(zero_change)
+
+        try:
+            result = subprocess.run(
+                [sys.executable, rpa_script, temp_csv_path, '--force'],
+                cwd=self.data_dir,
+                capture_output=False,  # Show output in real-time
+                text=True
+            )
+
+            if result.returncode == 0:
+                print("\n" + "=" * 60)
+                print(f"RPA completed successfully for {len(zero_change)} tracks")
+                return len(zero_change), 0
+            else:
+                print(f"\nRPA completed with errors (exit code: {result.returncode})")
+                return len(zero_change), 0  # RPA handles failures internally
+
+        except Exception as e:
+            print(f"Error running RPA: {e}")
+            return 0, len(zero_change)
+
+        finally:
+            # Clean up temp file
+            if os.path.exists(temp_csv_path):
+                try:
+                    os.remove(temp_csv_path)
+                    print(f"Cleaned up temporary file: {temp_csv_path}")
+                except Exception:
+                    pass
+
+    def run_all_checks(self, skip_zero_change: bool = False):
         """Run all data quality checks"""
         print("\n" + "="*60)
         print("SB19 Dashboard Data Cleanup Agent")
@@ -601,6 +790,9 @@ class DataCleanupAgent:
         self.check_stale_data()
         self.check_missing_data()
         self.check_duplicate_entries()
+
+        if not skip_zero_change:
+            self.check_zero_change_tracks()
 
         return self.issues
 
@@ -707,12 +899,41 @@ def main():
         action='store_true',
         help='Only output the final report summary'
     )
+    parser.add_argument(
+        '--fix',
+        action='store_true',
+        help='Automatically fix zero-change tracks by running RPA'
+    )
+    parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='Show what would be fixed without actually running RPA (use with --fix)'
+    )
 
     args = parser.parse_args()
 
     # Run the agent
     agent = DataCleanupAgent(data_dir=args.data_dir)
-    issues = agent.run_all_checks()
+
+    if args.fix:
+        # Load data first
+        agent.load_data()
+
+        # Fix zero-change tracks
+        processed, failed = agent.fix_zero_change_tracks(dry_run=args.dry_run)
+
+        if not args.dry_run and processed > 0:
+            print(f"\nFixed {processed} tracks. Re-running checks...")
+            # Reload data and run checks
+            agent.streams_data = []
+            agent.issues = []
+            issues = agent.run_all_checks()
+        else:
+            # Just run checks without fixing
+            agent.issues = []
+            issues = agent.run_all_checks(skip_zero_change=True)
+    else:
+        issues = agent.run_all_checks()
 
     # Generate report
     report = agent.generate_report(output_file=args.report)
