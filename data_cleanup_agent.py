@@ -58,7 +58,7 @@ class DataCleanupAgent:
         # Load streams data
         if os.path.exists(self.streams_file):
             with open(self.streams_file, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
+                reader = csv.DictReader(f, delimiter=';')
                 self.streams_data = list(reader)
             print(f"  Loaded {len(self.streams_data)} stream records")
         else:
@@ -67,7 +67,7 @@ class DataCleanupAgent:
         # Load monthly listeners data
         if os.path.exists(self.listeners_file):
             with open(self.listeners_file, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
+                reader = csv.DictReader(f, delimiter=';')
                 self.listeners_data = list(reader)
             print(f"  Loaded {len(self.listeners_data)} listener records")
         else:
@@ -76,7 +76,7 @@ class DataCleanupAgent:
         # Load tracks metadata
         if os.path.exists(self.tracks_file):
             with open(self.tracks_file, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
+                reader = csv.DictReader(f, delimiter=';')
                 self.tracks_data = list(reader)
             print(f"  Loaded {len(self.tracks_data)} track records")
         else:
@@ -722,7 +722,7 @@ class DataCleanupAgent:
         temp_csv_path = os.path.join(self.data_dir, 'temp_zero_change_tracks.csv')
 
         with open(temp_csv_path, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, delimiter=';')
             writer.writerow(['Song Title', 'Artist', 'Year', 'Album/EP/Single',
                            'Collaborating Artist(s)', 'Spotify Link', 'Streams'])
             for track in zero_change:

@@ -51,7 +51,7 @@ class SB19TrackStreamsRPA:
 
         try:
             with open(self.results_csv_path, newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
+                reader = csv.DictReader(csvfile, delimiter=';')
                 for row in reader:
                     song_title = row.get("song_title", "").strip()
                     artist = row.get("artist", "").strip()
@@ -154,7 +154,7 @@ class SB19TrackStreamsRPA:
 
         try:
             with open(path, newline="", encoding="utf-8") as csvfile:
-                reader = csv.DictReader(csvfile)
+                reader = csv.DictReader(csvfile, delimiter=';')
                 for row in reader:
                     song_title = (row.get("Song Title") or "").strip()
                     artist = (row.get("Artist") or "").strip()
@@ -417,7 +417,7 @@ class SB19TrackStreamsRPA:
         file_exists = os.path.exists(self.results_csv_path)
 
         with open(self.results_csv_path, mode="a", newline="", encoding="utf-8") as csvfile:
-            writer = csv.writer(csvfile)
+            writer = csv.writer(csvfile, delimiter=';')
             if not file_exists:
                 writer.writerow([
                     "timestamp",
