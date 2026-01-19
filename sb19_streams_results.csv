@@ -1,11 +1,10 @@
-"timestamp","song_title","artist","year","album","collaborating_artists","spotify_link","streams"
+timestamp,song_title,artist,year,album,collaborating_artists,spotify_link,streams
 20260113_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7474178
 20260113_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9334979
 20260113_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6113278
 20260113_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15278081
-20260113_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3059170
-20260113_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4447134
 20260113_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5328506
+20260113_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3059170
 20260113_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22376884
 20260113_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6938645
 20260113_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2419300
@@ -18,72 +17,63 @@
 20260113_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183350
 20260113_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,773698
 20260113_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6558045
+20260113_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6608370
 20260113_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4418904
 20260113_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6387876
-20260113_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6608370
 20260113_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25039914
 20260113_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59151809
-20260113_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1873871
 20260113_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18444137
+20260113_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1873871
 20260113_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6265155
-20260113_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,668158
-20260113_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2742308
 20260113_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5223594
+20260113_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,668158
+20260113_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2742308
 20260113_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5548438
 20260113_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,26844150
-20260113_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7770538
-20260113_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3381909
-20260113_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8691699
 20260113_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3484409
-20260113_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2363744
+20260113_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8691699
 20260113_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16196883
 20260113_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796242
-20260113_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75160601
 20260113_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6917817
-20260113_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260113_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1698435
+20260113_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75160601
 20260113_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23411646
-20260113_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20765039
-20260113_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3266496
 20260113_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,31981404
 20260113_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2299726
 20260113_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2602134
 20260113_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31227150
-20260113_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2364699
+20260113_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2364699
 20260113_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14542978
 20260113_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19448430
+20260113_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21448156
+20260113_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1617798
 20260113_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9052144
 20260113_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8677557
-20260113_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21448156
 20260113_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9641253
 20260113_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22811234
-20260113_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1617798
 20260113_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2398056
 20260113_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3886965
+20260113_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19843394
 20260113_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17369850
 20260113_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17347229
 20260113_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9617290
 20260113_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1916150
-20260113_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19843394
 20260113_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3893560
 20260113_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6214298
 20260113_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11011085
 20260113_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7057394
 20260113_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5451367
 20260113_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,856701
-20260113_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3448009
-20260113_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,947969
-20260113_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2441886
-20260113_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20546418
 20260113_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85295756
-20260113_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5088767
 20260113_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27763989
 20260113_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7246688
+20260113_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5088767
+20260113_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4191111
+20260113_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,947969
+20260113_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2441886
+20260113_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20546418
 20260113_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2726465
 20260113_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3396632
-20260113_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4191111
-20260113_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22395238
-20260113_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2894276
+20260113_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22395238
 20260113_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10223317
 20260113_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3605771
 20260113_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2156203
@@ -96,34 +86,32 @@
 20260113_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12258091
 20260113_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1529781
 20260113_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2607050
-20260113_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1896892
-20260113_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3419866
+20260113_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3419866
 20260113_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3131057
 20260113_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16361861
+20260113_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6358078
 20260113_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4183402
 20260113_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9572209
-20260113_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134382
+20260113_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134382
 20260113_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3144635
-20260113_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6358078
 20260113_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11779334
 20260113_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4651983
+20260113_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17265982
+20260113_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5546201
+20260113_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3659947
 20260113_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7426043
 20260113_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2861760
 20260113_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14301937
 20260113_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,690347
 20260113_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3777713
 20260113_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,520123
-20260113_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17265982
-20260113_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2518526
-20260113_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5546201
 20260113_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5244809
 20260113_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5356176
-20260113_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3659947
 20260113_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14777772
+20260113_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2819791
 20260113_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1388783
 20260113_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,891700
 20260113_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2465957
-20260113_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1875998
 20260113_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1051267
 20260113_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4817818
 20260113_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8789488
@@ -131,26 +119,33 @@
 20260113_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2191184
 20260113_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21209569
 20260113_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1954234
-20260113_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2819791
-20260113_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,893993
 20260113_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12643006
 20260113_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2667242
+20260113_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9639294
+20260113_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24841694
 20260113_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2840560
 20260113_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1311093
 20260113_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25455462
 20260113_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6228674
-20260113_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9639294
 20260113_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10947042
-20260113_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,1999737
-20260113_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24841694
 20260113_120000,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10277271
+20260113_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4447134
+20260113_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7770538
+20260113_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3381909
+20260113_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2363744
+20260113_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1698435
+20260113_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20765039
+20260113_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3266496
+20260113_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3448009
+20260113_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1896892
+20260113_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2518526
+20260113_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,1999737
 20260114_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7481763
 20260114_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9343028
 20260114_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6119957
 20260114_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15319323
-20260114_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3060828
-20260114_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4450927
 20260114_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5331720
+20260114_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3060828
 20260114_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22389277
 20260114_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6942344
 20260114_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2419933
@@ -163,72 +158,63 @@
 20260114_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183457
 20260114_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,774132
 20260114_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6563756
+20260114_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6611555
 20260114_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4421418
 20260114_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6395108
-20260114_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6611555
 20260114_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25057449
 20260114_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59248751
-20260114_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1874683
 20260114_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18469213
+20260114_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1874683
 20260114_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6268538
-20260114_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,668628
-20260114_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2744769
 20260114_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5225950
+20260114_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,668628
+20260114_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2744769
 20260114_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5551608
 20260114_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,26898549
-20260114_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7774072
-20260114_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3383574
-20260114_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8697553
 20260114_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3485841
-20260114_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2364789
+20260114_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8697553
 20260114_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16211384
 20260114_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796331
-20260114_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75199303
 20260114_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6920815
-20260114_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260114_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1699564
+20260114_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75199303
 20260114_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23424040
-20260114_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20776045
-20260114_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3269580
 20260114_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,31996980
 20260114_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2301418
 20260114_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2604653
 20260114_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31247183
-20260114_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2367249
+20260114_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2367249
 20260114_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14554748
 20260114_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19464303
+20260114_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21465215
+20260114_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1620144
 20260114_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9055238
 20260114_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8682497
-20260114_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21465215
 20260114_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9648157
 20260114_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22824250
-20260114_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1620144
 20260114_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2400735
 20260114_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3888643
+20260114_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19861548
 20260114_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17373586
 20260114_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17355254
 20260114_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9623317
 20260114_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1917914
-20260114_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19861548
 20260114_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3895950
 20260114_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6222127
 20260114_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11018801
 20260114_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7061860
 20260114_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5455034
 20260114_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,857146
-20260114_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3451355
-20260114_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,952107
-20260114_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2442745
-20260114_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20561315
 20260114_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85341646
-20260114_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5091350
 20260114_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27773782
 20260114_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7254266
+20260114_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5091350
+20260114_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4193107
+20260114_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,952107
+20260114_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2442745
+20260114_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20561315
 20260114_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2726932
 20260114_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3398456
-20260114_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4193107
-20260114_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22408287
-20260114_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2895706
+20260114_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22408287
 20260114_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10230661
 20260114_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3610125
 20260114_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2157837
@@ -241,34 +227,32 @@
 20260114_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12262059
 20260114_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1530646
 20260114_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2609427
-20260114_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1898598
-20260114_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3423507
+20260114_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3423507
 20260114_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3135088
 20260114_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16402151
+20260114_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6360951
 20260114_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4187749
 20260114_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9581511
-20260114_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134480
+20260114_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134480
 20260114_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3146200
-20260114_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6360951
 20260114_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11788826
 20260114_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4658296
+20260114_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17278795
+20260114_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5548545
+20260114_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3661586
 20260114_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7433121
 20260114_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2864992
 20260114_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14339126
 20260114_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,690730
 20260114_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3780481
 20260114_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,520725
-20260114_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17278795
-20260114_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2519750
-20260114_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5548545
 20260114_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5248806
 20260114_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5358622
-20260114_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3661586
 20260114_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14787345
+20260114_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2821201
 20260114_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1404613
 20260114_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,893178
 20260114_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2468280
-20260114_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1878220
 20260114_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1051668
 20260114_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4822880
 20260114_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8794764
@@ -276,26 +260,33 @@
 20260114_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2192759
 20260114_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21254971
 20260114_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1955304
-20260114_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2821201
-20260114_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,894649
 20260114_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12670372
 20260114_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2668635
+20260114_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9643837
+20260114_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24853456
 20260114_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2842825
 20260114_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1312149
 20260114_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25469497
 20260114_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6231481
-20260114_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9643837
 20260114_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10954679
-20260114_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2001668
-20260114_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24853456
 20260114_120000,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10282694
+20260114_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4450927
+20260114_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7774072
+20260114_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3383574
+20260114_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2364789
+20260114_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1699564
+20260114_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20776045
+20260114_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3269580
+20260114_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3451355
+20260114_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1898598
+20260114_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2519750
+20260114_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2001668
 20260115_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7488990
 20260115_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9350576
 20260115_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6126523
 20260115_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15365165
-20260115_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3062374
-20260115_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4454879
 20260115_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5335188
+20260115_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3062374
 20260115_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22403321
 20260115_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6945924
 20260115_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2420509
@@ -308,72 +299,63 @@
 20260115_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183569
 20260115_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,774473
 20260115_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6569388
+20260115_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6615175
 20260115_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4424115
 20260115_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6402062
-20260115_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6615175
 20260115_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25076715
 20260115_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59330879
-20260115_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1875636
 20260115_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18494740
+20260115_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1875636
 20260115_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6272353
-20260115_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669075
-20260115_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2747391
 20260115_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5228119
+20260115_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669075
+20260115_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2747391
 20260115_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5554575
 20260115_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,26952270
-20260115_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7777585
-20260115_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3385519
-20260115_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8703343
 20260115_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3487596
-20260115_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2365999
+20260115_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8703343
 20260115_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16225056
 20260115_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796433
-20260115_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75243299
 20260115_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6923869
-20260115_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260115_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1700943
+20260115_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75243299
 20260115_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23436113
-20260115_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20789765
-20260115_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3273167
 20260115_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32016444
 20260115_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2302992
 20260115_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2607130
 20260115_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31264250
-20260115_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2369713
+20260115_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2369713
 20260115_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14567599
 20260115_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19480504
+20260115_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21482209
+20260115_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1622348
 20260115_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9058445
 20260115_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8686711
-20260115_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21482209
 20260115_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9656064
 20260115_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22835690
-20260115_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1622348
 20260115_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2403468
 20260115_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3890509
+20260115_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19876501
 20260115_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17377354
 20260115_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17364193
 20260115_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9629169
 20260115_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1919559
-20260115_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19876501
 20260115_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3898621
 20260115_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6229989
 20260115_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11027238
 20260115_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7066539
 20260115_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5459103
 20260115_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,857589
-20260115_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3454764
-20260115_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,956442
-20260115_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2443703
-20260115_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20575907
 20260115_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85387289
-20260115_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5093898
 20260115_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27783036
 20260115_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7262051
+20260115_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5093898
+20260115_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4194881
+20260115_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,956442
+20260115_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2443703
+20260115_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20575907
 20260115_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2727424
 20260115_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3400413
-20260115_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4194881
-20260115_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22419798
-20260115_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2897251
+20260115_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22419798
 20260115_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10238147
 20260115_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3614351
 20260115_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2159462
@@ -386,34 +368,32 @@
 20260115_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12266654
 20260115_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1531479
 20260115_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2612354
-20260115_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1899961
-20260115_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3427155
+20260115_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3427155
 20260115_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3138797
 20260115_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16437001
+20260115_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6363406
 20260115_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4191856
 20260115_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9590831
-20260115_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134594
+20260115_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134594
 20260115_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3147922
-20260115_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6363406
 20260115_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11798806
 20260115_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4663748
+20260115_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17292658
+20260115_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5550878
+20260115_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3663205
 20260115_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7439990
 20260115_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2867734
 20260115_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14381615
 20260115_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,691040
 20260115_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3783442
 20260115_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,521291
-20260115_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17292658
-20260115_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2521164
-20260115_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5550878
 20260115_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5252252
 20260115_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5361537
-20260115_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3663205
 20260115_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14797706
+20260115_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2822477
 20260115_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1422271
 20260115_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,894627
 20260115_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2470626
-20260115_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1880414
 20260115_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1052073
 20260115_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4827204
 20260115_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8800609
@@ -421,26 +401,33 @@
 20260115_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2194465
 20260115_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21302883
 20260115_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1956218
-20260115_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2822477
-20260115_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,895354
 20260115_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12698522
 20260115_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2669981
+20260115_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9648599
+20260115_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24864590
 20260115_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2845629
 20260115_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1313108
 20260115_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25483142
 20260115_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6234404
-20260115_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9648599
 20260115_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10960933
-20260115_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2003548
-20260115_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24864590
 20260115_120000,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10287689
+20260115_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4454879
+20260115_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7777585
+20260115_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3385519
+20260115_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2365999
+20260115_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1700943
+20260115_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20789765
+20260115_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3273167
+20260115_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3454764
+20260115_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1899961
+20260115_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2521164
+20260115_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2003548
 20260116_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7495834
 20260116_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9359342
 20260116_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6133300
 20260116_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15407274
-20260116_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3064135
-20260116_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4459106
 20260116_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5338762
+20260116_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3064135
 20260116_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22416711
 20260116_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6949129
 20260116_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2421129
@@ -453,72 +440,63 @@
 20260116_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183676
 20260116_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,774811
 20260116_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6574541
+20260116_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6618044
 20260116_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4426185
 20260116_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6409027
-20260116_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6618044
 20260116_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25098202
 20260116_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59425125
-20260116_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1876601
 20260116_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18518850
+20260116_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1876601
 20260116_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6275897
-20260116_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669490
-20260116_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2750108
 20260116_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5230676
+20260116_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669490
+20260116_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2750108
 20260116_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5557549
 20260116_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,27007195
-20260116_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7782064
-20260116_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3387102
-20260116_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8709274
 20260116_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3489078
-20260116_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2367299
+20260116_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8709274
 20260116_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16237918
 20260116_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796531
-20260116_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75287444
 20260116_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6927170
-20260116_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260116_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1702186
+20260116_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75287444
 20260116_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23449011
-20260116_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20801813
-20260116_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3276792
 20260116_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32035939
 20260116_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2304481
 20260116_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2609341
 20260116_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31285195
-20260116_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2372204
+20260116_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2372204
 20260116_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14578060
 20260116_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19495507
+20260116_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21499215
+20260116_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1624525
 20260116_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9060952
 20260116_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8690885
-20260116_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21499215
 20260116_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9664132
 20260116_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22845666
-20260116_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1624525
 20260116_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2406062
 20260116_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3892427
+20260116_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19893692
 20260116_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17380873
 20260116_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17371941
 20260116_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9634390
 20260116_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1921440
-20260116_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19893692
 20260116_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3900911
 20260116_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6237003
 20260116_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11035053
 20260116_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7071626
 20260116_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5462767
 20260116_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,858028
-20260116_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3457627
-20260116_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,960845
-20260116_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2444603
-20260116_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20588619
 20260116_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85430683
-20260116_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5096631
 20260116_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27792476
 20260116_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7270626
+20260116_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5096631
+20260116_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4196761
+20260116_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,960845
+20260116_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2444603
+20260116_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20588619
 20260116_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2727995
 20260116_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3402175
-20260116_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4196761
-20260116_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22432854
-20260116_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2898801
+20260116_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22432854
 20260116_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10245210
 20260116_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3618623
 20260116_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2161420
@@ -531,34 +509,32 @@
 20260116_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12270550
 20260116_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1532327
 20260116_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2614696
-20260116_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1901393
-20260116_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3430826
+20260116_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3430826
 20260116_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3142869
 20260116_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16477422
+20260116_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6365889
 20260116_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4196465
 20260116_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9600260
-20260116_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134694
+20260116_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134694
 20260116_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3149662
-20260116_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6365889
 20260116_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11808616
 20260116_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4669283
+20260116_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17303605
+20260116_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5553148
+20260116_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3664798
 20260116_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7446465
 20260116_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2871037
 20260116_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14415839
 20260116_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,691421
 20260116_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3786500
 20260116_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,521904
-20260116_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17303605
-20260116_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2522475
-20260116_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5553148
 20260116_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5256739
 20260116_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5364172
-20260116_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3664798
 20260116_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14808190
+20260116_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2823949
 20260116_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1440204
 20260116_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,896027
 20260116_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2472670
-20260116_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1882369
 20260116_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1052448
 20260116_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4831742
 20260116_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8806199
@@ -566,26 +542,33 @@
 20260116_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2196245
 20260116_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21354771
 20260116_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1957065
-20260116_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2823949
-20260116_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,896124
 20260116_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12726757
 20260116_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2671501
+20260116_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9653385
+20260116_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24876765
 20260116_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2848034
 20260116_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1314040
 20260116_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25498448
 20260116_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6237304
-20260116_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9653385
 20260116_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10967153
-20260116_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2005011
-20260116_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24876765
 20260116_120000,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10292848
+20260116_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4459106
+20260116_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7782064
+20260116_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3387102
+20260116_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2367299
+20260116_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1702186
+20260116_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20801813
+20260116_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3276792
+20260116_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3457627
+20260116_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1901393
+20260116_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2522475
+20260116_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2005011
 20260117_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7502350
 20260117_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9366049
 20260117_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6139065
 20260117_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15442144
-20260117_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3066090
-20260117_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4463111
 20260117_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5341886
+20260117_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3066090
 20260117_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22431972
 20260117_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6952160
 20260117_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2421828
@@ -598,72 +581,63 @@
 20260117_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183775
 20260117_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,775164
 20260117_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6581295
+20260117_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6620892
 20260117_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4428379
 20260117_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6417079
-20260117_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6620892
 20260117_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25117976
 20260117_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59522018
-20260117_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1877564
 20260117_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18539685
+20260117_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1877564
 20260117_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6279049
-20260117_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669909
-20260117_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2752813
 20260117_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5233214
+20260117_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,669909
+20260117_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2752813
 20260117_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5560302
 20260117_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,27070605
-20260117_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7786466
-20260117_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3388791
-20260117_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8715034
 20260117_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3490963
-20260117_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2368646
+20260117_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8715034
 20260117_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16250689
 20260117_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796642
-20260117_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75323549
 20260117_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6930404
-20260117_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260117_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1703335
+20260117_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75323549
 20260117_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23460421
-20260117_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20812327
-20260117_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3279775
 20260117_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32051333
 20260117_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2305981
 20260117_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2611894
 20260117_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31302062
-20260117_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2374880
+20260117_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2374880
 20260117_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14590020
 20260117_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19510641
+20260117_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21513123
+20260117_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1626616
 20260117_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9063660
 20260117_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8695579
-20260117_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21513123
 20260117_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9671929
 20260117_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22858109
-20260117_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1626616
 20260117_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2408563
 20260117_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3894389
+20260117_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19908783
 20260117_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17384652
 20260117_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17380836
 20260117_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9639969
 20260117_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1923393
-20260117_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19908783
 20260117_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3903054
 20260117_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6244971
 20260117_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11042048
 20260117_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7076079
 20260117_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5467068
 20260117_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,858398
-20260117_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3460528
-20260117_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,965330
-20260117_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2445447
-20260117_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20604092
 20260117_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85475756
-20260117_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5099251
 20260117_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27801660
 20260117_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7278890
+20260117_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5099251
+20260117_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4198652
+20260117_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,965330
+20260117_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2445447
+20260117_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20604092
 20260117_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2728578
 20260117_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3403819
-20260117_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4198652
-20260117_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22446713
-20260117_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2900464
+20260117_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22446713
 20260117_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10252642
 20260117_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3623370
 20260117_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2163240
@@ -676,34 +650,32 @@
 20260117_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12275080
 20260117_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1533110
 20260117_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2617412
-20260117_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1902787
-20260117_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3434276
+20260117_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3434276
 20260117_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3146864
 20260117_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16518176
+20260117_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6368678
 20260117_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4201064
 20260117_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9607492
-20260117_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134794
+20260117_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134794
 20260117_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3151283
-20260117_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6368678
 20260117_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11818165
 20260117_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4675896
+20260117_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17317488
+20260117_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5555122
+20260117_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3666324
 20260117_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7453816
 20260117_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2873735
 20260117_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14449821
 20260117_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,691785
 20260117_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3788787
 20260117_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,522487
-20260117_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17317488
-20260117_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2523909
-20260117_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5555122
 20260117_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5260915
 20260117_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5367111
-20260117_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3666324
 20260117_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14818849
+20260117_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2825284
 20260117_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1457097
 20260117_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,897654
 20260117_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2475257
-20260117_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1884449
 20260117_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1052799
 20260117_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4836547
 20260117_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8813254
@@ -711,26 +683,34 @@
 20260117_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2197836
 20260117_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21404171
 20260117_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1958054
-20260117_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2825284
-20260117_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,896748
 20260117_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12755311
 20260117_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2672870
+20260117_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9658529
+20260117_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24890160
 20260117_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2850669
 20260117_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1315205
 20260117_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25513534
 20260117_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6240108
-20260117_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9658529
 20260117_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10973453
-20260117_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2006743
-20260117_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24890160
 20260117_120000,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10297819
+20260117_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4463111
+20260117_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7786466
+20260117_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3388791
+20260117_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2368646
+20260117_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1703335
+20260117_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20812327
+20260117_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3279775
+20260117_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3460528
+20260117_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1902787
+20260117_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2523909
+20260117_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2006743
+20260118_120000, Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10302692
 20260118_120000,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7510333
 20260118_120000,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9374642
 20260118_120000,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6145567
 20260118_120000,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15481294
-20260118_120000,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3067657
-20260118_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4466849
 20260118_120000,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5344602
+20260118_120000,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3067657
 20260118_120000,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22444007
 20260118_120000,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6955346
 20260118_120000,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2422438
@@ -743,72 +723,63 @@
 20260118_120000,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,183889
 20260118_120000,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,775525
 20260118_120000,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6587001
+20260118_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6624018
 20260118_120000,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4430860
 20260118_120000,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6425251
-20260118_120000,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6624018
 20260118_120000,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25137449
 20260118_120000,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59606692
-20260118_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1878581
 20260118_120000,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18560075
+20260118_120000,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1878581
 20260118_120000,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6282505
-20260118_120000,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,670358
-20260118_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2755873
 20260118_120000,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5235571
+20260118_120000,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,670358
+20260118_120000,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2755873
 20260118_120000,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5563399
 20260118_120000,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,27131955
-20260118_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7790807
-20260118_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3390422
-20260118_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8721250
 20260118_120000,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3492465
-20260118_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2369836
+20260118_120000,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8721250
 20260118_120000,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16265016
 20260118_120000,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796732
-20260118_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75359060
 20260118_120000,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6933607
-20260118_120000,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0
-20260118_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1704671
+20260118_120000,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75359060
 20260118_120000,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23472894
-20260118_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20824487
-20260118_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3283003
 20260118_120000,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32068516
 20260118_120000,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2307530
 20260118_120000,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2614269
 20260118_120000,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31321801
-20260118_120000,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2377265
+20260118_120000,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2377265
 20260118_120000,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14602853
 20260118_120000,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19529731
+20260118_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21530305
+20260118_120000,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1629002
 20260118_120000,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9066679
 20260118_120000,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8700565
-20260118_120000,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21530305
 20260118_120000,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9678748
 20260118_120000,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22868887
-20260118_120000,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1629002
 20260118_120000,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2411340
 20260118_120000,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3896350
+20260118_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19925314
 20260118_120000,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17388324
 20260118_120000,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17388324
 20260118_120000,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9646526
 20260118_120000,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1925396
-20260118_120000,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19925314
 20260118_120000,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3905116
 20260118_120000,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6252766
 20260118_120000,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11050606
 20260118_120000,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7081256
 20260118_120000,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5471252
 20260118_120000,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,858806
-20260118_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3463673
-20260118_120000,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,969618
-20260118_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2446194
-20260118_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20619353
 20260118_120000,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85514497
-20260118_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5101454
 20260118_120000,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27809252
 20260118_120000,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7288680
+20260118_120000,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5101454
+20260118_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4200543
+20260118_120000,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,969618
+20260118_120000,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2446194
+20260118_120000,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20619353
 20260118_120000,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2729117
 20260118_120000,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3405760
-20260118_120000,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4200543
-20260118_120000,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22457562
-20260118_120000,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2902102
+20260118_120000,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22457562
 20260118_120000,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10260220
 20260118_120000,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3627909
 20260118_120000,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2165212
@@ -821,34 +792,32 @@
 20260118_120000,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12279214
 20260118_120000,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1533948
 20260118_120000,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2619809
-20260118_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1904246
-20260118_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3437679
+20260118_120000,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3437679
 20260118_120000,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3150752
 20260118_120000,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16554192
+20260118_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6371901
 20260118_120000,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4205361
 20260118_120000,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9615096
-20260118_120000,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134886
+20260118_120000,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134886
 20260118_120000,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3153173
-20260118_120000,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6371901
 20260118_120000,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11829696
 20260118_120000,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4681734
+20260118_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17330921
+20260118_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5557241
+20260118_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3668239
 20260118_120000,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7460345
 20260118_120000,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2876827
 20260118_120000,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14487751
 20260118_120000,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,692172
 20260118_120000,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3791188
 20260118_120000,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,523080
-20260118_120000,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17330921
-20260118_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2525272
-20260118_120000,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5557241
 20260118_120000,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5265247
 20260118_120000,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5369747
-20260118_120000,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3668239
 20260118_120000,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14828012
+20260118_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2826786
 20260118_120000,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1475217
 20260118_120000,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,899375
 20260118_120000,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2477789
-20260118_120000,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1886503
 20260118_120000,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1053167
 20260118_120000,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4841163
 20260118_120000,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8819967
@@ -856,171 +825,166 @@
 20260118_120000,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2199204
 20260118_120000,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21447784
 20260118_120000,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1958908
-20260118_120000,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2826786
-20260118_120000,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,897515
 20260118_120000,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12780494
 20260118_120000,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2674385
+20260118_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9663916
+20260118_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24903349
 20260118_120000,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2853627
 20260118_120000,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1316117
 20260118_120000,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25528884
 20260118_120000,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6243596
-20260118_120000,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,9663916
 20260118_120000,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10979876
+20260118_120000,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4466849
+20260118_120000,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7790807
+20260118_120000,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3390422
+20260118_120000,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2369836
+20260118_120000,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1704671
+20260118_120000,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20824487
+20260118_120000,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3283003
+20260118_120000,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3463673
+20260118_120000,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1904246
+20260118_120000,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2525272
 20260118_120000,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2008475
-20260118_120000,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24903349
-20260118_120000, Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,1030269220260119_060002,Tilaluha,SB19,2018,Get in the Zone,,https://open.spotify.com/track/0fPJsVtCOXqjHxKS9kc13s,23498774,11904,D:\dev\SB19\OCR\sb19_tilaluha_2018_screenshot_20260119_060018.png
-Yoko20260119_060002,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23472894,0,D:\dev\SB19\OCR\sb19_go_up_2019_screenshot_20260119_060137.png
-20260119_060002,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22455724,11717,D:\dev\SB19\OCR\sb19_alab_burning_2019_screenshot_20260119_060159.png
-20260119_060002,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32084909,16393,D:\dev\SB19\OCR\sb19_hanggang_sa_huli_2020_screenshot_20260119_060222.png
-20260119_060002,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11058504,7898,D:\dev\SB19\OCR\sb19_love_goes_2020_screenshot_20260119_060244.png
-20260119_060002,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7085895,4639,D:\dev\SB19\OCR\sb19_love_goes_edm_version_2020_screenshot_20260119_060307.png
-20260119_060002,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9381244,6602,D:\dev\SB19\OCR\sb19_wag_mong_ikunot_ang_iyong_noo_2020_screenshot_20260119_060330.png
-20260119_060002,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2200115,911,D:\dev\SB19\OCR\sb19_tilaluha_instrumental_2020_screenshot_20260119_060353.png
-20260119_060002,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2308744,1214,D:\dev\SB19\OCR\sb19_hanggang_sa_huli_instrumental_2020_screenshot_20260119_060415.png
-20260119_060002,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25543477,14593,D:\dev\SB19\OCR\sb19_what_2021_screenshot_20260119_060438.png
-20260119_060002,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85558197,43700,D:\dev\SB19\OCR\sb19_mapa_2021_screenshot_20260119_060500.png
-20260119_112431,Tilaluha,SB19,2018,Get in the Zone,,https://open.spotify.com/track/0fPJsVtCOXqjHxKS9kc13s,23498774,11904,D:\dev\SB19\OCR\sb19_tilaluha_2018_screenshot_20260119_112447.png
-20260119_112431,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23472894,0,D:\dev\SB19\OCR\sb19_go_up_2019_screenshot_20260119_112600.png
-20260119_112431,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22455724,11717,D:\dev\SB19\OCR\sb19_alab_burning_2019_screenshot_20260119_112620.png
-20260119_112431,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32084909,16393,D:\dev\SB19\OCR\sb19_hanggang_sa_huli_2020_screenshot_20260119_112641.png
-20260119_112431,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11058504,7898,D:\dev\SB19\OCR\sb19_love_goes_2020_screenshot_20260119_112701.png
-20260119_112431,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7085895,4639,D:\dev\SB19\OCR\sb19_love_goes_edm_version_2020_screenshot_20260119_112747.png
-20260119_112431,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9374642,0,D:\dev\SB19\OCR\sb19_wag_mong_ikunot_ang_iyong_noo_2020_screenshot_20260119_112900.png
-20260119_112431,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2200115,911,D:\dev\SB19\OCR\sb19_tilaluha_instrumental_2020_screenshot_20260119_112920.png
-20260119_112431,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2308744,1214,D:\dev\SB19\OCR\sb19_hanggang_sa_huli_instrumental_2020_screenshot_20260119_112941.png
-20260119_112431,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25543477,14593,D:\dev\SB19\OCR\sb19_what_2021_screenshot_20260119_113001.png
-20260119_112431,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85558197,43700,D:\dev\SB19\OCR\sb19_mapa_2021_screenshot_20260119_113022.png
-20260119_112431,Bazinga,SB19,2021,Pagsibol,,https://open.spotify.com/track/5QZw4F3N3PvuKNKHm9L20b,31583695,18086,D:\dev\SB19\OCR\sb19_bazinga_2021_screenshot_20260119_113042.png
-20260119_112431,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17342998,12077,D:\dev\SB19\OCR\sb19_slmt_2021_screenshot_20260119_113102.png
-20260119_112431,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20633316,13963,D:\dev\SB19\OCR\sb19_mana_2021_screenshot_20260119_113122.png
-20260119_112431,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14615251,12398,D:\dev\SB19\OCR\sb19_ikako_2020_screenshot_20260119_113143.png
-20260119_112431,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75359060,0,D:\dev\SB19\OCR\sb19_gento_2023_screenshot_20260119_113252.png
-20260119_112431,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31342361,20560,D:\dev\SB19\OCR\sb19_i_want_you_2023_screenshot_20260119_113312.png
-20260119_112431,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19546260,16529,D:\dev\SB19\OCR\sb19_ilaw_2023_screenshot_20260119_113333.png
-20260119_112431,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25157773,20324,D:\dev\SB19\OCR\sb19_crimzone_2023_screenshot_20260119_113353.png
-20260119_112431,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19942007,16693,D:\dev\SB19\OCR\sb19_liham_2023_screenshot_20260119_113413.png
-20260119_112431,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16279412,14396,D:\dev\SB19\OCR\sb19_freedom_2023_screenshot_20260119_113433.png
-20260119_112431,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59695684,88992,D:\dev\SB19\OCR\sb19_dam_2025_screenshot_20260119_113454.png
-20260119_112431,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21494329,46545,D:\dev\SB19\OCR\sb19_time_2025_screenshot_20260119_113514.png
-20260119_112431,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15519949,38655,D:\dev\SB19\OCR\sb19_8tonball_2025_screenshot_20260119_113534.png
-20260119_112431,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16593447,39255,D:\dev\SB19\OCR\sb19_quit_2025_screenshot_20260119_113555.png
-20260119_112431,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14487751,0,D:\dev\SB19\OCR\sb19_shooting_for_the_stars_2025_screenshot_20260119_113704.png
-20260119_112431,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,27186580,54625,D:\dev\SB19\OCR\sb19_dungka_2025_screenshot_20260119_113749.png
-20260119_112431,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18581417,21342,D:\dev\SB19\OCR\sb19_dam_extended_ver_2025_screenshot_20260119_113902.png
-20260119_112431,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24915299,11950,D:\dev\SB19\OCR\sb19_wyat_where_you_at_2022_screenshot_20260119_113922.png
-20260119_112431,Nyebe,SB19,2022,Single,,https://open.spotify.com/track/6aLjE6peuaJQRWRgfjxrRw,17933487,16405,D:\dev\SB19\OCR\sb19_nyebe_2022_screenshot_20260119_113943.png
-20260119_112431,No Stopping You,SB19,2021,Single (Love at First Stream OST),,https://open.spotify.com/track/3KDOf2p1DrKhiqX78R82sh,8675484,7235,D:\dev\SB19\OCR\sb19_no_stopping_you_2021_screenshot_20260119_114002.png
-20260119_112431,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9651328,4802,D:\dev\SB19\OCR\sb19_ligaya_2021_screenshot_20260119_114022.png
-20260119_112431,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27816568,7316,D:\dev\SB19\OCR\sb19_mapa_band_version_2021_screenshot_20260119_114043.png
-20260119_112431,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9069360,2681,D:\dev\SB19\OCR\sb19_kabataang_pinoy_2022_screenshot_20260119_114103.png
-20260119_112431,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10986647,6771,D:\dev\SB19\OCR\sb19_win_your_heart_2022_screenshot_20260119_114124.png
-20260119_112431,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4432764,1904,D:\dev\SB19\OCR\sb19_christmas_party_sb19_version_2022_screenshot_20260119_114144.png
-20260119_112431,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20835623,11136,D:\dev\SB19\OCR\sb19_golden_hour_sb19_remix_2023_screenshot_20260119_114205.png
-20260119_112431,Moonlight,SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22469958,12396,D:\dev\SB19\OCR\sb19_moonlight_2024_screenshot_20260119_114225.png
-20260119_112431,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9621890,6794,D:\dev\SB19\OCR\sb19_ready_2024_screenshot_20260119_114310.png
-20260119_112431,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21546696,16391,D:\dev\SB19\OCR\sb19_kalakal_2024_screenshot_20260119_114356.png
-20260119_112431,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7297666,8986,D:\dev\SB19\OCR\sb19_mapa_indonesian_version_2025_screenshot_20260119_114417.png
-20260119_112431,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12804863,24369,D:\dev\SB19\OCR\sb19_umaaligid_2025_screenshot_20260119_114437.png
-20260119_112431,Burn The Flame,SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/3mvN8n8mg7X41CbGvc7xYU,2796702,20162,D:\dev\SB19\OCR\sb19_burn_the_flame_2025_screenshot_20260119_114458.png
-20260119_112431,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,779257,3732,D:\dev\SB19\OCR\sb19_burn_the_flame_taglish_version_2025_screenshot_20260119_114518.png
-20260119_112431,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,185410,1521,D:\dev\SB19\OCR\sb19_burn_the_flame_karaoke_version_2025_screenshot_20260119_114539.png
-20260119_112431,Burn The Flame (Instrumental),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/1MLMEY4ahXUjTcmi01s4jA,132998,610,D:\dev\SB19\OCR\sb19_burn_the_flame_instrumental_2025_screenshot_20260119_114558.png
-20260119_112431,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5475090,3838,D:\dev\SB19\OCR\sb19_love_yours_2021_screenshot_20260119_114619.png
-20260119_112431,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22890583,21696,D:\dev\SB19\OCR\sb19_kapangyarihan_2021_screenshot_20260119_114638.png
-20260119_112431,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8826523,6556,D:\dev\SB19\OCR\sb19_the_one_2022_screenshot_20260119_114659.png
-20260119_112431,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2729657,540,D:\dev\SB19\OCR\sb19_merry_munchkins_sb19_version_2021_screenshot_20260119_114719.png
-20260119_112431,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3906952,1836,D:\dev\SB19\OCR\sb19_live_it_up_2021_screenshot_20260119_114740.png
-20260119_112431,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2446894,700,D:\dev\SB19\OCR\sb19_make_your_green_mark_2022_screenshot_20260119_114800.png
-20260119_112431,Ace Your World,SB19,2023,Promotional (Acer),"Acer Philippines, Sarah Geronimo",https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3069260,1603,D:\dev\SB19\OCR\sb19_ace_your_world_2023_screenshot_20260119_114821.png
-20260119_112431,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3154587,1414,D:\dev\SB19\OCR\sb19_reset_2023_screenshot_20260119_114841.png
-20260119_112431,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1495221,20004,D:\dev\SB19\OCR\sb19_tahanan_2025_screenshot_20260119_114902.png
-20260119_112431,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796732,0,D:\dev\SB19\OCR\sb19_g_pa_rin_ang_pasko_2021_screenshot_20260119_114922.png
-20260119_112431,"Ready, Set, G!",SB19,2022,Promotional (GCash),"GCash, GCash Jr.",https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134886,0,D:\dev\SB19\OCR\sb19_ready_set_g_2022_screenshot_20260119_114943.png
-20260119_112431,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1316625,508,D:\dev\SB19\OCR\sb19_we_wish_you_a_merry_gcash_2023_screenshot_20260119_115004.png
-20260119_112431,"Make It Merry, I-GCash Mo",SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,973739,4121,D:\dev\SB19\OCR\sb19_make_it_merry_i_gcash_mo_2023_screenshot_20260119_115024.png
-20260119_112431,"Tara, Summer Na!",SB19,2024,Promotional (GCash),GCash,https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn,1886503,0,D:\dev\SB19\OCR\sb19_tara_summer_na_2024_screenshot_20260119_115134.png
-20260119_112431,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn, Matthaios",https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2826786,0,D:\dev\SB19\OCR\sb19_tm_doble_dekada_samahang_pina_easy_2021_screenshot_20260119_115243.png
-20260119_112431,"Dobleng GV sa FunPasko (Noon, Ngayon, Palagi)",SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,670580,222,D:\dev\SB19\OCR\sb19_dobleng_gv_sa_funpasko_noon_ngayon_palagi_2021_screenshot_20260119_115302.png
-20260119_112431,TM FunPasko (Samahang Pina-Easy),SB19,2021,Promotional (TM),"The Juans, Donnalyn",https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG,897942,427,D:\dev\SB19\OCR\sb19_tm_funpasko_samahang_pina_easy_2021_screenshot_20260119_115323.png
-20260119_112431,Push Ang Pusuan,SB19,2021,Promotional (TM),"The Juans, Matthaios",https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3437679,0,D:\dev\SB19\OCR\sb19_push_ang_pusuan_2021_screenshot_20260119_115433.png
-20260119_112431,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1053520,353,D:\dev\SB19\OCR\sb19_team_tayo_2023_screenshot_20260119_115452.png
-20260119_112431,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2422847,409,D:\dev\SB19\OCR\sb19_ating_pasko_2024_screenshot_20260119_115513.png
-20260119_112431,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17391725,3401,D:\dev\SB19\OCR\pablo_la_luna_2022_screenshot_20260119_115533.png
-20260119_112431,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17388324,0,D:\dev\SB19\OCR\pablo_la_luna_2024_screenshot_20260119_115642.png
-20260119_112431,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2622203,2394,D:\dev\SB19\OCR\pablo_presyon_2024_screenshot_20260119_115701.png
-20260119_112431,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2855775,2148,D:\dev\SB19\OCR\pablo_wala_2024_screenshot_20260119_115722.png
-20260119_112431,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4845468,4305,D:\dev\SB19\OCR\pablo_the_boy_who_cried_wolf_2024_screenshot_20260119_115742.png
-20260119_112431,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3896350,0,D:\dev\SB19\OCR\pablo_kumunoy_2024_screenshot_20260119_115852.png
-20260119_112431,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2411340,0,D:\dev\SB19\OCR\pablo_kelan_2024_screenshot_20260119_120001.png
-20260119_112431,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5563399,0,D:\dev\SB19\OCR\pablo_drowning_in_the_water_2024_screenshot_20260119_120109.png
-20260119_112431,Breathe (Outro),PABLO,2024,ALON,,https://open.spotify.com/track/2lKyuf60Q5qSwTF0dl7qM6,1882352,1319,D:\dev\SB19\OCR\pablo_breathe_outro_2024_screenshot_20260119_120129.png
-20260119_112431,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3631597,3688,D:\dev\SB19\OCR\pablo_neumun_2024_screenshot_20260119_120149.png
-20260119_112431,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2758661,2788,D:\dev\SB19\OCR\pablo_don_t_care_2024_screenshot_20260119_120210.png
-20260119_112431,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6593060,6059,D:\dev\SB19\OCR\pablo_butata_2024_screenshot_20260119_120230.png
-20260119_112431,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3183954,33202,D:\dev\SB19\OCR\pablo_puyat_2024_screenshot_20260119_120251.png
-20260119_112431,Blessed,PABLO,2024,LAON,,https://open.spotify.com/track/4hdPboEAxOZjaaHML4q62u,4001758,0,D:\dev\SB19\OCR\pablo_blessed_2024_screenshot_20260119_120400.png
-20260119_112431,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2480122,2333,D:\dev\SB19\OCR\pablo_tambol_ibang_planeta_2024_screenshot_20260119_120420.png
-20260119_112431,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3410737,4977,D:\dev\SB19\OCR\pablo_micha_2024_screenshot_20260119_120440.png
-20260119_112431,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6286539,4034,D:\dev\SB19\OCR\pablo_determinado_2024_screenshot_20260119_120526.png
-20260119_112431,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5348249,3647,D:\dev\SB19\OCR\pablo_akala_2024_screenshot_20260119_120638.png
-20260119_112431,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7790807,0,D:\dev\SB19\OCR\pablo_edsa_2024_screenshot_20260119_120750.png
-20260119_112431,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6261057,8291,D:\dev\SB19\OCR\pablo_liwanag_sa_dilim_from_incognito_2025_screenshot_20260119_120808.png
-20260119_112431,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12282895,3681,D:\dev\SB19\OCR\felip_palayo_2021_screenshot_20260119_120829.png
-20260119_112431,Bulan,FELIP,2022,Single,,https://open.spotify.com/track/2qYmu6Obx3NW1VeNOiCFMK,6653880,2538,D:\dev\SB19\OCR\felip_bulan_2022_screenshot_20260119_120910.png
-20260119_112431,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6373603,1702,D:\dev\SB19\OCR\felip_rocksta_2023_screenshot_20260119_120930.png
-20260119_112431,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3669617,1378,D:\dev\SB19\OCR\felip_superiority_2023_screenshot_20260119_120951.png
-20260119_112431,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4200543,0,D:\dev\SB19\OCR\felip_mictest_2023_screenshot_20260119_121100.png
-20260119_112431,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5235571,0,D:\dev\SB19\OCR\felip_drinksmoke_2023_screenshot_20260119_121209.png
-20260119_112431,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6630365,6347,D:\dev\SB19\OCR\felip_criminal_2023_screenshot_20260119_121228.png
-20260119_112431,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5558866,1625,D:\dev\SB19\OCR\felip_straydogs_2023_screenshot_20260119_121248.png
-20260119_112431,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9686511,7763,D:\dev\SB19\OCR\felip_kanako_2023_screenshot_20260119_121309.png
-20260119_112431,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10264664,4444,D:\dev\SB19\OCR\felip_moving_closer_2023_screenshot_20260119_121329.png
-20260119_112431,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3492465,0,D:\dev\SB19\OCR\felip_flyyy_2024_screenshot_20260119_121439.png
-20260119_112431,Pagdali,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/7fMR5ryCo3m38yyj1PCym4,3383543,1716,D:\dev\SB19\OCR\felip_pagdali_2024_screenshot_20260119_121459.png
-20260119_112431,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8726582,5332,D:\dev\SB19\OCR\felip_fake_faces_2024_screenshot_20260119_121519.png
-20260119_112431,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2369836,0,D:\dev\SB19\OCR\felip_foes_2024_screenshot_20260119_121629.png
-20260119_112431,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3393274,2852,D:\dev\SB19\OCR\felip_envy_2024_screenshot_20260119_121648.png
-20260119_112431,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2008475,0,D:\dev\SB19\OCR\felip_wrath_2024_screenshot_20260119_121758.png
-20260119_112431,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3286657,3654,D:\dev\SB19\OCR\felip_greed_2024_screenshot_20260119_121818.png
-20260119_112431,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1906109,1863,D:\dev\SB19\OCR\felip_pride_2024_screenshot_20260119_121838.png
-20260119_112431,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1706117,1446,D:\dev\SB19\OCR\felip_gluttony_2024_screenshot_20260119_121858.png
-20260119_112431,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3467473,3800,D:\dev\SB19\OCR\felip_lust_2024_screenshot_20260119_121917.png
-20260119_112431,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2525272,0,D:\dev\SB19\OCR\felip_sloth_2024_screenshot_20260119_122026.png
-20260119_112431,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4466849,0,D:\dev\SB19\OCR\felip_ache_2024_screenshot_20260119_122135.png
-20260119_112431,ID,FELIP,2025,Featured,"SKY-HI, RYOKI, RYUKI, JIMMY",https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2379854,2589,D:\dev\SB19\OCR\felip_id_2025_screenshot_20260119_122155.png
-20260119_112431,KAWASAKI,FELIP,2025,Featured,"ONE OR EIGHT, thủy",https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1630500,1498,D:\dev\SB19\OCR\felip_kawasaki_2025_screenshot_20260119_122216.png
-20260119_112431,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,25157773,15493857,D:\dev\SB19\OCR\josh_cullen_wild_tonight_2023_screenshot_20260119_122235.png
-20260119_112431,Pakiusap Lang,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/6trU06kJgdYaPqRUvz5K9e,5237551,1620,D:\dev\SB19\OCR\josh_cullen_pakiusap_lang_2023_screenshot_20260119_122256.png
-20260119_112431,GET RIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/7vXFVu0qtLuCSDYzXWNQoL,0,0,D:\dev\SB19\OCR\josh_cullen_get_right_2023_screenshot_20260119_122407.png
-20260119_112431,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10307343,0,D:\dev\SB19\OCR\josh_cullen_yoko_na_2024_screenshot_20260119_122516.png
-20260119_112431,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6151952,6385,D:\dev\SB19\OCR\josh_cullen_1999_2024_screenshot_20260119_122536.png
-20260119_112431,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2876827,0,D:\dev\SB19\OCR\josh_cullen_see_me_2024_screenshot_20260119_122645.png
-20260119_112431,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3794327,3139,D:\dev\SB19\OCR\josh_cullen_silent_cries_2024_screenshot_20260119_122704.png
-20260119_112431,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2614269,0,D:\dev\SB19\OCR\josh_cullen_honest_2024_screenshot_20260119_122814.png
-20260119_112431,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2167907,2695,D:\dev\SB19\OCR\josh_cullen_no_control_2024_screenshot_20260119_122833.png
-20260119_112431,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1925396,0,D:\dev\SB19\OCR\josh_cullen_lights_out_2024_screenshot_20260119_122940.png
-20260119_112431,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5268342,3095,D:\dev\SB19\OCR\josh_cullen_sumaya_2024_screenshot_20260119_123000.png
-20260119_112431,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,523543,463,D:\dev\SB19\OCR\josh_cullen_silent_cries_instrumental_2024_screenshot_20260119_123020.png
-20260119_112431,No Control (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/65LG9NubWQtyImpyNXotHo,510584,494,D:\dev\SB19\OCR\josh_cullen_no_control_instrumental_2024_screenshot_20260119_123041.png
-20260119_112431,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,900567,1192,D:\dev\SB19\OCR\josh_cullen_takbuhan_2024_screenshot_20260119_123101.png
-20260119_112431,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4208822,3461,D:\dev\SB19\OCR\josh_cullen_re_thinkin_about_you_2024_screenshot_20260119_123122.png
-20260119_112431,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11840251,10555,D:\dev\SB19\OCR\stell_room_2024_screenshot_20260119_123143.png
-20260119_112431,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6955346,0,D:\dev\SB19\OCR\stell_anino_2024_screenshot_20260119_123254.png
-20260119_112431,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7519171,8838,D:\dev\SB19\OCR\stell_di_ko_masabi_2024_screenshot_20260119_123315.png
-20260119_112431,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6433574,8323,D:\dev\SB19\OCR\stell_classic_2024_screenshot_20260119_123335.png
-20260119_112431,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4686492,4758,D:\dev\SB19\OCR\stell_room_stripped_2024_screenshot_20260119_123355.png
-20260119_112431,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14838018,10006,D:\dev\SB19\OCR\justin_surreal_2024_screenshot_20260119_123415.png
-20260119_112431,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5373985,4238,D:\dev\SB19\OCR\justin_sunday_morning_2024_screenshot_20260119_123436.png
-20260119_112431,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8708409,7844,D:\dev\SB19\OCR\justin_kaibigan_2024_screenshot_20260119_123456.png
-20260119_112431,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1537229,3281,D:\dev\SB19\OCR\justin_palayo_2024_screenshot_20260119_123516.png
-20260119_112431,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,694302,2130,D:\dev\SB19\OCR\justin_silangan_2024_screenshot_20260119_123537.png
-20260119_112431,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7467509,7164,D:\dev\SB19\OCR\justin_sampung_mga_daliri_2025_screenshot_20260119_123557.png
-20260119_112431,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6942522,8915,D:\dev\SB19\OCR\sb19_gento_from_the_first_take_2023_screenshot_20260119_123617.png
-20260119_112431,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5108206,6752,D:\dev\SB19\OCR\sb19_mapa_from_the_first_take_2023_screenshot_20260119_123637.png
-20260119_112431,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1897168,18587,D:\dev\SB19\OCR\sb19_dam_from_the_first_take_2025_screenshot_20260119_123658.png
-20260119_112431,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1982758,23850,D:\dev\SB19\OCR\sb19_time_from_the_first_take_2025_screenshot_20260119_123717.png
-20260119_112431,No Stopping You (Remix),SB19,2021,Single (Love at First Stream OST),Jayda,https://open.spotify.com/track/1dPLpa30IWMBqok6sIKDiP,8668249,0,D:\dev\SB19\OCR\sb19_no_stopping_you_remix_2021_screenshot_20260119_123827.png
-20260119_112431,Moonlight (Ian Asher Club Mix),SB19,2024,Single,"Ian Asher, Terry Zhong",https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc,2905105,3003,D:\dev\SB19\OCR\sb19_moonlight_ian_asher_club_mix_2024_screenshot_20260119_123847.png
-20260119_112431,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2678503,4118,D:\dev\SB19\OCR\sb19_umaaligid_extended_ver_2025_screenshot_20260119_123908.png
-20260119_112431,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,859165,359,D:\dev\SB19\OCR\sb19_love_yours_dior_realbros_remix_2022_screenshot_20260119_123928.png
-20260119_112431,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6248128,4532,D:\dev\SB19\OCR\sb19_what_extended_version_2021_screenshot_20260119_123948.png
+20260119_112431,'Di Ko Masabi,Stell,2024,Room EP,,https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe,7519171
+20260119_112431,'Wag Mong Ikunot Ang Iyong Noo,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71,9374642
+20260119_112431,1999,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg,6151952
+20260119_112431,8TonBall,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7AqrfyOdFWPnjQrgzWzcUz,15519949
+20260119_112431,AKALA,PABLO,2024,Single,Josue,https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY,5348249
+20260119_112431,Ace Your World,SB19,2023,Promotional (Acer),Acer Philippines, Sarah Geronimo,https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9,3069260
+20260119_112431,Alab (Burning),SB19,2019,Get in the Zone,,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,22455724
+20260119_112431,Anino,Stell,2024,Room EP,,https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF,6955346
+20260119_112431,Ating Pasko,SB19,2024,Promotional,G22,https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN,2422847
+20260119_112431,Bazinga,SB19,2021,Pagsibol,,https://open.spotify.com/track/5QZw4F3N3PvuKNKHm9L20b,31583695
+20260119_112431,Blessed,PABLO,2024,LAON,,https://open.spotify.com/track/4hdPboEAxOZjaaHML4q62u,4001758
+20260119_112431,Breathe (Outro),PABLO,2024,ALON,,https://open.spotify.com/track/2lKyuf60Q5qSwTF0dl7qM6,1882352
+20260119_112431,Bulan,FELIP,2022,Single,,https://open.spotify.com/track/2qYmu6Obx3NW1VeNOiCFMK,6653880
+20260119_112431,Burn The Flame,SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/3mvN8n8mg7X41CbGvc7xYU,2796702
+20260119_112431,Burn The Flame (Instrumental),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/1MLMEY4ahXUjTcmi01s4jA,132998
+20260119_112431,Burn The Flame (Karaoke Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT,185410
+20260119_112431,Burn The Flame (Taglish Version),SB19,2025,Single (Honor of Kings),Honor of Kings,https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy,779257
+20260119_112431,Butata,PABLO,2024,LAON,,https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D,6593060
+20260119_112431,CRIMINAL,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5,6630365
+20260119_112431,Christmas Party (SB19 Version),SB19,2022,Single (Cover),,https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj,4432764
+20260119_112431,Classic,Stell,2024,Room EP,,https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ,6433574
+20260119_112431,Crimzone,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O,25157773
+20260119_112431,DAM,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1NNsL6tYk06TqTea3mKB9P,59695684
+20260119_112431,DAM (Extended Ver.),SB19,2025,Simula at Wakas,,https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6,18581417
+20260119_112431,DAM - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs,1897168
+20260119_112431,DETERMINADO,PABLO,2024,Single,Josue,https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw,6286539
+20260119_112431,DRINKSMOKE,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1,5235571
+20260119_112431,Dobleng GV sa FunPasko (Noon, Ngayon, Palagi),SB19,2021,Promotional (TM),The Juans,https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I,670580
+20260119_112431,Don't Care,PABLO,2024,LAON,,https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK,2758661
+20260119_112431,Drowning in the Water,PABLO,2024,ALON,,https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H,5563399
+20260119_112431,Dungka!,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7mqsPvhSR1CtY6PkTf1YVy,27186580
+20260119_112431,FLYYY,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl,3492465
+20260119_112431,Fake Faces,FELIP,2024,Single,,https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO,8726582
+20260119_112431,Freedom,SB19,2023,Pagtatag!,,https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E,16279412
+20260119_112431,G Pa Rin Ang Pasko,SB19,2021,Promotional (GCash),GCash,https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM,796732
+20260119_112431,GENTO - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2,6942522
+20260119_112431,Gento,SB19,2023,Pagtatag!,,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,75359060
+20260119_112431,Go Up,SB19,2019,Get in the Zone,,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,23472894
+20260119_112431,Hanggang Sa Huli,SB19,2020,Get in the Zone,,https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6,32084909
+20260119_112431,Hanggang Sa Huli (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0,2308744
+20260119_112431,Honest,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy,2614269
+20260119_112431,I Want You,SB19,2023,Pagtatag!,,https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f,31342361
+20260119_112431,ID,FELIP,2025,Featured,SKY-HI, RYOKI, RYUKI, JIMMY,https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL,2379854
+20260119_112431,Ikako,SB19,2020,Pagsibol,,https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o,14615251
+20260119_112431,Ilaw,SB19,2023,Pagtatag!,,https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl,19546260
+20260119_112431,KALAKAL,SB19,2024,Single,Gloc-9,https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP,21546696
+20260119_112431,KAWASAKI,FELIP,2025,Featured,ONE OR EIGHT, thủy,https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy,1630500
+20260119_112431,Kabataang Pinoy,SB19,2022,Single,BINI,https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ,9069360
+20260119_112431,Kaibigan,justin,2024,Single,,https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma,8708409
+20260119_112431,Kanako,FELIP,2023,Single,,https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i,9686511
+20260119_112431,Kapangyarihan,SB19,2021,Featured,Ben&Ben,https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN,22890583
+20260119_112431,Kelan,PABLO,2024,ALON,Josue,https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs,2411340
+20260119_112431,Kumunoy,PABLO,2024,ALON,,https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X,3896350
+20260119_112431,LIHAM,SB19,2023,Pagtatag!,,https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb,19942007
+20260119_112431,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17391725
+20260119_112431,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17388324
+20260119_112431,Ligaya,SB19,2021,Single (Christmas),,https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O,9651328
+20260119_112431,Lights Out,JOSH CULLEN,2024,Lost & Found,Mo Mitchell,https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3,1925396
+20260119_112431,Live It Up,SB19,2021,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk,3906952
+20260119_112431,Liwanag sa Dilim (from Incognito),PABLO,2025,Single (OST),,https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ,6261057
+20260119_112431,Love Goes,SB19,2020,Get in the Zone,,https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro,11058504
+20260119_112431,Love Goes (EDM Version),SB19,2020,Get in the Zone,,https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA,7085895
+20260119_112431,Love Yours,SB19,2021,Featured,Ohwon Lee,https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R,5475090
+20260119_112431,Love Yours (DIOR & RealBros Remix),SB19,2022,Featured,Ohwon Lee,https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG,859165
+20260119_112431,MAPA,SB19,2021,Pagsibol,,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,85558197
+20260119_112431,MAPA (Band Version),SB19,2021,Single,Ben&Ben,https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS,27816568
+20260119_112431,MAPA (Indonesian Version),SB19,2025,Single,Aruma,https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf,7297666
+20260119_112431,MAPA - From THE FIRST TAKE,SB19,2023,THE FIRST TAKE,,https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v,5108206
+20260119_112431,MICTEST,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR,4200543
+20260119_112431,Make It Merry, I-GCash Mo,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD,973739
+20260119_112431,Make Your Green Mark,SB19,2022,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1,2446894
+20260119_112431,Mana,SB19,2021,Pagsibol,,https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m,20633316
+20260119_112431,Merry Munchkins (SB19 Version),SB19,2021,Promotional (Dunkin'),Dunkin' Philippines,https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS,2729657
+20260119_112431,Micha!,PABLO,2024,LAON,,https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo,3410737
+20260119_112431,Moonlight,SB19,2024,Single,Ian Asher, Terry Zhong,https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd,22469958
+20260119_112431,Moving Closer,FELIP,2023,Single,,https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6,10264664
+20260119_112431,Neumun,PABLO,2024,LAON,,https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2,3631597
+20260119_112431,No Control,JOSH CULLEN,2024,Lost & Found,(e)motion engine,https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt,2167907
+20260119_112431,No Control (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/65LG9NubWQtyImpyNXotHo,510584
+20260119_112431,No Stopping You,SB19,2021,Single (Love at First Stream OST),,https://open.spotify.com/track/3KDOf2p1DrKhiqX78R82sh,8675484
+20260119_112431,No Stopping You (Remix),SB19,2021,Single (Love at First Stream OST),Jayda,https://open.spotify.com/track/1dPLpa30IWMBqok6sIKDiP,8668249
+20260119_112431,Nyebe,SB19,2022,Single,,https://open.spotify.com/track/6aLjE6peuaJQRWRgfjxrRw,17933487
+20260119_112431,Pagdali,FELIP,2024,Single,PLAYERTWO,https://open.spotify.com/track/7fMR5ryCo3m38yyj1PCym4,3383543
+20260119_112431,Pakiusap Lang,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/6trU06kJgdYaPqRUvz5K9e,5237551
+20260119_112431,Palayo,FELIP,2021,Single,,https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX,12282895
+20260119_112431,Palayo,justin,2024,Single,,https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj,1537229
+20260119_112431,Presyon,PABLO,2024,ALON,,https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP,2622203
+20260119_112431,Push Ang Pusuan,SB19,2021,Promotional (TM),The Juans, Matthaios,https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi,3437679
+20260119_112431,Puyat,PABLO,2024,LAON,,https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE,3183954
+20260119_112431,Quit,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/7oIQWmbKShhEt2yTSBxNpu,16593447
+20260119_112431,ROCKSTA,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr,6373603
+20260119_112431,Re: Thinkin' About You,JOSH CULLEN,2024,Featured,H1-KEY,https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6,4208822
+20260119_112431,Ready,SB19,2024,Single,apl.de.ap,https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn,9621890
+20260119_112431,Ready, Set, G!,SB19,2022,Promotional (GCash),GCash, GCash Jr.,https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq,1134886
+20260119_112431,Reset,SB19,2023,Promotional (Acer),Sandara Park,https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp,3154587
+20260119_112431,Room,Stell,2024,Room EP,,https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE,11840251
+20260119_112431,Room (Stripped),Stell,2024,Room EP,,https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn,4686492
+20260119_112431,SLMT,SB19,2021,Pagsibol,,https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K,17342998
+20260119_112431,STRAYDOGS,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe,5558866
+20260119_112431,SUPERIORITY,FELIP,2023,COM•PLEX,,https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT,3669617
+20260119_112431,Sampung Mga Daliri,justin,2025,Single,dwta,https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf,7467509
+20260119_112431,See Me,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t,2876827
+20260119_112431,Shooting for the Stars,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/6q3qzeZgWgoFrV6DmaZr1R,14487751
+20260119_112431,Silangan,justin,2024,Single,,https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b,694302
+20260119_112431,Silent Cries,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER,3794327
+20260119_112431,Silent Cries (Instrumental),JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa,523543
+20260119_112431,Sumaya,JOSH CULLEN,2024,Lost & Found,,https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC,5268342
+20260119_112431,Sunday Morning,justin,2024,Single (Cover),,https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv,5373985
+20260119_112431,Surreal,justin,2024,Single,,https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz,14838018
+20260119_112431,TM Doble Dekada (Samahang Pina-Easy),SB19,2021,Promotional (TM),The Juans, Donnalyn, Matthaios,https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1,2826786
+20260119_112431,Tahanan,SB19,2025,Promotional (Acer),Acer Philippines,https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1,1495221
+20260119_112431,Takbuhan,JOSH CULLEN,2024,Featured,Kael Guerrero,https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1,900567
+20260119_112431,Tambol (Ibang Planeta),PABLO,2024,LAON,,https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux,2480122
+20260119_112431,Team Tayo,SB19,2023,Promotional (TM),The Juans,https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP,1053520
+20260119_112431,The Boy Who Cried Wolf,PABLO,2024,ALON,,https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3,4845468
+20260119_112431,The One,SB19,2022,Promotional (Dunkin'),Dunkin',https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N,8826523
+20260119_112431,Tilaluha,SB19,2018,Get in the Zone,,https://open.spotify.com/track/0fPJsVtCOXqjHxKS9kc13s,23498774
+20260119_112431,Tilaluha (Instrumental),SB19,2020,Get in the Zone,,https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk,2200115
+20260119_112431,Time,SB19,2025,Simula at Wakas,,https://open.spotify.com/track/1OvE4CwaIZJ89Eq0qXGCEF,21494329
+20260119_112431,Time - From THE FIRST TAKE,SB19,2025,THE FIRST TAKE,,https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg,1982758
+20260119_112431,Umaaligid,SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe,12804863
+20260119_112431,Umaaligid (Extended Ver.),SB19,2025,Single,Sarah Geronimo,https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI,2678503
+20260119_112431,WILD TONIGHT,JOSH CULLEN,2023,Single,,https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2,25157773
+20260119_112431,WYAT (Where You At),SB19,2022,Single,,https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu,24915299
+20260119_112431,Wala,PABLO,2024,ALON,,https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD,2855775
+20260119_112431,We Wish You A Merry GCash,SB19,2023,Promotional (GCash),GCash,https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl,1316625
+20260119_112431,What?,SB19,2021,Pagsibol,,https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn,25543477
+20260119_112431,What? - Extended Version,SB19,2021,Pagsibol,,https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL,6248128
+20260119_112431,Win Your Heart,SB19,2022,Single,,https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3,10986647
+20260119_112431,Yoko Na,JOSH CULLEN,2024,Single,Al James,https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC,10307343
+20260119_112431,ache,FELIP,2024,7sins,,https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh,4466849
+20260119_112431,edsa,PABLO,2024,Single,,https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX,7790807
+20260119_112431,envy,FELIP,2024,7sins,,https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm,3393274
+20260119_112431,foes,FELIP,2024,7sins,,https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd,2369836
+20260119_112431,gluttony,FELIP,2024,7sins,PLAYERTWO,https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0,1706117
+20260119_112431,golden hour (SB19 Remix),SB19,2023,Single,JVKE,https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS,20835623
+20260119_112431,greed,FELIP,2024,7sins,,https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28,3286657
+20260119_112431,lust,FELIP,2024,7sins,Cyra Gwynth,https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov,3467473
+20260119_112431,pride,FELIP,2024,7sins,,https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY,1906109
+20260119_112431,sloth,FELIP,2024,7sins,,https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq,2525272
+20260119_112431,wrath,FELIP,2024,7sins,,https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a,2008475
+20260119_144950,La Luna,PABLO,2022,Single,,https://open.spotify.com/track/2UH7vzHodDdXtNyPEeHkb7,17391725,3401,D:\dev\sb19\OCR\pablo_la_luna_2022_screenshot_20260119_145006.png
+20260119_144950,La Luna,PABLO,2024,ALON,,https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3,17391725,3401,D:\dev\sb19\OCR\pablo_la_luna_2024_screenshot_20260119_145026.png
