@@ -19,6 +19,15 @@ python sb19_tracks_streams_rpa.py
 
 echo.
 echo ======================================================================
+echo Running X Poster...
+echo ======================================================================
+
+REM Run X poster to check for updates to post (daily, milestones, spikes)
+REM Weekly summary only posts on Sundays automatically
+python x_poster.py --daily --milestones --spikes
+
+echo.
+echo ======================================================================
 echo Completed at: %date% %time%
 echo ======================================================================
 

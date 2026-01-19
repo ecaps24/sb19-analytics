@@ -17,3 +17,7 @@ OCR/
 # OS
 .DS_Store
 Thumbs.db
+
+# X (Twitter) API credentials - KEEP SECRET
+x_config.json
+x_posted_log.json
