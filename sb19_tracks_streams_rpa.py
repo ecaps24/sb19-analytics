@@ -114,7 +114,12 @@ class SB19TrackStreamsRPA:
         previous = self._get_previous_streams(song_title, artist)
         if previous is None:
             return 0  # No previous data, can't calculate daily change
-        return max(0, current_streams - previous)  # Ensure non-negative
+        daily_change = max(0, current_streams - previous)  # Ensure non-negative
+        # If change > 10% of total streams, it's likely an OCR error - set to 0
+        if current_streams > 0 and daily_change / current_streams > 0.1:
+            print(f"[WARN] Change ({daily_change:,}) > 10% of total ({current_streams:,}) - setting to 0")
+            return 0
+        return daily_change
 
     def _validate_streams(self, current_streams: int, song_title: str, artist: str) -> tuple[bool, str]:
         """
