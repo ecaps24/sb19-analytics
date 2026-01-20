@@ -1791,6 +1791,10 @@
                             );
                             album = meta ? meta.album : '';
                         }
+                        // Handle grouped Promotional filter
+                        if (this.albumFilter === 'Promotional') {
+                            return album.startsWith('Promotional');
+                        }
                         return album === this.albumFilter;
                     });
                 }
@@ -1933,6 +1937,10 @@
                         );
                         album = meta ? meta.album : 'Other';
                     }
+                    // Group all promotional tracks together
+                    if (album.startsWith('Promotional')) {
+                        album = 'Promotional';
+                    }
                     if (!albumGroups[album]) {
                         albumGroups[album] = { tracks: [], totalStreams: 0 };
                     }
@@ -2050,6 +2058,10 @@
                             track.song_title.toLowerCase().includes(m.title.toLowerCase())
                         );
                         album = meta ? meta.album : 'Other';
+                    }
+                    // Group all promotional tracks together
+                    if (album.startsWith('Promotional')) {
+                        album = 'Promotional';
                     }
                     if (!albumData[album]) {
                         albumData[album] = { streams: 0, change: 0 };
