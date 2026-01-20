@@ -376,10 +376,8 @@ class SB19TrackStreamsRPA:
                 elif variant == 1:
                     # Variant 1: High contrast with multiple thresholds
                     enhanced = ImageOps.autocontrast(grayscale, cutoff=5)
-                    # Try Otsu-like threshold by finding optimal value
-                    img_array = np.array(enhanced)
-                    threshold = np.mean(img_array)
-                    binary = enhanced.point(lambda p: 255 if p > threshold else 0)
+                    # Use fixed threshold (simpler, no numpy needed)
+                    binary = enhanced.point(lambda p: 255 if p > 160 else 0)
                     processed = ImageOps.invert(binary)
                 else:
                     # Variant 2: Sharpen and enhance
