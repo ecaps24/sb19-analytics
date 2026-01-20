@@ -2119,7 +2119,9 @@
                             data: sortedAlbums.map(a => a[1]),
                             backgroundColor: getBackgroundColors(),
                             borderRadius: 6,
-                            hoverBackgroundColor: colors.map(c => c.replace(/0\.[58]/, '1'))
+                            hoverBackgroundColor: colors.map(c => c.replace(/0\.[58]/, '1')),
+                            categoryPercentage: 0.9,
+                            barPercentage: 0.9
                         }]
                     },
                     options: {
@@ -2127,7 +2129,7 @@
                         maintainAspectRatio: false,
                         indexAxis: 'y',
                         layout: {
-                            padding: { right: 70 }
+                            padding: { right: 50 }
                         },
                         onClick: (event, elements) => {
                             if (elements.length > 0) {
@@ -2325,7 +2327,9 @@
                     borderRadius: 6,
                     hoverBackgroundColor: colors.map(c => c.replace('0.8', '1')),
                     xAxisID: 'x',
-                    order: 2
+                    order: 2,
+                    categoryPercentage: 0.9,
+                    barPercentage: 0.9
                 }];
 
                 // Add listeners dataset if toggle is on
@@ -2407,7 +2411,7 @@
                         maintainAspectRatio: false,
                         indexAxis: 'y',
                         layout: {
-                            padding: { right: 70 }
+                            padding: { right: 50 }
                         },
                         onClick: (event, elements) => {
                             if (elements.length > 0) {
@@ -2900,7 +2904,9 @@
                             backgroundColor: colors,
                             borderColor: borderColors,
                             borderWidth: 1,
-                            borderRadius: 4
+                            borderRadius: 4,
+                            categoryPercentage: 0.9,
+                            barPercentage: 0.9
                         }]
                     },
                     options: {

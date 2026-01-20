@@ -104,7 +104,7 @@ def load_streams_data():
     """Load and parse streams CSV data."""
     data = []
     with open(STREAMS_FILE, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(f, delimiter=";")
         for row in reader:
             try:
                 streams = int(row["streams"]) if row["streams"] else 0
@@ -125,7 +125,7 @@ def load_listeners_data():
     """Load and parse monthly listeners CSV data."""
     data = []
     with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(f, delimiter=";")
         for row in reader:
             try:
                 listeners = int(row["monthly_listeners"]) if row["monthly_listeners"] else 0
