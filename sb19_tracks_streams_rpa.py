@@ -8,7 +8,22 @@ from datetime import datetime
 
 import pyautogui
 import pytesseract
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageFilter
+
+try:
+    import numpy as np
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
+    print("[WARN] OpenCV/numpy not available - using basic image processing")
+
+try:
+    import easyocr
+    EASYOCR_AVAILABLE = True
+except ImportError:
+    EASYOCR_AVAILABLE = False
+    print("[WARN] EasyOCR not available - using Tesseract only")
 
 try:
     import pygetwindow as gw
@@ -30,6 +45,9 @@ class SB19TrackStreamsRPA:
             pytesseract.pytesseract.tesseract_cmd = self.tesseract_path
         else:
             print(f"[WARN] Tesseract executable not found at {self.tesseract_path}")
+
+        # Initialize EasyOCR reader (lazy load to avoid slow startup)
+        self.easyocr_reader = None
 
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.output_dir = os.path.join(self.base_dir, "OCR")
@@ -319,8 +337,15 @@ class SB19TrackStreamsRPA:
             print(f"Error capturing screenshot: {exc}")
             return "", timestamp
 
-    def prepare_ocr_image(self, screenshot_path: str, slug: str, timestamp: str) -> str:
-        processed_filename = f"{slug}_streams_region_{timestamp}.png"
+    def prepare_ocr_image(self, screenshot_path: str, slug: str, timestamp: str, variant: int = 0) -> str:
+        """
+        Prepare image for OCR with multiple preprocessing variants.
+        variant 0: Adaptive threshold (best for most cases)
+        variant 1: High contrast binary
+        variant 2: Original with sharpening
+        """
+        suffix = f"_v{variant}" if variant > 0 else ""
+        processed_filename = f"{slug}_streams_region_{timestamp}{suffix}.png"
         processed_path = os.path.join(self.output_dir, processed_filename)
 
         try:
@@ -334,18 +359,41 @@ class SB19TrackStreamsRPA:
                 bottom = int(height * 0.40)
                 cropped = img.crop((left, top, right, bottom))
 
-                # Image preprocessing for better OCR
+                # Convert to grayscale
                 grayscale = ImageOps.grayscale(cropped)
-                enhanced = ImageOps.autocontrast(grayscale)
-                binary = enhanced.point(lambda p: 255 if p > 180 else 0)
-                inverted = ImageOps.invert(binary)
+
+                if variant == 0 and CV2_AVAILABLE:
+                    # Variant 0: Adaptive thresholding with OpenCV
+                    img_array = np.array(grayscale)
+                    # Apply adaptive threshold
+                    binary = cv2.adaptiveThreshold(
+                        img_array, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                        cv2.THRESH_BINARY, 11, 2
+                    )
+                    # Denoise
+                    denoised = cv2.fastNlMeansDenoising(binary, None, 10, 7, 21)
+                    processed = Image.fromarray(denoised)
+                elif variant == 1:
+                    # Variant 1: High contrast with multiple thresholds
+                    enhanced = ImageOps.autocontrast(grayscale, cutoff=5)
+                    # Try Otsu-like threshold by finding optimal value
+                    img_array = np.array(enhanced)
+                    threshold = np.mean(img_array)
+                    binary = enhanced.point(lambda p: 255 if p > threshold else 0)
+                    processed = ImageOps.invert(binary)
+                else:
+                    # Variant 2: Sharpen and enhance
+                    sharpened = grayscale.filter(ImageFilter.SHARPEN)
+                    enhanced = ImageOps.autocontrast(sharpened, cutoff=2)
+                    binary = enhanced.point(lambda p: 255 if p > 180 else 0)
+                    processed = ImageOps.invert(binary)
 
                 # Upscale for better OCR accuracy
-                upscale_factor = 2
+                upscale_factor = 3  # Increased from 2
                 resampling_attr = getattr(Image, "Resampling", Image)
                 resample_mode = getattr(resampling_attr, "LANCZOS", Image.LANCZOS)
-                resized = inverted.resize(
-                    (inverted.width * upscale_factor, inverted.height * upscale_factor),
+                resized = processed.resize(
+                    (processed.width * upscale_factor, processed.height * upscale_factor),
                     resample=resample_mode,
                 )
                 resized.save(processed_path)
@@ -382,29 +430,126 @@ class SB19TrackStreamsRPA:
                 return digits
         return None
 
-    def extract_streams(self, screenshot_path: str, slug: str, timestamp: str) -> tuple[str | None, str, str]:
-        print("Step 3: Performing OCR to extract total streams...")
-        processed_path = self.prepare_ocr_image(screenshot_path, slug, timestamp)
+    def _get_easyocr_reader(self):
+        """Lazy load EasyOCR reader to avoid slow startup."""
+        if self.easyocr_reader is None and EASYOCR_AVAILABLE:
+            print("[INFO] Initializing EasyOCR (first time only)...")
+            self.easyocr_reader = easyocr.Reader(['en'], gpu=False)
+        return self.easyocr_reader
 
+    def _extract_with_tesseract(self, image_path: str, config: str) -> tuple[str | None, str, float]:
+        """Extract streams using Tesseract with confidence score."""
         try:
-            text = pytesseract.image_to_string(Image.open(processed_path), config="--oem 3 --psm 6")
+            # Get detailed data with confidence
+            data = pytesseract.image_to_data(Image.open(image_path), config=config, output_type=pytesseract.Output.DICT)
+            text = pytesseract.image_to_string(Image.open(image_path), config=config)
+
+            # Calculate average confidence for numeric characters
+            confidences = []
+            for i, word in enumerate(data['text']):
+                if word.strip() and any(c.isdigit() for c in word):
+                    conf = int(data['conf'][i])
+                    if conf > 0:  # -1 means no confidence
+                        confidences.append(conf)
+
+            avg_confidence = sum(confidences) / len(confidences) if confidences else 0
             streams = self._parse_streams(text)
 
-            # Fallback: try full screenshot if cropped region fails
-            if not streams and processed_path != screenshot_path:
-                fallback_text = pytesseract.image_to_string(Image.open(screenshot_path), config="--oem 3 --psm 6")
-                streams = self._parse_streams(fallback_text)
-                text = text + "\n----\nFallback:\n" + fallback_text
-
-            if streams:
-                print(f"[OK] Total streams detected: {streams}")
-            else:
-                print("[WARN] Unable to detect total streams from OCR.")
-
-            return streams, text, processed_path
+            return streams, text, avg_confidence
         except Exception as exc:
-            print(f"Error during OCR: {exc}")
-            return None, "", processed_path
+            return None, str(exc), 0
+
+    def _extract_with_easyocr(self, image_path: str) -> tuple[str | None, str, float]:
+        """Extract streams using EasyOCR with confidence score."""
+        reader = self._get_easyocr_reader()
+        if reader is None:
+            return None, "EasyOCR not available", 0
+
+        try:
+            results = reader.readtext(image_path)
+            text_parts = []
+            confidences = []
+
+            for (bbox, text, conf) in results:
+                text_parts.append(text)
+                if any(c.isdigit() for c in text):
+                    confidences.append(conf)
+
+            full_text = " ".join(text_parts)
+            avg_confidence = sum(confidences) / len(confidences) * 100 if confidences else 0
+            streams = self._parse_streams(full_text)
+
+            return streams, full_text, avg_confidence
+        except Exception as exc:
+            return None, str(exc), 0
+
+    def extract_streams(self, screenshot_path: str, slug: str, timestamp: str) -> tuple[str | None, str, str]:
+        print("Step 3: Performing OCR to extract total streams...")
+
+        # Tesseract configs to try (digit whitelist for better accuracy)
+        tesseract_configs = [
+            "--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789,plays",  # Digit whitelist
+            "--oem 3 --psm 7 -c tessedit_char_whitelist=0123456789,",       # Single line mode
+            "--oem 3 --psm 6",                                               # Default
+            "--oem 1 --psm 6",                                               # LSTM only
+        ]
+
+        all_results = []
+        all_text = []
+        processed_path = None
+
+        # Try multiple preprocessing variants
+        for variant in range(3):
+            variant_path = self.prepare_ocr_image(screenshot_path, slug, timestamp, variant)
+            if processed_path is None:
+                processed_path = variant_path
+
+            # Try each Tesseract config
+            for config in tesseract_configs:
+                streams, text, confidence = self._extract_with_tesseract(variant_path, config)
+                if streams:
+                    all_results.append((streams, confidence, f"Tesseract v{variant} ({config[:20]}...)"))
+                    all_text.append(f"[Tesseract v{variant}] conf={confidence:.1f}%: {text[:100]}")
+
+        # Try EasyOCR as backup
+        if EASYOCR_AVAILABLE:
+            for variant in range(2):  # Try first 2 variants with EasyOCR
+                variant_path = self.prepare_ocr_image(screenshot_path, slug, timestamp, variant)
+                streams, text, confidence = self._extract_with_easyocr(variant_path)
+                if streams:
+                    all_results.append((streams, confidence, f"EasyOCR v{variant}"))
+                    all_text.append(f"[EasyOCR v{variant}] conf={confidence:.1f}%: {text[:100]}")
+
+        # Select best result based on confidence and consensus
+        final_text = "\n".join(all_text)
+
+        if not all_results:
+            # Fallback: try full screenshot
+            fallback_text = pytesseract.image_to_string(Image.open(screenshot_path), config="--oem 3 --psm 6")
+            streams = self._parse_streams(fallback_text)
+            if streams:
+                print(f"[OK] Total streams detected (fallback): {streams}")
+                return streams, final_text + f"\n[Fallback]: {fallback_text}", processed_path
+
+            print("[WARN] Unable to detect total streams from OCR.")
+            return None, final_text, processed_path
+
+        # Find consensus or highest confidence result
+        stream_counts = {}
+        for streams, confidence, source in all_results:
+            if streams not in stream_counts:
+                stream_counts[streams] = {"count": 0, "confidence": 0, "sources": []}
+            stream_counts[streams]["count"] += 1
+            stream_counts[streams]["confidence"] = max(stream_counts[streams]["confidence"], confidence)
+            stream_counts[streams]["sources"].append(source)
+
+        # Prefer results that appear multiple times (consensus)
+        best_streams = max(stream_counts.keys(), key=lambda x: (stream_counts[x]["count"], stream_counts[x]["confidence"]))
+        best_info = stream_counts[best_streams]
+
+        print(f"[OK] Total streams detected: {best_streams} (consensus: {best_info['count']}, confidence: {best_info['confidence']:.1f}%)")
+
+        return best_streams, final_text, processed_path
 
     def save_track_result(
         self,
