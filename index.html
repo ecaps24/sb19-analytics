@@ -1492,7 +1492,13 @@
                     // Only calculate change if track exists in BOTH periods
                     // Otherwise change would equal total streams (misleading)
                     if (startData[track] && endData[track]) {
-                        changes[track] = endStreams - startStreams;
+                        const rawChange = endStreams - startStreams;
+                        // If change > 30% of total streams, it's likely an OCR error - set to 0
+                        if (endStreams > 0 && Math.abs(rawChange) / endStreams > 0.3) {
+                            changes[track] = 0;
+                        } else {
+                            changes[track] = rawChange;
+                        }
                     } else {
                         changes[track] = 0; // No change data available
                     }
