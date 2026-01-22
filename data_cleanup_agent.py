@@ -25,6 +25,7 @@ CONFIG = {
     'max_daily_increase_percent': 200,  # Flag if daily increase > 200% of average
     'max_daily_increase_absolute': 500000,  # Flag if daily increase > 500k streams
     'min_expected_daily_streams': 100,  # Flag if daily streams < 100 for active tracks
+    'anomaly_change_threshold': 0.10,  # 10% - if change > this % of total, likely OCR error
 
     # Monthly listeners anomaly detection
     'max_listener_change_percent': 50,  # Flag if change > 50% in one day
@@ -64,10 +65,10 @@ class DataCleanupAgent:
         else:
             print(f"  WARNING: Streams file not found: {self.streams_file}")
 
-        # Load monthly listeners data
+        # Load monthly listeners data (uses comma delimiter)
         if os.path.exists(self.listeners_file):
             with open(self.listeners_file, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f, delimiter=';')
+                reader = csv.DictReader(f, delimiter=',')
                 self.listeners_data = list(reader)
             print(f"  Loaded {len(self.listeners_data)} listener records")
         else:
@@ -588,6 +589,182 @@ class DataCleanupAgent:
 
         print(f"  Found {duplicate_count} duplicate entry issues")
 
+    def get_anomaly_tracks(self) -> List[Dict]:
+        """
+        Get tracks with anomalous data that need re-scraping.
+        Anomalies include:
+        - Streams decreased (should never happen)
+        - Change > 10% of total streams (likely OCR error)
+        - Zero change (likely OCR fallback)
+        """
+        anomaly_tracks = []
+        seen_links = set()
+
+        # Group streams by track (spotify_link as unique identifier)
+        tracks_by_link: Dict[str, List[Dict]] = defaultdict(list)
+
+        for row in self.streams_data:
+            spotify_link = row.get('spotify_link', '').strip()
+            if spotify_link:
+                tracks_by_link[spotify_link].append(row)
+
+        # Sort each track's history by timestamp
+        for link in tracks_by_link:
+            tracks_by_link[link].sort(key=lambda x: x.get('timestamp', ''))
+
+        # Get the two most recent dates
+        all_dates = set()
+        for row in self.streams_data:
+            date_key = self._get_date_key(row.get('timestamp', ''))
+            if date_key:
+                all_dates.add(date_key)
+
+        if len(all_dates) < 2:
+            return anomaly_tracks
+
+        sorted_dates = sorted(all_dates, reverse=True)
+        latest_date = sorted_dates[0]
+        previous_date = sorted_dates[1]
+
+        threshold = CONFIG['anomaly_change_threshold']
+
+        for link, history in tracks_by_link.items():
+            # Get entries for the two most recent dates
+            latest_entry = None
+            previous_entry = None
+
+            for row in history:
+                date_key = self._get_date_key(row.get('timestamp', ''))
+                if date_key == latest_date:
+                    latest_entry = row
+                elif date_key == previous_date:
+                    previous_entry = row
+
+            if latest_entry and previous_entry:
+                latest_streams = self._parse_int(latest_entry.get('streams', '0'))
+                previous_streams = self._parse_int(previous_entry.get('streams', '0'))
+
+                is_anomaly = False
+                reason = ""
+
+                # Check 1: Streams decreased (should never happen)
+                if latest_streams < previous_streams:
+                    is_anomaly = True
+                    reason = f"decreased from {previous_streams:,} to {latest_streams:,}"
+
+                # Check 2: Zero change (likely OCR fallback)
+                elif latest_streams == previous_streams and latest_streams > 0:
+                    is_anomaly = True
+                    reason = f"zero change (both {latest_streams:,})"
+
+                # Check 3: Change > threshold of total streams (likely OCR error)
+                elif latest_streams > 0 and previous_streams > 0:
+                    change = latest_streams - previous_streams
+                    if change > 0 and change / latest_streams > threshold:
+                        is_anomaly = True
+                        reason = f"change ({change:,}) > {threshold*100:.0f}% of total ({latest_streams:,})"
+
+                if is_anomaly and link not in seen_links:
+                    seen_links.add(link)
+                    anomaly_tracks.append({
+                        'song_title': latest_entry.get('song_title', '').strip(),
+                        'artist': latest_entry.get('artist', '').strip(),
+                        'spotify_link': link,
+                        'latest_streams': latest_streams,
+                        'previous_streams': previous_streams,
+                        'reason': reason,
+                        'date': latest_date
+                    })
+
+        return anomaly_tracks
+
+    def fix_anomaly_tracks(self, dry_run: bool = False) -> Tuple[int, int]:
+        """
+        Fix tracks with anomalous data by running the RPA scraper.
+
+        Returns: (processed_count, failed_count)
+        """
+        anomaly_tracks = self.get_anomaly_tracks()
+
+        if not anomaly_tracks:
+            print("\nNo anomaly tracks to fix.")
+            return 0, 0
+
+        print(f"\nFound {len(anomaly_tracks)} tracks with anomalies to fix:")
+        for track in anomaly_tracks:
+            print(f"  - {track['song_title']} by {track['artist']}: {track['reason']}")
+
+        if dry_run:
+            print("\n[DRY RUN] Would re-scrape the above tracks")
+            return len(anomaly_tracks), 0
+
+        # Enrich with track metadata from tracks.csv
+        tracks_meta = {}
+        for track in self.tracks_data:
+            link = track.get('Spotify Link', '').strip()
+            if link:
+                tracks_meta[link] = track
+
+        # Create temporary CSV for RPA
+        temp_csv_path = os.path.join(self.data_dir, 'temp_anomaly_tracks.csv')
+
+        with open(temp_csv_path, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f, delimiter=';')
+            writer.writerow(['Song Title', 'Artist', 'Year', 'Album/EP/Single',
+                           'Collaborating Artist(s)', 'Spotify Link', 'Streams'])
+            for track in anomaly_tracks:
+                link = track['spotify_link']
+                meta = tracks_meta.get(link, {})
+                writer.writerow([
+                    meta.get('Song Title', track['song_title']),
+                    meta.get('Artist', track['artist']),
+                    meta.get('Year', ''),
+                    meta.get('Album/EP/Single', ''),
+                    meta.get('Collaborating Artist(s)', ''),
+                    link,
+                    ''
+                ])
+
+        print(f"\nCreated temporary track list: {temp_csv_path}")
+        print(f"Running RPA for {len(anomaly_tracks)} tracks...")
+        print("=" * 60)
+
+        # Run the RPA script
+        rpa_script = os.path.join(self.data_dir, 'sb19_tracks_streams_rpa.py')
+
+        if not os.path.exists(rpa_script):
+            print(f"ERROR: RPA script not found: {rpa_script}")
+            return 0, len(anomaly_tracks)
+
+        try:
+            result = subprocess.run(
+                [sys.executable, rpa_script, temp_csv_path, '--force'],
+                cwd=self.data_dir,
+                capture_output=False,
+                text=True
+            )
+
+            if result.returncode == 0:
+                print("\n" + "=" * 60)
+                print(f"RPA completed successfully for {len(anomaly_tracks)} tracks")
+                return len(anomaly_tracks), 0
+            else:
+                print(f"\nRPA completed with errors (exit code: {result.returncode})")
+                return len(anomaly_tracks), 0
+
+        except Exception as e:
+            print(f"Error running RPA: {e}")
+            return 0, len(anomaly_tracks)
+
+        finally:
+            # Clean up temp file
+            if os.path.exists(temp_csv_path):
+                try:
+                    os.remove(temp_csv_path)
+                    print(f"Cleaned up temporary file: {temp_csv_path}")
+                except Exception:
+                    pass
+
     def check_zero_change_tracks(self) -> List[Dict]:
         """Check for tracks with zero change between the last two days (likely OCR fallback)"""
         print("\nChecking for zero-change tracks...")
@@ -905,9 +1082,14 @@ def main():
         help='Automatically fix zero-change tracks by running RPA'
     )
     parser.add_argument(
+        '--fix-anomalies',
+        action='store_true',
+        help='Automatically fix all anomalous tracks (decreased, >10%% change, zero change) by running RPA'
+    )
+    parser.add_argument(
         '--dry-run',
         action='store_true',
-        help='Show what would be fixed without actually running RPA (use with --fix)'
+        help='Show what would be fixed without actually running RPA (use with --fix or --fix-anomalies)'
     )
 
     args = parser.parse_args()
@@ -915,11 +1097,29 @@ def main():
     # Run the agent
     agent = DataCleanupAgent(data_dir=args.data_dir)
 
-    if args.fix:
+    if args.fix_anomalies:
         # Load data first
         agent.load_data()
 
-        # Fix zero-change tracks
+        # Fix all anomaly tracks (decreased, >10% change, zero change)
+        processed, failed = agent.fix_anomaly_tracks(dry_run=args.dry_run)
+
+        if not args.dry_run and processed > 0:
+            print(f"\nFixed {processed} tracks. Re-running checks...")
+            # Reload data and run checks
+            agent.streams_data = []
+            agent.issues = []
+            issues = agent.run_all_checks()
+        else:
+            # Just run checks without fixing
+            agent.issues = []
+            issues = agent.run_all_checks()
+
+    elif args.fix:
+        # Load data first
+        agent.load_data()
+
+        # Fix zero-change tracks only
         processed, failed = agent.fix_zero_change_tracks(dry_run=args.dry_run)
 
         if not args.dry_run and processed > 0:
