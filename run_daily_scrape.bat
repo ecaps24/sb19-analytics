@@ -14,8 +14,16 @@ if exist "venv\Scripts\activate.bat" (
     call venv\Scripts\activate.bat
 )
 
-REM Run the RPA script
-python sb19_tracks_streams_rpa.py
+REM Run the Selenium RPA script for track streams
+python sb19_selenium_rpa.py
+
+echo.
+echo ======================================================================
+echo Running Monthly Listeners RPA...
+echo ======================================================================
+
+REM Run the Selenium RPA script for monthly listeners
+python artist_monthly_listeners_rpa.py
 
 echo.
 echo ======================================================================

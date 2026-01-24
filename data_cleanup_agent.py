@@ -148,6 +148,11 @@ class DataCleanupAgent:
                 prev_streams = self._parse_int(prev.get('streams', '0'))
                 curr_streams = self._parse_int(curr.get('streams', '0'))
                 daily_streams = self._parse_int(curr.get('daily_streams', '0'))
+                
+                # Check status - skip anomaly checks if explicit failure
+                curr_status = curr.get('status', 'OK')
+                if curr_status in ['FAILED', 'VERIFICATION_FAILED']:
+                    continue
 
                 prev_date = self._get_date_key(prev.get('timestamp', ''))
                 curr_date = self._get_date_key(curr.get('timestamp', ''))
@@ -206,7 +211,12 @@ class DataCleanupAgent:
             artist = row.get('artist', '').strip()
             streams = self._parse_int(row.get('streams', '0'))
             timestamp = row.get('timestamp', '')
+            status = row.get('status', 'OK')
             date_key = self._get_date_key(timestamp)
+
+            # Skip checks for failed/verification failed rows
+            if status in ['FAILED', 'VERIFICATION_FAILED']:
+                continue
 
             # Missing song title
             if not song_title:
@@ -589,6 +599,43 @@ class DataCleanupAgent:
 
         print(f"  Found {duplicate_count} duplicate entry issues")
 
+    def check_failed_statuses(self):
+        """Check for rows with non-OK status (FAILED, VERIFICATION_FAILED, FALLBACK)"""
+        print("\nChecking for failed statuses...")
+        
+        failure_count = 0
+        fallback_count = 0
+        
+        for row in self.streams_data:
+            status = row.get('status', 'OK')
+            if status == 'OK':
+                continue
+                
+            song_title = row.get('song_title', '')
+            artist = row.get('artist', '')
+            timestamp = row.get('timestamp', '')
+            reason = row.get('failure_reason', '')
+            
+            if status in ['FAILED', 'VERIFICATION_FAILED']:
+                self._add_issue(
+                    'scrape_failure',
+                    'warning',
+                    f"Scrape failed for '{song_title}' by {artist} at {timestamp}. Status: {status}. Reason: {reason}",
+                    {'song_title': song_title, 'status': status, 'reason': reason, 'timestamp': timestamp}
+                )
+                failure_count += 1
+            elif status == 'FALLBACK':
+                # Info level for fallbacks
+                self._add_issue(
+                    'scrape_fallback',
+                    'info',
+                    f"Used fallback data for '{song_title}' at {timestamp}. Reason: {reason}",
+                    {'song_title': song_title, 'status': status, 'reason': reason}
+                )
+                fallback_count += 1
+                
+        print(f"  Found {failure_count} failures and {fallback_count} fallbacks")
+
     def get_anomaly_tracks(self) -> List[Dict]:
         """
         Get tracks with anomalous data that need re-scraping.
@@ -730,7 +777,7 @@ class DataCleanupAgent:
         print("=" * 60)
 
         # Run the RPA script
-        rpa_script = os.path.join(self.data_dir, 'sb19_tracks_streams_rpa.py')
+        rpa_script = os.path.join(self.data_dir, 'sb19_selenium_rpa.py')
 
         if not os.path.exists(rpa_script):
             print(f"ERROR: RPA script not found: {rpa_script}")
@@ -918,7 +965,7 @@ class DataCleanupAgent:
         print("=" * 60)
 
         # Run the RPA script
-        rpa_script = os.path.join(self.data_dir, 'sb19_tracks_streams_rpa.py')
+        rpa_script = os.path.join(self.data_dir, 'sb19_selenium_rpa.py')
 
         if not os.path.exists(rpa_script):
             print(f"ERROR: RPA script not found: {rpa_script}")
@@ -967,6 +1014,7 @@ class DataCleanupAgent:
         self.check_stale_data()
         self.check_missing_data()
         self.check_duplicate_entries()
+        self.check_failed_statuses()
 
         if not skip_zero_change:
             self.check_zero_change_tracks()

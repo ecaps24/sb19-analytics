@@ -5,6 +5,7 @@ import subprocess
 import time
 import unicodedata
 from datetime import datetime
+from difflib import SequenceMatcher
 
 import pyautogui
 import pytesseract
@@ -34,7 +35,7 @@ except ImportError:
 class SB19TrackStreamsRPA:
     def __init__(self):
         pyautogui.FAILSAFE = True
-        pyautogui.PAUSE = 1.0
+        pyautogui.PAUSE = 0.5  # Reduced from 1.0 for faster execution
 
         self.edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
         if not os.path.exists(self.edge_path):
@@ -55,14 +56,21 @@ class SB19TrackStreamsRPA:
 
         self.track_list_path = os.path.join(self.base_dir, "tracks.csv")
         self.results_csv_path = os.path.join(self.base_dir, "sb19_streams_results.csv")
+        self.audit_log_path = os.path.join(self.base_dir, "rpa_audit_log.csv")
 
         # Load existing results for duplicate checking and daily streams calculation
         self.existing_results = self._load_existing_results()
         self.today_date = datetime.now().strftime("%Y%m%d")
 
+        # Screen dimensions for adaptive region cropping
+        self.screen_width, self.screen_height = pyautogui.size()
+
     def _load_existing_results(self) -> dict:
-        """Load existing results to track previous streams and check for duplicates."""
-        results = {}  # key: (song_title, artist) -> list of {date, streams}
+        """
+        Load existing results to track previous streams and check for duplicates.
+        Keys by spotify_link (primary) or (song_title, artist) (fallback).
+        """
+        results = {}  # key: spotify_link OR (song_title, artist) -> list of entries
 
         if not os.path.exists(self.results_csv_path):
             return results
@@ -73,10 +81,11 @@ class SB19TrackStreamsRPA:
                 for row in reader:
                     song_title = row.get("song_title", "").strip()
                     artist = row.get("artist", "").strip()
+                    spotify_link = row.get("spotify_link", "").strip()
                     timestamp = row.get("timestamp", "").strip()
                     streams_str = row.get("streams", "0").strip()
 
-                    if not song_title or not timestamp:
+                    if not timestamp:
                         continue
 
                     # Extract date from timestamp (YYYYMMDD_HHMMSS -> YYYYMMDD)
@@ -87,7 +96,15 @@ class SB19TrackStreamsRPA:
                     except ValueError:
                         streams = 0
 
-                    key = (song_title.lower(), artist.lower())
+                    # Primary Key: Spotify Link
+                    if spotify_link and spotify_link.startswith("http"):
+                        key = spotify_link
+                    elif song_title and artist:
+                        # Fallback Key: Title + Artist
+                        key = (song_title.lower(), artist.lower())
+                    else:
+                        continue
+
                     if key not in results:
                         results[key] = []
                     results[key].append({"date": date, "streams": streams, "timestamp": timestamp})
@@ -102,22 +119,42 @@ class SB19TrackStreamsRPA:
 
         return results
 
-    def _is_already_scraped_today(self, song_title: str, artist: str) -> bool:
+    def _is_already_scraped_today(self, spotify_link: str, song_title: str, artist: str) -> bool:
         """Check if a track has already been scraped today."""
-        key = (song_title.lower(), artist.lower())
+        # Try primary key first
+        key = spotify_link if spotify_link else (song_title.lower(), artist.lower())
+        
         if key not in self.existing_results:
-            return False
+            # If lookup by link failed, try fallback
+            if spotify_link:
+                fallback_key = (song_title.lower(), artist.lower())
+                if fallback_key in self.existing_results:
+                    key = fallback_key
+                else:
+                    return False
+            else:
+                return False
+
+        if key not in self.existing_results:
+             return False
 
         for entry in self.existing_results[key]:
             if entry["date"] == self.today_date:
                 return True
         return False
 
-    def _get_previous_streams(self, song_title: str, artist: str) -> int | None:
+    def _get_previous_streams(self, spotify_link: str, song_title: str, artist: str) -> int | None:
         """Get the most recent previous streams count for calculating daily change."""
-        key = (song_title.lower(), artist.lower())
+        # Try primary key first
+        key = spotify_link if spotify_link else (song_title.lower(), artist.lower())
+        
         if key not in self.existing_results:
-            return None
+             # Try fallback
+             fallback_key = (song_title.lower(), artist.lower())
+             if fallback_key in self.existing_results:
+                 key = fallback_key
+             else:
+                 return None
 
         # Get entries from previous days (not today)
         previous_entries = [e for e in self.existing_results[key] if e["date"] != self.today_date]
@@ -127,9 +164,9 @@ class SB19TrackStreamsRPA:
         # Return the most recent one
         return previous_entries[-1]["streams"]
 
-    def _calculate_daily_streams(self, current_streams: int, song_title: str, artist: str) -> int:
+    def _calculate_daily_streams(self, current_streams: int, spotify_link: str, song_title: str, artist: str) -> int:
         """Calculate daily streams by comparing with previous day's total."""
-        previous = self._get_previous_streams(song_title, artist)
+        previous = self._get_previous_streams(spotify_link, song_title, artist)
         if previous is None:
             return 0  # No previous data, can't calculate daily change
         daily_change = max(0, current_streams - previous)  # Ensure non-negative
@@ -139,12 +176,18 @@ class SB19TrackStreamsRPA:
             return 0
         return daily_change
 
-    def _validate_streams(self, current_streams: int, song_title: str, artist: str) -> tuple[bool, str]:
+    def _validate_streams(self, current_streams: int, spotify_link: str, song_title: str, artist: str) -> tuple[bool, str]:
         """
         Validate that streams count is reasonable (should be >= previous day).
         Returns (is_valid, message).
         """
-        previous = self._get_previous_streams(song_title, artist)
+        # Sanity Checks
+        if current_streams > 1_500_000_000: # 1.5 Billion limit (SB19's highest is ~200M)
+            return False, f"Sanity Check Failed: {current_streams:,} > 1.5B"
+        if current_streams < 100 and current_streams > 0:
+            return False, f"Sanity Check Failed: {current_streams:,} < 100 (Suspiciously low)"
+
+        previous = self._get_previous_streams(spotify_link, song_title, artist)
         if previous is None:
             return True, "No previous data to compare"
 
@@ -157,6 +200,25 @@ class SB19TrackStreamsRPA:
             return True, "No change from previous"
 
         daily_gain = current_streams - previous
+        
+        # Historical Trend Check
+        # Calculate average daily gain from history if possible
+        key = spotify_link if spotify_link in self.existing_results else (song_title.lower(), artist.lower())
+        if key in self.existing_results:
+            history = self.existing_results[key]
+            if len(history) >= 3:
+                gains = []
+                for i in range(1, len(history)):
+                    g = history[i]["streams"] - history[i-1]["streams"]
+                    if g > 0:
+                        gains.append(g)
+                
+                if gains:
+                    avg_gain = sum(gains) / len(gains)
+                    # If daily gain is huge (>10x average) and > 100k, flag it
+                    if avg_gain > 1000 and daily_gain > (avg_gain * 10) and daily_gain > 100_000:
+                         return False, f"Anomaly: +{daily_gain:,} is >10x avg gain ({int(avg_gain):,})"
+
         return True, f"Valid: +{daily_gain:,} from previous"
 
     @staticmethod
@@ -311,9 +373,99 @@ class SB19TrackStreamsRPA:
         # Wait for Edge to fully close before continuing
         time.sleep(3)
 
+    def prepare_clean_state(self) -> None:
+        """Prepare a clean desktop state before starting browser automation."""
+        print("[PREP] Preparing clean desktop state...")
+
+        # Minimize all windows first (Win+D shows desktop, Win+D again restores)
+        # We'll just ensure Edge is closed
+        self.force_close_edge()
+
+        # Small delay to let system settle
+        time.sleep(1)
+        print("[PREP] Desktop ready")
+
+    def dismiss_browser_popups(self, window=None) -> None:
+        """Dismiss common browser popups (restore session, cookie consent, etc.)."""
+        try:
+            # Press Escape to dismiss any open dialogs/popups
+            pyautogui.press('escape')
+            time.sleep(0.5)
+
+            # Click somewhere in the main content area to dismiss cookie banners
+            # Cookie banners usually have an X or are dismissed by clicking elsewhere
+            if window:
+                # Click in the center-right area (away from sidebar, away from cookie banner)
+                center_x = window.left + int(window.width * 0.7)
+                center_y = window.top + int(window.height * 0.3)
+                pyautogui.click(center_x, center_y)
+                time.sleep(0.3)
+
+            # Press Escape again to close any modal
+            pyautogui.press('escape')
+            time.sleep(0.3)
+
+            print("[OK] Dismissed browser popups")
+        except Exception as exc:
+            print(f"[WARN] Error dismissing popups: {exc}")
+
+    def wait_for_page_load(self, window=None, max_wait: int = 15, stability_checks: int = 3) -> bool:
+        """
+        Wait for page to fully load by checking for visual stability.
+        Takes multiple screenshots and compares them to detect when page stops changing.
+        Returns True if page is stable, False if timeout.
+        """
+        print(f"[WAIT] Waiting for page to load (max {max_wait}s)...")
+
+        if not CV2_AVAILABLE:
+            # Fallback to fixed wait if OpenCV not available
+            print("[WAIT] OpenCV not available, using fixed wait")
+            time.sleep(8)
+            return True
+
+        import hashlib
+
+        def get_screenshot_hash():
+            """Get hash of current screenshot for comparison."""
+            try:
+                if window:
+                    region = (int(window.left), int(window.top), int(window.width), int(window.height))
+                    shot = pyautogui.screenshot(region=region)
+                else:
+                    shot = pyautogui.screenshot()
+
+                # Convert to grayscale and resize for faster comparison
+                gray = ImageOps.grayscale(shot)
+                small = gray.resize((100, 100))
+                return hashlib.md5(small.tobytes()).hexdigest()
+            except Exception:
+                return None
+
+        start_time = time.time()
+        last_hash = None
+        stable_count = 0
+
+        while time.time() - start_time < max_wait:
+            current_hash = get_screenshot_hash()
+
+            if current_hash == last_hash:
+                stable_count += 1
+                if stable_count >= stability_checks:
+                    elapsed = time.time() - start_time
+                    print(f"[WAIT] Page stable after {elapsed:.1f}s")
+                    return True
+            else:
+                stable_count = 0
+
+            last_hash = current_hash
+            time.sleep(1)
+
+        print(f"[WARN] Page load timeout after {max_wait}s")
+        return False
+
     def capture_screenshot(self, slug: str, window=None) -> tuple[str, str]:
         print("Step 2: Capturing screenshot...")
-        time.sleep(3)
+        time.sleep(0.5)  # Brief pause for UI stability
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"{slug}_screenshot_{timestamp}.png"
@@ -340,9 +492,10 @@ class SB19TrackStreamsRPA:
     def prepare_ocr_image(self, screenshot_path: str, slug: str, timestamp: str, variant: int = 0) -> str:
         """
         Prepare image for OCR with multiple preprocessing variants.
-        variant 0: Adaptive threshold (best for most cases)
-        variant 1: High contrast binary
-        variant 2: Original with sharpening
+        variant 0: Adaptive threshold on metadata line (best for stream count)
+        variant 1: Full header region with high contrast
+        variant 2: Metadata line with sharpening
+        variant 3: Title + metadata combined region
         """
         suffix = f"_v{variant}" if variant > 0 else ""
         processed_filename = f"{slug}_streams_region_{timestamp}{suffix}.png"
@@ -352,11 +505,27 @@ class SB19TrackStreamsRPA:
             with Image.open(screenshot_path) as img:
                 width, height = img.size
 
-                # Crop to region where stream count typically appears
-                left = int(width * 0.40)
-                top = int(height * 0.12)
-                right = int(width * 0.95)
-                bottom = int(height * 0.40)
+                # Different crop regions based on variant
+                if variant in [0, 2]:
+                    # Focused on metadata line (Artist • Title • Year • Duration • Streams)
+                    # This line is typically at ~28-38% from top, to the right of album art
+                    left = int(width * 0.35)
+                    top = int(height * 0.24)
+                    right = int(width * 0.92)
+                    bottom = int(height * 0.38)
+                elif variant == 1:
+                    # Broader region including title and metadata
+                    left = int(width * 0.35)
+                    top = int(height * 0.12)
+                    right = int(width * 0.95)
+                    bottom = int(height * 0.42)
+                else:
+                    # variant 3+: Full header region
+                    left = int(width * 0.30)
+                    top = int(height * 0.10)
+                    right = int(width * 0.95)
+                    bottom = int(height * 0.45)
+
                 cropped = img.crop((left, top, right, bottom))
 
                 # Convert to grayscale
@@ -404,28 +573,61 @@ class SB19TrackStreamsRPA:
 
     @staticmethod
     def _parse_streams(text: str) -> str | None:
-        normalized = text.lower()
+        """
+        Parse stream count from OCR text.
+        Spotify format: "Artist • Title • Year • Duration • StreamCount"
+        Example: "SB19 • DAM • 2025 • 3:29 • 59,510,411"
+        """
+        # Clean up common OCR artifacts
+        cleaned = text.replace('\n', ' ').replace('\r', ' ')
+        cleaned = re.sub(r'\s+', ' ', cleaned)
 
-        patterns = [
-            r"([\d,]+\s*plays)",
+        # Priority 1: Look for duration pattern followed by stream count
+        # Pattern: X:XX followed by separator and large number
+        duration_pattern = r'\d{1,2}:\d{2}\s*[•\-·]\s*([\d,]+)'
+        match = re.search(duration_pattern, cleaned)
+        if match:
+            digits = re.sub(r"[^\d]", "", match.group(1))
+            if digits and len(digits) >= 5:  # At least 10,000 streams
+                return digits
+
+        # Priority 2: Look for "plays" or "streams" label
+        normalized = cleaned.lower()
+        label_patterns = [
+            r"([\d,]+)\s*plays",
             r"plays\s*([\d,]+)",
-            r"([\d,]+\s*streams)",
+            r"([\d,]+)\s*streams",
             r"streams\s*([\d,]+)",
         ]
 
-        for pattern in patterns:
+        for pattern in label_patterns:
             match = re.search(pattern, normalized)
             if match:
                 digits = re.sub(r"[^\d]", "", match.group(1))
-                if digits:
+                if digits and len(digits) >= 5:
                     return digits
 
-        # Fallback: grab first number with at least six digits
-        fallback = re.search(r"\b[\d,]{6,}\b", text)
-        if fallback:
-            digits = re.sub(r"[^\d]", "", fallback.group())
-            if digits:
+        # Priority 3: Find the largest number with commas (likely stream count)
+        # Stream counts typically have commas: 59,510,411
+        comma_numbers = re.findall(r'\b\d{1,3}(?:,\d{3})+\b', cleaned)
+        if comma_numbers:
+            # Return the largest one
+            largest = max(comma_numbers, key=lambda x: int(x.replace(',', '')))
+            digits = largest.replace(',', '')
+            if len(digits) >= 5:
                 return digits
+
+        # Priority 4: Fallback - grab largest number with at least 6 digits
+        all_numbers = re.findall(r'\b[\d,]{6,}\b', cleaned)
+        if all_numbers:
+            candidates = []
+            for num in all_numbers:
+                digits = re.sub(r"[^\d]", "", num)
+                if digits and len(digits) >= 5:
+                    candidates.append(digits)
+            if candidates:
+                return max(candidates, key=lambda x: int(x))
+
         return None
 
     def _get_easyocr_reader(self):
@@ -496,8 +698,8 @@ class SB19TrackStreamsRPA:
         all_text = []
         processed_path = None
 
-        # Try multiple preprocessing variants
-        for variant in range(3):
+        # Try multiple preprocessing variants (4 variants now)
+        for variant in range(4):
             variant_path = self.prepare_ocr_image(screenshot_path, slug, timestamp, variant)
             if processed_path is None:
                 processed_path = variant_path
@@ -509,9 +711,9 @@ class SB19TrackStreamsRPA:
                     all_results.append((streams, confidence, f"Tesseract v{variant} ({config[:20]}...)"))
                     all_text.append(f"[Tesseract v{variant}] conf={confidence:.1f}%: {text[:100]}")
 
-        # Try EasyOCR as backup
+        # Try EasyOCR as backup (on first 3 variants - focused regions)
         if EASYOCR_AVAILABLE:
-            for variant in range(2):  # Try first 2 variants with EasyOCR
+            for variant in range(3):
                 variant_path = self.prepare_ocr_image(screenshot_path, slug, timestamp, variant)
                 streams, text, confidence = self._extract_with_easyocr(variant_path)
                 if streams:
@@ -549,6 +751,36 @@ class SB19TrackStreamsRPA:
 
         return best_streams, final_text, processed_path
 
+    def log_audit_event(
+        self,
+        event_type: str,
+        spotify_link: str,
+        song_title: str,
+        artist: str,
+        expected_value: str = "",
+        actual_value: str = "",
+        action_taken: str = "",
+        screenshot_path: str = ""
+    ) -> None:
+        """Log an event to the audit log CSV."""
+        file_exists = os.path.exists(self.audit_log_path)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        try:
+            with open(self.audit_log_path, mode="a", newline="", encoding="utf-8") as csvfile:
+                writer = csv.writer(csvfile)
+                if not file_exists:
+                    writer.writerow([
+                        "timestamp", "event_type", "spotify_link", "song_title", "artist",
+                        "expected_value", "actual_value", "action_taken", "screenshot_path"
+                    ])
+                writer.writerow([
+                    timestamp, event_type, spotify_link, song_title, artist,
+                    expected_value, actual_value, action_taken, screenshot_path
+                ])
+        except Exception as exc:
+            print(f"[WARN] Failed to write to audit log: {exc}")
+
     def save_track_result(
         self,
         run_timestamp: str,
@@ -561,6 +793,8 @@ class SB19TrackStreamsRPA:
         streams: str,
         daily_streams: int,
         screenshot_path: str,
+        status: str = "OK",
+        failure_reason: str = "",
     ) -> None:
         file_exists = os.path.exists(self.results_csv_path)
 
@@ -578,6 +812,8 @@ class SB19TrackStreamsRPA:
                     "streams",
                     "daily_streams",
                     "screenshot_path",
+                    "status",
+                    "failure_reason",
                 ])
             writer.writerow([
                 run_timestamp,
@@ -590,9 +826,11 @@ class SB19TrackStreamsRPA:
                 streams,
                 daily_streams,
                 screenshot_path,
+                status,
+                failure_reason,
             ])
 
-        print(f"[OK] Track result saved to: {self.results_csv_path}")
+        print(f"[OK] Track result saved to: {self.results_csv_path} (Status: {status})")
         if daily_streams > 0:
             print(f"[OK] Daily streams: +{daily_streams:,}")
 
@@ -607,6 +845,118 @@ class SB19TrackStreamsRPA:
             print(f"[INFO] OCR debug output saved to: {debug_path}")
         except Exception as exc:
             print(f"[WARN] Unable to write OCR debug text: {exc}")
+
+    def verify_track_loaded(self, screenshot_path: str, expected_title: str) -> tuple[bool, str, float]:
+        """
+        Verify that the loaded page actually matches the expected track title.
+        Uses multiple strategies to detect the title in the Spotify page.
+        """
+        try:
+            with Image.open(screenshot_path) as img:
+                width, height = img.size
+                all_detected_text = []
+
+                # Helper to run OCR on an image object
+                def run_ocr(image_obj, config="--psm 6"):
+                    try:
+                        if EASYOCR_AVAILABLE and self.easyocr_reader:
+                            import numpy as np
+                            results = self.easyocr_reader.readtext(np.array(image_obj), detail=0)
+                            return " ".join(results)
+                        else:
+                            return pytesseract.image_to_string(image_obj, config=config)
+                    except Exception:
+                        return ""
+
+                # Strategy 1: Focus on the main title area (right of album art)
+                # Spotify layout: album art on left (~35% width), title to the right
+                title_left = int(width * 0.35)
+                title_top = int(height * 0.12)
+                title_right = int(width * 0.85)
+                title_bottom = int(height * 0.35)
+                title_region = img.crop((title_left, title_top, title_right, title_bottom))
+
+                # Preprocess for Spotify's dark theme (white text on dark)
+                gray = ImageOps.grayscale(title_region)
+                # Threshold to get white text
+                binary = gray.point(lambda p: 255 if p > 200 else 0)
+                text1 = run_ocr(binary)
+                if text1.strip():
+                    all_detected_text.append(text1)
+
+                # Also try inverted
+                inverted = ImageOps.invert(gray)
+                text2 = run_ocr(inverted)
+                if text2.strip():
+                    all_detected_text.append(text2)
+
+                # Strategy 2: Look at the metadata line region (contains "Artist • Title • Year")
+                # This is below the main title, typically 25-40% from top
+                meta_left = int(width * 0.35)
+                meta_top = int(height * 0.25)
+                meta_right = int(width * 0.90)
+                meta_bottom = int(height * 0.40)
+                meta_region = img.crop((meta_left, meta_top, meta_right, meta_bottom))
+
+                gray_meta = ImageOps.grayscale(meta_region)
+                binary_meta = gray_meta.point(lambda p: 255 if p > 150 else 0)
+                text3 = run_ocr(binary_meta)
+                if text3.strip():
+                    all_detected_text.append(text3)
+
+                # Combine all detected text
+                detected_text = " ".join(all_detected_text)
+
+            # Normalize for comparison
+            def normalize(text):
+                return re.sub(r'[^a-zA-Z0-9]', '', text.lower())
+
+            clean_expected = normalize(expected_title)
+            clean_detected = normalize(detected_text)
+
+            # Check if expected title appears anywhere in detected text
+            if clean_expected in clean_detected:
+                match_score = 1.0
+            else:
+                # Fuzzy match using multiple strategies
+                # Check if expected appears as substring
+                from difflib import SequenceMatcher
+
+                # Strategy A: Direct ratio
+                direct_ratio = SequenceMatcher(None, clean_expected, clean_detected).ratio()
+
+                # Strategy B: Check if expected title words appear
+                expected_words = set(clean_expected)
+                if len(expected_words) >= 3:
+                    detected_words = set(clean_detected)
+                    word_overlap = len(expected_words & detected_words) / len(expected_words)
+                else:
+                    word_overlap = 0
+
+                # Strategy C: Partial match in beginning
+                start_ratio = SequenceMatcher(
+                    None, clean_expected, clean_detected[:len(clean_expected) + 10]
+                ).ratio() if len(clean_detected) > 0 else 0
+
+                match_score = max(direct_ratio, word_overlap, start_ratio)
+
+            # Lower threshold since we're using multiple detection strategies
+            is_match = match_score > 0.4
+
+            # Log result
+            preview = detected_text[:80].replace('\n', ' ') if detected_text else "(empty)"
+            log_msg = f"track='{expected_title}' detected='{preview}...' score={match_score:.2f}"
+            if is_match:
+                print(f"[VERIFIED] {log_msg}")
+            else:
+                print(f"[VERIFICATION FAILED] {log_msg}")
+
+            return is_match, detected_text, match_score
+
+        except Exception as exc:
+            print(f"[WARN] Verification error: {exc}")
+            # On error, allow processing to continue but flag it
+            return True, f"Verification Error: {exc}", 0.0
 
     def process_track(self, track: dict[str, str], run_timestamp: str, force: bool = False, max_retries: int = 2) -> bool:
         """Process a single track. Returns True if processed, False if skipped."""
@@ -646,19 +996,29 @@ class SB19TrackStreamsRPA:
                 self.force_close_edge()
                 if attempt == max_retries:
                     # Use previous day's streams instead of 0
-                    previous_streams = self._get_previous_streams(song_title, artist)
+                    previous_streams = self._get_previous_streams(spotify_link, song_title, artist)
                     if previous_streams:
                         print(f"[FALLBACK] Browser failed. Using previous day's streams: {previous_streams:,}")
+                        self.log_audit_event(
+                            "browser_failed", spotify_link, song_title, artist,
+                            action_taken="use_fallback"
+                        )
                         self.save_track_result(
                             run_timestamp, song_title, artist, year, album, collab,
                             spotify_link, str(previous_streams), 0, last_screenshot_path or "",
+                            status="FALLBACK", failure_reason="Browser launch failed"
                         )
                         return True
                     else:
                         print(f"[ERROR] Browser failed. No previous data available.")
+                        self.log_audit_event(
+                            "browser_failed", spotify_link, song_title, artist,
+                            action_taken="failed_no_data"
+                        )
                         self.save_track_result(
                             run_timestamp, song_title, artist, year, album, collab,
                             spotify_link, "0", 0, last_screenshot_path or "",
+                            status="FAILED", failure_reason="Browser launch failed"
                         )
                         return False
                 continue
@@ -667,6 +1027,13 @@ class SB19TrackStreamsRPA:
             try:
                 window = self.focus_edge_window()
 
+                # Dismiss any browser popups (restore session, cookie banners)
+                self.dismiss_browser_popups(window)
+
+                # Wait for page to fully load (stability detection)
+                if not self.wait_for_page_load(window, max_wait=12, stability_checks=2):
+                    print("[WARN] Page may not be fully loaded, proceeding anyway...")
+
                 screenshot_path, screenshot_timestamp = self.capture_screenshot(slug, window)
                 last_screenshot_path = screenshot_path or last_screenshot_path
 
@@ -674,19 +1041,29 @@ class SB19TrackStreamsRPA:
                     print(f"[WARN] Screenshot capture failed for {song_title}.")
                     if attempt == max_retries:
                         # Use previous day's streams instead of 0
-                        previous_streams = self._get_previous_streams(song_title, artist)
+                        previous_streams = self._get_previous_streams(spotify_link, song_title, artist)
                         if previous_streams:
                             print(f"[FALLBACK] Screenshot failed. Using previous day's streams: {previous_streams:,}")
+                            self.log_audit_event(
+                                "screenshot_failed", spotify_link, song_title, artist,
+                                action_taken="use_fallback"
+                            )
                             self.save_track_result(
                                 run_timestamp, song_title, artist, year, album, collab,
                                 spotify_link, str(previous_streams), 0, last_screenshot_path,
+                                status="FALLBACK", failure_reason="Screenshot failed"
                             )
                             return True
                         else:
                             print(f"[ERROR] Screenshot failed. No previous data available.")
+                            self.log_audit_event(
+                                "screenshot_failed", spotify_link, song_title, artist,
+                                action_taken="failed_no_data"
+                            )
                             self.save_track_result(
                                 run_timestamp, song_title, artist, year, album, collab,
                                 spotify_link, "0", 0, last_screenshot_path,
+                                status="FAILED", failure_reason="Screenshot failed"
                             )
                             return False
                     continue
@@ -696,6 +1073,31 @@ class SB19TrackStreamsRPA:
                     self.close_edge_window(window)
                     window = None
 
+                # Step 2.5: Verify Track Loaded
+                is_verified, detected_title, match_score = self.verify_track_loaded(screenshot_path, song_title)
+                if not is_verified:
+                    print(f"[WARN] Loaded page does not match expected track '{song_title}'. Detected: '{detected_title}'")
+                    if attempt < max_retries:
+                        print("[RETRY] Retrying due to verification failure...")
+                        self.force_close_edge()
+                        time.sleep(2)
+                        continue
+                    else:
+                        print(f"[ERROR] Verification failed after {max_retries} retries. Marking as VERIFICATION_FAILED.")
+                        
+                        self.log_audit_event(
+                            "verification_failed", spotify_link, song_title, artist,
+                            expected_value=song_title, actual_value=detected_title,
+                            action_taken="skip_track", screenshot_path=screenshot_path
+                        )
+                        # Fail the track explicitly
+                        self.save_track_result(
+                            run_timestamp, song_title, artist, year, album, collab,
+                            spotify_link, "0", 0, screenshot_path,
+                            status="VERIFICATION_FAILED", failure_reason=f"Title mismatch: {detected_title}"
+                        )
+                        return False
+
                 streams, ocr_text, processed_path = self.extract_streams(screenshot_path, slug, screenshot_timestamp)
                 last_ocr_text = ocr_text
 
@@ -703,7 +1105,7 @@ class SB19TrackStreamsRPA:
                     streams_int = int(streams.replace(",", ""))
 
                     # Validate streams against previous data
-                    is_valid, validation_msg = self._validate_streams(streams_int, song_title, artist)
+                    is_valid, validation_msg = self._validate_streams(streams_int, spotify_link, song_title, artist)
                     print(f"[VALIDATION] {validation_msg}")
 
                     if not is_valid:
@@ -714,26 +1116,38 @@ class SB19TrackStreamsRPA:
                             continue  # Retry
                         else:
                             # Use previous day's streams instead of 0
-                            previous_streams = self._get_previous_streams(song_title, artist)
+                            previous_streams = self._get_previous_streams(spotify_link, song_title, artist)
                             if previous_streams:
                                 print(f"[FALLBACK] Using previous day's streams: {previous_streams:,}")
+                                self.log_audit_event(
+                                    "validation_failed", spotify_link, song_title, artist,
+                                    expected_value=f">={previous_streams}", actual_value=str(streams_int),
+                                    action_taken="use_fallback"
+                                )
                                 self._save_debug_text(slug, screenshot_timestamp, f"VALIDATION FAILED: {validation_msg}\n\n{ocr_text}", self.output_dir)
                                 self.save_track_result(
                                     run_timestamp, song_title, artist, year, album, collab,
                                     spotify_link, str(previous_streams), 0, screenshot_path,
+                                    status="FALLBACK", failure_reason=f"Validation failed: {validation_msg}"
                                 )
                                 return True
                             else:
                                 print(f"[ERROR] Invalid streams after {max_retries} retries. No previous data available.")
+                                self.log_audit_event(
+                                    "validation_failed", spotify_link, song_title, artist,
+                                    expected_value="valid_count", actual_value=str(streams_int),
+                                    action_taken="failed_no_data"
+                                )
                                 self._save_debug_text(slug, screenshot_timestamp, f"VALIDATION FAILED: {validation_msg}\n\n{ocr_text}", self.output_dir)
                                 self.save_track_result(
                                     run_timestamp, song_title, artist, year, album, collab,
                                     spotify_link, "0", 0, screenshot_path,
+                                    status="FAILED", failure_reason=f"Validation failed: {validation_msg}"
                                 )
                                 return False
 
                     # Valid streams - calculate daily and save
-                    daily_streams = self._calculate_daily_streams(streams_int, song_title, artist)
+                    daily_streams = self._calculate_daily_streams(streams_int, spotify_link, song_title, artist)
 
                     self.save_track_result(
                         run_timestamp,
@@ -746,6 +1160,8 @@ class SB19TrackStreamsRPA:
                         streams,
                         daily_streams,
                         screenshot_path,
+                        status="OK",
+                        failure_reason=""
                     )
                     return True
                 else:
@@ -756,21 +1172,31 @@ class SB19TrackStreamsRPA:
                         continue  # Retry
                     else:
                         # Use previous day's streams instead of 0
-                        previous_streams = self._get_previous_streams(song_title, artist)
+                        previous_streams = self._get_previous_streams(spotify_link, song_title, artist)
                         if previous_streams:
                             print(f"[FALLBACK] OCR failed. Using previous day's streams: {previous_streams:,}")
+                            self.log_audit_event(
+                                "ocr_failed", spotify_link, song_title, artist,
+                                action_taken="use_fallback"
+                            )
                             self._save_debug_text(slug, screenshot_timestamp, ocr_text, self.output_dir)
                             self.save_track_result(
                                 run_timestamp, song_title, artist, year, album, collab,
                                 spotify_link, str(previous_streams), 0, screenshot_path,
+                                status="FALLBACK", failure_reason="OCR failed"
                             )
                             return True
                         else:
                             print(f"[ERROR] OCR failed after {max_retries} retries. No previous data available.")
+                            self.log_audit_event(
+                                "ocr_failed", spotify_link, song_title, artist,
+                                action_taken="failed_no_data"
+                            )
                             self._save_debug_text(slug, screenshot_timestamp, ocr_text, self.output_dir)
                             self.save_track_result(
                                 run_timestamp, song_title, artist, year, album, collab,
                                 spotify_link, "0", 0, screenshot_path,
+                                status="FAILED", failure_reason="OCR failed"
                             )
                             return False
             finally:
@@ -799,6 +1225,9 @@ class SB19TrackStreamsRPA:
         print(f"Total tracks in list: {len(tracks)}")
         print("[MODE] Always scrape - dashboard uses latest entry per track")
         print()
+
+        # Prepare clean desktop state before starting
+        self.prepare_clean_state()
 
         processed = 0
         failed = 0

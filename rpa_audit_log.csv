@@ -1,0 +1,17 @@
+timestamp,event_type,spotify_link,song_title,artist,expected_value,actual_value,action_taken,screenshot_path
+2026-01-24 01:40:56,verification_failed,https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2,Gento,SB19,Gento,"———..7+_|_——-—-—_J_———_—__——M—_—
+7 (6 https://open.spotify.com/track/106uF8VmXna99ysHTcQRI2 a
+) fl Q What do you want to play? re Premium Support Download | © insta
+r Library + Create MOREE Sacer
+Song
+",skip_track,D:\dev\SB19\OCR\sb19_gento_2023_screenshot_20260124_014054.png
+2026-01-24 01:42:10,verification_failed,https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ,MAPA,SB19,MAPA,"7 | © https://openspotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ a
+) fl Q What do you want to play? re Premium Support Download | © insta
+a —_ eFe-
+",skip_track,D:\dev\SB19\OCR\sb19_mapa_2021_screenshot_20260124_014208.png
+2026-01-24 01:43:25,verification_failed,https://open.spotify.com/track/0000000000000000000000,Fake Song,SB19,Fake Song,"y) @ https://open.spotify.com/track/0000000000000000000000 BA ¢
+) fl Q What do you want to play? re Premium Support Download | © insta
+r Library + Create
+",skip_track,D:\dev\SB19\OCR\sb19_fake_song_screenshot_20260124_014323.png
+2026-01-24 02:28:40,ocr_failed,https://open.spotify.com/track/2sGj6gqCUqnT4Y0IZ0oMlY,Go Up,SB19,,,use_fallback,
+2026-01-24 02:30:42,validation_failed,https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq,Alab (Burning),SB19,>=72020410222506805,22520144,use_fallback,
