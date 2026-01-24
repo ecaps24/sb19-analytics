@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
     <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7488911178615185" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7488911178615185"
+        crossorigin="anonymous"></script>
     <style>
         * {
             margin: 0;
@@ -24,8 +26,8 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             background: radial-gradient(1200px 800px at 10% -10%, #60a5fa33 0%, transparent 60%),
-                        radial-gradient(1400px 900px at 100% 0%, #3b82f633 0%, transparent 60%),
-                        linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #111827 100%);
+                radial-gradient(1400px 900px at 100% 0%, #3b82f633 0%, transparent 60%),
+                linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #111827 100%);
             color: #e5e7eb;
             min-height: 100vh;
         }
@@ -68,7 +70,7 @@
             background: rgba(17, 24, 39, 0.7);
             padding: 16px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(96, 165, 250, 0.15);
             backdrop-filter: blur(10px);
         }
@@ -101,7 +103,7 @@
             padding: 16px;
             border-radius: 12px;
             margin-bottom: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(96, 165, 250, 0.15);
             backdrop-filter: blur(10px);
         }
@@ -160,9 +162,10 @@
             color: #d1d5db;
         }
 
-        .filter-group select, .filter-group button {
+        .filter-group select,
+        .filter-group button {
             background: #111827;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e5e7eb;
             padding: 6px 10px;
             border-radius: 8px;
@@ -216,7 +219,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 16px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .track-item:hover {
@@ -253,7 +256,7 @@
             background: rgba(17, 24, 39, 0.7);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(96, 165, 250, 0.15);
             margin-top: 16px;
         }
@@ -263,14 +266,15 @@
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         th {
-            background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%);
             font-weight: 600;
             color: #d1d5db;
             font-size: 0.85rem;
@@ -388,7 +392,7 @@
             font-size: 1rem;
             font-weight: 600;
             color: #e5e7eb;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -559,7 +563,7 @@
             font-size: 0.95rem;
             font-weight: 600;
             color: #e5e7eb;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(17, 24, 39, 0.5);
         }
 
@@ -596,7 +600,7 @@
         }
 
         .song-history-table tbody tr {
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .song-history-table tbody tr:hover {
@@ -726,18 +730,22 @@
             .header h1 {
                 font-size: 1.5rem;
             }
+
             .charts-row {
                 flex-direction: column;
             }
+
             .chart-wrapper {
                 height: 250px;
             }
+
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -828,17 +836,25 @@
                     <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
                         <div class="section-title">
                             <span>Top Tracks by Total Streams</span>
-                            <span id="album-filter-label" style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
-                            <button id="clearFilterBtn" style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear Filter</button>
+                            <span id="album-filter-label"
+                                style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
+                            <button id="clearFilterBtn"
+                                style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                                Filter</button>
                         </div>
                         <div id="tracks-view">
                             <table id="topTracksTable" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th style="width: 35px; text-align: center;">#</th>
-                                        <th data-sort="title" style="text-align: left; cursor: pointer;" class="sortable-header">Track <span class="sort-icon"></span></th>
-                                        <th data-sort="streams" style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header">Total Streams <span class="sort-icon"></span></th>
-                                        <th id="change-header" data-sort="change" style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header">Change <span class="sort-icon"></span></th>
+                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                            class="sortable-header">Track <span class="sort-icon"></span></th>
+                                        <th data-sort="streams"
+                                            style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header">Total Streams <span class="sort-icon"></span></th>
+                                        <th id="change-header" data-sort="change"
+                                            style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header">Change <span class="sort-icon"></span></th>
                                         <th style="width: 70px; text-align: center;">Spotify</th>
                                     </tr>
                                 </thead>
@@ -852,9 +868,11 @@
                 <!-- Right Column: Member Stats Chart + Member Tracks -->
                 <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
                     <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="chart-title" style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                        <div class="chart-title"
+                            style="display: flex; justify-content: center; align-items: center; gap: 12px;">
                             <span>Solo Streams by Member</span>
-                            <label style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
+                            <label
+                                style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
                                 <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
                                 <span>Show Listeners</span>
                             </label>
@@ -866,17 +884,28 @@
                     <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
                         <div class="section-title">
                             <span>Solo Tracks by Member</span>
-                            <span id="member-filter-label" style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
-                            <button id="clearMemberFilterBtn" style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear Filter</button>
+                            <span id="member-filter-label"
+                                style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
+                            <button id="clearMemberFilterBtn"
+                                style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                                Filter</button>
                         </div>
                         <div id="member-tracks-view">
                             <table id="memberTracksTable" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th style="width: 35px; text-align: center;">#</th>
-                                        <th data-sort="title" style="text-align: left; cursor: pointer;" class="sortable-header member-sort">Track <span class="sort-icon"></span></th>
-                                        <th data-sort="streams" style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header member-sort">Total Streams <span class="sort-icon"></span></th>
-                                        <th id="member-change-header" data-sort="change" style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;" class="sortable-header member-sort">Change <span class="sort-icon"></span></th>
+                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                            class="sortable-header member-sort">Track <span class="sort-icon"></span>
+                                        </th>
+                                        <th data-sort="streams"
+                                            style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header member-sort">Total Streams <span
+                                                class="sort-icon"></span></th>
+                                        <th id="member-change-header" data-sort="change"
+                                            style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header member-sort">Change <span class="sort-icon"></span>
+                                        </th>
                                         <th style="width: 70px; text-align: center;">Spotify</th>
                                     </tr>
                                 </thead>
@@ -899,7 +928,10 @@
                     <div class="song-title-section">
                         <h2 id="songDetailTitle">Song Title</h2>
                         <a id="songDetailSpotify" href="#" target="_blank" class="song-spotify-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+                            </svg>
                             Play on Spotify
                         </a>
                     </div>
@@ -973,19 +1005,29 @@
                 </div>
             </div>
 
-            <div class="contact-developer" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.15); text-align: center; color: rgba(229, 231, 235, 0.7); font-size: 0.85rem;">
-                <div style="margin-bottom: 16px; padding: 16px 24px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; display: inline-block;">
-                    <div style="font-size: 1rem; font-weight: 600; color: #f3f4f6; margin-bottom: 8px;">💖 Support this project</div>
-                    <div style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                        <a href="https://buymeacoffee.com/ecapsdev" target="_blank" style="color: #1a1a2e; background: #fbbf24; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">☕ Buy Me a Coffee</a>
-                        <span style="color: #34d399; font-weight: 500; background: rgba(52, 211, 153, 0.2); padding: 8px 16px; border-radius: 8px;">GCash: 09602738858</span>
+            <div class="contact-developer"
+                style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.15); text-align: center; color: rgba(229, 231, 235, 0.7); font-size: 0.85rem;">
+                <div
+                    style="margin-bottom: 16px; padding: 16px 24px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; display: inline-block;">
+                    <div style="font-size: 1rem; font-weight: 600; color: #f3f4f6; margin-bottom: 8px;">💖 Support this
+                        project</div>
+                    <div
+                        style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                        <a href="https://buymeacoffee.com/ecapsdev" target="_blank"
+                            style="color: #1a1a2e; background: #fbbf24; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">☕
+                            Buy Me a Coffee</a>
+                        <span
+                            style="color: #34d399; font-weight: 500; background: rgba(52, 211, 153, 0.2); padding: 8px 16px; border-radius: 8px;">GCash:
+                            09602738858</span>
                     </div>
                 </div>
                 <div style="margin-bottom: 12px;">
                     Contact the developer:
-                    <a href="mailto:ecapsdev@gmail.com" style="color: #60a5fa; text-decoration: none;">ecapsdev@gmail.com</a>
+                    <a href="mailto:ecapsdev@gmail.com"
+                        style="color: #60a5fa; text-decoration: none;">ecapsdev@gmail.com</a>
                     |
-                    <a href="https://x.com/esbinsights" target="_blank" style="color: #60a5fa; text-decoration: none;">@esbinsights</a>
+                    <a href="https://x.com/esbinsights" target="_blank"
+                        style="color: #60a5fa; text-decoration: none;">@esbinsights</a>
                 </div>
             </div>
 
@@ -1046,7 +1088,11 @@
                 }
             }
 
-            parseCSVLine(line) {
+            parseCSVLine(line, delimiter = null) {
+                // Auto-detect delimiter if not specified
+                if (!delimiter) {
+                    delimiter = line.includes(';') ? ';' : ',';
+                }
                 const values = [];
                 let current = '';
                 let inQuotes = false;
@@ -1066,7 +1112,7 @@
                     } else {
                         if (char === '"') {
                             inQuotes = true;
-                        } else if (char === ';') {
+                        } else if (char === delimiter) {
                             values.push(current);
                             current = '';
                         } else {
@@ -1093,8 +1139,8 @@
                     this.tracksMetadata = this.parseTracksMetadataCSV(csv);
                 }
 
-                // Load streams data from sb19_streams_results.csv
-                const streamsResponse = await fetch('./sb19_streams_results.csv?t=' + Date.now());
+                // Load streams data from selenium_results.csv
+                const streamsResponse = await fetch('./selenium_results.csv?t=' + Date.now());
                 if (streamsResponse.ok) {
                     const csv = await streamsResponse.text();
                     this.streamsData = this.parseStreamsCSV(csv);
@@ -1129,13 +1175,18 @@
             parseListenersCSV(csvText) {
                 const lines = csvText.split(/\r?\n/).filter(l => l.trim());
                 if (lines.length === 0) return [];
-                const headers = this.parseCSVLine(lines[0]);
+
+                // Parse headers and clean incompatible characters (like BOM)
+                const rawHeaders = this.parseCSVLine(lines[0]);
+                const headers = rawHeaders.map(h => h.trim().replace(/^\uFEFF/, ''));
                 const data = [];
 
                 for (let i = 1; i < lines.length; i++) {
                     const values = this.parseCSVLine(lines[i]);
                     const row = {};
-                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+                    headers.forEach((h, idx) => {
+                        if (h) row[h] = (values[idx] || '').trim();
+                    });
 
                     const artist = row.artist_name || '';
                     const listeners = parseInt((row.monthly_listeners || '0').replace(/,/g, ''));
@@ -1143,11 +1194,18 @@
                     let dataDate = row.data_date || row.timestamp || '';
 
                     // Convert timestamp format (20251105_042257) to date string
-                    if (dataDate && dataDate.includes('_') && dataDate.length >= 8) {
-                        const year = dataDate.substring(0, 4);
-                        const month = dataDate.substring(4, 6);
-                        const day = dataDate.substring(6, 8);
-                        dataDate = `${year}-${month}-${day}`;
+                    if (dataDate) {
+                        if (dataDate.includes('_') && dataDate.length >= 8) {
+                            // Format: 20251105_042257
+                            const year = dataDate.substring(0, 4);
+                            const month = dataDate.substring(4, 6);
+                            const day = dataDate.substring(6, 8);
+                            dataDate = `${year}-${month}-${day}`;
+                        } else if (dataDate.includes(' ') && dataDate.includes('-')) {
+                            // Format: 2026-01-24 04:25:20 (Keep as is, Date() handles it)
+                            // But extract just the date part for consistency if needed, 
+                            // though keeping full timestamp is better for "latest" logic.
+                        }
                     }
 
                     if (artist && !isNaN(listeners) && listeners > 0 && dataDate &&
@@ -1191,20 +1249,48 @@
                 const headers = this.parseCSVLine(lines[0]);
                 const data = [];
 
+                // Create a map for faster metadata lookup
+                const metadataMap = new Map();
+                this.tracksMetadata.forEach(track => {
+                    // Use a key that combines title and artist for better accuracy, or just title if unique
+                    const key = track.title.toLowerCase().trim();
+                    metadataMap.set(key, track);
+                });
+
                 for (let i = 1; i < lines.length; i++) {
                     const values = this.parseCSVLine(lines[i]);
                     const row = {};
                     headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
 
-                    // Handle sb19_streams_results.csv format
+                    // Handle selenium_results.csv format
                     const streams = parseInt((row.streams || row.total_streams || '0').replace(/,/g, ''));
                     const dailyStreams = parseInt((row.daily_streams || '0').replace(/,/g, ''));
                     const songTitle = row.song_title || '';
-                    const artist = row.artist || row.artist_name || 'SB19';
-                    const year = parseInt(row.year) || 0;
-                    const album = row.album || '';
-                    const collaborators = row.collaborating_artists || '';
-                    const timestamp = row.timestamp || '';
+                    let artist = row.artist || row.artist_name || 'SB19';
+                    let year = parseInt(row.year) || 0;
+                    let album = row.album || '';
+                    let collaborators = row.collaborating_artists || '';
+                    let timestamp = row.timestamp || '';
+                    // Convert timestamp format 20260124_022608 to 2026-01-24 02:26:08
+                    if (timestamp && timestamp.includes('_') && timestamp.length >= 15) {
+                        const year = timestamp.substring(0, 4);
+                        const month = timestamp.substring(4, 6);
+                        const day = timestamp.substring(6, 8);
+                        const hour = timestamp.substring(9, 11);
+                        const min = timestamp.substring(11, 13);
+                        const sec = timestamp.substring(13, 15);
+                        timestamp = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+                    }
+                    const spotifyUrl = row.url || row['spotify_link'] || row['Spotify Link'] || '';
+
+                    // Enrich with metadata if missing
+                    const meta = metadataMap.get(songTitle.toLowerCase().trim());
+                    if (meta) {
+                        if (!year) year = meta.year;
+                        if (!album) album = meta.album;
+                        if (!collaborators) collaborators = meta.collaborators;
+                        if (!artist || artist === 'SB19') artist = meta.artist; // Prefer specific artist from metadata if available
+                    }
 
                     if (songTitle && !isNaN(streams) && streams > 0) {
                         data.push({
@@ -1216,7 +1302,7 @@
                             album: album,
                             collaborators: collaborators,
                             data_date: timestamp,
-                            spotify_url: row['spotify_link'] || row['Spotify Link'] || ''
+                            spotify_url: spotifyUrl
                         });
                     }
                 }
@@ -1593,9 +1679,35 @@
                     if (previous) {
                         const change = latest.monthly_listeners - previous.monthly_listeners;
                         const changeEl = document.getElementById('listeners-change');
-                        changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toLocaleString()} from yesterday`;
+                        changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toLocaleString()} from previous`;
                         changeEl.className = change >= 0 ? 'growth' : 'growth negative';
                     }
+                }
+
+                // Update Last updated based on latest stream data (find actual max timestamp)
+                if (this.streamsData.length > 0) {
+                    const latestStreamDate = this.streamsData.reduce((max, curr) => {
+                        const currDate = new Date(curr.data_date);
+                        const maxDate = new Date(max);
+                        return currDate > maxDate ? curr.data_date : max;
+                    }, this.streamsData[0].data_date);
+                    if (latestStreamDate) {
+                        document.getElementById('last-updated').textContent =
+                            `Last updated: ${new Date(latestStreamDate).toLocaleString()}`;
+                    }
+                }
+
+                // All-Time High (Dynamic)
+                if (sb19Data.length > 0) {
+                    const allTimeHigh = sb19Data.reduce((max, curr) =>
+                        curr.monthly_listeners > max.monthly_listeners ? curr : max
+                        , sb19Data[0]);
+
+                    document.getElementById('all-time-high').textContent = allTimeHigh.monthly_listeners.toLocaleString();
+
+                    const athDate = new Date(allTimeHigh.data_date);
+                    const formattedAthDate = athDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    document.getElementById('ath-date').textContent = `Peak on ${formattedAthDate}`;
                 }
 
                 // Total tracks
@@ -1640,12 +1752,6 @@
                     periodChangeEl.textContent = '-';
                     periodChangeEl.style.color = '#9ca3af';
                     periodInfoEl.textContent = 'Selected range';
-                }
-
-                // Last updated
-                if (latest) {
-                    document.getElementById('last-updated').textContent =
-                        `Last updated: ${new Date(latest.data_date).toLocaleString()}`;
                 }
             }
 
@@ -2246,7 +2352,7 @@
                     const memberTracks = this.streamsData.filter(d => {
                         const artistName = d.artist_name || '';
                         return artistName === member.dataName ||
-                               artistName.toLowerCase() === member.dataName.toLowerCase();
+                            artistName.toLowerCase() === member.dataName.toLowerCase();
                     });
 
                     // Get latest entry per track
@@ -3070,4 +3176,5 @@
         window.dashboard = new SB19Dashboard();
     </script>
 </body>
+
 </html>
