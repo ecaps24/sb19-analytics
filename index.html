@@ -1697,18 +1697,10 @@
                     }
                 }
 
-                // All-Time High (Dynamic)
-                if (sb19Data.length > 0) {
-                    const allTimeHigh = sb19Data.reduce((max, curr) =>
-                        curr.monthly_listeners > max.monthly_listeners ? curr : max
-                        , sb19Data[0]);
-
-                    document.getElementById('all-time-high').textContent = allTimeHigh.monthly_listeners.toLocaleString();
-
-                    const athDate = new Date(allTimeHigh.data_date);
-                    const formattedAthDate = athDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                    document.getElementById('ath-date').textContent = `Peak on ${formattedAthDate}`;
-                }
+                // All-Time High (Fixed historical peak)
+                const SB19_ATH = 2828289;
+                document.getElementById('all-time-high').textContent = SB19_ATH.toLocaleString();
+                document.getElementById('ath-date').textContent = '';
 
                 // Total tracks
                 document.getElementById('total-tracks').textContent = this.tracksMetadata.length;
