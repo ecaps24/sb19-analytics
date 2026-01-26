@@ -1513,7 +1513,7 @@
                 // Group by date (extract date from timestamp like 20260118_060001)
                 const byDate = {};
                 sb19Streams.forEach(d => {
-                    const dateKey = d.data_date ? d.data_date.substring(0, 8) : '';
+                    const dateKey = d.data_date ? d.data_date.substring(0, 10).replace(/-/g, '') : '';
                     if (!dateKey) return;
 
                     if (!byDate[dateKey]) byDate[dateKey] = {};
@@ -2621,7 +2621,7 @@
 
                 const byDate = {};
                 memberStreams.forEach(d => {
-                    const dateKey = d.data_date ? d.data_date.substring(0, 8) : '';
+                    const dateKey = d.data_date ? d.data_date.substring(0, 10).replace(/-/g, '') : '';
                     if (!dateKey) return;
                     if (!byDate[dateKey]) byDate[dateKey] = {};
                     const key = d.song_title;
@@ -2864,7 +2864,7 @@
                 // Group by date
                 const byDate = {};
                 songStreams.forEach(d => {
-                    const dateKey = d.data_date ? d.data_date.substring(0, 8) : '';
+                    const dateKey = d.data_date ? d.data_date.substring(0, 10).replace(/-/g, '') : '';
                     if (!dateKey) return;
                     if (!byDate[dateKey] || d.total_streams > byDate[dateKey].total_streams) {
                         byDate[dateKey] = d;
