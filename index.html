@@ -177,6 +177,53 @@
             background: #1f2937;
         }
 
+        .filter-right-section {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .support-compact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .support-link {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .support-link.coffee {
+            background: #fbbf24;
+            color: #1a1a2e;
+        }
+
+        .support-link.gcash {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+        }
+
+        .contact-compact {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: rgba(229, 231, 235, 0.7);
+        }
+
+        .contact-compact a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .contact-compact a:hover {
+            text-decoration: underline;
+        }
+
         .tracks-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -307,10 +354,8 @@
         }
 
         .last-updated {
-            text-align: center;
-            color: rgba(229, 231, 235, 0.85);
-            margin-top: 16px;
-            font-size: 0.85rem;
+            color: rgba(229, 231, 235, 0.7);
+            font-size: 0.75rem;
         }
 
         .sortable-header:hover {
@@ -821,6 +866,18 @@
                 <div class="filter-group">
                     <button id="refreshBtn">Refresh</button>
                 </div>
+                <div class="filter-group filter-right-section" style="margin-left: auto; gap: 12px;">
+                    <div class="support-compact">
+                        <a href="https://buymeacoffee.com/ecapsdev" target="_blank" class="support-link coffee">☕ Buy me a Coffee</a>
+                        <span class="support-link gcash">GCash: 09602738858</span>
+                    </div>
+                    <div class="contact-compact">
+                        <a href="mailto:ecapsdev@gmail.com">ecapsdev@gmail.com</a>
+                        <span>|</span>
+                        <a href="https://x.com/esbinsights" target="_blank">@esbinsights</a>
+                    </div>
+                    <div class="last-updated" id="last-updated">Last updated: -</div>
+                </div>
             </div>
 
             <!-- Two Column Layout -->
@@ -1005,35 +1062,6 @@
                 </div>
             </div>
 
-            <div class="contact-developer"
-                style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.15); text-align: center; color: rgba(229, 231, 235, 0.7); font-size: 0.85rem;">
-                <div
-                    style="margin-bottom: 16px; padding: 16px 24px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(52, 211, 153, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px; display: inline-block;">
-                    <div style="font-size: 1rem; font-weight: 600; color: #f3f4f6; margin-bottom: 8px;">💖 Support this
-                        project</div>
-                    <div
-                        style="display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                        <a href="https://buymeacoffee.com/ecapsdev" target="_blank"
-                            style="color: #1a1a2e; background: #fbbf24; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">☕
-                            Buy Me a Coffee</a>
-                        <span
-                            style="color: #34d399; font-weight: 500; background: rgba(52, 211, 153, 0.2); padding: 8px 16px; border-radius: 8px;">GCash:
-                            09602738858</span>
-                    </div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                    Contact the developer:
-                    <a href="mailto:ecapsdev@gmail.com"
-                        style="color: #60a5fa; text-decoration: none;">ecapsdev@gmail.com</a>
-                    |
-                    <a href="https://x.com/esbinsights" target="_blank"
-                        style="color: #60a5fa; text-decoration: none;">@esbinsights</a>
-                </div>
-            </div>
-
-            <div class="last-updated" id="last-updated">
-                Last updated: -
-            </div>
         </div>
     </div>
 
@@ -2907,8 +2935,6 @@
                 document.querySelector('.stats-grid').style.display = 'none';
                 document.querySelector('.filter-bar').style.display = 'none';
                 document.querySelector('.charts-row').style.display = 'none';
-                document.querySelector('.contact-developer').style.display = 'none';
-                document.querySelector('.last-updated').style.display = 'none';
                 document.getElementById('song-detail-view').style.display = 'block';
 
                 this.renderSongDetail();
@@ -2922,8 +2948,6 @@
                 document.querySelector('.stats-grid').style.display = '';
                 document.querySelector('.filter-bar').style.display = '';
                 document.querySelector('.charts-row').style.display = '';
-                document.querySelector('.contact-developer').style.display = '';
-                document.querySelector('.last-updated').style.display = '';
                 document.getElementById('song-detail-view').style.display = 'none';
 
                 // Destroy song chart if exists
