@@ -1051,6 +1051,7 @@
                                         <tr>
                                             <th>Date</th>
                                             <th>Daily Change</th>
+                                            <th>+/- Change</th>
                                             <th>Total Streams</th>
                                         </tr>
                                     </thead>
@@ -3173,6 +3174,12 @@
                 const colors = dailyStreams.map(d => d.streams >= 0 ? 'rgba(52, 211, 153, 0.8)' : 'rgba(248, 113, 113, 0.8)');
                 const borderColors = dailyStreams.map(d => d.streams >= 0 ? '#34d399' : '#f87171');
 
+                // Calculate day-over-day change in added streams
+                const streamChanges = dailyStreams.map((d, i) => {
+                    if (i === 0) return null; // No previous day to compare
+                    return d.streams - dailyStreams[i - 1].streams;
+                });
+
                 this.charts.songStreams = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -3185,7 +3192,29 @@
                             borderWidth: 1,
                             borderRadius: 4,
                             categoryPercentage: 0.9,
-                            barPercentage: 0.9
+                            barPercentage: 0.9,
+                            yAxisID: 'y',
+                            datalabels: {
+                                display: true,
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#9ca3af',
+                                font: { size: 10, weight: '600' },
+                                formatter: (value) => value >= 0 ? '+' + this.formatNumber(value) : this.formatNumber(value)
+                            }
+                        }, {
+                            label: 'Change from Previous Day',
+                            data: streamChanges,
+                            type: 'line',
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                            borderWidth: 2,
+                            pointBackgroundColor: streamChanges.map(v => v === null ? 'transparent' : (v >= 0 ? '#34d399' : '#f87171')),
+                            pointBorderColor: streamChanges.map(v => v === null ? 'transparent' : (v >= 0 ? '#34d399' : '#f87171')),
+                            pointRadius: 4,
+                            tension: 0.3,
+                            yAxisID: 'y1',
+                            datalabels: { display: false }
                         }]
                     },
                     options: {
@@ -3197,38 +3226,81 @@
                                 ticks: { color: '#9ca3af', maxRotation: 45 }
                             },
                             y: {
+                                type: 'linear',
+                                position: 'left',
                                 grid: { color: 'rgba(255,255,255,0.06)' },
                                 ticks: {
                                     color: '#9ca3af',
                                     callback: (v) => this.formatNumber(v)
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Daily Streams Added',
+                                    color: '#34d399',
+                                    font: { size: 11 }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#f59e0b',
+                                    callback: (v) => (v >= 0 ? '+' : '') + this.formatNumber(v)
+                                },
+                                title: {
+                                    display: true,
+                                    text: '+/- Change',
+                                    color: '#f59e0b',
+                                    font: { size: 11 }
                                 }
                             }
                         },
                         plugins: {
-                            legend: { display: false },
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: { color: '#9ca3af', usePointStyle: true, padding: 15 }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: (ctx) => {
                                         const value = ctx.parsed.y;
+                                        if (ctx.dataset.label === 'Change from Previous Day') {
+                                            if (value === null) return 'No previous day';
+                                            return `Change: ${value >= 0 ? '+' : ''}${value.toLocaleString()}`;
+                                        }
                                         return `${value >= 0 ? '+' : ''}${value.toLocaleString()} streams`;
                                     }
                                 }
-                            },
-                            datalabels: { display: false }
+                            }
                         }
-                    }
+                    },
+                    plugins: [ChartDataLabels]
                 });
 
                 // Render historical data table
                 const tableBody = document.getElementById('songHistoricalTableBody');
                 const reversedStreams = [...dailyStreams].reverse(); // Most recent first
-                tableBody.innerHTML = reversedStreams.map(d => {
+
+                // Calculate changes for table (reversed order, so compare to next item which is previous day)
+                tableBody.innerHTML = reversedStreams.map((d, i) => {
                     const changeClass = d.streams >= 0 ? 'positive' : 'negative';
                     const changePrefix = d.streams >= 0 ? '+' : '';
+
+                    // Calculate change from previous day (next item in reversed array is previous day)
+                    let dayChange = null;
+                    if (i < reversedStreams.length - 1) {
+                        dayChange = d.streams - reversedStreams[i + 1].streams;
+                    }
+                    const dayChangeClass = dayChange === null ? '' : (dayChange >= 0 ? 'positive' : 'negative');
+                    const dayChangeText = dayChange === null ? '-' : `${dayChange >= 0 ? '+' : ''}${dayChange.toLocaleString()}`;
+
                     return `
                         <tr>
                             <td>${d.label}</td>
                             <td class="${changeClass}">${changePrefix}${d.streams.toLocaleString()}</td>
+                            <td class="${dayChangeClass}">${dayChangeText}</td>
                             <td>${d.totalStreams.toLocaleString()}</td>
                         </tr>
                     `;
