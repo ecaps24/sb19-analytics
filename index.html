@@ -224,6 +224,27 @@
             text-decoration: underline;
         }
 
+        .developer-footer {
+            text-align: center;
+            padding: 16px;
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: rgba(229, 231, 235, 0.7);
+        }
+
+        .developer-footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .developer-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .developer-footer span {
+            margin: 0 8px;
+        }
+
         .tracks-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -863,9 +884,6 @@
                         <option value="Justin">Justin</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <button id="refreshBtn">Refresh</button>
-                </div>
                 <div class="filter-group filter-right-section" style="margin-left: auto; gap: 12px;">
                     <div class="support-compact">
                         <a href="https://buymeacoffee.com/ecapsdev" target="_blank" class="support-link coffee">☕ Buy me a Coffee</a>
@@ -877,6 +895,7 @@
                         <a href="https://x.com/esbinsights" target="_blank">@esbinsights</a>
                     </div>
                     <div class="last-updated" id="last-updated">Last updated: -</div>
+                    <button id="refreshBtn">Refresh</button>
                 </div>
             </div>
 
@@ -912,7 +931,7 @@
                                         <th id="change-header" data-sort="change"
                                             style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
                                             class="sortable-header">Change <span class="sort-icon"></span></th>
-                                        <th style="width: 70px; text-align: center;">Spotify</th>
+                                        <th style="width: 130px; text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="top-tracks-body"></tbody>
@@ -963,7 +982,7 @@
                                             style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
                                             class="sortable-header member-sort">Change <span class="sort-icon"></span>
                                         </th>
-                                        <th style="width: 70px; text-align: center;">Spotify</th>
+                                        <th style="width: 130px; text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="member-tracks-body"></tbody>
@@ -1062,6 +1081,12 @@
                 </div>
             </div>
 
+            <div class="developer-footer">
+                <a href="mailto:ecapsdev@gmail.com">ecapsdev@gmail.com</a>
+                <span>|</span>
+                <a href="https://x.com/esbinsights" target="_blank">@esbinsights</a>
+            </div>
+
         </div>
     </div>
 
@@ -1076,9 +1101,9 @@
                 this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
                 this.memberFilter = null; // For filtering tracks by member
-                this.sortColumn = 'streams'; // Default sort by streams
+                this.sortColumn = 'change'; // Default sort by change (added streams)
                 this.sortDirection = 'desc'; // Default descending
-                this.memberSortColumn = 'streams'; // Default sort for member tracks
+                this.memberSortColumn = 'change'; // Default sort for member tracks
                 this.memberSortDirection = 'desc';
                 this.showMemberListeners = false; // Toggle for monthly listeners on member chart
                 this.songMetadata = {}; // Song metadata (lyrics, history, credits)
@@ -1657,13 +1682,34 @@
                 const startData = streamsByDate[startDate] || {};
                 const endData = streamsByDate[endDate] || {};
 
-                // Get rankings for start and end dates
-                const startRanks = Object.entries(startData)
-                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                // Calculate current period change (added streams) for each track
+                const currentChanges = {};
+                Object.keys(endData).forEach(track => {
+                    const endStreams = endData[track]?.total_streams || 0;
+                    const startStreams = startData[track]?.total_streams || 0;
+                    currentChanges[track] = endStreams - startStreams;
+                });
+
+                // Calculate previous period change for comparison
+                // Find the date before startDate
+                const startIdx = allDates.indexOf(startDate);
+                const prevDate = startIdx > 0 ? allDates[startIdx - 1] : null;
+                const prevData = prevDate ? (streamsByDate[prevDate] || {}) : {};
+
+                const previousChanges = {};
+                Object.keys(startData).forEach(track => {
+                    const currStreams = startData[track]?.total_streams || 0;
+                    const prevStreams = prevData[track]?.total_streams || 0;
+                    previousChanges[track] = currStreams - prevStreams;
+                });
+
+                // Rank by change (added streams) - higher change = better rank
+                const startRanks = Object.entries(previousChanges)
+                    .sort((a, b) => b[1] - a[1])
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
-                const endRanks = Object.entries(endData)
-                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                const endRanks = Object.entries(currentChanges)
+                    .sort((a, b) => b[1] - a[1])
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
                 const rankChanges = {};
@@ -2018,7 +2064,10 @@
                                 ${changeHtml}
                             </td>
                             <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
-                                ${playButton}
+                                <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                                    ${playButton}
+                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -2716,13 +2765,25 @@
                     }
                 });
 
-                // Calculate rank changes
-                const startRanks = Object.entries(startData)
-                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                // Calculate previous period changes for rank comparison
+                const startIdx = allDates.indexOf(startDate);
+                const prevDate = startIdx > 0 ? allDates[startIdx - 1] : null;
+                const prevData = prevDate ? (byDate[prevDate] || {}) : {};
+
+                const previousChanges = {};
+                Object.keys(startData).forEach(track => {
+                    const currStreams = startData[track]?.total_streams || 0;
+                    const prevStreams = prevData[track]?.total_streams || 0;
+                    previousChanges[track] = currStreams - prevStreams;
+                });
+
+                // Rank by change (added streams) - higher change = better rank
+                const startRanks = Object.entries(previousChanges)
+                    .sort((a, b) => b[1] - a[1])
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
-                const endRanks = Object.entries(endData)
-                    .sort((a, b) => b[1].total_streams - a[1].total_streams)
+                const endRanks = Object.entries(changes)
+                    .sort((a, b) => b[1] - a[1])
                     .reduce((acc, [track], idx) => { acc[track] = idx + 1; return acc; }, {});
 
                 const rankChanges = {};
@@ -2855,7 +2916,10 @@
                                 ${changeHtml}
                             </td>
                             <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
-                                ${playButton}
+                                <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                                    ${playButton}
+                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
+                                </div>
                             </td>
                         </tr>
                     `;
