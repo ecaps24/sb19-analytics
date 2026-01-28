@@ -1,6 +1,7 @@
 import csv
 import os
 import re
+import subprocess
 import time
 import unicodedata
 from datetime import datetime
@@ -160,15 +161,16 @@ class ArtistMonthlyListenersRPA:
             print("\n[STOP] Interrupted by user.")
         finally:
             self.driver.quit()
+            self._git_push()
             print("[DONE] Script finished.")
 
     def _save_result(self, result):
         if not result:
             return
-            
+
         fieldnames = ["artist_name", "monthly_listeners", "timestamp"]
         file_exists = os.path.exists(self.results_csv_path)
-        
+
         try:
             with open(self.results_csv_path, mode='a', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=',', extrasaction='ignore')
@@ -178,6 +180,42 @@ class ArtistMonthlyListenersRPA:
                 writer.writerow(result)
         except Exception as e:
             print(f"[ERR] Failed to save result to CSV: {e}")
+
+    def _git_push(self):
+        """Commit and push results to git repository."""
+        print("\n[GIT] Pushing data update to repository...")
+        try:
+            # Change to base directory
+            os.chdir(self.base_dir)
+
+            # Add the results file
+            subprocess.run(["git", "add", "monthly_listeners.csv"], check=True, capture_output=True)
+
+            # Commit with auto-generated message
+            commit_msg = "Auto-push data update"
+            result = subprocess.run(
+                ["git", "commit", "-m", commit_msg],
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode == 0:
+                print(f"[GIT] Committed: {commit_msg}")
+                # Push to remote
+                push_result = subprocess.run(["git", "push"], capture_output=True, text=True)
+                if push_result.returncode == 0:
+                    print("[GIT] Successfully pushed to remote.")
+                else:
+                    print(f"[GIT] Push failed: {push_result.stderr}")
+            elif "nothing to commit" in result.stdout or "nothing to commit" in result.stderr:
+                print("[GIT] No changes to commit.")
+            else:
+                print(f"[GIT] Commit failed: {result.stderr}")
+
+        except subprocess.CalledProcessError as e:
+            print(f"[GIT] Git operation failed: {e}")
+        except Exception as e:
+            print(f"[GIT] Error during git push: {e}")
 
 if __name__ == "__main__":
     rpa = ArtistMonthlyListenersRPA()
