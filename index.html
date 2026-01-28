@@ -1024,6 +1024,10 @@
                     <div id="songTabStreams" class="song-tab-panel active">
                         <div class="song-streams-stats">
                             <div class="song-stat-item">
+                                <span class="song-stat-label">Current Total</span>
+                                <span id="songCurrentTotal" class="song-stat-value">-</span>
+                            </div>
+                            <div class="song-stat-item">
                                 <span class="song-stat-label">Period Total</span>
                                 <span id="songPeriodTotal" class="song-stat-value">-</span>
                             </div>
@@ -3153,12 +3157,14 @@
                 const dailyStreams = this.getHistoricalDailyStreams(this.currentSong);
 
                 // Calculate stats
+                const currentTotal = dailyStreams.length > 0 ? dailyStreams[dailyStreams.length - 1].totalStreams : 0;
                 const periodTotal = dailyStreams.reduce((sum, d) => sum + d.streams, 0);
                 const daysTracked = dailyStreams.length;
                 const dailyAvg = daysTracked > 0 ? Math.round(periodTotal / daysTracked) : 0;
                 const bestDay = dailyStreams.reduce((best, d) => d.streams > best.streams ? d : best, { streams: 0, label: '-' });
 
                 // Update stats
+                document.getElementById('songCurrentTotal').textContent = currentTotal.toLocaleString();
                 document.getElementById('songPeriodTotal').textContent = periodTotal >= 0 ? '+' + periodTotal.toLocaleString() : periodTotal.toLocaleString();
                 document.getElementById('songDailyAvg').textContent = dailyAvg >= 0 ? '+' + dailyAvg.toLocaleString() : dailyAvg.toLocaleString();
                 document.getElementById('songBestDay').textContent = bestDay.streams > 0 ? `+${bestDay.streams.toLocaleString()} (${bestDay.label})` : '-';
