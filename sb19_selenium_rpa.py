@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 
 
 class SB19SeleniumRPA:
-    def __init__(self, tracks_csv=None, results_csv=None, skip_freshness_check=False):
+    def __init__(self, tracks_csv=None, results_csv=None, skip_freshness_check=False, override_date=None):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.saved_pages_dir = os.path.join(self.base_dir, "saved_pages")
         os.makedirs(self.saved_pages_dir, exist_ok=True)
@@ -22,6 +22,7 @@ class SB19SeleniumRPA:
         self.tracks_csv_path = tracks_csv or os.path.join(self.base_dir, "tracks.csv")
         self.results_csv_path = results_csv or os.path.join(self.base_dir, "selenium_results.csv")
         self.skip_freshness_check = skip_freshness_check
+        self.override_date = override_date  # Date string to use instead of current date (format: YYYY-MM-DD)
 
         # Sample tracks for freshness check (high-traffic tracks that update frequently)
         self.sample_tracks_for_check = [
@@ -340,8 +341,14 @@ class SB19SeleniumRPA:
                         print(f"       [WARN] Could not extract streams.")
                         streams = "N/A"
                         
+                    # Use override date if provided, otherwise use current datetime
+                    if self.override_date:
+                        timestamp = f"{self.override_date} {datetime.now().strftime('%H:%M:%S')}"
+                    else:
+                        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
                     results.append({
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "timestamp": timestamp,
                         "song_title": title,
                         "artist": artist,
                         "streams": streams,
@@ -427,11 +434,14 @@ if __name__ == "__main__":
                         help="Force scrape even if Spotify data appears stale (bypasses freshness check)")
     parser.add_argument("--skip-check", "-s", action="store_true",
                         help="Skip the freshness check entirely (same as --force but clearer intent)")
+    parser.add_argument("--date", "-d", default=None,
+                        help="Override date for timestamps (format: YYYY-MM-DD, e.g., 2026-01-29)")
     args = parser.parse_args()
 
     rpa = SB19SeleniumRPA(
         tracks_csv=args.tracks_csv,
         results_csv=args.output,
-        skip_freshness_check=args.skip_check
+        skip_freshness_check=args.skip_check,
+        override_date=args.date
     )
     rpa.run(force=args.force)

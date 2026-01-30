@@ -177,6 +177,20 @@
             background: #1f2937;
         }
 
+        .date-nav-btn {
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .date-nav-btn:hover:not(:disabled) {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
         .filter-right-section {
             display: flex;
             align-items: center;
@@ -845,17 +859,6 @@
             <p>Spotify Performance Tracking</p>
         </div>
 
-        <!-- Top Ad -->
-        <div class="ad-container">
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-7488911178615185"
-                data-ad-slot="9097852000"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-
         <div id="loading" class="loading">
             Loading dashboard data...
         </div>
@@ -897,28 +900,23 @@
                 </div>
             </div>
 
-            <!-- Middle Ad -->
-            <div class="ad-container">
-                <ins class="adsbygoogle"
-                    style="display:block"
-                    data-ad-client="ca-pub-7488911178615185"
-                    data-ad-slot="9999470755"
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-
             <!-- Filters -->
             <div class="filter-bar">
                 <div class="filter-group">
                     <label for="rangePreset">Date Range:</label>
                     <select id="rangePreset">
-                        <option value="all">All Data</option>
-                        <option value="last1" selected>1 Day</option>
+                        <option value="custom" selected>Custom Date</option>
+                        <option value="last1">1 Day</option>
                         <option value="last7">Last 7 days</option>
                         <option value="last30">Last 30 days</option>
                         <option value="mtd">Month to date</option>
+                        <option value="all">All Data</option>
                     </select>
+                </div>
+                <div class="filter-group" id="datePicker" style="display: flex; align-items: center; gap: 4px;">
+                    <button id="prevDate" class="date-nav-btn" title="Previous date">◀</button>
+                    <input type="date" id="selectedDate" style="padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #e5e7eb; font-size: 0.85rem;">
+                    <button id="nextDate" class="date-nav-btn" title="Next date">▶</button>
                 </div>
                 <div class="filter-group">
                     <label for="compareFilter">Compare to:</label>
@@ -1156,7 +1154,9 @@
                 this.streamsData = [];
                 this.tracksMetadata = [];
                 this.charts = {};
-                this.rangePreset = 'last1';
+                this.rangePreset = 'custom';
+                this.selectedDate = null; // Custom date selection (YYYYMMDD format)
+                this.availableDates = []; // List of dates with data (YYYYMMDD format)
                 this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
                 this.memberFilter = null; // For filtering tracks by member
@@ -1186,11 +1186,54 @@
                 this.init();
             }
 
+            // Helper to normalize track titles for matching
+            normalizeForMatch(title) {
+                return title
+                    .toLowerCase()
+                    .replace(/[''`''""]/g, "'")  // Normalize quotes
+                    .replace(/\s*-\s*from\s+["']?/g, ' (from ')  // "- from" to "(from"
+                    .replace(/\s*-\s*(live|instrumental|stripped|acoustic|remix)/gi, ' ($1)')  // "- live" to "(live)"
+                    .replace(/\s*-\s*\d+sins.*?\(live\)/gi, ' - live')  // "- 7sins: the album concert (live)" to "- live"
+                    .replace(/\s*-\s*superior sessions?\s*live/gi, ' - live')  // "- Superior Sessions Live" to "- live"
+                    .replace(/["]/g, '')  // Remove remaining quotes
+                    .replace(/\s+/g, ' ')  // Normalize whitespace
+                    .trim();
+            }
+
+            // Find matching track metadata with fuzzy matching
+            findTrackMetadata(songTitle) {
+                const normalized = this.normalizeForMatch(songTitle);
+
+                // Try exact match first
+                let meta = this.tracksMetadata.find(m =>
+                    this.normalizeForMatch(m.title) === normalized
+                );
+                if (meta) return meta;
+
+                // Try if one contains the other
+                meta = this.tracksMetadata.find(m => {
+                    const metaNorm = this.normalizeForMatch(m.title);
+                    return normalized.includes(metaNorm) || metaNorm.includes(normalized);
+                });
+                if (meta) return meta;
+
+                // Try matching just the base title (before any parentheses or dash suffixes)
+                const baseTitle = normalized.split(/[\(\-]/)[0].trim();
+                if (baseTitle.length > 3) {
+                    meta = this.tracksMetadata.find(m => {
+                        const metaBase = this.normalizeForMatch(m.title).split(/[\(\-]/)[0].trim();
+                        return baseTitle === metaBase;
+                    });
+                }
+                return meta;
+            }
+
             async init() {
                 try {
                     await this.loadData();
                     await this.loadSongMetadata();
                     this.setupEventListeners();
+                    this.populateDatePicker(); // Initialize date picker with available dates
                     this.render();
                     this.showDashboard();
                     this.handleHashChange(); // Check for song in URL on page load
@@ -1364,8 +1407,8 @@
                 // Create a map for faster metadata lookup
                 const metadataMap = new Map();
                 this.tracksMetadata.forEach(track => {
-                    // Use a key that combines title and artist for better accuracy, or just title if unique
-                    const key = track.title.toLowerCase().trim();
+                    // Use normalized title as key for better matching
+                    const key = this.normalizeForMatch(track.title);
                     metadataMap.set(key, track);
                 });
 
@@ -1396,7 +1439,7 @@
                     const spotifyUrl = row.url || row['spotify_link'] || row['Spotify Link'] || '';
 
                     // Enrich with metadata if missing
-                    const meta = metadataMap.get(songTitle.toLowerCase().trim());
+                    const meta = metadataMap.get(this.normalizeForMatch(songTitle)) || this.findTrackMetadata(songTitle);
                     if (meta) {
                         if (!year) year = meta.year;
                         if (!album) album = meta.album;
@@ -1424,7 +1467,32 @@
             setupEventListeners() {
                 document.getElementById('rangePreset').addEventListener('change', (e) => {
                     this.rangePreset = e.target.value;
+                    const datePicker = document.getElementById('datePicker');
+                    if (this.rangePreset === 'custom') {
+                        datePicker.style.display = 'flex';
+                        this.populateDatePicker();
+                    } else {
+                        datePicker.style.display = 'none';
+                        this.selectedDate = null;
+                    }
                     this.render();
+                });
+
+                document.getElementById('selectedDate').addEventListener('change', (e) => {
+                    const dateValue = e.target.value; // Format: YYYY-MM-DD
+                    if (dateValue) {
+                        this.selectedDate = dateValue.replace(/-/g, ''); // Convert to YYYYMMDD
+                        this.updateDateNavButtons();
+                        this.render();
+                    }
+                });
+
+                document.getElementById('prevDate').addEventListener('click', () => {
+                    this.navigateDate(-1);
+                });
+
+                document.getElementById('nextDate').addEventListener('click', () => {
+                    this.navigateDate(1);
                 });
 
                 document.getElementById('compareFilter').addEventListener('change', (e) => {
@@ -1589,6 +1657,13 @@
                                 break;
                             }
                         }
+                    } else if (this.rangePreset === 'custom' && this.selectedDate) {
+                        // For custom date, show data up to selected date
+                        const selectedDateFormatted = `${this.selectedDate.substring(0,4)}-${this.selectedDate.substring(4,6)}-${this.selectedDate.substring(6,8)}`;
+                        const endIdx = allDates.findIndex(d => d >= selectedDateFormatted);
+                        if (endIdx >= 0) {
+                            startIdx = Math.max(0, endIdx - 1);
+                        }
                     }
 
                     const validDates = allDates.slice(startIdx);
@@ -1639,6 +1714,101 @@
                 return byDate;
             }
 
+            // Populate date picker with available dates from data
+            populateDatePicker() {
+                const streamsByDate = this.getStreamsByDate();
+                this.availableDates = Object.keys(streamsByDate).sort();
+
+                if (this.availableDates.length === 0) return;
+
+                const dateInput = document.getElementById('selectedDate');
+
+                // Convert YYYYMMDD to YYYY-MM-DD for input
+                const formatDate = (d) => `${d.substring(0,4)}-${d.substring(4,6)}-${d.substring(6,8)}`;
+
+                const minDate = formatDate(this.availableDates[0]);
+                const maxDate = formatDate(this.availableDates[this.availableDates.length - 1]);
+
+                dateInput.min = minDate;
+                dateInput.max = maxDate;
+
+                // Default to latest date
+                if (!this.selectedDate) {
+                    dateInput.value = maxDate;
+                    this.selectedDate = this.availableDates[this.availableDates.length - 1];
+                } else {
+                    dateInput.value = formatDate(this.selectedDate);
+                }
+
+                this.updateDateNavButtons();
+            }
+
+            // Navigate to previous or next available date
+            navigateDate(direction) {
+                if (this.availableDates.length === 0) return;
+
+                const currentIdx = this.availableDates.indexOf(this.selectedDate);
+                let newIdx;
+
+                if (currentIdx === -1) {
+                    // Current date not in list, find closest
+                    if (direction < 0) {
+                        newIdx = this.availableDates.findIndex(d => d > this.selectedDate) - 1;
+                        if (newIdx < 0) newIdx = this.availableDates.length - 1;
+                    } else {
+                        newIdx = this.availableDates.findIndex(d => d > this.selectedDate);
+                        if (newIdx === -1) newIdx = this.availableDates.length - 1;
+                    }
+                } else {
+                    newIdx = currentIdx + direction;
+                }
+
+                // Clamp to valid range
+                newIdx = Math.max(0, Math.min(this.availableDates.length - 1, newIdx));
+
+                this.selectedDate = this.availableDates[newIdx];
+                const formatDate = (d) => `${d.substring(0,4)}-${d.substring(4,6)}-${d.substring(6,8)}`;
+                document.getElementById('selectedDate').value = formatDate(this.selectedDate);
+
+                this.updateDateNavButtons();
+                this.render();
+            }
+
+            // Update prev/next button states
+            updateDateNavButtons() {
+                const prevBtn = document.getElementById('prevDate');
+                const nextBtn = document.getElementById('nextDate');
+
+                if (this.availableDates.length === 0) {
+                    prevBtn.disabled = true;
+                    nextBtn.disabled = true;
+                    return;
+                }
+
+                const currentIdx = this.availableDates.indexOf(this.selectedDate);
+                prevBtn.disabled = currentIdx <= 0;
+                nextBtn.disabled = currentIdx >= this.availableDates.length - 1;
+
+                // Visual feedback for disabled state
+                prevBtn.style.opacity = prevBtn.disabled ? '0.3' : '1';
+                nextBtn.style.opacity = nextBtn.disabled ? '0.3' : '1';
+                prevBtn.style.cursor = prevBtn.disabled ? 'not-allowed' : 'pointer';
+                nextBtn.style.cursor = nextBtn.disabled ? 'not-allowed' : 'pointer';
+            }
+
+            // Helper to calculate days between two YYYYMMDD date strings
+            getDaysBetween(startDateStr, endDateStr) {
+                const startYear = parseInt(startDateStr.substring(0, 4));
+                const startMonth = parseInt(startDateStr.substring(4, 6)) - 1;
+                const startDay = parseInt(startDateStr.substring(6, 8));
+                const endYear = parseInt(endDateStr.substring(0, 4));
+                const endMonth = parseInt(endDateStr.substring(4, 6)) - 1;
+                const endDay = parseInt(endDateStr.substring(6, 8));
+                const startDateObj = new Date(startYear, startMonth, startDay);
+                const endDateObj = new Date(endYear, endMonth, endDay);
+                return Math.round((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
+            }
+
             getPeriodChange() {
                 const streamsByDate = this.getStreamsByDate();
                 const allDates = Object.keys(streamsByDate).sort();
@@ -1671,11 +1841,45 @@
                     startDate = mtdDates[0];
                     endDate = mtdDates[mtdDates.length - 1];
                     label = 'MTD +/-';
+                } else if (this.rangePreset === 'custom' && this.selectedDate) {
+                    // Find the selected date and the previous date in the data
+                    endDate = this.selectedDate;
+                    const endIdx = allDates.indexOf(endDate);
+                    if (endIdx > 0) {
+                        startDate = allDates[endIdx - 1];
+                    } else if (endIdx === 0) {
+                        // Selected date is the first date, no previous data
+                        startDate = endDate;
+                    } else {
+                        // Selected date not in data, find closest date before it
+                        const closestDates = allDates.filter(d => d <= endDate);
+                        if (closestDates.length >= 2) {
+                            endDate = closestDates[closestDates.length - 1];
+                            startDate = closestDates[closestDates.length - 2];
+                        } else if (closestDates.length === 1) {
+                            endDate = closestDates[0];
+                            startDate = closestDates[0];
+                        } else {
+                            endDate = allDates[allDates.length - 1];
+                            startDate = allDates.length > 1 ? allDates[allDates.length - 2] : endDate;
+                        }
+                    }
+                    // Format date for label
+                    const month = endDate.substring(4, 6);
+                    const day = endDate.substring(6, 8);
+                    label = `${month}/${day} +/-`;
                 } else {
                     // All data
                     startDate = allDates[0];
                     endDate = allDates[allDates.length - 1];
                     label = 'Total +/-';
+                }
+
+                // Calculate days between dates for normalization
+                const daysDiff = this.getDaysBetween(startDate, endDate);
+                const isNormalized = this.rangePreset === 'last1' && daysDiff > 1;
+                if (isNormalized) {
+                    label = `${daysDiff}d avg/day`;
                 }
 
                 const startData = streamsByDate[startDate] || {};
@@ -1695,7 +1899,8 @@
                         if (endStreams > 0 && Math.abs(rawChange) / endStreams > 0.1) {
                             changes[track] = 0;
                         } else {
-                            changes[track] = rawChange;
+                            // Normalize to daily average if more than 1 day gap (for last1 preset)
+                            changes[track] = isNormalized ? Math.round(rawChange / daysDiff) : rawChange;
                         }
                     } else {
                         changes[track] = 0; // No change data available
@@ -1733,6 +1938,26 @@
                     const mtdDates = allDates.filter(d => d >= startOfMonth);
                     startDate = mtdDates[0];
                     endDate = mtdDates[mtdDates.length - 1];
+                } else if (this.rangePreset === 'custom' && this.selectedDate) {
+                    endDate = this.selectedDate;
+                    const endIdx = allDates.indexOf(endDate);
+                    if (endIdx > 0) {
+                        startDate = allDates[endIdx - 1];
+                    } else if (endIdx === 0) {
+                        startDate = endDate;
+                    } else {
+                        const closestDates = allDates.filter(d => d <= endDate);
+                        if (closestDates.length >= 2) {
+                            endDate = closestDates[closestDates.length - 1];
+                            startDate = closestDates[closestDates.length - 2];
+                        } else if (closestDates.length === 1) {
+                            endDate = closestDates[0];
+                            startDate = closestDates[0];
+                        } else {
+                            endDate = allDates[allDates.length - 1];
+                            startDate = allDates.length > 1 ? allDates[allDates.length - 2] : endDate;
+                        }
+                    }
                 } else {
                     startDate = allDates[0];
                     endDate = allDates[allDates.length - 1];
@@ -2104,10 +2329,7 @@
                     // Get Spotify URL from streams data or fallback to metadata
                     let spotifyUrl = track.spotify_url || '';
                     if (!spotifyUrl) {
-                        const meta = this.tracksMetadata.find(m =>
-                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
-                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
-                        );
+                        const meta = this.findTrackMetadata(track.song_title);
                         if (meta && meta.spotify_url) {
                             spotifyUrl = meta.spotify_url;
                         }
@@ -2828,10 +3050,40 @@
                     startDate = mtdDates[0];
                     endDate = mtdDates[mtdDates.length - 1];
                     label = 'MTD +/-';
+                } else if (this.rangePreset === 'custom' && this.selectedDate) {
+                    endDate = this.selectedDate;
+                    const endIdx = allDates.indexOf(endDate);
+                    if (endIdx > 0) {
+                        startDate = allDates[endIdx - 1];
+                    } else if (endIdx === 0) {
+                        startDate = endDate;
+                    } else {
+                        const closestDates = allDates.filter(d => d <= endDate);
+                        if (closestDates.length >= 2) {
+                            endDate = closestDates[closestDates.length - 1];
+                            startDate = closestDates[closestDates.length - 2];
+                        } else if (closestDates.length === 1) {
+                            endDate = closestDates[0];
+                            startDate = closestDates[0];
+                        } else {
+                            endDate = allDates[allDates.length - 1];
+                            startDate = allDates.length > 1 ? allDates[allDates.length - 2] : endDate;
+                        }
+                    }
+                    const month = endDate.substring(4, 6);
+                    const day = endDate.substring(6, 8);
+                    label = `${month}/${day} +/-`;
                 } else {
                     startDate = allDates[0];
                     endDate = allDates[allDates.length - 1];
                     label = 'Total +/-';
+                }
+
+                // Calculate days between dates for normalization
+                const daysDiff = this.getDaysBetween(startDate, endDate);
+                const isNormalized = this.rangePreset === 'last1' && daysDiff > 1;
+                if (isNormalized) {
+                    label = `${daysDiff}d avg/day`;
                 }
 
                 const startData = byDate[startDate] || {};
@@ -2850,7 +3102,8 @@
                         if (endStreams > 0 && Math.abs(rawChange) / endStreams > 0.1) {
                             changes[track] = 0;
                         } else {
-                            changes[track] = rawChange;
+                            // Normalize to daily average if more than 1 day gap (for last1 preset)
+                            changes[track] = isNormalized ? Math.round(rawChange / daysDiff) : rawChange;
                         }
                     } else {
                         changes[track] = 0; // No change data available
@@ -2986,10 +3239,7 @@
                     // Get Spotify URL
                     let spotifyUrl = track.spotify_url || '';
                     if (!spotifyUrl) {
-                        const meta = this.tracksMetadata.find(m =>
-                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
-                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
-                        );
+                        const meta = this.findTrackMetadata(track.song_title);
                         if (meta && meta.spotify_url) {
                             spotifyUrl = meta.spotify_url;
                         }
@@ -3101,17 +3351,24 @@
                     const currStreams = byDate[currDate].total_streams;
                     const diff = currStreams - prevStreams;
 
+                    // Calculate days between consecutive data points for normalization
+                    const daysDiff = this.getDaysBetween(prevDate, currDate);
+                    const dailyAvg = daysDiff > 1 ? Math.round(diff / daysDiff) : diff;
+
                     // Format date for display
                     const year = currDate.substring(0, 4);
                     const month = currDate.substring(4, 6);
                     const day = currDate.substring(6, 8);
                     const dateObj = new Date(`${year}-${month}-${day}`);
-                    const label = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    let label = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    if (daysDiff > 1) {
+                        label += ` (${daysDiff}d avg)`;
+                    }
 
                     dailyStreams.push({
                         date: currDate,
                         label: label,
-                        streams: diff,
+                        streams: dailyAvg,
                         totalStreams: currStreams
                     });
                 }
@@ -3177,10 +3434,7 @@
                 // Get Spotify URL
                 let spotifyUrl = songData?.spotify_url || '';
                 if (!spotifyUrl) {
-                    const meta = this.tracksMetadata.find(m =>
-                        m.title.toLowerCase() === songTitle.toLowerCase() ||
-                        songTitle.toLowerCase().includes(m.title.toLowerCase())
-                    );
+                    const meta = this.findTrackMetadata(songTitle);
                     if (meta && meta.spotify_url) {
                         spotifyUrl = meta.spotify_url;
                     }
