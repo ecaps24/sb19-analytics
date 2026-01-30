@@ -940,50 +940,74 @@
                 </div>
             </div>
 
-            <!-- Two Column Layout -->
+            <!-- Charts Row: Album/Era Chart + Tour Kickoff Tracks Chart -->
             <div class="charts-row" style="align-items: flex-start;">
-                <!-- Left Column: Album/Era Chart + Tracks Table -->
-                <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                <!-- Left: Album/Era Chart -->
+                <div class="chart-half" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0;">
                         <div class="chart-title">Streams by Album/Era</div>
                         <div class="chart-wrapper" style="height: 250px;">
                             <canvas id="albumChart"></canvas>
                         </div>
                     </div>
-                    <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
-                        <div class="section-title">
-                            <span>Top Tracks by Total Streams</span>
-                            <span id="album-filter-label"
-                                style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
-                            <button id="clearFilterBtn"
-                                style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
-                                Filter</button>
-                        </div>
-                        <div id="tracks-view">
-                            <table id="topTracksTable" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 35px; text-align: center;">#</th>
-                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
-                                            class="sortable-header">Track <span class="sort-icon"></span></th>
-                                        <th data-sort="streams"
-                                            style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                            class="sortable-header">Total Streams <span class="sort-icon"></span></th>
-                                        <th id="change-header" data-sort="change"
-                                            style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                            class="sortable-header">Change <span class="sort-icon"></span></th>
-                                        <th style="width: 130px; text-align: center;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="top-tracks-body"></tbody>
-                                <tfoot id="top-tracks-foot"></tfoot>
-                            </table>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Right Column: Member Stats Chart + Member Tracks -->
-                <div class="chart-half" style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+                <!-- Right: Tour Kickoff Tracks Chart -->
+                <div class="chart-half" style="flex: 1;">
+                    <div class="chart-container" style="margin-bottom: 0; position: relative;">
+                        <div class="chart-title" id="kickoffChartTitle" style="cursor: pointer;" onclick="window.dashboard.filterToKickoffAlbum()">Simula at Wakas Tour Kickoff Concert Album</div>
+                        <div class="chart-wrapper" id="kickoffChartWrapper" style="height: 250px;">
+                            <canvas id="kickoffTracksChart"></canvas>
+                        </div>
+                        <button id="showAllKickoffBtn" onclick="window.dashboard.toggleShowAllKickoff()"
+                            style="position: absolute; bottom: 8px; right: 8px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">
+                            Show All
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full-width Top Tracks Table -->
+            <div class="chart-container" style="width: 100%;">
+                <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
+                    <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
+                        <span>Top Tracks by Total Streams</span>
+                        <select id="albumDropdownFilter" style="background: #111827; border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                            <option value="">All Albums/EPs</option>
+                        </select>
+                        <span id="album-filter-label"
+                            style="font-size: 0.8rem; color: #60a5fa;"></span>
+                        <button id="clearFilterBtn"
+                            style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                            Filter</button>
+                    </div>
+                    <div id="tracks-view">
+                        <table id="topTracksTable" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px; text-align: center;">#</th>
+                                    <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                        class="sortable-header">Track <span class="sort-icon"></span></th>
+                                    <th data-sort="streams"
+                                        style="text-align: right; white-space: nowrap; cursor: pointer;"
+                                        class="sortable-header">Total Streams <span class="sort-icon"></span></th>
+                                    <th id="change-header" data-sort="change"
+                                        style="text-align: right; white-space: nowrap; cursor: pointer;"
+                                        class="sortable-header">Change <span class="sort-icon"></span></th>
+                                    <th style="width: 100px; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="top-tracks-body"></tbody>
+                            <tfoot id="top-tracks-foot"></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full-width Member Stats Section -->
+            <div class="charts-row" style="align-items: flex-start;">
+                <!-- Left: Member Stats Chart -->
+                <div class="chart-half" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0;">
                         <div class="chart-title"
                             style="display: flex; justify-content: center; align-items: center; gap: 12px;">
@@ -998,37 +1022,43 @@
                             <canvas id="memberChart"></canvas>
                         </div>
                     </div>
-                    <div class="top-tracks-table" style="max-height: 400px; overflow-y: auto;">
-                        <div class="section-title">
-                            <span>Solo Tracks by Member</span>
-                            <span id="member-filter-label"
-                                style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
-                            <button id="clearMemberFilterBtn"
-                                style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
-                                Filter</button>
-                        </div>
-                        <div id="member-tracks-view">
-                            <table id="memberTracksTable" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 35px; text-align: center;">#</th>
-                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
-                                            class="sortable-header member-sort">Track <span class="sort-icon"></span>
-                                        </th>
-                                        <th data-sort="streams"
-                                            style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                            class="sortable-header member-sort">Total Streams <span
-                                                class="sort-icon"></span></th>
-                                        <th id="member-change-header" data-sort="change"
-                                            style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                            class="sortable-header member-sort">Change <span class="sort-icon"></span>
-                                        </th>
-                                        <th style="width: 130px; text-align: center;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="member-tracks-body"></tbody>
-                                <tfoot id="member-tracks-foot"></tfoot>
-                            </table>
+                </div>
+
+                <!-- Right: Member Tracks Table -->
+                <div class="chart-half" style="flex: 1;">
+                    <div class="chart-container" style="margin-bottom: 0;">
+                        <div class="top-tracks-table" style="max-height: 300px; overflow-y: auto;">
+                            <div class="section-title">
+                                <span>Solo Tracks by Member</span>
+                                <span id="member-filter-label"
+                                    style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
+                                <button id="clearMemberFilterBtn"
+                                    style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                                    Filter</button>
+                            </div>
+                            <div id="member-tracks-view">
+                                <table id="memberTracksTable" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 35px; text-align: center;">#</th>
+                                            <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                                class="sortable-header member-sort">Track <span class="sort-icon"></span>
+                                            </th>
+                                            <th data-sort="streams"
+                                                style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                                class="sortable-header member-sort">Total Streams <span
+                                                    class="sort-icon"></span></th>
+                                            <th id="member-change-header" data-sort="change"
+                                                style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                                class="sortable-header member-sort">Change <span class="sort-icon"></span>
+                                            </th>
+                                            <th style="width: 130px; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="member-tracks-body"></tbody>
+                                    <tfoot id="member-tracks-foot"></tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1159,7 +1189,9 @@
                 this.availableDates = []; // List of dates with data (YYYYMMDD format)
                 this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
+                this.trackFilter = null; // For filtering to a specific track
                 this.memberFilter = null; // For filtering tracks by member
+                this.showAllKickoff = false; // For showing all kickoff tracks
                 this.sortColumn = 'change'; // Default sort by change (added streams)
                 this.sortDirection = 'desc'; // Default descending
                 this.memberSortColumn = 'change'; // Default sort for member tracks
@@ -1516,12 +1548,42 @@
                 // Clear album filter button
                 document.getElementById('clearFilterBtn').addEventListener('click', () => {
                     this.albumFilter = null;
+                    this.trackFilter = null;
                     document.getElementById('album-filter-label').textContent = '';
                     document.getElementById('clearFilterBtn').style.display = 'none';
+                    document.getElementById('albumDropdownFilter').value = '';
 
                     // Reset chart colors to original
                     if (this.charts.album && this.albumChartColors) {
                         this.charts.album.data.datasets[0].backgroundColor = this.albumChartColors.slice();
+                        this.charts.album.update();
+                    }
+
+                    this.populateTopTracks();
+                });
+
+                // Album dropdown filter
+                document.getElementById('albumDropdownFilter').addEventListener('change', (e) => {
+                    const selectedAlbum = e.target.value;
+                    this.trackFilter = null;
+
+                    if (selectedAlbum) {
+                        this.albumFilter = selectedAlbum;
+                        document.getElementById('album-filter-label').textContent = '';
+                        document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                    } else {
+                        this.albumFilter = null;
+                        document.getElementById('album-filter-label').textContent = '';
+                        document.getElementById('clearFilterBtn').style.display = 'none';
+                    }
+
+                    // Update album chart highlighting
+                    if (this.charts.album && this.albumChartColors) {
+                        const albumLabels = this.charts.album.data.labels;
+                        const grayedOut = 'rgba(100, 100, 100, 0.3)';
+                        this.charts.album.data.datasets[0].backgroundColor = this.albumFilter
+                            ? albumLabels.map((label, i) => label === this.albumFilter ? this.albumChartColors[i] : grayedOut)
+                            : this.albumChartColors.slice();
                         this.charts.album.update();
                     }
 
@@ -2048,10 +2110,60 @@
                 return { rankChanges, previousRanks, streakDays };
             }
 
+            populateAlbumDropdown() {
+                const dropdown = document.getElementById('albumDropdownFilter');
+                const latestStreams = this.getLatestStreams();
+
+                // Collect unique albums
+                const albums = new Set();
+                latestStreams.forEach(track => {
+                    let album = track.album || '';
+                    if (!album) {
+                        const meta = this.tracksMetadata.find(m =>
+                            m.title.toLowerCase() === track.song_title.toLowerCase() ||
+                            track.song_title.toLowerCase().includes(m.title.toLowerCase())
+                        );
+                        album = meta ? meta.album : '';
+                    }
+                    if (album) {
+                        // Group promotional tracks
+                        if (album.startsWith('Promotional')) {
+                            albums.add('Promotional');
+                        } else {
+                            albums.add(album);
+                        }
+                    }
+                });
+
+                // Define album order (main albums first)
+                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                const sortedAlbums = Array.from(albums).sort((a, b) => {
+                    const aMainIndex = mainAlbums.indexOf(a);
+                    const bMainIndex = mainAlbums.indexOf(b);
+                    if (aMainIndex !== -1 && bMainIndex !== -1) return aMainIndex - bMainIndex;
+                    if (aMainIndex !== -1) return -1;
+                    if (bMainIndex !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+
+                // Clear existing options except first
+                dropdown.innerHTML = '<option value="">All Albums/EPs</option>';
+
+                // Add album options
+                sortedAlbums.forEach(album => {
+                    const option = document.createElement('option');
+                    option.value = album;
+                    option.textContent = album;
+                    dropdown.appendChild(option);
+                });
+            }
+
             render() {
                 this.updateStats();
+                this.populateAlbumDropdown();
                 this.populateTopTracks();
                 this.createAlbumChart();
+                this.createKickoffTracksChart();
                 this.createMemberChart();
                 this.populateMemberTracks();
             }
@@ -2271,8 +2383,12 @@
                 // Update sort icons
                 this.updateSortIcons();
 
-                // Apply album filter if set
-                if (this.albumFilter) {
+                // Apply track filter if set (specific track from kickoff chart)
+                if (this.trackFilter) {
+                    latestStreams = latestStreams.filter(track => track.song_title === this.trackFilter);
+                }
+                // Apply album filter if set (and no specific track filter)
+                else if (this.albumFilter) {
                     latestStreams = latestStreams.filter(track => {
                         let album = track.album || '';
                         if (!album) {
@@ -2437,16 +2553,18 @@
                     albumGroups[album].totalStreams += track.total_streams;
                 });
 
-                // Define main albums that should always appear first (sorted by streams among themselves)
-                const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                // Define main albums that should always appear first (in exact order specified)
+                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
 
-                // Sort albums with main albums at top, sorted by streams within main albums
+                // Sort albums with main albums at top, preserving the exact order specified
                 const sortedAlbums = Object.entries(albumGroups)
                     .sort((a, b) => {
-                        const aIsMain = mainAlbums.includes(a[0]);
-                        const bIsMain = mainAlbums.includes(b[0]);
-                        // If both are main albums, sort by streams descending
-                        if (aIsMain && bIsMain) return b[1].totalStreams - a[1].totalStreams;
+                        const aMainIndex = mainAlbums.indexOf(a[0]);
+                        const bMainIndex = mainAlbums.indexOf(b[0]);
+                        const aIsMain = aMainIndex !== -1;
+                        const bIsMain = bMainIndex !== -1;
+                        // If both are main albums, use the defined order
+                        if (aIsMain && bIsMain) return aMainIndex - bMainIndex;
                         // Main albums come first
                         if (aIsMain) return -1;
                         if (bIsMain) return 1;
@@ -2565,15 +2683,17 @@
                     albumStreams[album] = data.streams;
                 });
 
-                // Define main albums that should always appear first (sorted by streams among themselves)
-                const mainAlbums = ['Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                // Define main albums that should always appear first (in exact order specified)
+                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
 
                 const sortedAlbums = Object.entries(albumStreams)
                     .sort((a, b) => {
-                        const aIsMain = mainAlbums.includes(a[0]);
-                        const bIsMain = mainAlbums.includes(b[0]);
-                        // If both are main albums, sort by streams descending
-                        if (aIsMain && bIsMain) return b[1] - a[1];
+                        const aMainIndex = mainAlbums.indexOf(a[0]);
+                        const bMainIndex = mainAlbums.indexOf(b[0]);
+                        const aIsMain = aMainIndex !== -1;
+                        const bIsMain = bMainIndex !== -1;
+                        // If both are main albums, use the defined order
+                        if (aIsMain && bIsMain) return aMainIndex - bMainIndex;
                         // Main albums come first
                         if (aIsMain) return -1;
                         if (bIsMain) return 1;
@@ -2582,18 +2702,19 @@
                     })
                     .slice(0, 8);
 
-                // Colors: top 3 main albums get distinct colors, rest are gray
+                // Colors: top 4 main albums get distinct colors, rest are gray
                 const mainColors = [
-                    'rgba(96, 165, 250, 0.8)',   // Blue for 1st
-                    'rgba(52, 211, 153, 0.8)',   // Green for 2nd
-                    'rgba(251, 146, 60, 0.8)'    // Orange for 3rd
+                    'rgba(236, 72, 153, 0.8)',   // Pink for Tour Kickoff (1st)
+                    'rgba(96, 165, 250, 0.8)',   // Blue for 2nd
+                    'rgba(52, 211, 153, 0.8)',   // Green for 3rd
+                    'rgba(251, 146, 60, 0.8)'    // Orange for 4th
                 ];
                 const grayColor = 'rgba(148, 163, 184, 0.5)';
 
                 const colors = sortedAlbums.map((album, i) => {
-                    const isMainAlbum = mainAlbums.includes(album[0]);
-                    if (isMainAlbum && i < 3) {
-                        return mainColors[i];
+                    const mainIndex = mainAlbums.indexOf(album[0]);
+                    if (mainIndex !== -1 && mainIndex < 4) {
+                        return mainColors[mainIndex];
                     }
                     return grayColor;
                 });
@@ -2643,16 +2764,21 @@
                                 const index = elements[0].index;
                                 const albumName = albumLabels[index];
 
+                                // Clear any specific track filter
+                                self.trackFilter = null;
+
                                 // Toggle: if clicking same bar, clear filter
                                 if (self.albumFilter === albumName) {
                                     self.albumFilter = null;
                                     document.getElementById('album-filter-label').textContent = '';
                                     document.getElementById('clearFilterBtn').style.display = 'none';
+                                    document.getElementById('albumDropdownFilter').value = '';
                                     self.charts.album.data.datasets[0].backgroundColor = self.albumChartColors.slice();
                                 } else {
                                     self.albumFilter = albumName;
-                                    document.getElementById('album-filter-label').textContent = `(${albumName})`;
+                                    document.getElementById('album-filter-label').textContent = '';
                                     document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                                    document.getElementById('albumDropdownFilter').value = albumName;
                                     self.charts.album.data.datasets[0].backgroundColor = albumLabels.map((label, i) =>
                                         label === albumName ? self.albumChartColors[i] : grayedOut
                                     );
@@ -2724,6 +2850,207 @@
                     },
                     plugins: [ChartDataLabels]
                 });
+            }
+
+            createKickoffTracksChart() {
+                const ctx = document.getElementById('kickoffTracksChart').getContext('2d');
+                const latestStreams = this.getLatestStreams();
+                const { changes: periodChanges } = this.getPeriodChange();
+
+                // Filter tracks from Tour Kickoff album
+                const kickoffTracks = latestStreams.filter(track => {
+                    const title = track.song_title || '';
+                    return title.includes('(Simula at Wakas Tour Kickoff)');
+                });
+
+                // Sort by streams descending
+                const allSortedTracks = kickoffTracks.sort((a, b) => b.total_streams - a.total_streams);
+
+                // Show all or top 8 based on state
+                const sortedTracks = this.showAllKickoff ? allSortedTracks : allSortedTracks.slice(0, 8);
+                const trackCount = sortedTracks.length;
+
+                // Adjust chart height based on number of tracks
+                const chartWrapper = document.getElementById('kickoffChartWrapper');
+                if (this.showAllKickoff) {
+                    chartWrapper.style.height = `${Math.max(400, trackCount * 22)}px`;
+                } else {
+                    chartWrapper.style.height = '250px';
+                }
+
+                // Shorten track names by removing the suffix
+                const labels = sortedTracks.map(track => {
+                    return track.song_title.replace(' (Simula at Wakas Tour Kickoff)', '');
+                });
+
+                const streams = sortedTracks.map(t => t.total_streams);
+                const changes = sortedTracks.map(t => periodChanges[t.song_title] || 0);
+
+                // Generate blue gradient colors dynamically
+                const colors = sortedTracks.map((_, i) => {
+                    const opacity = 0.9 - (i * (0.6 / Math.max(trackCount - 1, 1)));
+                    return `rgba(59, 130, 246, ${opacity.toFixed(2)})`;
+                });
+                const hoverColors = colors.map(c => c.replace(/0\.\d+\)/, '1)'));
+
+                // Store full song titles for click handling
+                const fullTitles = sortedTracks.map(t => t.song_title);
+
+                const self = this;
+
+                if (this.charts.kickoff) {
+                    this.charts.kickoff.destroy();
+                }
+
+                this.charts.kickoff = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: streams,
+                            backgroundColor: colors,
+                            borderRadius: 4,
+                            hoverBackgroundColor: hoverColors,
+                            categoryPercentage: 0.85,
+                            barPercentage: 0.9
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        layout: {
+                            padding: { right: 50 }
+                        },
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                // Clicked on a bar - filter table to show only this track
+                                const index = elements[0].index;
+                                const songTitle = fullTitles[index];
+                                const shortTitle = labels[index];
+
+                                if (self.trackFilter === songTitle) {
+                                    // Already filtered to this track, clear filter
+                                    self.trackFilter = null;
+                                    self.albumFilter = null;
+                                    document.getElementById('album-filter-label').textContent = '';
+                                    document.getElementById('clearFilterBtn').style.display = 'none';
+                                    document.getElementById('albumDropdownFilter').value = '';
+                                } else {
+                                    // Filter to this specific track
+                                    self.trackFilter = songTitle;
+                                    self.albumFilter = 'Simula at Wakas Tour Kickoff';
+                                    document.getElementById('album-filter-label').textContent = `(${shortTitle})`;
+                                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                                    document.getElementById('albumDropdownFilter').value = 'Simula at Wakas Tour Kickoff';
+                                }
+                                self.populateTopTracks();
+                            } else {
+                                // Clicked elsewhere - filter to Tour Kickoff album
+                                self.trackFilter = null;
+                                self.filterToKickoffAlbum();
+                            }
+                        },
+                        onHover: (event, elements) => {
+                            event.native.target.style.cursor = 'pointer';
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => v.toLocaleString()
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: '#e5e7eb',
+                                    font: { size: 9 }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
+                                }
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'right',
+                                color: '#e5e7eb',
+                                font: {
+                                    size: 9,
+                                    weight: '600'
+                                },
+                                formatter: (value) => value.toLocaleString(),
+                                padding: { left: 4 }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            filterToKickoffAlbum() {
+                const albumName = 'Simula at Wakas Tour Kickoff';
+                this.trackFilter = null; // Clear any specific track filter
+                if (this.albumFilter === albumName) {
+                    // If already filtered, clear it
+                    this.albumFilter = null;
+                    document.getElementById('album-filter-label').textContent = '';
+                    document.getElementById('clearFilterBtn').style.display = 'none';
+                    document.getElementById('albumDropdownFilter').value = '';
+                } else {
+                    this.albumFilter = albumName;
+                    document.getElementById('album-filter-label').textContent = '';
+                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                    document.getElementById('albumDropdownFilter').value = albumName;
+                }
+                // Update album chart highlighting
+                if (this.charts.album) {
+                    const albumLabels = this.charts.album.data.labels;
+                    const grayedOut = 'rgba(100, 100, 100, 0.3)';
+                    this.charts.album.data.datasets[0].backgroundColor = this.albumFilter
+                        ? albumLabels.map((label, i) => label === this.albumFilter ? this.albumChartColors[i] : grayedOut)
+                        : this.albumChartColors.slice();
+                    this.charts.album.update();
+                }
+                this.populateTopTracks();
+            }
+
+            toggleShowAllKickoff() {
+                this.showAllKickoff = !this.showAllKickoff;
+
+                // Update button text
+                const btn = document.getElementById('showAllKickoffBtn');
+                btn.textContent = this.showAllKickoff ? 'Show Less' : 'Show All';
+
+                // Recreate the chart with new settings
+                this.createKickoffTracksChart();
+
+                // Also filter the table to show Tour Kickoff album
+                if (this.showAllKickoff) {
+                    this.albumFilter = 'Simula at Wakas Tour Kickoff';
+                    this.trackFilter = null;
+                    document.getElementById('albumDropdownFilter').value = 'Simula at Wakas Tour Kickoff';
+                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
+                    document.getElementById('album-filter-label').textContent = '';
+
+                    // Update album chart highlighting
+                    if (this.charts.album && this.albumChartColors) {
+                        const albumLabels = this.charts.album.data.labels;
+                        const grayedOut = 'rgba(100, 100, 100, 0.3)';
+                        this.charts.album.data.datasets[0].backgroundColor = albumLabels.map((label, i) =>
+                            label === this.albumFilter ? this.albumChartColors[i] : grayedOut
+                        );
+                        this.charts.album.update();
+                    }
+
+                    this.populateTopTracks();
+                }
             }
 
             getMemberStreamsData() {
@@ -3383,7 +3710,8 @@
                 // Hide dashboard content, show song detail
                 document.querySelector('.stats-grid').style.display = 'none';
                 document.querySelector('.filter-bar').style.display = 'none';
-                document.querySelector('.charts-row').style.display = 'none';
+                document.querySelectorAll('.charts-row').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = 'none');
                 document.getElementById('song-detail-view').style.display = 'block';
 
                 this.renderSongDetail();
@@ -3396,7 +3724,8 @@
                 // Show dashboard content, hide song detail
                 document.querySelector('.stats-grid').style.display = '';
                 document.querySelector('.filter-bar').style.display = '';
-                document.querySelector('.charts-row').style.display = '';
+                document.querySelectorAll('.charts-row').forEach(el => el.style.display = '');
+                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = '');
                 document.getElementById('song-detail-view').style.display = 'none';
 
                 // Destroy song chart if exists
