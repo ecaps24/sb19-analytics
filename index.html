@@ -832,21 +832,308 @@
             background: rgba(96, 165, 250, 0.1) !important;
         }
 
+        /* Tablet styles */
         @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
             .header h1 {
                 font-size: 1.5rem;
             }
 
+            .header p {
+                font-size: 0.8rem;
+            }
+
             .charts-row {
                 flex-direction: column;
+                gap: 12px;
+            }
+
+            .chart-half {
+                width: 100% !important;
+                flex: none !important;
             }
 
             .chart-wrapper {
-                height: 250px;
+                height: 220px;
             }
 
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-card h3 {
+                font-size: 0.75rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .filter-bar {
+                padding: 10px;
+                gap: 8px;
+            }
+
+            .filter-group {
+                flex-wrap: wrap;
+            }
+
+            .filter-group label {
+                font-size: 0.8rem;
+            }
+
+            .filter-group select,
+            .filter-group button {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+
+            .chart-container {
+                padding: 12px;
+            }
+
+            .chart-title {
+                font-size: 0.9rem;
+            }
+
+            /* Make tables horizontally scrollable */
+            .top-tracks-table {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #topTracksTable,
+            #memberTracksTable {
+                min-width: 500px;
+            }
+
+            .section-title {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            #albumDropdownFilter {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            #showAllKickoffBtn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Mobile phone styles */
+        @media (max-width: 480px) {
+            .container {
+                padding: 8px;
+            }
+
+            .header {
+                margin-bottom: 12px;
+            }
+
+            .header h1 {
+                font-size: 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+
+            .stat-card {
+                padding: 10px;
+            }
+
+            .stat-card h3 {
+                font-size: 0.7rem;
+                margin-bottom: 4px;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+                margin-bottom: 0;
+            }
+
+            .growth {
+                font-size: 0.75rem;
+            }
+
+            .filter-bar {
+                padding: 8px;
+                gap: 6px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filter-group select {
+                flex: 1;
+            }
+
+            .filter-right-section {
+                width: 100%;
+                justify-content: center;
+                margin-top: 4px;
+            }
+
+            .support-compact {
+                gap: 6px;
+            }
+
+            .support-link {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+
+            .chart-container {
+                padding: 10px;
+                margin-bottom: 8px;
+            }
+
+            .chart-title {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+            }
+
+            .chart-wrapper {
+                height: 200px;
+            }
+
+            #kickoffChartWrapper {
+                height: 200px !important;
+            }
+
+            .section-title {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+            }
+
+            .section-title span:first-child {
+                font-size: 0.85rem;
+            }
+
+            #albumDropdownFilter {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+            }
+
+            #clearFilterBtn {
+                padding: 4px 6px;
+                font-size: 0.7rem;
+            }
+
+            #topTracksTable th,
+            #topTracksTable td,
+            #memberTracksTable th,
+            #memberTracksTable td {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+
+            #topTracksTable th:first-child,
+            #topTracksTable td:first-child,
+            #memberTracksTable th:first-child,
+            #memberTracksTable td:first-child {
+                width: 30px;
+                padding: 6px 4px;
+            }
+
+            /* Hide Actions column on very small screens */
+            #topTracksTable th:last-child,
+            #topTracksTable td:last-child,
+            #memberTracksTable th:last-child,
+            #memberTracksTable td:last-child {
+                display: none;
+            }
+
+            .top-tracks-table {
+                max-height: 350px !important;
+            }
+
+            #showAllKickoffBtn {
+                bottom: 4px;
+                right: 4px;
+                padding: 4px 8px;
+                font-size: 0.65rem;
+            }
+
+            /* Touch-friendly tap targets */
+            .clickable-track {
+                min-height: 44px;
+            }
+
+            .date-nav-btn {
+                min-width: 36px;
+                height: 36px;
+            }
+
+            /* Adjust song detail view for mobile */
+            .song-detail-container {
+                padding: 12px;
+            }
+
+            .song-back-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .song-title-section h2 {
+                font-size: 1.1rem;
+            }
+
+            .song-tabs {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .song-tab-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 12px;
+            }
+
+            .stat-card h3 {
+                margin-bottom: 0;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            #topTracksTable,
+            #memberTracksTable {
+                min-width: 400px;
             }
         }
     </style>
@@ -2870,12 +3157,15 @@
                 const sortedTracks = this.showAllKickoff ? allSortedTracks : allSortedTracks.slice(0, 8);
                 const trackCount = sortedTracks.length;
 
-                // Adjust chart height based on number of tracks
+                // Adjust chart height based on number of tracks (mobile-aware)
                 const chartWrapper = document.getElementById('kickoffChartWrapper');
+                const isMobile = window.innerWidth <= 480;
                 if (this.showAllKickoff) {
-                    chartWrapper.style.height = `${Math.max(400, trackCount * 22)}px`;
+                    const rowHeight = isMobile ? 18 : 22;
+                    const minHeight = isMobile ? 300 : 400;
+                    chartWrapper.style.height = `${Math.max(minHeight, trackCount * rowHeight)}px`;
                 } else {
-                    chartWrapper.style.height = '250px';
+                    chartWrapper.style.height = isMobile ? '200px' : '250px';
                 }
 
                 // Shorten track names by removing the suffix
