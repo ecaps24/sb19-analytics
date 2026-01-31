@@ -2991,22 +2991,19 @@
                     })
                     .slice(0, 8);
 
-                // Colors: top 4 main albums get distinct colors, rest are gray
-                const mainColors = [
-                    'rgba(236, 72, 153, 0.8)',   // Pink for Tour Kickoff (1st)
-                    'rgba(96, 165, 250, 0.8)',   // Blue for 2nd
-                    'rgba(52, 211, 153, 0.8)',   // Green for 3rd
-                    'rgba(251, 146, 60, 0.8)'    // Orange for 4th
+                // Vibrant colors for each album bar
+                const albumColors = [
+                    'rgba(236, 72, 153, 0.85)',   // Pink
+                    'rgba(59, 130, 246, 0.85)',   // Blue
+                    'rgba(52, 211, 153, 0.85)',   // Green
+                    'rgba(251, 146, 60, 0.85)',   // Orange
+                    'rgba(168, 85, 247, 0.85)',   // Purple
+                    'rgba(234, 179, 8, 0.85)',    // Yellow
+                    'rgba(236, 72, 72, 0.85)',    // Red
+                    'rgba(20, 184, 166, 0.85)'    // Teal
                 ];
-                const grayColor = 'rgba(148, 163, 184, 0.5)';
 
-                const colors = sortedAlbums.map((album, i) => {
-                    const mainIndex = mainAlbums.indexOf(album[0]);
-                    if (mainIndex !== -1 && mainIndex < 4) {
-                        return mainColors[mainIndex];
-                    }
-                    return grayColor;
-                });
+                const colors = sortedAlbums.map((_, i) => albumColors[i % albumColors.length]);
 
                 if (this.charts.album) {
                     this.charts.album.destroy();
@@ -3036,7 +3033,7 @@
                             data: sortedAlbums.map(a => a[1]),
                             backgroundColor: getBackgroundColors(),
                             borderRadius: 6,
-                            hoverBackgroundColor: colors.map(c => c.replace(/0\.[58]/, '1')),
+                            hoverBackgroundColor: colors.map(c => c.replace(/0\.85/, '1')),
                             categoryPercentage: 0.9,
                             barPercentage: 0.9
                         }]
@@ -3118,20 +3115,23 @@
                                     change: {
                                         anchor: 'end',
                                         align: 'right',
-                                        color: '#34d399',
+                                        color: (context) => {
+                                            const change = albumChanges[context.dataIndex];
+                                            return change >= 0 ? '#34d399' : '#f87171';
+                                        },
                                         font: {
                                             size: 9,
-                                            weight: '600'
+                                            weight: '500'
                                         },
                                         formatter: (value, context) => {
                                             const change = albumChanges[context.dataIndex];
                                             if (change !== 0) {
                                                 const sign = change >= 0 ? '+' : '';
-                                                return `${sign}${this.formatNumber(change)}`;
+                                                return `(${sign}${this.formatNumber(change)})`;
                                             }
                                             return null;
                                         },
-                                        offset: 45
+                                        offset: 50
                                     }
                                 }
                             }
@@ -3179,11 +3179,30 @@
                 const changes = sortedTracks.map(t => periodChanges[t.song_title] || 0);
 
                 // Generate blue gradient colors dynamically
-                const colors = sortedTracks.map((_, i) => {
-                    const opacity = 0.9 - (i * (0.6 / Math.max(trackCount - 1, 1)));
-                    return `rgba(59, 130, 246, ${opacity.toFixed(2)})`;
-                });
-                const hoverColors = colors.map(c => c.replace(/0\.\d+\)/, '1)'));
+                // Multi-color palette for each track
+                const colorPalette = [
+                    'rgba(236, 72, 153, 0.85)',   // Pink
+                    'rgba(59, 130, 246, 0.85)',   // Blue
+                    'rgba(52, 211, 153, 0.85)',   // Green
+                    'rgba(251, 146, 60, 0.85)',   // Orange
+                    'rgba(168, 85, 247, 0.85)',   // Purple
+                    'rgba(234, 179, 8, 0.85)',    // Yellow
+                    'rgba(236, 72, 72, 0.85)',    // Red
+                    'rgba(20, 184, 166, 0.85)',   // Teal
+                    'rgba(139, 92, 246, 0.85)',   // Violet
+                    'rgba(34, 197, 94, 0.85)',    // Emerald
+                    'rgba(249, 115, 22, 0.85)',   // Deep Orange
+                    'rgba(14, 165, 233, 0.85)',   // Sky Blue
+                    'rgba(244, 63, 94, 0.85)',    // Rose
+                    'rgba(132, 204, 22, 0.85)',   // Lime
+                    'rgba(217, 70, 239, 0.85)',   // Fuchsia
+                    'rgba(6, 182, 212, 0.85)',    // Cyan
+                    'rgba(245, 158, 11, 0.85)',   // Amber
+                    'rgba(99, 102, 241, 0.85)',   // Indigo
+                    'rgba(16, 185, 129, 0.85)'    // Emerald
+                ];
+                const colors = sortedTracks.map((_, i) => colorPalette[i % colorPalette.length]);
+                const hoverColors = colors.map(c => c.replace(/0\.85\)/, '1)'));
 
                 // Store full song titles for click handling
                 const fullTitles = sortedTracks.map(t => t.song_title);
@@ -3270,15 +3289,40 @@
                                 }
                             },
                             datalabels: {
-                                anchor: 'end',
-                                align: 'right',
-                                color: '#e5e7eb',
-                                font: {
-                                    size: 9,
-                                    weight: '600'
-                                },
-                                formatter: (value) => value.toLocaleString(),
-                                padding: { left: 4 }
+                                labels: {
+                                    total: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: '#e5e7eb',
+                                        font: {
+                                            size: 10,
+                                            weight: '600'
+                                        },
+                                        formatter: (value) => this.formatNumber(value),
+                                        padding: { left: 4 }
+                                    },
+                                    change: {
+                                        anchor: 'end',
+                                        align: 'right',
+                                        color: (context) => {
+                                            const change = changes[context.dataIndex];
+                                            return change >= 0 ? '#34d399' : '#f87171';
+                                        },
+                                        font: {
+                                            size: 8,
+                                            weight: '500'
+                                        },
+                                        formatter: (value, context) => {
+                                            const change = changes[context.dataIndex];
+                                            if (change !== 0) {
+                                                const sign = change >= 0 ? '+' : '';
+                                                return `(${sign}${this.formatNumber(change)})`;
+                                            }
+                                            return null;
+                                        },
+                                        offset: 35
+                                    }
+                                }
                             }
                         }
                     },

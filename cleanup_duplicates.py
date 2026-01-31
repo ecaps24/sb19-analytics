@@ -52,6 +52,13 @@ title_mappings = {
     "Wag Mong Ikunot Ang Iyong Noo": "'Wag Mong Ikunot Ang Iyong Noo",
     "Umaaligid - Extended Ver.": "Umaaligid (Extended Ver.)",
     "No Stopping You - Remix": "No Stopping You",  # Remove this duplicate entry
+    # Liwanag title normalization
+    'Liwanag sa Dilim - from "Incognito"': "Liwanag sa Dilim (from Incognito)",
+}
+
+# Tracks that need to be renamed based on Spotify URL (same title, different tracks)
+url_based_renames = {
+    "2UH7vzHodDdXtNyPEeHkb7": "La Luna (2022)",  # PABLO's 2022 single version
 }
 
 # Read and update results
@@ -61,9 +68,18 @@ with open(results_csv, 'r', encoding='utf-8') as f:
     fieldnames = [f for f in reader.fieldnames if f]  # Filter out None/empty fieldnames
     for row in reader:
         title = row.get('song_title', '')
-        # Apply title mapping
-        if title in title_mappings:
-            row['song_title'] = title_mappings[title]
+        source = row.get('source_file', '')
+
+        # Check for URL-based renames (for tracks with same title but different Spotify URLs)
+        for track_id, new_title in url_based_renames.items():
+            if track_id in source:
+                row['song_title'] = new_title
+                break
+        else:
+            # Apply title mapping only if no URL-based rename was done
+            if title in title_mappings:
+                row['song_title'] = title_mappings[title]
+
         # Only keep fields that are in fieldnames
         clean_row = {k: v for k, v in row.items() if k in fieldnames}
         rows.append(clean_row)
