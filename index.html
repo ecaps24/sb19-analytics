@@ -98,6 +98,198 @@
             color: #f87171;
         }
 
+        .stat-card-listeners {
+            position: relative;
+            padding-bottom: 32px;
+        }
+
+        .stat-detail-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(96, 165, 250, 0.15);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .stat-detail-btn:hover {
+            background: rgba(96, 165, 250, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Listeners Detail Page Styles */
+        .listeners-detail-container {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+
+        .listeners-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .listeners-title-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .listeners-title-section h2 {
+            font-size: 1.5rem;
+            color: #f9fafb;
+            margin: 0;
+        }
+
+        .listeners-stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .listeners-stat-item {
+            background: rgba(17, 24, 39, 0.5);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .listeners-stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .listeners-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .listeners-artist-selector {
+            margin-bottom: 20px;
+        }
+
+        .listeners-artist-selector label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-right: 8px;
+        }
+
+        .artist-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .artist-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(17, 24, 39, 0.5);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .artist-checkbox-item:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+
+        .artist-checkbox-item.selected {
+            border-color: var(--artist-color, #60a5fa);
+            background: rgba(96, 165, 250, 0.15);
+        }
+
+        .artist-checkbox-item input {
+            display: none;
+        }
+
+        .artist-checkbox-item .artist-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--artist-color, #60a5fa);
+        }
+
+        .artist-checkbox-item .artist-name {
+            font-size: 0.8rem;
+            color: #e5e7eb;
+        }
+
+        .listeners-chart-wrapper {
+            position: relative;
+            height: 350px;
+            margin-bottom: 20px;
+        }
+
+        .listeners-history-table {
+            background: rgba(17, 24, 39, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            overflow: hidden;
+        }
+
+        .listeners-history-table .table-header {
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .listeners-history-table .table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .listeners-history-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .listeners-history-table th,
+        .listeners-history-table td {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .listeners-history-table th {
+            background: rgba(17, 24, 39, 0.8);
+            color: #9ca3af;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .listeners-history-table td {
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .listeners-history-table tr:hover td {
+            background: rgba(96, 165, 250, 0.05);
+        }
+
         .chart-container {
             background: rgba(17, 24, 39, 0.7);
             padding: 16px;
@@ -1104,6 +1296,49 @@
                 padding: 8px 12px;
                 font-size: 0.8rem;
             }
+
+            /* Listeners detail responsive */
+            .listeners-detail-container {
+                padding: 12px;
+            }
+
+            .listeners-title-section h2 {
+                font-size: 1.1rem;
+            }
+
+            .listeners-stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .listeners-stat-item {
+                padding: 8px;
+            }
+
+            .listeners-stat-label {
+                font-size: 0.7rem;
+            }
+
+            .listeners-stat-value {
+                font-size: 0.95rem;
+            }
+
+            .listeners-chart-wrapper {
+                height: 280px;
+            }
+
+            .artist-checkbox-item {
+                padding: 5px 10px;
+            }
+
+            .artist-checkbox-item .artist-name {
+                font-size: 0.75rem;
+            }
+
+            .stat-detail-btn {
+                padding: 3px 8px;
+                font-size: 0.65rem;
+            }
         }
 
         /* Very small screens */
@@ -1155,10 +1390,11 @@
         <div id="dashboard" style="display: none;">
             <!-- Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card stat-card-listeners">
                     <h3>Current Monthly Listeners</h3>
                     <div class="stat-value" id="current-listeners">-</div>
                     <div class="growth" id="listeners-change">-</div>
+                    <button class="stat-detail-btn" onclick="window.dashboard.openListenersDetail()">Show Details</button>
                 </div>
                 <div class="stat-card">
                     <h3>All-Time High</h3>
@@ -1444,6 +1680,76 @@
                 </div>
             </div>
 
+            <!-- Listeners Detail View -->
+            <div id="listeners-detail-view" class="listeners-detail-container" style="display: none;">
+                <div class="listeners-detail-header">
+                    <button id="listenersBackBtn" class="song-back-btn" onclick="window.dashboard.closeListenersDetail()">Back to Dashboard</button>
+                    <div class="listeners-title-section">
+                        <h2>Monthly Listeners History</h2>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="listeners-stats-row">
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Current (SB19)</span>
+                        <span id="listenersCurrentValue" class="listeners-stat-value">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">All-Time High</span>
+                        <span id="listenersAllTimeHigh" class="listeners-stat-value">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">All-Time Low</span>
+                        <span id="listenersAllTimeLow" class="listeners-stat-value">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">7-Day Change</span>
+                        <span id="listeners7DayChange" class="listeners-stat-value">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">30-Day Change</span>
+                        <span id="listeners30DayChange" class="listeners-stat-value">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Days Tracked</span>
+                        <span id="listenersDaysTracked" class="listeners-stat-value">-</span>
+                    </div>
+                </div>
+
+                <!-- Artist Selector -->
+                <div class="listeners-artist-selector">
+                    <label>Compare with artists:</label>
+                    <div class="artist-checkbox-group" id="artistCheckboxGroup">
+                        <!-- Artists will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="listeners-chart-wrapper">
+                    <canvas id="listenersHistoryChart"></canvas>
+                </div>
+
+                <!-- Historical Data Table -->
+                <div class="listeners-history-table">
+                    <div class="table-header">Historical Data</div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Artist</th>
+                                    <th>Monthly Listeners</th>
+                                    <th>Daily Change</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listenersHistoricalTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- Bottom Ad -->
             <div class="ad-container" style="margin-top: 16px;">
                 <ins class="adsbygoogle"
@@ -1486,6 +1792,8 @@
                 this.showMemberListeners = false; // Toggle for monthly listeners on member chart
                 this.songMetadata = {}; // Song metadata (lyrics, history, credits)
                 this.currentSong = null; // Currently viewed song
+                this.listenersViewOpen = false; // Whether listeners detail view is open
+                this.selectedCompareArtists = ['SB19']; // Artists selected for comparison (always includes SB19)
                 // Map listener CSV names (case-insensitive) to member dataNames
                 this.listenerNameMap = {
                     'pablo': 'Pablo',
@@ -4073,6 +4381,349 @@
                 }
             }
 
+            openListenersDetail() {
+                this.listenersViewOpen = true;
+                window.location.hash = 'listeners';
+
+                // Hide dashboard content, show listeners detail
+                document.querySelector('.stats-grid').style.display = 'none';
+                document.querySelector('.filter-bar').style.display = 'none';
+                document.querySelectorAll('.charts-row').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = 'none');
+                document.getElementById('listeners-detail-view').style.display = 'block';
+
+                this.renderListenersDetail();
+            }
+
+            closeListenersDetail() {
+                this.listenersViewOpen = false;
+                window.location.hash = '';
+
+                // Show dashboard content, hide listeners detail
+                document.querySelector('.stats-grid').style.display = '';
+                document.querySelector('.filter-bar').style.display = '';
+                document.querySelectorAll('.charts-row').forEach(el => el.style.display = '');
+                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = '');
+                document.getElementById('listeners-detail-view').style.display = 'none';
+
+                // Destroy listeners chart if exists
+                if (this.charts.listenersHistory) {
+                    this.charts.listenersHistory.destroy();
+                    this.charts.listenersHistory = null;
+                }
+            }
+
+            renderListenersDetail() {
+                this.renderArtistCheckboxes();
+                this.updateListenersStats();
+                this.createListenersHistoryChart();
+                this.populateListenersHistoryTable();
+            }
+
+            getAvailableArtists() {
+                // Get unique artists from listeners data
+                const artistSet = new Set();
+                this.listenersData.forEach(d => {
+                    if (d.monthly_listeners > 100) { // Filter out bad data
+                        artistSet.add(d.artist_name);
+                    }
+                });
+                return Array.from(artistSet).sort();
+            }
+
+            getArtistColor(artistName) {
+                const colors = {
+                    'SB19': { bg: 'rgba(96, 165, 250, 0.8)', border: '#60a5fa', line: '#60a5fa' },
+                    'BINI': { bg: 'rgba(167, 139, 250, 0.8)', border: '#a78bfa', line: '#a78bfa' },
+                    'Pablo': { bg: 'rgba(251, 146, 60, 0.8)', border: '#fb923c', line: '#fb923c' },
+                    'PABLO': { bg: 'rgba(251, 146, 60, 0.8)', border: '#fb923c', line: '#fb923c' },
+                    'Josh Cullen': { bg: 'rgba(52, 211, 153, 0.8)', border: '#34d399', line: '#34d399' },
+                    'JOSH CULLEN': { bg: 'rgba(52, 211, 153, 0.8)', border: '#34d399', line: '#34d399' },
+                    'STELL': { bg: 'rgba(248, 113, 113, 0.8)', border: '#f87171', line: '#f87171' },
+                    'Stell': { bg: 'rgba(248, 113, 113, 0.8)', border: '#f87171', line: '#f87171' },
+                    'felip': { bg: 'rgba(251, 191, 36, 0.8)', border: '#fbbf24', line: '#fbbf24' },
+                    'Felip': { bg: 'rgba(251, 191, 36, 0.8)', border: '#fbbf24', line: '#fbbf24' },
+                    'Justin': { bg: 'rgba(45, 212, 191, 0.8)', border: '#2dd4bf', line: '#2dd4bf' },
+                    'justin': { bg: 'rgba(45, 212, 191, 0.8)', border: '#2dd4bf', line: '#2dd4bf' },
+                    'Ben&Ben': { bg: 'rgba(236, 72, 153, 0.8)', border: '#ec4899', line: '#ec4899' },
+                    'December Avenue': { bg: 'rgba(139, 92, 246, 0.8)', border: '#8b5cf6', line: '#8b5cf6' },
+                    'IV of Spades': { bg: 'rgba(234, 179, 8, 0.8)', border: '#eab308', line: '#eab308' },
+                    'Cup of Joe': { bg: 'rgba(20, 184, 166, 0.8)', border: '#14b8a6', line: '#14b8a6' },
+                    'Eraserheads': { bg: 'rgba(239, 68, 68, 0.8)', border: '#ef4444', line: '#ef4444' },
+                    'Parokya Ni Edgar': { bg: 'rgba(34, 197, 94, 0.8)', border: '#22c55e', line: '#22c55e' },
+                    'Sarah Geronimo': { bg: 'rgba(244, 114, 182, 0.8)', border: '#f472b6', line: '#f472b6' },
+                    'Zack Tabudlo': { bg: 'rgba(168, 85, 247, 0.8)', border: '#a855f7', line: '#a855f7' },
+                    'Arthur Nery': { bg: 'rgba(249, 115, 22, 0.8)', border: '#f97316', line: '#f97316' },
+                };
+
+                if (colors[artistName]) {
+                    return colors[artistName];
+                }
+
+                // Generate consistent color for unknown artists
+                let hash = 0;
+                for (let i = 0; i < artistName.length; i++) {
+                    hash = artistName.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                const h = Math.abs(hash) % 360;
+                return {
+                    bg: `hsla(${h}, 70%, 60%, 0.8)`,
+                    border: `hsl(${h}, 70%, 50%)`,
+                    line: `hsl(${h}, 70%, 50%)`
+                };
+            }
+
+            renderArtistCheckboxes() {
+                const container = document.getElementById('artistCheckboxGroup');
+                const artists = this.getAvailableArtists();
+
+                container.innerHTML = artists.map(artist => {
+                    const color = this.getArtistColor(artist);
+                    const isSelected = this.selectedCompareArtists.includes(artist);
+                    const isSB19 = artist === 'SB19';
+                    return `
+                        <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
+                               style="--artist-color: ${color.border}"
+                               ${isSB19 ? 'title="SB19 is always shown"' : ''}>
+                            <input type="checkbox"
+                                   value="${artist}"
+                                   ${isSelected ? 'checked' : ''}
+                                   ${isSB19 ? 'disabled' : ''}
+                                   onchange="window.dashboard.toggleArtistComparison('${artist}')">
+                            <span class="artist-dot"></span>
+                            <span class="artist-name">${artist}</span>
+                        </label>
+                    `;
+                }).join('');
+            }
+
+            toggleArtistComparison(artist) {
+                if (artist === 'SB19') return; // SB19 always stays selected
+
+                const index = this.selectedCompareArtists.indexOf(artist);
+                if (index > -1) {
+                    this.selectedCompareArtists.splice(index, 1);
+                } else {
+                    this.selectedCompareArtists.push(artist);
+                }
+
+                this.renderArtistCheckboxes();
+                this.createListenersHistoryChart();
+                this.populateListenersHistoryTable();
+            }
+
+            getArtistHistoricalListeners(artistName) {
+                // Get all data for an artist, sorted by date
+                const artistData = this.listenersData
+                    .filter(d => d.artist_name === artistName && d.monthly_listeners > 100)
+                    .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+
+                // Deduplicate by date (keep first entry per day)
+                const byDate = {};
+                artistData.forEach(d => {
+                    const dateKey = d.data_date;
+                    if (!byDate[dateKey]) {
+                        byDate[dateKey] = d;
+                    }
+                });
+
+                return Object.values(byDate).sort((a, b) => a.data_date.localeCompare(b.data_date));
+            }
+
+            updateListenersStats() {
+                const sb19Data = this.getArtistHistoricalListeners('SB19');
+
+                if (sb19Data.length === 0) {
+                    document.getElementById('listenersCurrentValue').textContent = '-';
+                    document.getElementById('listenersAllTimeHigh').textContent = '-';
+                    document.getElementById('listenersAllTimeLow').textContent = '-';
+                    document.getElementById('listeners7DayChange').textContent = '-';
+                    document.getElementById('listeners30DayChange').textContent = '-';
+                    document.getElementById('listenersDaysTracked').textContent = '-';
+                    return;
+                }
+
+                const latest = sb19Data[sb19Data.length - 1];
+                const allTimeHigh = Math.max(...sb19Data.map(d => d.monthly_listeners));
+                const allTimeLow = Math.min(...sb19Data.map(d => d.monthly_listeners));
+
+                document.getElementById('listenersCurrentValue').textContent = latest.monthly_listeners.toLocaleString();
+                document.getElementById('listenersAllTimeHigh').textContent = allTimeHigh.toLocaleString();
+                document.getElementById('listenersAllTimeLow').textContent = allTimeLow.toLocaleString();
+                document.getElementById('listenersDaysTracked').textContent = sb19Data.length.toString();
+
+                // 7-day change
+                if (sb19Data.length >= 7) {
+                    const weekAgo = sb19Data[sb19Data.length - 7];
+                    const change7 = latest.monthly_listeners - weekAgo.monthly_listeners;
+                    const el7 = document.getElementById('listeners7DayChange');
+                    el7.textContent = (change7 >= 0 ? '+' : '') + change7.toLocaleString();
+                    el7.style.color = change7 >= 0 ? '#34d399' : '#f87171';
+                } else {
+                    document.getElementById('listeners7DayChange').textContent = '-';
+                }
+
+                // 30-day change
+                if (sb19Data.length >= 30) {
+                    const monthAgo = sb19Data[sb19Data.length - 30];
+                    const change30 = latest.monthly_listeners - monthAgo.monthly_listeners;
+                    const el30 = document.getElementById('listeners30DayChange');
+                    el30.textContent = (change30 >= 0 ? '+' : '') + change30.toLocaleString();
+                    el30.style.color = change30 >= 0 ? '#34d399' : '#f87171';
+                } else {
+                    document.getElementById('listeners30DayChange').textContent = '-';
+                }
+            }
+
+            createListenersHistoryChart() {
+                const ctx = document.getElementById('listenersHistoryChart').getContext('2d');
+
+                if (this.charts.listenersHistory) {
+                    this.charts.listenersHistory.destroy();
+                }
+
+                // Get all unique dates across all selected artists
+                const allDates = new Set();
+                const artistDatasets = {};
+
+                this.selectedCompareArtists.forEach(artist => {
+                    const data = this.getArtistHistoricalListeners(artist);
+                    artistDatasets[artist] = data;
+                    data.forEach(d => allDates.add(d.data_date));
+                });
+
+                const sortedDates = Array.from(allDates).sort();
+                const labels = sortedDates.map(d => {
+                    const date = new Date(d);
+                    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                });
+
+                // Create datasets for each artist
+                const datasets = this.selectedCompareArtists.map(artist => {
+                    const color = this.getArtistColor(artist);
+                    const artistData = artistDatasets[artist];
+                    const dataByDate = {};
+                    artistData.forEach(d => dataByDate[d.data_date] = d.monthly_listeners);
+
+                    const data = sortedDates.map(date => dataByDate[date] || null);
+
+                    return {
+                        label: artist,
+                        data: data,
+                        borderColor: color.line,
+                        backgroundColor: color.bg,
+                        borderWidth: artist === 'SB19' ? 3 : 2,
+                        pointRadius: artist === 'SB19' ? 4 : 3,
+                        pointHoverRadius: 6,
+                        tension: 0.3,
+                        fill: false,
+                        spanGaps: true
+                    };
+                });
+
+                this.charts.listenersHistory = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#e5e7eb',
+                                    usePointStyle: true,
+                                    padding: 15,
+                                    font: { size: 11 }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                                titleColor: '#f9fafb',
+                                bodyColor: '#e5e7eb',
+                                borderColor: 'rgba(96, 165, 250, 0.3)',
+                                borderWidth: 1,
+                                padding: 12,
+                                callbacks: {
+                                    label: (context) => {
+                                        const value = context.raw;
+                                        if (value === null) return `${context.dataset.label}: No data`;
+                                        return `${context.dataset.label}: ${value.toLocaleString()}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    maxRotation: 45,
+                                    maxTicksLimit: 15
+                                }
+                            },
+                            y: {
+                                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (value) => this.formatNumber(value)
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            populateListenersHistoryTable() {
+                const tbody = document.getElementById('listenersHistoricalTableBody');
+
+                // Gather all data for selected artists
+                const allData = [];
+                this.selectedCompareArtists.forEach(artist => {
+                    const data = this.getArtistHistoricalListeners(artist);
+                    data.forEach((d, i) => {
+                        const prevListeners = i > 0 ? data[i - 1].monthly_listeners : d.monthly_listeners;
+                        const change = d.monthly_listeners - prevListeners;
+                        allData.push({
+                            date: d.data_date,
+                            artist: artist,
+                            listeners: d.monthly_listeners,
+                            change: change
+                        });
+                    });
+                });
+
+                // Sort by date descending, then by artist
+                allData.sort((a, b) => {
+                    const dateCompare = b.date.localeCompare(a.date);
+                    if (dateCompare !== 0) return dateCompare;
+                    return a.artist.localeCompare(b.artist);
+                });
+
+                // Take latest 100 entries
+                const displayData = allData.slice(0, 100);
+
+                tbody.innerHTML = displayData.map(d => {
+                    const color = this.getArtistColor(d.artist);
+                    const changeClass = d.change >= 0 ? 'color: #34d399' : 'color: #f87171';
+                    const changePrefix = d.change >= 0 ? '+' : '';
+
+                    return `
+                        <tr>
+                            <td>${new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                            <td><span style="color: ${color.line}">${d.artist}</span></td>
+                            <td>${d.listeners.toLocaleString()}</td>
+                            <td style="${changeClass}">${changePrefix}${d.change.toLocaleString()}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
             handleHashChange() {
                 const hash = window.location.hash;
                 if (hash.startsWith('#song/')) {
@@ -4080,8 +4731,17 @@
                     if (songTitle && songTitle !== this.currentSong) {
                         this.openSongDetail(songTitle);
                     }
-                } else if (this.currentSong) {
-                    this.closeSongDetail();
+                } else if (hash === '#listeners') {
+                    if (!this.listenersViewOpen) {
+                        this.openListenersDetail();
+                    }
+                } else {
+                    if (this.currentSong) {
+                        this.closeSongDetail();
+                    }
+                    if (this.listenersViewOpen) {
+                        this.closeListenersDetail();
+                    }
                 }
             }
 
