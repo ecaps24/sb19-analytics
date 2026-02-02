@@ -672,6 +672,30 @@
             border-collapse: collapse;
         }
 
+        /* Sticky first column (rank) for horizontal scroll */
+        .top-tracks-table th:first-child,
+        .top-tracks-table td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+            background: rgba(17, 24, 39, 0.98);
+        }
+
+        /* Sticky second column (track name) for horizontal scroll */
+        .top-tracks-table th:nth-child(2),
+        .top-tracks-table td:nth-child(2) {
+            position: sticky;
+            left: 40px;
+            z-index: 2;
+            background: rgba(17, 24, 39, 0.98);
+            box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        .top-tracks-table thead th:first-child,
+        .top-tracks-table thead th:nth-child(2) {
+            z-index: 12;
+        }
+
         .top-tracks-table thead {
             position: sticky;
             top: 0;
@@ -1244,12 +1268,30 @@
                 padding: 6px 4px;
             }
 
-            /* Hide Actions column on very small screens */
-            #topTracksTable th:last-child,
+            /* Adjust sticky second column position for narrower first column on mobile */
+            #topTracksTable th:nth-child(2),
+            #topTracksTable td:nth-child(2),
+            #memberTracksTable th:nth-child(2),
+            #memberTracksTable td:nth-child(2) {
+                left: 38px;
+            }
+
+            /* Show Actions column on mobile - stack buttons vertically */
             #topTracksTable td:last-child,
-            #memberTracksTable th:last-child,
             #memberTracksTable td:last-child {
-                display: none;
+                padding: 4px;
+            }
+
+            #topTracksTable td:last-child > div,
+            #memberTracksTable td:last-child > div {
+                flex-direction: column !important;
+                gap: 4px !important;
+            }
+
+            #topTracksTable td:last-child a,
+            #memberTracksTable td:last-child a {
+                padding: 6px 8px !important;
+                font-size: 0.7rem !important;
             }
 
             .top-tracks-table {
@@ -1728,6 +1770,9 @@
                 <!-- Chart -->
                 <div class="listeners-chart-wrapper">
                     <canvas id="listenersHistoryChart"></canvas>
+                    <div id="listenersChartMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9ca3af; font-size: 0.9rem; text-align: center;">
+                        No data available for the selected artists.
+                    </div>
                 </div>
 
                 <!-- Historical Data Table -->
@@ -1995,7 +2040,8 @@
                         data.push({
                             artist_name: artist,
                             monthly_listeners: listeners,
-                            data_date: dataDate
+                            data_date: dataDate,
+                            timestamp: row.timestamp || row.data_date || dataDate
                         });
                     }
                 }
@@ -4385,11 +4431,16 @@
                 this.listenersViewOpen = true;
                 window.location.hash = 'listeners';
 
-                // Hide dashboard content, show listeners detail
-                document.querySelector('.stats-grid').style.display = 'none';
-                document.querySelector('.filter-bar').style.display = 'none';
-                document.querySelectorAll('.charts-row').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = 'none');
+                // Hide ALL dashboard content, show only listeners detail view
+                const dashboard = document.getElementById('dashboard');
+                // Hide all direct children except listeners-detail-view, ads, and footer
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id !== 'listeners-detail-view' &&
+                        !el.classList.contains('ad-container') &&
+                        !el.classList.contains('developer-footer')) {
+                        el.style.display = 'none';
+                    }
+                });
                 document.getElementById('listeners-detail-view').style.display = 'block';
 
                 this.renderListenersDetail();
@@ -4399,12 +4450,18 @@
                 this.listenersViewOpen = false;
                 window.location.hash = '';
 
-                // Show dashboard content, hide listeners detail
-                document.querySelector('.stats-grid').style.display = '';
-                document.querySelector('.filter-bar').style.display = '';
-                document.querySelectorAll('.charts-row').forEach(el => el.style.display = '');
-                document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = '');
-                document.getElementById('listeners-detail-view').style.display = 'none';
+                // Show all dashboard content, hide listeners detail
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id === 'listeners-detail-view') {
+                        el.style.display = 'none';
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view') {
+                        // Keep other detail views hidden
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = '';
+                    }
+                });
 
                 // Destroy listeners chart if exists
                 if (this.charts.listenersHistory) {
@@ -4414,10 +4471,23 @@
             }
 
             renderListenersDetail() {
-                this.renderArtistCheckboxes();
-                this.updateListenersStats();
-                this.createListenersHistoryChart();
-                this.populateListenersHistoryTable();
+                console.log('Rendering listeners detail view');
+                console.log('Listeners data available:', this.listenersData.length);
+                if (this.listenersData.length > 0) {
+                    console.log('Sample data:', this.listenersData[0]);
+                    // List unique artists for debugging
+                    const uniqueArtists = [...new Set(this.listenersData.map(d => d.artist_name))];
+                    console.log('Unique artists in data:', uniqueArtists.slice(0, 10));
+                }
+
+                try {
+                    this.renderArtistCheckboxes();
+                    this.updateListenersStats();
+                    this.createListenersHistoryChart();
+                    this.populateListenersHistoryTable();
+                } catch (error) {
+                    console.error('Error rendering listeners detail:', error);
+                }
             }
 
             getAvailableArtists() {
@@ -4516,14 +4586,14 @@
                 // Get all data for an artist, sorted by date
                 const artistData = this.listenersData
                     .filter(d => d.artist_name === artistName && d.monthly_listeners > 100)
-                    .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+                    .sort((a, b) => (a.data_date || '').localeCompare(b.data_date || ''));
 
                 // Deduplicate by date (keep first entry per day)
                 const byDate = {};
                 artistData.forEach(d => {
-                    const dateKey = d.data_date;
-                    if (!byDate[dateKey]) {
-                        byDate[dateKey] = d;
+                    const dateKey = d.data_date ? d.data_date.substring(0, 10) : ''; // Get YYYY-MM-DD part
+                    if (dateKey && !byDate[dateKey]) {
+                        byDate[dateKey] = { ...d, data_date: dateKey };
                     }
                 });
 
@@ -4576,11 +4646,19 @@
             }
 
             createListenersHistoryChart() {
-                const ctx = document.getElementById('listenersHistoryChart').getContext('2d');
+                const canvas = document.getElementById('listenersHistoryChart');
+                if (!canvas) {
+                    console.error('Listeners chart canvas not found');
+                    return;
+                }
+                const ctx = canvas.getContext('2d');
 
                 if (this.charts.listenersHistory) {
                     this.charts.listenersHistory.destroy();
                 }
+
+                console.log('Creating listeners chart, selected artists:', this.selectedCompareArtists);
+                console.log('Total listeners data entries:', this.listenersData.length);
 
                 // Get all unique dates across all selected artists
                 const allDates = new Set();
@@ -4588,11 +4666,26 @@
 
                 this.selectedCompareArtists.forEach(artist => {
                     const data = this.getArtistHistoricalListeners(artist);
+                    console.log(`Artist ${artist} has ${data.length} data points`);
                     artistDatasets[artist] = data;
                     data.forEach(d => allDates.add(d.data_date));
                 });
 
                 const sortedDates = Array.from(allDates).sort();
+                console.log('Total unique dates:', sortedDates.length);
+
+                const messageEl = document.getElementById('listenersChartMessage');
+                if (sortedDates.length === 0) {
+                    console.warn('No data available for chart');
+                    if (messageEl) {
+                        messageEl.style.display = 'block';
+                        messageEl.textContent = 'No data available for the selected artists.';
+                    }
+                    return;
+                }
+                if (messageEl) {
+                    messageEl.style.display = 'none';
+                }
                 const labels = sortedDates.map(d => {
                     const date = new Date(d);
                     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
