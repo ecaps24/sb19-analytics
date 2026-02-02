@@ -1276,22 +1276,27 @@
                 left: 38px;
             }
 
-            /* Show Actions column on mobile - stack buttons vertically */
+            /* Show Actions column on mobile - single row */
+            #topTracksTable th:last-child,
             #topTracksTable td:last-child,
+            #memberTracksTable th:last-child,
             #memberTracksTable td:last-child {
-                padding: 4px;
+                min-width: 110px;
+                padding: 4px 6px;
             }
 
             #topTracksTable td:last-child > div,
             #memberTracksTable td:last-child > div {
-                flex-direction: column !important;
+                flex-direction: row !important;
                 gap: 4px !important;
+                flex-wrap: nowrap !important;
             }
 
             #topTracksTable td:last-child a,
             #memberTracksTable td:last-child a {
-                padding: 6px 8px !important;
-                font-size: 0.7rem !important;
+                padding: 4px 6px !important;
+                font-size: 0.65rem !important;
+                white-space: nowrap;
             }
 
             .top-tracks-table {
