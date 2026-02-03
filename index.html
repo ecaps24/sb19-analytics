@@ -1488,18 +1488,6 @@
                     <input type="date" id="selectedDate" style="padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #e5e7eb; font-size: 0.85rem;">
                     <button id="nextDate" class="date-nav-btn" title="Next date">▶</button>
                 </div>
-                <div class="filter-group">
-                    <label for="compareFilter">Compare to:</label>
-                    <select id="compareFilter">
-                        <option value="none">None</option>
-                        <option value="BINI">BINI</option>
-                        <option value="Pablo">Pablo</option>
-                        <option value="Josh Cullen">Josh</option>
-                        <option value="STELL">Stell</option>
-                        <option value="felip">Felip</option>
-                        <option value="Justin">Justin</option>
-                    </select>
-                </div>
                 <div class="filter-group filter-right-section" style="margin-left: auto; gap: 12px;">
                     <div class="support-compact">
                         <a href="https://buymeacoffee.com/ecapsdev" target="_blank" class="support-link coffee">☕ Buy me a Coffee</a>
@@ -1830,7 +1818,6 @@
                 this.rangePreset = 'custom';
                 this.selectedDate = null; // Custom date selection (YYYYMMDD format)
                 this.availableDates = []; // List of dates with data (YYYYMMDD format)
-                this.compareFilter = 'none';
                 this.albumFilter = null; // For filtering tracks by album
                 this.trackFilter = null; // For filtering to a specific track
                 this.memberFilter = null; // For filtering tracks by member
@@ -2173,10 +2160,6 @@
                     this.navigateDate(1);
                 });
 
-                document.getElementById('compareFilter').addEventListener('change', (e) => {
-                    this.compareFilter = e.target.value;
-                    this.render();
-                });
 
                 document.getElementById('refreshBtn').addEventListener('click', () => {
                     location.reload();
@@ -2342,8 +2325,7 @@
 
             getFilteredListeners() {
                 let data = this.listenersData.filter(d =>
-                    d.artist_name === 'SB19' ||
-                    (this.compareFilter !== 'none' && d.artist_name === this.compareFilter)
+                    d.artist_name === 'SB19'
                 );
 
                 if (this.rangePreset !== 'all') {
@@ -2980,7 +2962,7 @@
                         },
                         plugins: {
                             legend: {
-                                display: this.compareFilter !== 'none',
+                                display: false,
                                 labels: { color: '#e5e7eb' }
                             },
                             tooltip: {
