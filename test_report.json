@@ -1,0 +1,228 @@
+{
+  "summary": {
+    "files_scanned": 1,
+    "total_issues": 21,
+    "by_severity": {
+      "low": 11,
+      "medium": 8,
+      "high": 2
+    },
+    "by_category": {
+      "security": 2,
+      "style": 10,
+      "best_practices": 9
+    }
+  },
+  "issues": [
+    {
+      "rule_id": "SEC004",
+      "title": "Use of eval()",
+      "category": "security",
+      "severity": "high",
+      "file_path": "code_review_agent.py",
+      "line_number": 132,
+      "line_content": "title=\"Use of eval()\",",
+      "suggestion": "Avoid eval(); use safer alternatives like JSON.parse() or ast.literal_eval()"
+    },
+    {
+      "rule_id": "SEC004",
+      "title": "Use of eval()",
+      "category": "security",
+      "severity": "high",
+      "file_path": "code_review_agent.py",
+      "line_number": 136,
+      "line_content": "suggestion=\"Avoid eval(); use safer alternatives like JSON.parse() or ast.literal_eval()\",",
+      "suggestion": "Avoid eval(); use safer alternatives like JSON.parse() or ast.literal_eval()"
+    },
+    {
+      "rule_id": "BP001",
+      "title": "Function Too Long",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 26,
+      "line_content": "def __str__(self):",
+      "suggestion": "Consider breaking this function into smaller, focused functions"
+    },
+    {
+      "rule_id": "BP005",
+      "title": "Deeply Nested Code",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 489,
+      "line_content": "",
+      "suggestion": "Reduce nesting by using early returns or extracting functions"
+    },
+    {
+      "rule_id": "BP005",
+      "title": "Deeply Nested Code",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 529,
+      "line_content": "if any(fnmatch(filename, pat) for pat in all_excludes):",
+      "suggestion": "Reduce nesting by using early returns or extracting functions"
+    },
+    {
+      "rule_id": "BP005",
+      "title": "Deeply Nested Code",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 533,
+      "line_content": "if include_patterns:",
+      "suggestion": "Reduce nesting by using early returns or extracting functions"
+    },
+    {
+      "rule_id": "BP005",
+      "title": "Deeply Nested Code",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 534,
+      "line_content": "if not any(fnmatch(filename, pat) for pat in include_patterns):",
+      "suggestion": "Reduce nesting by using early returns or extracting functions"
+    },
+    {
+      "rule_id": "BP008",
+      "title": "Catch and Ignore Exception",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 564,
+      "line_content": "except ValueError:",
+      "suggestion": "Log or handle exceptions; silent failures hide bugs"
+    },
+    {
+      "rule_id": "BP008",
+      "title": "Catch and Ignore Exception",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 572,
+      "line_content": "except KeyError:",
+      "suggestion": "Log or handle exceptions; silent failures hide bugs"
+    },
+    {
+      "rule_id": "BP005",
+      "title": "Deeply Nested Code",
+      "category": "best_practices",
+      "severity": "medium",
+      "file_path": "code_review_agent.py",
+      "line_number": 632,
+      "line_content": "if issue.line_content.strip():",
+      "suggestion": "Reduce nesting by using early returns or extracting functions"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 19,
+      "line_content": "class Severity(Enum):",
+      "suggestion": "Add a docstring to document this function/class"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 30,
+      "line_content": "class Category(Enum):",
+      "suggestion": "Add a docstring to document this function/class"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 43,
+      "line_content": "class Issue:",
+      "suggestion": "Add a docstring to document this function/class"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 69,
+      "line_content": "class ReviewRule:",
+      "suggestion": "Add a docstring to document this function/class"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 84,
+      "line_content": "class CodeReviewAgent:",
+      "suggestion": "Add a docstring to document this function/class"
+    },
+    {
+      "rule_id": "STY002",
+      "title": "Line Too Long",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 110,
+      "line_content": "pattern=r'(?i)(api[_-]?key|api[_-]?secret|secret[_-]?key|auth[_-]?token|access[_-]?token)\\s*[=:]\\s*[",
+      "suggestion": "Keep lines under 120 characters for readability"
+    },
+    {
+      "rule_id": "STY003",
+      "title": "Magic Number",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 211,
+      "line_content": "pattern=r'^.{121,}$',",
+      "suggestion": "Extract magic numbers into named constants"
+    },
+    {
+      "rule_id": "STY003",
+      "title": "Magic Number",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 212,
+      "line_content": "suggestion=\"Keep lines under 120 characters for readability\"",
+      "suggestion": "Extract magic numbers into named constants"
+    },
+    {
+      "rule_id": "STY003",
+      "title": "Magic Number",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 433,
+      "line_content": "pattern=r'[\"\\']https?://(?!localhost|127\\.0\\.0\\.1|example\\.com)[^\"\\']+[\"\\']',",
+      "suggestion": "Extract magic numbers into named constants"
+    },
+    {
+      "rule_id": "BP010",
+      "title": "Duplicate String Literal",
+      "category": "best_practices",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 629,
+      "line_content": "lines.append(\"\")",
+      "suggestion": "Extract repeated string literals into constants"
+    },
+    {
+      "rule_id": "STY001",
+      "title": "Missing Docstring",
+      "category": "style",
+      "severity": "low",
+      "file_path": "code_review_agent.py",
+      "line_number": 684,
+      "line_content": "def main():",
+      "suggestion": "Add a docstring to document this function/class"
+    }
+  ]
+}

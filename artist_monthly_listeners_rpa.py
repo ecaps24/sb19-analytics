@@ -1,3 +1,4 @@
+import argparse
 import csv
 import os
 import re
@@ -96,7 +97,7 @@ class ArtistMonthlyListenersRPA:
         if not os.path.exists(self.artists_csv_path):
             print(f"[ERR] Artists file not found: {self.artists_csv_path}")
             return []
-            
+
         with open(self.artists_csv_path, mode='r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -104,13 +105,45 @@ class ArtistMonthlyListenersRPA:
                     artists.append(row)
         return artists
 
-    def run(self):
+    def check_data_exists_for_date(self):
+        """
+        Check if data already exists for today's date.
+        Returns: (exists, count, date_str)
+        """
+        target_date = datetime.now().strftime("%Y%m%d")  # Match timestamp format
+
+        if not os.path.exists(self.results_csv_path):
+            return False, 0, target_date
+
+        count = 0
+        try:
+            with open(self.results_csv_path, mode='r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if row.get('timestamp', '').startswith(target_date):
+                        count += 1
+        except Exception as e:
+            print(f"[WARN] Could not check existing data: {e}")
+            return False, 0, target_date
+
+        return count > 0, count, target_date
+
+    def run(self, force=False):
         print(f"[START] Processing artists from {self.artists_csv_path}")
         artists = self.load_artists()
         print(f"[INFO] Found {len(artists)} artists.")
-        
+
+        # Check if data already exists for target date
+        if not force:
+            exists, count, date_str = self.check_data_exists_for_date()
+            if exists:
+                print(f"\n[SKIP] Data already exists for {date_str} ({count} records found)")
+                print("[SKIP] Use --force to scrape anyway.")
+                self.driver.quit()
+                return
+
         results = []
-        
+
         try:
             for i, artist_data in enumerate(artists):
                 name = artist_data.get("artist_name", "Unknown")
@@ -218,5 +251,10 @@ class ArtistMonthlyListenersRPA:
             print(f"[GIT] Error during git push: {e}")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Artist Monthly Listeners RPA")
+    parser.add_argument("--force", "-f", action="store_true",
+                        help="Force scrape even if data exists for today")
+    args = parser.parse_args()
+
     rpa = ArtistMonthlyListenersRPA()
-    rpa.run()
+    rpa.run(force=args.force)

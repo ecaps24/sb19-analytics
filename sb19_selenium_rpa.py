@@ -186,6 +186,19 @@ class SB19SeleniumRPA:
         except (ValueError, TypeError):
             return None, None
 
+    def check_data_exists_for_date(self):
+        """
+        Check if data already exists for the target date.
+        Returns: (exists, count, date_str)
+        """
+        target_date = self.override_date or datetime.now().strftime("%Y-%m-%d")
+        results = self.load_previous_results()
+
+        # Count records matching target date
+        matching = [r for r in results if r.get('timestamp', '').startswith(target_date)]
+
+        return len(matching) > 0, len(matching), target_date
+
     def check_data_freshness(self):
         """
         Check if Spotify is returning fresh data by scraping a few sample tracks
@@ -290,6 +303,15 @@ class SB19SeleniumRPA:
         print(f"[START] Processing tracks from {self.tracks_csv_path}")
         tracks = self.load_tracks()
         print(f"[INFO] Found {len(tracks)} tracks.")
+
+        # Check if data already exists for target date
+        if not force:
+            exists, count, date_str = self.check_data_exists_for_date()
+            if exists:
+                print(f"\n[SKIP] Data already exists for {date_str} ({count} records found)")
+                print("[SKIP] Use --force to scrape anyway.")
+                self.driver.quit()
+                return
 
         # Perform freshness check unless skipped or forced
         if not self.skip_freshness_check and not force:

@@ -103,6 +103,9 @@ def save_posted_log(log):
 def load_streams_data():
     """Load and parse streams CSV data."""
     data = []
+    if not os.path.exists(STREAMS_FILE):
+        print(f"Warning: Streams file not found: {STREAMS_FILE}")
+        return data
     with open(STREAMS_FILE, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter=";")
         for row in reader:
@@ -124,18 +127,22 @@ def load_streams_data():
 def load_listeners_data():
     """Load and parse monthly listeners CSV data."""
     data = []
+    if not os.path.exists(LISTENERS_FILE):
+        print(f"Warning: Listeners file not found: {LISTENERS_FILE}")
+        return data
     with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f, delimiter=";")
+        reader = csv.DictReader(f)  # Auto-detect delimiter (default comma)
         for row in reader:
             try:
                 listeners = int(row["monthly_listeners"]) if row["monthly_listeners"] else 0
+                timestamp = row.get("timestamp", row.get("data_date", ""))
                 data.append({
                     "artist": row["artist_name"],
                     "listeners": listeners,
-                    "timestamp": row["timestamp"],
-                    "date": row["timestamp"][:8]
+                    "timestamp": timestamp,
+                    "date": str(timestamp)[:8]
                 })
-            except (ValueError, KeyError):
+            except (ValueError, KeyError) as e:
                 continue
     return data
 
