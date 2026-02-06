@@ -1,50 +1,145 @@
-artist_name,artist_url
-BGYO,https://open.spotify.com/artist/10bk3EHVC30yi6F10nmvL8
-ALAMAT,https://open.spotify.com/artist/5n85IrVFHhxKEa65tcXFgW
-Press Hit Play,https://open.spotify.com/artist/48buCDU15KgHzMIoY9urS9
-VXON,https://open.spotify.com/artist/03jMNKZ7bfBuHdZUqeJyv7
-1st.One,https://open.spotify.com/artist/5g5wJnaaHrEjCUHeN5Aiwk
-4th Impact,https://open.spotify.com/artist/07jK4mtZH4MyWIK92NcJtS
-MNL48,https://open.spotify.com/artist/0vnvkzyrIHCyhTUdp3yjcu
-PPOP Generation,https://open.spotify.com/artist/4NHlnx82LiM2mfLvcevHnL
-KAIA,https://open.spotify.com/artist/5UWPjwwieMFFohWLHe4Usy
-DIONE,https://open.spotify.com/artist/3FbN8peRj8d71tKWEvLOKx
-James Reid,https://open.spotify.com/artist/24fEOzlKhgSNLIcy9NdmwH
-Nadine Lustre,https://open.spotify.com/artist/17Do37U0HEbxu1tOrKH8dL
-Daniel Padilla,https://open.spotify.com/artist/5yVM85m9yNcHO6o0vaaVxW
-Darren Espanto,https://open.spotify.com/artist/0u4G1K1CSzcp5PZ6G6FIGu
-Inigo Pascual,https://open.spotify.com/artist/0XOSmu9Qn1agQULUVe0dAK
-AC Bonifacio,https://open.spotify.com/artist/7jAivDaYgMBbooE4fykUPb
-Maymay Entrata,https://open.spotify.com/artist/4JliYPIw09GespZAmZv6rI
-Janella Salvador,https://open.spotify.com/artist/5TNuvf8y7Y3QLXsNaIYCYX
-Julie Anne San Jose,https://open.spotify.com/artist/4NeCu267LZemnoq44lZYKy
-Erik Santos,https://open.spotify.com/artist/7ygtjsCTrCQZAYYPOne9uE
-Jona,https://open.spotify.com/artist/7LVPSD4kabI5LiXIVPI8tn
-Angeline Quinto,https://open.spotify.com/artist/7DW4ijH3n36QN0RlC0n649
-Ogie Alcasid,https://open.spotify.com/artist/1vlz5PDUCNuZJeuJoufQkN
-Gary Valenciano,https://open.spotify.com/artist/0RHiqaoRCsFLPeEuj3OQz4
-Martin Nievera,https://open.spotify.com/artist/4LTJwj8UNLy3ApvH7XUiiq
-Piolo Pascual,https://open.spotify.com/artist/2GqX0GnrKdi6Z2X2OReYOK
-Sam Concepcion,https://open.spotify.com/artist/2P3aLwJ41aRYkyFFw2FRM7
-Munimuni,https://open.spotify.com/artist/4eKq7eArL96wSQjaaMg9Ic
-Over October,https://open.spotify.com/artist/1hMAGfvamVXuSWBFQRFMeq
-Any Name's Okay,https://open.spotify.com/artist/1CZ6BqSNNDTbyne4SltF0e
-SOS (She's Only Sixteen),https://open.spotify.com/artist/6sYQTuRBvPAaQ9Ba5ca1Yc
-The Ransom Collective,https://open.spotify.com/artist/5TPt1cZ847Fr9CWd9vAm7s
-Autotelic,https://open.spotify.com/artist/3Hvxz2oZPYuo61ChHKcqQI
-Urbandub,https://open.spotify.com/artist/18B9mAtwCLjkXGMlBtH1LZ
-Hale,https://open.spotify.com/artist/6Ww3OMFzCaO33ulKh1LBFN
-Callalily,https://open.spotify.com/artist/4HOEnLufwAqJ2qoJPVnL01
-6cyclemind,https://open.spotify.com/artist/3nZa8vRD64ueq3d0JNYTsl
-Bamboo,https://open.spotify.com/artist/0c7d9V8rjfT6tzojfBfRf5
-Ely Buendia,https://open.spotify.com/artist/5C8exBHLifsjZxzVErjRpn
-Rico Blanco,https://open.spotify.com/artist/6l880dxsvN2x5wiceaG6D0
-Skusta Clee,https://open.spotify.com/artist/117XFtbZPnCI1EYKjYZWJc
-Ex Battalion,https://open.spotify.com/artist/2iB7AJhJmkWkkehY9ccB0j
-O.C. Dawgs,https://open.spotify.com/artist/00xU4wfephkJrjwJPDvfkf
-Matthaios,https://open.spotify.com/artist/1SrWbIDP84JcSDr0oTBAQw
-Because,https://open.spotify.com/artist/0n4a5imdLBN24fIrBWoqrv
-CLR,https://open.spotify.com/artist/6vCnF48qqPHgVMBEvcbgkU
-Smugglaz,https://open.spotify.com/artist/2FvXtuMlYRrEkSF7kdAfFq
-Andrew E.,https://open.spotify.com/artist/6TcTgRYJBQzadIFeXXWA3I
-FrancisM,https://open.spotify.com/artist/1ayiGn4MLc427PozR13p1y
+artist_name,artist_url,genre
+SB19,https://open.spotify.com/artist/3g7vYcdDXnqnDKYFwqXBJP,P-Pop
+BINI,https://open.spotify.com/artist/7tNO3vJC9zlHy2IJOx34ga,P-Pop
+BGYO,https://open.spotify.com/artist/10bk3EHVC30yi6F10nmvL8,P-Pop
+ALAMAT,https://open.spotify.com/artist/5n85IrVFHhxKEa65tcXFgW,P-Pop
+Press Hit Play,https://open.spotify.com/artist/48buCDU15KgHzMIoY9urS9,P-Pop
+VXON,https://open.spotify.com/artist/03jMNKZ7bfBuHdZUqeJyv7,P-Pop
+1st.One,https://open.spotify.com/artist/5g5wJnaaHrEjCUHeN5Aiwk,P-Pop
+4th Impact,https://open.spotify.com/artist/07jK4mtZH4MyWIK92NcJtS,P-Pop
+MNL48,https://open.spotify.com/artist/0vnvkzyrIHCyhTUdp3yjcu,P-Pop
+PPOP Generation,https://open.spotify.com/artist/4NHlnx82LiM2mfLvcevHnL,P-Pop
+KAIA,https://open.spotify.com/artist/5UWPjwwieMFFohWLHe4Usy,P-Pop
+DIONE,https://open.spotify.com/artist/3FbN8peRj8d71tKWEvLOKx,P-Pop
+G22,https://open.spotify.com/artist/4DsCOCoIUvUKVDDY8OW3lU,P-Pop
+FINIX,https://open.spotify.com/artist/6S937I133zM6smIrbfAVJt,P-Pop
+PABLO,https://open.spotify.com/artist/7wY8cwtF13xDJIHO7htMNk,SB19 Solo
+JOSH CULLEN,https://open.spotify.com/artist/3xn2W0ziGURPYJj372a6jQ,SB19 Solo
+Stell,https://open.spotify.com/artist/4bpUKZGsImgabgDABbThr0,SB19 Solo
+Felip,https://open.spotify.com/artist/2tEFDBihLXytoPl4xdResl,SB19 Solo
+justin,https://open.spotify.com/artist/20XuMlpFudMP9rDHMTkyar,SB19 Solo
+Sarah Geronimo,https://open.spotify.com/artist/6aiCKnIN68hohzU3ZzNq48,OPM Pop
+Moira Dela Torre,https://open.spotify.com/artist/0rZRTXEmmPmx6gt92tBqIc,OPM Pop
+Zack Tabudlo,https://open.spotify.com/artist/67IN4cLJ7798gUapyZlmac,OPM Pop
+Arthur Nery,https://open.spotify.com/artist/7uDdl5V5AETSFY7K3muu22,OPM Pop
+juan karlos,https://open.spotify.com/artist/0a4r2EnsevvHCukoJ1xFwJ,OPM Pop
+Dilaw,https://open.spotify.com/artist/6Dp4LInLyMVA2qhRqQ6AGL,OPM Pop
+Adie,https://open.spotify.com/artist/1DlYnIiliftt6R21Y5NOW2,OPM Pop
+James Reid,https://open.spotify.com/artist/24fEOzlKhgSNLIcy9NdmwH,OPM Pop
+Nadine Lustre,https://open.spotify.com/artist/17Do37U0HEbxu1tOrKH8dL,OPM Pop
+Daniel Padilla,https://open.spotify.com/artist/5yVM85m9yNcHO6o0vaaVxW,OPM Pop
+Darren Espanto,https://open.spotify.com/artist/0u4G1K1CSzcp5PZ6G6FIGu,OPM Pop
+Inigo Pascual,https://open.spotify.com/artist/0XOSmu9Qn1agQULUVe0dAK,OPM Pop
+AC Bonifacio,https://open.spotify.com/artist/7jAivDaYgMBbooE4fykUPb,OPM Pop
+Maymay Entrata,https://open.spotify.com/artist/4JliYPIw09GespZAmZv6rI,OPM Pop
+Janella Salvador,https://open.spotify.com/artist/5TNuvf8y7Y3QLXsNaIYCYX,OPM Pop
+Julie Anne San Jose,https://open.spotify.com/artist/4NeCu267LZemnoq44lZYKy,OPM Pop
+Sam Concepcion,https://open.spotify.com/artist/2P3aLwJ41aRYkyFFw2FRM7,OPM Pop
+Toni Gonzaga,https://open.spotify.com/artist/5BAyYwbv8OSfqeXMjPgWX6,OPM Pop
+Ace Banzuelo,https://open.spotify.com/artist/3f0X043zSojego7Qn4Yi6U,OPM Pop
+Maki,https://open.spotify.com/artist/6AvnL2gWjNYs1hRVJx4huK,OPM Pop
+John Roa,https://open.spotify.com/artist/2U5mF0PZqGu6glnz55yY0y,OPM Pop
+Denise Julia,https://open.spotify.com/artist/3L1qgTsUqavkiygkIKfWJD,OPM Pop
+JMKO,https://open.spotify.com/artist/1onz2fxn4zwyarm9FPVuyp,OPM Pop
+grentperez,https://open.spotify.com/artist/73BLwSX6gsNeVzS7DgI4xe,OPM Pop
+Janine Berdin,https://open.spotify.com/artist/4qPhnQfRgdgcZEdXgENOnr,OPM Pop
+Ben&Ben,https://open.spotify.com/artist/4DAcJXcjX0zlQAZAPAx4Zb,OPM Ballad
+Lola Amour,https://open.spotify.com/artist/29zSTMejPhY0m7kwNQ9SPI,OPM Ballad
+SunKissed Lola,https://open.spotify.com/artist/4bLLB1dbsRVUTcMpnDGDO2,OPM Ballad
+Cup of Joe,https://open.spotify.com/artist/61nn6nOoLWjVC1ER2qFAvN,OPM Ballad
+Dionela,https://open.spotify.com/artist/1chOgh5tgwfiyJ2zhUHwBj,OPM Ballad
+Erik Santos,https://open.spotify.com/artist/7ygtjsCTrCQZAYYPOne9uE,OPM Ballad
+Jona,https://open.spotify.com/artist/7LVPSD4kabI5LiXIVPI8tn,OPM Ballad
+Angeline Quinto,https://open.spotify.com/artist/7DW4ijH3n36QN0RlC0n649,OPM Ballad
+KZ Tandingan,https://open.spotify.com/artist/1mcqfNCReSFxun2vIWvC28,OPM Ballad
+Regine Velasquez,https://open.spotify.com/artist/3wNylAjJX1PiCpMKx8Lrfp,OPM Ballad
+Yeng Constantino,https://open.spotify.com/artist/0DnjaQqb436AH1idffI6CQ,OPM Ballad
+Morissette,https://open.spotify.com/artist/62WbvkXqQGvXQvw74GU3kQ,OPM Ballad
+Nina,https://open.spotify.com/artist/43HOseC2aONncTRo8qJb7a,OPM Ballad
+Kyla,https://open.spotify.com/artist/2vTbuBRo7ACOZ3JsCnaL7S,OPM Ballad
+Jaya,https://open.spotify.com/artist/2TeEZ5rfw62Mw15I4RFjXK,OPM Ballad
+Rachel Alejandro,https://open.spotify.com/artist/4oMk1QJuMWUWrNmchRJGWL,OPM Ballad
+Jay R,https://open.spotify.com/artist/3z0IVhtuFvt9VYUZGT98PU,OPM Ballad
+The Juans,https://open.spotify.com/artist/1YlibpAvhJBbMZMBwN1KGv,OPM Ballad
+I Belong to the Zoo,https://open.spotify.com/artist/7tKpXx21KVUOR6vvDs6xtg,OPM Ballad
+This Band,https://open.spotify.com/artist/5HIZU0JzM0AgfItVOm4E08,OPM Ballad
+Magnus Haven,https://open.spotify.com/artist/28B54RKpJrEmDoGSTjsfY6,OPM Ballad
+NOBITA,https://open.spotify.com/artist/5GVk1KCKa1tdHRev4bMw7V,OPM Ballad
+December Avenue,https://open.spotify.com/artist/4qFxP3qN9GsnZDOkAE6x2m,OPM Rock
+Parokya Ni Edgar,https://open.spotify.com/artist/2XHTklRsNMOOQT56Zm3WS4,OPM Rock
+Eraserheads,https://open.spotify.com/artist/7374lH6kwx9uQATYQ9H3Cp,OPM Rock
+Rivermaya,https://open.spotify.com/artist/1ZTdxfZTeztyAgKUJVLxAI,OPM Rock
+Sponge Cola,https://open.spotify.com/artist/1tXFYQZSAswt4JLB42lpye,OPM Rock
+The Itchyworms,https://open.spotify.com/artist/5cYJYBMg1n71v7cvthr1SO,OPM Rock
+IV of Spades,https://open.spotify.com/artist/4k9wp4ipHdA1bu1T4x1ZTG,OPM Rock
+Unique Salonga,https://open.spotify.com/artist/30mZI7Hw2MhoarTVYxfyZM,OPM Rock
+Orange & Lemons,https://open.spotify.com/artist/1EUmQM6xgUQLUkJVcvSdey,OPM Rock
+Silent Sanctuary,https://open.spotify.com/artist/4nGp682WMiKS4X217kPw8C,OPM Rock
+Kamikazee,https://open.spotify.com/artist/4GBFKKuwmZUnAJt6nBal7A,OPM Rock
+Sandwich,https://open.spotify.com/artist/6baezjDaGyBqrW8xGqw3a5,OPM Rock
+Sugarfree,https://open.spotify.com/artist/5I3uAFbAOhuVSKdrcG5mgy,OPM Rock
+Chicosci,https://open.spotify.com/artist/1WUdtysXvz9qXuD6toSJqA,OPM Rock
+Typecast,https://open.spotify.com/artist/7vbAIeiw0afuAqTiReJItY,OPM Rock
+Moonstar88,https://open.spotify.com/artist/2kZThDGZcHl4klYYFk0v8n,OPM Rock
+Hale,https://open.spotify.com/artist/6Ww3OMFzCaO33ulKh1LBFN,OPM Rock
+Callalily,https://open.spotify.com/artist/4HOEnLufwAqJ2qoJPVnL01,OPM Rock
+6cyclemind,https://open.spotify.com/artist/3nZa8vRD64ueq3d0JNYTsl,OPM Rock
+Bamboo,https://open.spotify.com/artist/0c7d9V8rjfT6tzojfBfRf5,OPM Rock
+Ely Buendia,https://open.spotify.com/artist/5C8exBHLifsjZxzVErjRpn,OPM Rock
+Rico Blanco,https://open.spotify.com/artist/6l880dxsvN2x5wiceaG6D0,OPM Rock
+Urbandub,https://open.spotify.com/artist/18B9mAtwCLjkXGMlBtH1LZ,OPM Rock
+Cueshe,https://open.spotify.com/artist/6Xx1uQPrAF37dtVMKEmvx5,OPM Rock
+Mayonnaise,https://open.spotify.com/artist/7lIVjtsgz0y1oRQFBAVNzq,OPM Rock
+Autotelic,https://open.spotify.com/artist/3Hvxz2oZPYuo61ChHKcqQI,OPM Rock
+Munimuni,https://open.spotify.com/artist/4eKq7eArL96wSQjaaMg9Ic,OPM Indie
+Over October,https://open.spotify.com/artist/1hMAGfvamVXuSWBFQRFMeq,OPM Indie
+Any Name's Okay,https://open.spotify.com/artist/1CZ6BqSNNDTbyne4SltF0e,OPM Indie
+SOS,https://open.spotify.com/artist/6sYQTuRBvPAaQ9Ba5ca1Yc,OPM Indie
+The Ransom Collective,https://open.spotify.com/artist/5TPt1cZ847Fr9CWd9vAm7s,OPM Indie
+Johnoy Danao,https://open.spotify.com/artist/2zFBNsALb4M2FhKl98wcvd,OPM Indie
+Bullet Dumas,https://open.spotify.com/artist/1hFH6NZJrhl0Un65IZxlZH,OPM Indie
+Clara Benin,https://open.spotify.com/artist/5ebPSE9YI5aLeZ1Z2gkqjn,OPM Indie
+Reese Lansangan,https://open.spotify.com/artist/2JI8ViuZDBybY6Xd9ujUrb,OPM Indie
+B.P. Valenzuela,https://open.spotify.com/artist/2JqqCQCcocEQA6NH1fTvSw,OPM Indie
+Up Dharma Down,https://open.spotify.com/artist/3wbCeEPAW6po7J46netxMT,OPM Indie
+Kitchie Nadal,https://open.spotify.com/artist/4OjU5UP0GFWeniBC82sGBY,OPM Indie
+Barbie Almalbis,https://open.spotify.com/artist/6XMiJRtSvw0PYHOBSBEsMg,OPM Indie
+Zild,https://open.spotify.com/artist/7BxbcnOfx5r4d53UQl2I1s,OPM Indie
+ena mori,https://open.spotify.com/artist/5FW3vzEP2gQB3RQRNmR6ON,OPM Indie
+iluna,https://open.spotify.com/artist/1CFjJMSXKmctvTXBA6uQkE,OPM Indie
+Fern.,https://open.spotify.com/artist/7KoTRIhjkIQy2L8RjWDpfF,OPM Indie
+kiyo,https://open.spotify.com/artist/6gcteR920pLEynlHzjSRYd,OPM Indie
+Hev Abi,https://open.spotify.com/artist/4zpGxqF6oI1h3f6Md2v42T,OPM Indie
+gins&melodies,https://open.spotify.com/artist/2WzWSpOB41g3gb78Raj6RK,OPM Indie
+syd hartha,https://open.spotify.com/artist/3BQ7MYNeB0wMPtHYPWvu1C,OPM Indie
+Ogie Alcasid,https://open.spotify.com/artist/1vlz5PDUCNuZJeuJoufQkN,OPM Classic
+Gary Valenciano,https://open.spotify.com/artist/0RHiqaoRCsFLPeEuj3OQz4,OPM Classic
+Martin Nievera,https://open.spotify.com/artist/4LTJwj8UNLy3ApvH7XUiiq,OPM Classic
+Piolo Pascual,https://open.spotify.com/artist/2GqX0GnrKdi6Z2X2OReYOK,OPM Classic
+Lea Salonga,https://open.spotify.com/artist/1GlMjIezcLwV3OFlX0uXOv,OPM Classic
+Sharon Cuneta,https://open.spotify.com/artist/3I5ONm7nnP1LpvqsnA5dBG,OPM Classic
+Jose Mari Chan,https://open.spotify.com/artist/1EHAbA1GMYOfkh9ds9eNfS,OPM Classic
+APO Hiking Society,https://open.spotify.com/artist/4RA4PC3WHM9OHZLExirTcU,OPM Classic
+VST & Company,https://open.spotify.com/artist/1JygQfeB7OmzophGsgNwSb,OPM Classic
+Freddie Aguilar,https://open.spotify.com/artist/7fihhreD4v29FQsWykhCJm,OPM Classic
+Rey Valera,https://open.spotify.com/artist/5xWPJKDLLSDaz7K7tSMTFu,OPM Classic
+Basil Valdez,https://open.spotify.com/artist/2ctUvNSyw4TfFtQMkBYiKZ,OPM Classic
+Noel Cabangon,https://open.spotify.com/artist/2fonBGBLc7lUoikMqms5Zl,OPM Classic
+Side A,https://open.spotify.com/artist/31oMMIBDMM2Z1RQO7u8irE,OPM Classic
+Aegis,https://open.spotify.com/artist/65kpH75MFCBJhLy7qvVl6A,OPM Classic
+True Faith,https://open.spotify.com/artist/6RV3CKY0UJIPKXyGs85Thm,OPM Classic
+South Border,https://open.spotify.com/artist/6ZgBJRjJsK1iOJGKGZxEUv,OPM Classic
+Freestyle,https://open.spotify.com/artist/0jarApAsbmiCkYhz0590mE,OPM Classic
+Gloc-9,https://open.spotify.com/artist/7HJDRQAfEcFiARVehhM6qD,OPM Hip-Hop
+Al James,https://open.spotify.com/artist/2G7VQ1kVhVfNagytlousgm,OPM Hip-Hop
+Shanti Dope,https://open.spotify.com/artist/6ogIjp0fsbUxlqy9q2rvrT,OPM Hip-Hop
+Flow G,https://open.spotify.com/artist/3PDFGpPl4ienSn5Vwisfrh,OPM Hip-Hop
+Skusta Clee,https://open.spotify.com/artist/117XFtbZPnCI1EYKjYZWJc,OPM Hip-Hop
+Ex Battalion,https://open.spotify.com/artist/2iB7AJhJmkWkkehY9ccB0j,OPM Hip-Hop
+O.C. Dawgs,https://open.spotify.com/artist/00xU4wfephkJrjwJPDvfkf,OPM Hip-Hop
+Matthaios,https://open.spotify.com/artist/1SrWbIDP84JcSDr0oTBAQw,OPM Hip-Hop
+Because,https://open.spotify.com/artist/0n4a5imdLBN24fIrBWoqrv,OPM Hip-Hop
+CLR,https://open.spotify.com/artist/6vCnF48qqPHgVMBEvcbgkU,OPM Hip-Hop
+Smugglaz,https://open.spotify.com/artist/2FvXtuMlYRrEkSF7kdAfFq,OPM Hip-Hop
+Andrew E.,https://open.spotify.com/artist/6TcTgRYJBQzadIFeXXWA3I,OPM Hip-Hop
+FrancisM,https://open.spotify.com/artist/1ayiGn4MLc427PozR13p1y,OPM Hip-Hop

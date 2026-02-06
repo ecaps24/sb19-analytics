@@ -9,6 +9,10 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from bs4 import BeautifulSoup
 
 class ArtistMonthlyListenersRPA:
@@ -17,7 +21,7 @@ class ArtistMonthlyListenersRPA:
         self.output_dir = os.path.join(self.base_dir, "monthly listeners")
         os.makedirs(self.output_dir, exist_ok=True)
         
-        self.artists_csv_path = os.path.join(self.base_dir, "artists.csv")
+        self.artists_csv_path = os.path.join(self.base_dir, "opm_artists_spotify.csv")
         self.results_csv_path = os.path.join(self.base_dir, "monthly_listeners.csv")
         
         # Setup Driver
@@ -92,6 +96,89 @@ class ArtistMonthlyListenersRPA:
             
         return None
 
+    def click_monthly_listeners_button(self, artist_name):
+        """Click the 'monthly listeners' button to open the stats dialog."""
+        selectors = [
+            ("XPath text", By.XPATH, '//button[contains(., "monthly listeners")]'),
+            ("aria-label", By.CSS_SELECTOR, f'button[aria-label="{artist_name}"]'),
+            ("CSS class", By.CSS_SELECTOR, 'button.J8g7rZ2MDknxmiYP'),
+        ]
+
+        button = None
+        for label, by, selector in selectors:
+            try:
+                button = WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((by, selector))
+                )
+                print(f"       [SUCCESS] Found button using selector: {label}")
+                break
+            except TimeoutException:
+                continue
+
+        if not button:
+            print("       [WARN] Could not find monthly listeners button.")
+            return False
+
+        try:
+            self.driver.execute_script("arguments[0].click();", button)
+            time.sleep(2)
+            self.driver.find_element(By.CSS_SELECTOR, 'dialog[open]')
+            print("       [SUCCESS] Dialog opened successfully")
+            return True
+        except (NoSuchElementException, Exception) as e:
+            print(f"       [WARN] Dialog did not open after click: {e}")
+            return False
+
+    def extract_dialog_stats(self, html_content):
+        """Extract followers and top cities from the stats dialog HTML."""
+        empty = {
+            "followers": None,
+            "city_1": None, "city_1_listeners": None,
+            "city_2": None, "city_2_listeners": None,
+            "city_3": None, "city_3_listeners": None,
+            "city_4": None, "city_4_listeners": None,
+            "city_5": None, "city_5_listeners": None,
+        }
+        try:
+            soup = BeautifulSoup(html_content, "html.parser")
+            dialog = soup.find("dialog")
+            if not dialog:
+                print("       [WARN] No <dialog> element found in HTML.")
+                return empty
+
+            # Extract followers from stat blocks
+            stat_blocks = dialog.find_all("div", class_="PGUmrb7yhs8G70hC")
+            for block in stat_blocks:
+                divs = block.find_all("div", recursive=False)
+                if len(divs) >= 2 and "followers" in divs[1].get_text(strip=True).lower():
+                    raw = divs[0].get_text(strip=True).replace(",", "")
+                    if raw.isdigit():
+                        empty["followers"] = raw
+                        print(f"       [EXTRACT] Followers: {divs[0].get_text(strip=True)}")
+                    break
+
+            # Extract city data
+            city_blocks = dialog.find_all("div", class_="fAKBSTbDh50wSEim")
+            for idx, block in enumerate(city_blocks[:5]):
+                divs = block.find_all("div", recursive=False)
+                if len(divs) >= 2:
+                    city_name = divs[0].get_text(strip=True)
+                    listener_text = divs[1].get_text(strip=True)
+                    # Extract numeric part from "10,081 listeners"
+                    match = re.search(r'([\d,]+)', listener_text)
+                    listener_count = match.group(1).replace(",", "") if match else None
+
+                    n = idx + 1
+                    empty[f"city_{n}"] = city_name
+                    empty[f"city_{n}_listeners"] = listener_count
+                    print(f"       [EXTRACT] City {n}: {city_name} — {listener_text}")
+
+            return empty
+
+        except Exception as e:
+            print(f"       [ERR] Failed to extract dialog stats: {e}")
+            return empty
+
     def load_artists(self):
         artists = []
         if not os.path.exists(self.artists_csv_path):
@@ -102,6 +189,7 @@ class ArtistMonthlyListenersRPA:
             reader = csv.DictReader(f)
             for row in reader:
                 if row.get("artist_url", "").startswith("http"):
+                    row.setdefault("genre", "")
                     artists.append(row)
         return artists
 
@@ -148,9 +236,10 @@ class ArtistMonthlyListenersRPA:
             for i, artist_data in enumerate(artists):
                 name = artist_data.get("artist_name", "Unknown")
                 url = artist_data.get("artist_url")
+                genre = artist_data.get("genre", "")
                 slug = self._slugify(name)
-                
-                print(f"\n[{i+1}/{len(artists)}] Processing: {name}")
+
+                print(f"\n[{i+1}/{len(artists)}] Processing: {name} [{genre}]")
                 print(f"       URL: {url}")
                 
                 try:
@@ -161,25 +250,41 @@ class ArtistMonthlyListenersRPA:
                     self.driver.execute_script("window.scrollBy(0, 300);")
                     time.sleep(2)
                     
+                    # Click monthly listeners button to open dialog
+                    dialog_opened = self.click_monthly_listeners_button(name)
+
+                    # Capture page source AFTER click so dialog HTML is included
                     page_source = self.driver.page_source
                     saved_path = self.save_page_source(page_source, slug)
-                    
+
                     listeners = self.extract_monthly_listeners(page_source)
-                    
+
                     if listeners:
                         print(f"       [SUCCESS] Monthly Listeners: {listeners}")
                     else:
                         print(f"       [WARN] Could not extract monthly listeners.")
                         listeners = "N/A"
-                        
-                    results.append({
-                        "timestamp": datetime.now().strftime("%Y%m%d_%H%M%S"),
 
+                    # Extract dialog stats (followers + cities)
+                    dialog_stats = self.extract_dialog_stats(page_source) if dialog_opened else {
+                        "followers": None,
+                        "city_1": None, "city_1_listeners": None,
+                        "city_2": None, "city_2_listeners": None,
+                        "city_3": None, "city_3_listeners": None,
+                        "city_4": None, "city_4_listeners": None,
+                        "city_5": None, "city_5_listeners": None,
+                    }
+
+                    result = {
+                        "timestamp": datetime.now().strftime("%Y%m%d_%H%M%S"),
                         "artist_name": name,
+                        "genre": genre,
                         "monthly_listeners": listeners,
                         "url": url,
-                        "saved_file": saved_path
-                    })
+                        "saved_file": saved_path,
+                    }
+                    result.update(dialog_stats)
+                    results.append(result)
                     
                 except Exception as e:
                     print(f"       [ERR] Error processing artist: {e}")
@@ -201,7 +306,12 @@ class ArtistMonthlyListenersRPA:
         if not result:
             return
 
-        fieldnames = ["artist_name", "monthly_listeners", "timestamp"]
+        fieldnames = [
+            "artist_name", "genre", "monthly_listeners", "followers",
+            "city_1", "city_1_listeners", "city_2", "city_2_listeners",
+            "city_3", "city_3_listeners", "city_4", "city_4_listeners",
+            "city_5", "city_5_listeners", "timestamp",
+        ]
         file_exists = os.path.exists(self.results_csv_path)
 
         try:

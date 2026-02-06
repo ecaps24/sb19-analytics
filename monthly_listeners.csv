@@ -1,4 +1,4 @@
-artist_name,monthly_listeners,timestamp
+artist_name,genre,monthly_listeners,followers,city_1,city_1_listeners,city_2,city_2_listeners,city_3,city_3_listeners,city_4,city_4_listeners,city_5,city_5_listeners,timestamp
 BINI,1924005,20251105_042257
 Ben&Ben,6554327,20251105_042257
 Cup of Joe,11447358,20251105_042257
@@ -1472,3 +1472,65 @@ Flow G,4481702,20260206_080620
 Regine Velasquez,1538339,20260206_080629
 Yeng Constantino,1532457,20260206_080639
 Morissette,1125382,20260206_080649
+SB19,P-Pop,1341507,2106816,"Quezon City, PH",145199,"Manila, PH",93843,"Caloocan City, PH",62664,"Davao City, PH",58750,"Cebu City, PH",56832,20260207_005735
+BINI,P-Pop,1716456,5113996,"Quezon City, PH",206933,"Manila, PH",135581,"Caloocan City, PH",89118,"Davao City, PH",88943,"Cebu City, PH",82477,20260207_005748
+BGYO,P-Pop,100137,147070,"Quezon City, PH",10081,"Manila, PH",6718,"Davao City, PH",4655,"Cebu City, PH",4407,"Caloocan City, PH",3941,20260207_005800
+ALAMAT,P-Pop,434862,379881,"Quezon City, PH",53425,"Manila, PH",33138,"Caloocan City, PH",21935,"Davao City, PH",21620,"Makati City, PH",20609,20260207_005812
+Press Hit Play,P-Pop,22816,21408,"Quezon City, PH",2415,"Manila, PH",1595,"Davao City, PH",969,"Cebu City, PH",965,"Caloocan City, PH",913,20260207_005824
+VXON,P-Pop,113289,82619,"Quezon City, PH",13001,"Manila, PH",8719,"Caloocan City, PH",5329,"Makati City, PH",5117,"Davao City, PH",5020,20260207_005835
+1st.One,P-Pop,92002,26867,"Quezon City, PH",9690,"Manila, PH",6292,"Davao City, PH",3910,"Caloocan City, PH",3826,"Makati City, PH",3709,20260207_005847
+4th Impact,P-Pop,10350,15164,"Quezon City, PH",484,"Manila, PH",286,"Davao City, PH",200,"Makati City, PH",183,"Caloocan City, PH",180,20260207_005900
+MNL48,P-Pop,56590,45773,"Quezon City, PH",8004,"Manila, PH",4834,"Caloocan City, PH",3172,"Makati City, PH",2974,"Davao City, PH",2603,20260207_005911
+PPOP Generation,P-Pop,1407,7030,"Quezon City, PH",141,"Manila, PH",86,"Davao City, PH",62,"Cebu City, PH",50,"Makati City, PH",49,20260207_005923
+KAIA,P-Pop,85364,89376,"Quezon City, PH",9558,"Manila, PH",6145,"Caloocan City, PH",3873,"Davao City, PH",3690,"Makati City, PH",3533,20260207_005935
+DIONE,P-Pop,1529,11355,"Quezon City, PH",154,"Manila, PH",112,"Caloocan City, PH",72,"Makati City, PH",57,"Cebu City, PH",55,20260207_005946
+G22,P-Pop,110940,100407,"Quezon City, PH",13400,"Manila, PH",8264,"Caloocan City, PH",5455,"Makati City, PH",5062,"Davao City, PH",4833,20260207_005958
+FINIX,P-Pop,11764,1236,"Frankfurt am Main, DE",792,"London, GB",668,"Quezon City, PH",657,"Manila, PH",432,"Davao City, PH",358,20260207_010010
+PABLO,SB19 Solo,144692,358133,"Quezon City, PH",19323,"Manila, PH",11518,"Caloocan City, PH",8232,"Makati City, PH",7358,"San Juan, PH",6467,20260207_010022
+JOSH CULLEN,SB19 Solo,133774,263866,"Quezon City, PH",15762,"Manila, PH",9690,"Caloocan City, PH",6320,"Makati City, PH",5921,"Cebu City, PH",5324,20260207_010033
+Stell,SB19 Solo,70624,211024,"Quezon City, PH",10006,"Manila, PH",5596,"Caloocan City, PH",4035,"Makati City, PH",3730,"San Juan, PH",3169,20260207_010045
+Felip,SB19 Solo,189349,343533,"Quezon City, PH",19530,"Manila, PH",11588,"Caloocan City, PH",8101,"Makati City, PH",7396,"Cebu City, PH",7113,20260207_010057
+justin,SB19 Solo,211355,298110,"Quezon City, PH",22035,"Manila, PH",15723,"Davao City, PH",10386,"Cebu City, PH",10076,"Makati City, PH",8481,20260207_010109
+Sarah Geronimo,OPM Pop,3261709,3708449,"Quezon City, PH",398509,"Manila, PH",280408,"Davao City, PH",184357,"Cebu City, PH",163691,"Caloocan City, PH",161165,20260207_010120
+Moira Dela Torre,OPM Pop,3281223,10673457,"Quezon City, PH",344595,"Manila, PH",256481,"Davao City, PH",183664,"Cebu City, PH",169950,"Caloocan City, PH",138162,20260207_010132
+Zack Tabudlo,OPM Pop,4707145,4793571,"Quezon City, PH",399933,"Manila, PH",276087,"Davao City, PH",198553,"Cebu City, PH",180788,"Caloocan City, PH",164695,20260207_010144
+Arthur Nery,OPM Pop,9324116,9009555,"Quezon City, PH",1254827,"Manila, PH",994371,"Davao City, PH",648357,"Cebu City, PH",568754,"Caloocan City, PH",537336,20260207_010156
+juan karlos,OPM Pop,2945496,2684401,"Quezon City, PH",324041,"Manila, PH",235682,"Davao City, PH",167122,"Cebu City, PH",146061,"Caloocan City, PH",129792,20260207_010208
+Dilaw,OPM Pop,3333504,1168945,"Quezon City, PH",335477,"Manila, PH",258937,"Davao City, PH",192697,"Cebu City, PH",169117,"Cagayan de Oro, PH",132593,20260207_010219
+Adie,OPM Pop,5030767,4146409,"Quezon City, PH",547703,"Manila, PH",430093,"Davao City, PH",313817,"Cebu City, PH",276188,"Cagayan de Oro, PH",221724,20260207_010231
+James Reid,OPM Pop,1982112,618951,"Quezon City, PH",222342,"Manila, PH",152362,"Davao City, PH",115077,"Cebu City, PH",98665,"Caloocan City, PH",90601,20260207_010243
+Nadine Lustre,OPM Pop,1450079,314195,"Quezon City, PH",161684,"Manila, PH",115657,"Davao City, PH",86849,"Cebu City, PH",71041,"Caloocan City, PH",63042,20260207_010255
+Daniel Padilla,OPM Pop,1574627,478190,"Quezon City, PH",153431,"Manila, PH",122043,"Davao City, PH",83972,"Cebu City, PH",72286,"Caloocan City, PH",59404,20260207_010306
+Darren Espanto,OPM Pop,483008,464186,"Quezon City, PH",45628,"Manila, PH",33151,"Davao City, PH",23246,"Cebu City, PH",22072,"Makati City, PH",17720,20260207_010318
+Inigo Pascual,OPM Pop,230975,413944,"Quezon City, PH",16419,"Manila, PH",10496,"Davao City, PH",8036,"Cebu City, PH",7218,"Caloocan City, PH",6374,20260207_010330
+AC Bonifacio,OPM Pop,3844,15690,"Quezon City, PH",391,"Manila, PH",264,"Davao City, PH",185,"Cebu City, PH",177,"Caloocan City, PH",164,20260207_010342
+Maymay Entrata,OPM Pop,262477,113756,"Quezon City, PH",24988,"Manila, PH",18716,"Davao City, PH",15023,"Cebu City, PH",13202,"Cagayan de Oro, PH",9884,20260207_010353
+Janella Salvador,OPM Pop,240096,266257,"Quezon City, PH",21333,"Manila, PH",15630,"Davao City, PH",13171,"Cebu City, PH",11820,"Cagayan de Oro, PH",9030,20260207_010405
+Julie Anne San Jose,OPM Pop,1003828,879058,"Quezon City, PH",111343,"Manila, PH",78909,"Davao City, PH",52275,"Cebu City, PH",49764,"Caloocan City, PH",45353,20260207_010417
+Sam Concepcion,OPM Pop,1135480,230443,"Quezon City, PH",122206,"Manila, PH",88244,"Davao City, PH",66340,"Cebu City, PH",55674,"Caloocan City, PH",48782,20260207_010429
+Toni Gonzaga,OPM Pop,1034025,769739,"Quezon City, PH",114503,"Manila, PH",86321,"Davao City, PH",59550,"Cebu City, PH",54041,"Caloocan City, PH",46822,20260207_010440
+Ace Banzuelo,OPM Pop,1247452,675682,"Quezon City, PH",125749,"Manila, PH",96660,"Davao City, PH",72089,"Cebu City, PH",61715,"Cagayan de Oro, PH",50267,20260207_010452
+Maki,OPM Pop,4418581,2006870,"Quezon City, PH",561155,"Manila, PH",389560,"Davao City, PH",253865,"Caloocan City, PH",240367,"Cebu City, PH",227544,20260207_010504
+John Roa,OPM Pop,3156705,1614866,"Quezon City, PH",403513,"Manila, PH",290625,"Davao City, PH",190606,"Caloocan City, PH",173150,"Cebu City, PH",161334,20260207_010516
+Denise Julia,OPM Pop,2061195,901308,"Quezon City, PH",178359,"Manila, PH",118583,"Davao City, PH",84560,"Cebu City, PH",74506,"Caloocan City, PH",73751,20260207_010528
+JMKO,OPM Pop,10665,4612,"Quezon City, PH",1084,"Manila, PH",705,"Davao City, PH",536,"Cebu City, PH",512,"Cagayan de Oro, PH",416,20260207_010540
+grentperez,OPM Pop,1926747,816301,"Quezon City, PH",48028,"Jakarta, ID",40216,"Sydney, AU",37844,"Los Angeles, US",34029,"Manila, PH",30828,20260207_010551
+Janine Berdin,OPM Pop,3713973,454883,"Quezon City, PH",359977,"Manila, PH",278000,"Davao City, PH",219312,"Cebu City, PH",191241,"Cagayan de Oro, PH",150598,20260207_010603
+Ben&Ben,OPM Ballad,6493293,13623578,"Quezon City, PH",748326,"Manila, PH",581686,"Davao City, PH",425196,"Cebu City, PH",378510,"Caloocan City, PH",305019,20260207_010615
+Lola Amour,OPM Ballad,3461321,2009723,"Quezon City, PH",363705,"Manila, PH",269751,"Davao City, PH",203865,"Cebu City, PH",177404,"Caloocan City, PH",143233,20260207_010627
+SunKissed Lola,OPM Ballad,3067727,1123543,"Quezon City, PH",237153,"Manila, PH",168190,"Davao City, PH",125991,"Cebu City, PH",114049,"Caloocan City, PH",91044,20260207_010638
+Cup of Joe,OPM Ballad,11046230,5692542,"Quezon City, PH",1118797,"Manila, PH",848477,"Davao City, PH",564792,"Jakarta, ID",540709,"Cebu City, PH",499266,20260207_010650
+Dionela,OPM Ballad,4793641,3090791,"Quezon City, PH",561884,"Manila, PH",395778,"Davao City, PH",280667,"Cebu City, PH",255473,"Caloocan City, PH",241067,20260207_010702
+Erik Santos,OPM Ballad,854633,726833,"Quezon City, PH",91248,"Manila, PH",63839,"Davao City, PH",45232,"Cebu City, PH",43602,"Caloocan City, PH",37418,20260207_010714
+Jona,OPM Ballad,1046058,229588,"Quezon City, PH",106502,"Manila, PH",85400,"Davao City, PH",63256,"Cebu City, PH",57485,"Cagayan de Oro, PH",43198,20260207_010726
+Angeline Quinto,OPM Ballad,1057917,912217,"Quezon City, PH",108906,"Manila, PH",79617,"Davao City, PH",58035,"Cebu City, PH",55077,"Caloocan City, PH",43246,20260207_010737
+KZ Tandingan,OPM Ballad,2762913,1928633,"Quezon City, PH",293332,"Manila, PH",206700,"Davao City, PH",151732,"Cebu City, PH",139799,"Caloocan City, PH",119991,20260207_010749
+Regine Velasquez,OPM Ballad,1545380,1916155,"Quezon City, PH",176085,"Manila, PH",117542,"Davao City, PH",77630,"Cebu City, PH",74570,"Caloocan City, PH",73997,20260207_010801
+Yeng Constantino,OPM Ballad,1536413,2734973,"Quezon City, PH",178205,"Manila, PH",124594,"Davao City, PH",83869,"Caloocan City, PH",70770,"Cebu City, PH",69289,20260207_010813
+Morissette,OPM Ballad,1120129,1151784,"Quezon City, PH",111783,"Manila, PH",78986,"Davao City, PH",59733,"Cebu City, PH",55215,"Caloocan City, PH",44149,20260207_010825
+Nina,OPM Ballad,0,0,,,,,,,,,,,20260207_010857
+Kyla,OPM Ballad,939807,1021098,"Quezon City, PH",107500,"Manila, PH",71798,"Davao City, PH",46551,"Caloocan City, PH",43547,"Cebu City, PH",42813,20260207_010908
+Jaya,OPM Ballad,307751,171128,"Quezon City, PH",28799,"Manila, PH",21678,"Davao City, PH",16385,"Cebu City, PH",15708,"Makati City, PH",11375,20260207_010920
+Rachel Alejandro,OPM Ballad,501898,154149,"Quezon City, PH",49342,"Manila, PH",35558,"Davao City, PH",27254,"Cebu City, PH",23303,"Caloocan City, PH",18574,20260207_010932
+Jay R,OPM Ballad,3033763,405952,"Quezon City, PH",313983,"Manila, PH",213773,"Davao City, PH",157119,"Cebu City, PH",146045,"Caloocan City, PH",128686,20260207_010944
+The Juans,OPM Ballad,2219532,1484427,"Quezon City, PH",276451,"Manila, PH",199196,"Davao City, PH",129238,"Caloocan City, PH",117704,"Cebu City, PH",113831,20260207_010956

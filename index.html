@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SB19 Analytics Dashboard</title>
+    <title>OPM Analytics Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -241,6 +241,60 @@
             margin-bottom: 20px;
         }
 
+        .listeners-detail-container.focus-mode .listeners-stats-row,
+        .listeners-detail-container.focus-mode .listeners-artist-selector,
+        .listeners-detail-container.focus-mode .listeners-history-table,
+        .listeners-detail-container.focus-mode > div[style*="margin-bottom: 8px"] {
+            display: none !important;
+        }
+
+        .listeners-detail-container.focus-mode .listeners-chart-wrapper {
+            height: calc(100vh - 120px);
+        }
+
+        .chart-range-btn {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            color: #9ca3af;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chart-range-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: #e2e8f0;
+        }
+
+        .chart-range-btn.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: rgba(96, 165, 250, 0.5);
+            color: #60a5fa;
+        }
+
+        .chart-focus-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(17, 24, 39, 0.7);
+            color: #e2e8f0;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .chart-focus-btn:hover {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
         .listeners-history-table {
             background: rgba(17, 24, 39, 0.5);
             border-radius: 8px;
@@ -288,6 +342,26 @@
 
         .listeners-history-table tr:hover td {
             background: rgba(96, 165, 250, 0.05);
+        }
+
+        /* Artist checkbox search */
+        .artist-checkbox-search {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 24, 39, 0.6);
+            color: #e5e7eb;
+            font-size: 0.8rem;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 8px;
+        }
+        .artist-checkbox-search:focus {
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+        .artist-checkbox-search::placeholder {
+            color: #6b7280;
         }
 
         .chart-container {
@@ -1386,6 +1460,7 @@
                 padding: 3px 8px;
                 font-size: 0.65rem;
             }
+
         }
 
         /* Very small screens */
@@ -1424,7 +1499,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>SB19 Analytics Dashboard</h1>
+            <h1>OPM Analytics Dashboard</h1>
             <p>Spotify Performance Tracking</p>
         </div>
 
@@ -1752,16 +1827,62 @@
                     </div>
                 </div>
 
-                <!-- Artist Selector -->
+                <!-- Artist Selector for Chart Comparison -->
                 <div class="listeners-artist-selector">
                     <label>Compare with artists:</label>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <label style="color: #9ca3af; font-size: 0.75rem; white-space: nowrap;">Genre:</label>
+                        <select id="genreFilter" onchange="window.dashboard.filterByGenre()"
+                                style="flex: 0 0 auto; padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(17, 24, 39, 0.8); color: #e2e8f0; font-size: 0.75rem; cursor: pointer;">
+                            <option value="All">All Genres</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                        <input type="text" id="artistCheckboxSearch" class="artist-checkbox-search"
+                               placeholder="Filter artists..." style="flex: 1; margin-bottom: 0;"
+                               oninput="window.dashboard.filterArtistCheckboxes()">
+                        <button onclick="window.dashboard.toggleSelectAllArtists()"
+                                id="selectAllArtistsBtn"
+                                style="white-space: nowrap; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: #e2e8f0; font-size: 0.75rem; cursor: pointer; transition: all 0.2s ease;">
+                            Select All
+                        </button>
+                    </div>
                     <div class="artist-checkbox-group" id="artistCheckboxGroup">
                         <!-- Artists will be dynamically added here -->
                     </div>
                 </div>
 
+                <!-- Chart Options -->
+                <div style="margin-bottom: 8px;">
+                    <label class="artist-checkbox-item" style="--artist-color: #a78bfa; display: inline-flex; cursor: pointer;">
+                        <input type="checkbox" id="showFollowersToggle" checked
+                               onchange="window.dashboard.toggleFollowersOnChart()">
+                        <span class="artist-dot"></span>
+                        <span class="artist-name">Show Followers</span>
+                    </label>
+                </div>
+
+                <!-- Date Range -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;">
+                    <span style="color: #9ca3af; font-size: 0.75rem;">Range:</span>
+                    <button class="chart-range-btn active" data-range="all" onclick="window.dashboard.setChartDateRange('all')">All</button>
+                    <button class="chart-range-btn" data-range="7" onclick="window.dashboard.setChartDateRange('7')">7D</button>
+                    <button class="chart-range-btn" data-range="14" onclick="window.dashboard.setChartDateRange('14')">14D</button>
+                    <button class="chart-range-btn" data-range="30" onclick="window.dashboard.setChartDateRange('30')">30D</button>
+                    <button class="chart-range-btn" data-range="90" onclick="window.dashboard.setChartDateRange('90')">90D</button>
+                    <button class="chart-range-btn" data-range="custom" onclick="window.dashboard.setChartDateRange('custom')">Custom</button>
+                    <div id="chartCustomDateInputs" style="display: none; align-items: center; gap: 4px; margin-left: 4px;">
+                        <input type="date" id="chartDateStart" onchange="window.dashboard.applyCustomDateRange()"
+                               style="padding: 3px 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(17,24,39,0.8); color: #e2e8f0; font-size: 0.7rem;">
+                        <span style="color: #9ca3af; font-size: 0.7rem;">to</span>
+                        <input type="date" id="chartDateEnd" onchange="window.dashboard.applyCustomDateRange()"
+                               style="padding: 3px 6px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(17,24,39,0.8); color: #e2e8f0; font-size: 0.7rem;">
+                    </div>
+                </div>
+
                 <!-- Chart -->
                 <div class="listeners-chart-wrapper">
+                    <button class="chart-focus-btn" id="chartFocusBtn" onclick="window.dashboard.toggleChartFocusMode()">Focus</button>
                     <canvas id="listenersHistoryChart"></canvas>
                     <div id="listenersChartMessage" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9ca3af; font-size: 0.9rem; text-align: center;">
                         No data available for the selected artists.
@@ -1779,6 +1900,9 @@
                                     <th>Artist</th>
                                     <th>Monthly Listeners</th>
                                     <th>Daily Change</th>
+                                    <th>Followers</th>
+                                    <th>Variance</th>
+                                    <th>Variance %</th>
                                 </tr>
                             </thead>
                             <tbody id="listenersHistoricalTableBody">
@@ -1830,7 +1954,13 @@
                 this.songMetadata = {}; // Song metadata (lyrics, history, credits)
                 this.currentSong = null; // Currently viewed song
                 this.listenersViewOpen = false; // Whether listeners detail view is open
-                this.selectedCompareArtists = ['SB19']; // Artists selected for comparison (always includes SB19)
+                this.selectedCompareArtists = ['SB19']; // Artists selected for comparison
+                this.showFollowersOnChart = true; // Toggle followers line on chart
+                this.artistGenreMap = {}; // artist name -> genre
+                this.selectedGenre = 'All'; // Genre filter
+                this.chartDateRange = 'all'; // Date range: 'all', '7', '14', '30', '90', 'custom'
+                this.chartCustomStart = ''; // Custom date range start
+                this.chartCustomEnd = ''; // Custom date range end
                 // Map listener CSV names (case-insensitive) to member dataNames
                 this.listenerNameMap = {
                     'pablo': 'Pablo',
@@ -1965,10 +2095,26 @@
                     this.streamsData = this.parseStreamsCSV(csv);
                 }
 
+                // Load artist genre map
+                const artistsResponse = await fetch('./opm_artists_spotify.csv?t=' + Date.now());
+                if (artistsResponse.ok) {
+                    const csv = await artistsResponse.text();
+                    const lines = csv.trim().split('\n');
+                    for (let i = 1; i < lines.length; i++) {
+                        const parts = lines[i].split(',');
+                        if (parts.length >= 3) {
+                            const name = parts[0].trim();
+                            const genre = parts[parts.length - 1].trim();
+                            if (name && genre) this.artistGenreMap[name] = genre;
+                        }
+                    }
+                }
+
                 console.log('Data loaded:', {
                     listeners: this.listenersData.length,
                     tracks: this.tracksMetadata.length,
-                    streams: this.streamsData.length
+                    streams: this.streamsData.length,
+                    genres: Object.keys(this.artistGenreMap).length
                 });
                 // Debug: check if spotify_url is being loaded
                 if (this.streamsData.length > 0) {
@@ -1998,14 +2144,26 @@
                 // Parse headers and clean incompatible characters (like BOM)
                 const rawHeaders = this.parseCSVLine(lines[0]);
                 const headers = rawHeaders.map(h => h.trim().replace(/^\uFEFF/, ''));
+                const headerCount = headers.length;
                 const data = [];
 
                 for (let i = 1; i < lines.length; i++) {
                     const values = this.parseCSVLine(lines[i]);
-                    const row = {};
-                    headers.forEach((h, idx) => {
-                        if (h) row[h] = (values[idx] || '').trim();
-                    });
+                    let row = {};
+
+                    // Detect old-format rows (3 columns: artist_name, monthly_listeners, timestamp)
+                    // vs new-format rows (15 columns matching the full header)
+                    if (values.length <= 4 && headerCount > 4) {
+                        // Old format: artist_name, monthly_listeners, timestamp
+                        row.artist_name = (values[0] || '').trim();
+                        row.monthly_listeners = (values[1] || '').trim();
+                        row.timestamp = (values[2] || '').trim();
+                    } else {
+                        // New format: map values to headers
+                        headers.forEach((h, idx) => {
+                            if (h) row[h] = (values[idx] || '').trim();
+                        });
+                    }
 
                     const artist = row.artist_name || '';
                     const listeners = parseInt((row.monthly_listeners || '0').replace(/,/g, ''));
@@ -2021,20 +2179,34 @@
                             const day = dataDate.substring(6, 8);
                             dataDate = `${year}-${month}-${day}`;
                         } else if (dataDate.includes(' ') && dataDate.includes('-')) {
-                            // Format: 2026-01-24 04:25:20 (Keep as is, Date() handles it)
-                            // But extract just the date part for consistency if needed, 
-                            // though keeping full timestamp is better for "latest" logic.
+                            // Format: 2026-01-24 04:25:20
                         }
                     }
 
                     if (artist && !isNaN(listeners) && listeners > 0 && dataDate &&
                         !artist.includes('Unknown') && !artist.includes('Unsupported')) {
-                        data.push({
+                        const entry = {
                             artist_name: artist,
                             monthly_listeners: listeners,
                             data_date: dataDate,
-                            timestamp: row.timestamp || row.data_date || dataDate
-                        });
+                            timestamp: row.timestamp || row.data_date || dataDate,
+                            genre: row.genre || '',
+                        };
+                        // Parse followers
+                        const rawFollowers = (row.followers || '').replace(/,/g, '');
+                        if (rawFollowers && !isNaN(parseInt(rawFollowers))) {
+                            entry.followers = parseInt(rawFollowers);
+                        }
+                        // Parse city data (city_1..city_5)
+                        entry.cities = [];
+                        for (let c = 1; c <= 5; c++) {
+                            const cityName = row[`city_${c}`] || '';
+                            const cityListeners = (row[`city_${c}_listeners`] || '').replace(/,/g, '');
+                            if (cityName && cityListeners && !isNaN(parseInt(cityListeners))) {
+                                entry.cities.push({ name: cityName, listeners: parseInt(cityListeners) });
+                            }
+                        }
+                        data.push(entry);
                     }
                 }
                 return data.sort((a, b) => new Date(a.data_date) - new Date(b.data_date));
@@ -4468,6 +4640,7 @@
                 }
 
                 try {
+                    this.populateGenreFilter();
                     this.renderArtistCheckboxes();
                     this.updateListenersStats();
                     this.createListenersHistoryChart();
@@ -4530,33 +4703,48 @@
                 };
             }
 
-            renderArtistCheckboxes() {
+            renderArtistCheckboxes(filter = '') {
                 const container = document.getElementById('artistCheckboxGroup');
-                const artists = this.getAvailableArtists();
+                let artists = this.getAvailableArtists();
+                const query = filter.toLowerCase().trim();
 
-                container.innerHTML = artists.map(artist => {
+                // Apply genre filter
+                if (this.selectedGenre && this.selectedGenre !== 'All') {
+                    artists = artists.filter(a => this.artistGenreMap[a] === this.selectedGenre);
+                }
+
+                const filtered = query
+                    ? artists.filter(a => a.toLowerCase().includes(query))
+                    : artists;
+
+                container.innerHTML = filtered.map(artist => {
                     const color = this.getArtistColor(artist);
                     const isSelected = this.selectedCompareArtists.includes(artist);
-                    const isSB19 = artist === 'SB19';
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
-                               style="--artist-color: ${color.border}"
-                               ${isSB19 ? 'title="SB19 is always shown"' : ''}>
+                               style="--artist-color: ${color.border}">
                             <input type="checkbox"
                                    value="${artist}"
                                    ${isSelected ? 'checked' : ''}
-                                   ${isSB19 ? 'disabled' : ''}
                                    onchange="window.dashboard.toggleArtistComparison('${artist}')">
                             <span class="artist-dot"></span>
                             <span class="artist-name">${artist}</span>
                         </label>
                     `;
                 }).join('');
+
+                // Update Select All button label based on visible artists
+                const allSelected = filtered.length > 0 && filtered.every(a => this.selectedCompareArtists.includes(a));
+                const btn = document.getElementById('selectAllArtistsBtn');
+                if (btn) btn.textContent = allSelected ? 'Deselect All' : 'Select All';
+            }
+
+            filterArtistCheckboxes() {
+                const query = document.getElementById('artistCheckboxSearch').value;
+                this.renderArtistCheckboxes(query);
             }
 
             toggleArtistComparison(artist) {
-                if (artist === 'SB19') return; // SB19 always stays selected
-
                 const index = this.selectedCompareArtists.indexOf(artist);
                 if (index > -1) {
                     this.selectedCompareArtists.splice(index, 1);
@@ -4567,6 +4755,98 @@
                 this.renderArtistCheckboxes();
                 this.createListenersHistoryChart();
                 this.populateListenersHistoryTable();
+            }
+
+            toggleSelectAllArtists() {
+                let artists = this.getAvailableArtists();
+                if (this.selectedGenre && this.selectedGenre !== 'All') {
+                    artists = artists.filter(a => this.artistGenreMap[a] === this.selectedGenre);
+                }
+                const allSelected = artists.every(a => this.selectedCompareArtists.includes(a));
+
+                if (allSelected) {
+                    // Remove only the visible (genre-filtered) artists
+                    this.selectedCompareArtists = this.selectedCompareArtists.filter(a => !artists.includes(a));
+                } else {
+                    // Add all visible artists without duplicates
+                    artists.forEach(a => {
+                        if (!this.selectedCompareArtists.includes(a)) this.selectedCompareArtists.push(a);
+                    });
+                }
+
+                this.renderArtistCheckboxes();
+                this.createListenersHistoryChart();
+                this.populateListenersHistoryTable();
+            }
+
+            populateGenreFilter() {
+                const select = document.getElementById('genreFilter');
+                if (!select) return;
+                const genres = [...new Set(Object.values(this.artistGenreMap))].sort();
+                select.innerHTML = '<option value="All">All Genres</option>' +
+                    genres.map(g => `<option value="${g}" ${g === this.selectedGenre ? 'selected' : ''}>${g}</option>`).join('');
+            }
+
+            filterByGenre() {
+                this.selectedGenre = document.getElementById('genreFilter').value;
+                this.renderArtistCheckboxes();
+            }
+
+            toggleFollowersOnChart() {
+                this.showFollowersOnChart = document.getElementById('showFollowersToggle').checked;
+                this.createListenersHistoryChart();
+            }
+
+            setChartDateRange(range) {
+                this.chartDateRange = range;
+                // Update active button
+                document.querySelectorAll('.chart-range-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.range === range);
+                });
+                // Show/hide custom date inputs
+                const customInputs = document.getElementById('chartCustomDateInputs');
+                if (customInputs) customInputs.style.display = range === 'custom' ? 'flex' : 'none';
+
+                if (range !== 'custom') {
+                    this.createListenersHistoryChart();
+                    this.populateListenersHistoryTable();
+                }
+            }
+
+            applyCustomDateRange() {
+                this.chartCustomStart = document.getElementById('chartDateStart').value;
+                this.chartCustomEnd = document.getElementById('chartDateEnd').value;
+                if (this.chartCustomStart || this.chartCustomEnd) {
+                    this.createListenersHistoryChart();
+                    this.populateListenersHistoryTable();
+                }
+            }
+
+            getChartDateFilter() {
+                if (this.chartDateRange === 'all') return null;
+                if (this.chartDateRange === 'custom') {
+                    return { start: this.chartCustomStart || null, end: this.chartCustomEnd || null };
+                }
+                const days = parseInt(this.chartDateRange);
+                const end = new Date();
+                const start = new Date();
+                start.setDate(start.getDate() - days);
+                return {
+                    start: start.toISOString().substring(0, 10),
+                    end: end.toISOString().substring(0, 10)
+                };
+            }
+
+            toggleChartFocusMode() {
+                const container = document.getElementById('listeners-detail-view');
+                const btn = document.getElementById('chartFocusBtn');
+                container.classList.toggle('focus-mode');
+                const isFocused = container.classList.contains('focus-mode');
+                btn.textContent = isFocused ? 'Exit Focus' : 'Focus';
+                // Resize chart after layout change
+                setTimeout(() => {
+                    if (this.charts.listenersHistory) this.charts.listenersHistory.resize();
+                }, 50);
             }
 
             getArtistHistoricalListeners(artistName) {
@@ -4586,6 +4866,7 @@
 
                 return Object.values(byDate).sort((a, b) => a.data_date.localeCompare(b.data_date));
             }
+
 
             updateListenersStats() {
                 const sb19Data = this.getArtistHistoricalListeners('SB19');
@@ -4658,7 +4939,18 @@
                     data.forEach(d => allDates.add(d.data_date));
                 });
 
-                const sortedDates = Array.from(allDates).sort();
+                let sortedDates = Array.from(allDates).sort();
+
+                // Apply date range filter
+                const dateFilter = this.getChartDateFilter();
+                if (dateFilter) {
+                    sortedDates = sortedDates.filter(d => {
+                        if (dateFilter.start && d < dateFilter.start) return false;
+                        if (dateFilter.end && d > dateFilter.end) return false;
+                        return true;
+                    });
+                }
+
                 console.log('Total unique dates:', sortedDates.length);
 
                 const messageEl = document.getElementById('listenersChartMessage');
@@ -4679,17 +4971,25 @@
                 });
 
                 // Create datasets for each artist
-                const datasets = this.selectedCompareArtists.map(artist => {
+                const datasets = [];
+                let maxValue = 0;
+                this.selectedCompareArtists.forEach(artist => {
                     const color = this.getArtistColor(artist);
                     const artistData = artistDatasets[artist];
                     const dataByDate = {};
-                    artistData.forEach(d => dataByDate[d.data_date] = d.monthly_listeners);
+                    const followersByDate = {};
+                    artistData.forEach(d => {
+                        dataByDate[d.data_date] = d.monthly_listeners;
+                        if (d.monthly_listeners > maxValue) maxValue = d.monthly_listeners;
+                        if (d.followers) {
+                            followersByDate[d.data_date] = d.followers;
+                            if (d.followers > maxValue) maxValue = d.followers;
+                        }
+                    });
 
-                    const data = sortedDates.map(date => dataByDate[date] || null);
-
-                    return {
+                    datasets.push({
                         label: artist,
-                        data: data,
+                        data: sortedDates.map(date => dataByDate[date] || null),
                         borderColor: color.line,
                         backgroundColor: color.bg,
                         borderWidth: artist === 'SB19' ? 3 : 2,
@@ -4697,14 +4997,91 @@
                         pointHoverRadius: 6,
                         tension: 0.3,
                         fill: false,
-                        spanGaps: true
-                    };
+                        spanGaps: true,
+                        yAxisID: 'y',
+                        order: 0
+                    });
+
+                    // Add followers line if toggled on and artist has followers data
+                    if (this.showFollowersOnChart) {
+                        const followersData = sortedDates.map(date => followersByDate[date] || null);
+                        if (followersData.some(v => v !== null)) {
+                            datasets.push({
+                                type: 'bar',
+                                label: `${artist} (Followers)`,
+                                data: followersData,
+                                borderColor: color.line,
+                                backgroundColor: color.bg.replace('0.8)', '0.25)'),
+                                borderWidth: 1,
+                                borderRadius: 8,
+                                borderSkipped: false,
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.8,
+                                yAxisID: 'yFollowers',
+                                order: 1
+                            });
+                        }
+                    }
                 });
+
+                const formatNum = (num) => this.formatNumber(num);
+                const endLabelPlugin = {
+                    id: 'endLabels',
+                    afterDatasetsDraw(chart) {
+                        const { ctx } = chart;
+                        const lineHeight = 12;
+                        // Collect all labels with their positions
+                        const labels = [];
+                        chart.data.datasets.forEach((dataset, i) => {
+                            if (dataset.type === 'bar') return;
+                            const meta = chart.getDatasetMeta(i);
+                            if (meta.hidden) return;
+                            let lastPoint = null;
+                            let lastValue = null;
+                            for (let j = meta.data.length - 1; j >= 0; j--) {
+                                if (dataset.data[j] !== null && dataset.data[j] !== undefined) {
+                                    lastPoint = meta.data[j];
+                                    lastValue = dataset.data[j];
+                                    break;
+                                }
+                            }
+                            if (!lastPoint) return;
+                            const text = lastValue !== null
+                                ? `${dataset.label} - ${formatNum(lastValue)}`
+                                : dataset.label;
+                            labels.push({ x: lastPoint.x, y: lastPoint.y, text, color: dataset.borderColor });
+                        });
+
+                        // Sort by Y position and push apart overlapping labels
+                        labels.sort((a, b) => a.y - b.y);
+                        for (let i = 1; i < labels.length; i++) {
+                            const gap = labels[i].y - labels[i - 1].y;
+                            if (gap < lineHeight) {
+                                labels[i].y = labels[i - 1].y + lineHeight;
+                            }
+                        }
+
+                        // Draw labels
+                        labels.forEach(l => {
+                            ctx.save();
+                            ctx.font = 'bold 10px Inter, sans-serif';
+                            ctx.fillStyle = l.color;
+                            ctx.textAlign = 'left';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(l.text, l.x + 6, l.y);
+                            ctx.restore();
+                        });
+                    }
+                };
 
                 this.charts.listenersHistory = new Chart(ctx, {
                     type: 'line',
                     data: { labels, datasets },
+                    plugins: [endLabelPlugin],
                     options: {
+                        layout: {
+                            padding: { right: 120 }
+                        },
                         responsive: true,
                         maintainAspectRatio: false,
                         interaction: {
@@ -4713,7 +5090,7 @@
                         },
                         plugins: {
                             legend: {
-                                display: true,
+                                display: this.selectedCompareArtists.length < this.getAvailableArtists().length,
                                 position: 'top',
                                 labels: {
                                     color: '#e5e7eb',
@@ -4748,12 +5125,31 @@
                                 }
                             },
                             y: {
+                                type: 'linear',
+                                position: 'left',
+                                beginAtZero: true,
+                                max: maxValue > 0 ? maxValue : undefined,
+                                title: { display: this.showFollowersOnChart, text: 'Monthly Listeners', color: '#9ca3af' },
                                 grid: { color: 'rgba(255, 255, 255, 0.05)' },
                                 ticks: {
                                     color: '#9ca3af',
                                     callback: (value) => this.formatNumber(value)
                                 }
-                            }
+                            },
+                            ...(this.showFollowersOnChart ? {
+                                yFollowers: {
+                                    type: 'linear',
+                                    position: 'right',
+                                    beginAtZero: true,
+                                    max: maxValue > 0 ? maxValue : undefined,
+                                    title: { display: true, text: 'Followers', color: '#a78bfa' },
+                                    grid: { drawOnChartArea: false },
+                                    ticks: {
+                                        color: '#a78bfa',
+                                        callback: (value) => this.formatNumber(value)
+                                    }
+                                }
+                            } : {})
                         }
                     }
                 });
@@ -4773,25 +5169,43 @@
                             date: d.data_date,
                             artist: artist,
                             listeners: d.monthly_listeners,
+                            followers: d.followers || null,
                             change: change
                         });
                     });
                 });
 
+                // Apply date range filter
+                const dateFilter = this.getChartDateFilter();
+                const filteredData = dateFilter
+                    ? allData.filter(d => {
+                        if (dateFilter.start && d.date < dateFilter.start) return false;
+                        if (dateFilter.end && d.date > dateFilter.end) return false;
+                        return true;
+                    })
+                    : allData;
+
                 // Sort by date descending, then by artist
-                allData.sort((a, b) => {
+                filteredData.sort((a, b) => {
                     const dateCompare = b.date.localeCompare(a.date);
                     if (dateCompare !== 0) return dateCompare;
                     return a.artist.localeCompare(b.artist);
                 });
 
                 // Take latest 100 entries
-                const displayData = allData.slice(0, 100);
+                const displayData = filteredData.slice(0, 100);
 
                 tbody.innerHTML = displayData.map(d => {
                     const color = this.getArtistColor(d.artist);
                     const changeClass = d.change >= 0 ? 'color: #34d399' : 'color: #f87171';
                     const changePrefix = d.change >= 0 ? '+' : '';
+                    const followersStr = d.followers ? d.followers.toLocaleString() : '--';
+                    const variance = d.followers ? d.listeners - d.followers : null;
+                    const varianceStr = variance !== null ? (variance >= 0 ? '+' : '') + variance.toLocaleString() : '--';
+                    const varianceStyle = variance !== null ? (variance >= 0 ? 'color: #34d399' : 'color: #f87171') : '';
+                    const variancePct = d.followers ? ((d.listeners - d.followers) / d.followers * 100) : null;
+                    const variancePctStr = variancePct !== null ? (variancePct >= 0 ? '+' : '') + variancePct.toFixed(1) + '%' : '--';
+                    const variancePctStyle = variancePct !== null ? (variancePct >= 0 ? 'color: #34d399' : 'color: #f87171') : '';
 
                     return `
                         <tr>
@@ -4799,6 +5213,9 @@
                             <td><span style="color: ${color.line}">${d.artist}</span></td>
                             <td>${d.listeners.toLocaleString()}</td>
                             <td style="${changeClass}">${changePrefix}${d.change.toLocaleString()}</td>
+                            <td>${followersStr}</td>
+                            <td style="${varianceStyle}">${varianceStr}</td>
+                            <td style="${variancePctStyle}">${variancePctStr}</td>
                         </tr>
                     `;
                 }).join('');
