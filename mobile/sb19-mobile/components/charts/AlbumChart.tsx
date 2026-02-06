@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { BarChart } from 'react-native-gifted-charts';
+import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import { useAppStore } from '../../services/store';
 import { formatNumber } from '../../hooks/useFormatters';
 import { GlassCard } from '../ui/GlassCard';
@@ -8,25 +7,19 @@ import { ALBUM_COLORS } from '../../constants';
 
 const { width } = Dimensions.get('window');
 
+// Conditionally import BarChart only on native
+let BarChart: any = null;
+if (Platform.OS !== 'web') {
+  BarChart = require('react-native-gifted-charts').BarChart;
+}
+
 export function AlbumChart() {
   const getAlbumStats = useAppStore((state) => state.getAlbumStats);
   const setFilters = useAppStore((state) => state.setFilters);
 
   const albumStats = getAlbumStats();
 
-  const barData = albumStats.map((album) => ({
-    value: album.totalStreams / 1_000_000, // Convert to millions for display
-    label: album.name.length > 10 ? album.name.substring(0, 10) + '...' : album.name,
-    frontColor: ALBUM_COLORS[album.name] || 'rgba(156, 163, 175, 0.8)',
-    topLabelComponent: () => (
-      <Text style={styles.barLabel}>
-        {formatNumber(album.totalStreams)}
-      </Text>
-    ),
-    onPress: () => setFilters({ album: album.name }),
-  }));
-
-  if (barData.length === 0) {
+  if (albumStats.length === 0) {
     return (
       <GlassCard style={styles.container}>
         <Text style={styles.title}>Streams by Album</Text>
@@ -36,6 +29,46 @@ export function AlbumChart() {
       </GlassCard>
     );
   }
+
+  // Web fallback - show simple list
+  if (Platform.OS === 'web' || !BarChart) {
+    return (
+      <GlassCard style={styles.container}>
+        <Text style={styles.title}>Streams by Album</Text>
+        <View style={styles.webFallback}>
+          {albumStats.map((album) => (
+            <View key={album.name} style={styles.albumRow}>
+              <View
+                style={[
+                  styles.albumBar,
+                  {
+                    backgroundColor: ALBUM_COLORS[album.name] || '#9ca3af',
+                    width: `${(album.totalStreams / albumStats[0].totalStreams) * 100}%`,
+                  },
+                ]}
+              />
+              <View style={styles.albumInfo}>
+                <Text style={styles.albumName} numberOfLines={1}>{album.name}</Text>
+                <Text style={styles.albumStreams}>{formatNumber(album.totalStreams)}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </GlassCard>
+    );
+  }
+
+  const barData = albumStats.map((album) => ({
+    value: album.totalStreams / 1_000_000,
+    label: album.name.length > 10 ? album.name.substring(0, 10) + '...' : album.name,
+    frontColor: ALBUM_COLORS[album.name] || 'rgba(156, 163, 175, 0.8)',
+    topLabelComponent: () => (
+      <Text style={styles.barLabel}>
+        {formatNumber(album.totalStreams)}
+      </Text>
+    ),
+    onPress: () => setFilters({ album: album.name }),
+  }));
 
   return (
     <GlassCard style={styles.container}>
@@ -151,5 +184,38 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#6b7280',
     fontSize: 14,
+  },
+  webFallback: {
+    gap: 12,
+  },
+  albumRow: {
+    position: 'relative',
+    height: 40,
+    justifyContent: 'center',
+  },
+  albumBar: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    borderRadius: 6,
+    opacity: 0.3,
+  },
+  albumInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  albumName: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+    flex: 1,
+  },
+  albumStreams: {
+    color: '#60a5fa',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

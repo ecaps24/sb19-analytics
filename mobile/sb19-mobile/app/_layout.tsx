@@ -1,20 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAppStore } from '../services/store';
-import { useNetwork } from '../hooks/useNetwork';
 import '../global.css';
 
 export default function RootLayout() {
   const loadData = useAppStore((state) => state.loadData);
-  const network = useNetwork();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Load data on app start
     loadData();
-  }, []);
+  }, [loadData]);
+
+  // Prevent hydration mismatch
+  if (!mounted && Platform.OS === 'web') {
+    return (
+      <View style={styles.container}>
+        <StatusBar style="light" />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={styles.container}>

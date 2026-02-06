@@ -1,39 +1,59 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
-import { BarChart } from 'react-native-gifted-charts';
+import { View, Text, StyleSheet, Dimensions, Pressable, Platform } from 'react-native';
 import { useAppStore } from '../../services/store';
 import { formatNumber } from '../../hooks/useFormatters';
 import { GlassCard } from '../ui/GlassCard';
-import { MEMBERS } from '../../constants';
 
 const { width } = Dimensions.get('window');
+
+// Conditionally import BarChart only on native
+let BarChart: any = null;
+if (Platform.OS !== 'web') {
+  BarChart = require('react-native-gifted-charts').BarChart;
+}
 
 export function MemberChart() {
   const getMemberStats = useAppStore((state) => state.getMemberStats);
   const memberStats = getMemberStats();
 
-  const barData = memberStats.map((member) => ({
-    value: member.totalStreams / 1_000_000,
-    label: member.name,
-    frontColor: member.color,
-    topLabelComponent: () => (
-      <Text style={styles.barLabel}>
-        {formatNumber(member.totalStreams)}
-      </Text>
-    ),
-  }));
-
   const totalStreams = memberStats.reduce((sum, m) => sum + m.totalStreams, 0);
 
-  return (
-    <GlassCard style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Member Solo Streams</Text>
-        <Text style={styles.subtitle}>
-          Total: {formatNumber(totalStreams)}
-        </Text>
-      </View>
+  // Web fallback or native chart
+  const renderChart = () => {
+    if (Platform.OS === 'web' || !BarChart) {
+      return (
+        <View style={styles.webFallback}>
+          {memberStats.map((member) => (
+            <View key={member.name} style={styles.memberBarRow}>
+              <View
+                style={[
+                  styles.memberBarBg,
+                  {
+                    backgroundColor: member.color,
+                    width: totalStreams > 0 ? `${(member.totalStreams / totalStreams) * 100}%` : '0%',
+                  },
+                ]}
+              />
+              <Text style={styles.memberBarName}>{member.name}</Text>
+              <Text style={styles.memberBarValue}>{formatNumber(member.totalStreams)}</Text>
+            </View>
+          ))}
+        </View>
+      );
+    }
 
+    const barData = memberStats.map((member) => ({
+      value: member.totalStreams / 1_000_000,
+      label: member.name,
+      frontColor: member.color,
+      topLabelComponent: () => (
+        <Text style={styles.barLabel}>
+          {formatNumber(member.totalStreams)}
+        </Text>
+      ),
+    }));
+
+    return (
       <View style={styles.chartContainer}>
         <BarChart
           data={barData}
@@ -58,6 +78,19 @@ export function MemberChart() {
           yAxisLabelSuffix="M"
         />
       </View>
+    );
+  };
+
+  return (
+    <GlassCard style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Member Solo Streams</Text>
+        <Text style={styles.subtitle}>
+          Total: {formatNumber(totalStreams)}
+        </Text>
+      </View>
+
+      {renderChart()}
 
       <View style={styles.memberStats}>
         {memberStats.map((member) => (
@@ -179,5 +212,37 @@ const styles = StyleSheet.create({
   changeText: {
     fontSize: 12,
     fontWeight: '500',
+  },
+  webFallback: {
+    gap: 8,
+    marginBottom: 16,
+  },
+  memberBarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 36,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  memberBarBg: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.3,
+  },
+  memberBarName: {
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: '500',
+    paddingLeft: 12,
+    flex: 1,
+  },
+  memberBarValue: {
+    color: '#60a5fa',
+    fontSize: 13,
+    fontWeight: '600',
+    paddingRight: 12,
   },
 });

@@ -1,12 +1,17 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Pressable, ScrollView } from 'react-native';
-import { LineChart } from 'react-native-gifted-charts';
+import { View, Text, StyleSheet, Dimensions, Pressable, ScrollView, Platform } from 'react-native';
 import { useAppStore } from '../../services/store';
 import { formatNumber } from '../../hooks/useFormatters';
 import { GlassCard } from '../ui/GlassCard';
 import { CHART_COLORS } from '../../constants';
 
 const { width } = Dimensions.get('window');
+
+// Conditionally import LineChart only on native
+let LineChart: any = null;
+if (Platform.OS !== 'web') {
+  LineChart = require('react-native-gifted-charts').LineChart;
+}
 
 const COMPARE_ARTISTS = [
   { name: 'SB19', color: CHART_COLORS.SB19.border },
@@ -22,16 +27,37 @@ export function ListenersChart() {
   const listenersData = useAppStore((state) => state.listenersData);
   const [selectedArtists, setSelectedArtists] = useState<string[]>(['SB19']);
 
+  const toggleArtist = (name: string) => {
+    if (name === 'SB19') return;
+    setSelectedArtists((prev) => {
+      if (prev.includes(name)) {
+        return prev.filter(a => a !== name);
+      }
+      return [...prev, name];
+    });
+  };
+
+  // Get latest values for display
+  const latestValues = useMemo(() => {
+    const result: Record<string, number> = {};
+    selectedArtists.forEach(artist => {
+      const artistData = listenersData
+        .filter(d => d.artist_name.toLowerCase() === artist.toLowerCase())
+        .sort((a, b) => new Date(b.data_date).getTime() - new Date(a.data_date).getTime());
+      result[artist] = artistData[0]?.monthly_listeners || 0;
+    });
+    return result;
+  }, [listenersData, selectedArtists]);
+
+  // Build chart data for native
   const chartData = useMemo(() => {
-    // Get all unique dates
     const dateSet = new Set<string>();
     listenersData.forEach(d => {
       const date = d.data_date.split(' ')[0];
       dateSet.add(date);
     });
-    const dates = Array.from(dateSet).sort().slice(-30); // Last 30 data points
+    const dates = Array.from(dateSet).sort().slice(-30);
 
-    // Create data series for each selected artist
     const series: { data: { value: number; label: string }[]; color: string }[] = [];
 
     selectedArtists.forEach((artistName) => {
@@ -57,28 +83,59 @@ export function ListenersChart() {
     return series;
   }, [listenersData, selectedArtists]);
 
-  const toggleArtist = (name: string) => {
-    if (name === 'SB19') return; // SB19 is always selected
+  const renderChart = () => {
+    // Web fallback - show simple table
+    if (Platform.OS === 'web' || !LineChart) {
+      return (
+        <View style={styles.webFallback}>
+          <Text style={styles.webFallbackNote}>
+            Chart available on mobile app
+          </Text>
+        </View>
+      );
+    }
 
-    setSelectedArtists((prev) => {
-      if (prev.includes(name)) {
-        return prev.filter(a => a !== name);
-      }
-      return [...prev, name];
-    });
+    if (chartData.length > 0 && chartData[0].data.length > 0) {
+      return (
+        <View style={styles.chartContainer}>
+          <LineChart
+            data={chartData[0].data}
+            data2={chartData[1]?.data}
+            data3={chartData[2]?.data}
+            color={chartData[0].color}
+            color2={chartData[1]?.color}
+            color3={chartData[2]?.color}
+            thickness={2}
+            thickness2={2}
+            thickness3={2}
+            hideDataPoints
+            curved
+            hideRules
+            yAxisThickness={0}
+            xAxisThickness={1}
+            xAxisColor="rgba(255, 255, 255, 0.1)"
+            yAxisTextStyle={styles.axisText}
+            xAxisLabelTextStyle={styles.xAxisLabel}
+            width={width - 80}
+            height={160}
+            noOfSections={4}
+            yAxisLabelSuffix="M"
+            isAnimated
+            animationDuration={800}
+            adjustToWidth
+            initialSpacing={10}
+            endSpacing={10}
+          />
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No listener data available</Text>
+      </View>
+    );
   };
-
-  // Get latest values for display
-  const latestValues = useMemo(() => {
-    const result: Record<string, number> = {};
-    selectedArtists.forEach(artist => {
-      const artistData = listenersData
-        .filter(d => d.artist_name.toLowerCase() === artist.toLowerCase())
-        .sort((a, b) => new Date(b.data_date).getTime() - new Date(a.data_date).getTime());
-      result[artist] = artistData[0]?.monthly_listeners || 0;
-    });
-    return result;
-  }, [listenersData, selectedArtists]);
 
   return (
     <GlassCard style={styles.container}>
@@ -112,42 +169,7 @@ export function ListenersChart() {
         })}
       </ScrollView>
 
-      {chartData.length > 0 && chartData[0].data.length > 0 ? (
-        <View style={styles.chartContainer}>
-          <LineChart
-            data={chartData[0].data}
-            data2={chartData[1]?.data}
-            data3={chartData[2]?.data}
-            color={chartData[0].color}
-            color2={chartData[1]?.color}
-            color3={chartData[2]?.color}
-            thickness={2}
-            thickness2={2}
-            thickness3={2}
-            hideDataPoints
-            curved
-            hideRules
-            yAxisThickness={0}
-            xAxisThickness={1}
-            xAxisColor="rgba(255, 255, 255, 0.1)"
-            yAxisTextStyle={styles.axisText}
-            xAxisLabelTextStyle={styles.xAxisLabel}
-            width={width - 80}
-            height={160}
-            noOfSections={4}
-            yAxisLabelSuffix="M"
-            isAnimated
-            animationDuration={800}
-            adjustToWidth
-            initialSpacing={10}
-            endSpacing={10}
-          />
-        </View>
-      ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No listener data available</Text>
-        </View>
-      )}
+      {renderChart()}
 
       <View style={styles.latestValues}>
         {selectedArtists.map((artist) => {
@@ -257,5 +279,17 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  webFallback: {
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  webFallbackNote: {
+    color: '#6b7280',
+    fontSize: 13,
   },
 });
