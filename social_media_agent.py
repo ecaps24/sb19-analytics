@@ -857,7 +857,14 @@ class SocialMediaAgent:
                         driver.execute_script("window.scrollTo(0, 500);")
                         time.sleep(1)
 
-                driver.save_screenshot(ALBUM_IMAGE_PATH)
+                # Capture just the kickoff chart container, not the full page
+                try:
+                    chart_el = driver.find_element(By.ID, "kickoffChartTitle")
+                    chart_container = chart_el.find_element(By.XPATH, "./..")
+                    chart_container.screenshot(ALBUM_IMAGE_PATH)
+                except Exception:
+                    # Fallback to full page if element screenshot fails
+                    driver.save_screenshot(ALBUM_IMAGE_PATH)
                 print(f"[SUCCESS] Screenshot saved: {ALBUM_IMAGE_PATH}")
                 return True
             except Exception as e:
