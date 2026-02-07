@@ -551,6 +551,54 @@
             margin-bottom: 4px;
         }
 
+        /* Support Services Section */
+        .products-services-panel {
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .ps-message {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 14px;
+        }
+
+        .ps-services-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .ps-service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #93c5fd;
+            background: rgba(96, 165, 250, 0.08);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .ps-service-link:hover {
+            background: rgba(96, 165, 250, 0.15);
+            border-color: rgba(96, 165, 250, 0.35);
+            color: #bfdbfe;
+        }
+
+        .ps-service-link span {
+            font-size: 0.85rem;
+        }
+
         .tracks-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1219,6 +1267,7 @@
                 padding: 6px 12px;
                 font-size: 0.7rem;
             }
+
         }
 
         /* Mobile phone styles */
@@ -1461,6 +1510,11 @@
                 font-size: 0.65rem;
             }
 
+            .ps-service-link {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+            }
+
         }
 
         /* Very small screens */
@@ -1573,9 +1627,9 @@
                 </div>
             </div>
 
-            <!-- Charts Row: Album/Era Chart + Tour Kickoff Tracks Chart -->
+            <!-- Charts Row: Album/Era Chart + Tour Kickoff Tracks Chart + Solo Streams -->
             <div class="charts-row" style="align-items: flex-start;">
-                <!-- Left: Album/Era Chart -->
+                <!-- Album/Era Chart -->
                 <div class="chart-half" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0;">
                         <div class="chart-title">Streams by Album/Era</div>
@@ -1585,7 +1639,7 @@
                     </div>
                 </div>
 
-                <!-- Right: Tour Kickoff Tracks Chart -->
+                <!-- Tour Kickoff Tracks Chart -->
                 <div class="chart-half" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0; position: relative;">
                         <div class="chart-title" id="kickoffChartTitle" style="cursor: pointer;" onclick="window.dashboard.filterToKickoffAlbum()">Simula at Wakas Tour Kickoff Concert Album</div>
@@ -1596,6 +1650,24 @@
                             style="position: absolute; bottom: 8px; right: 8px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">
                             Show All
                         </button>
+                    </div>
+                </div>
+
+                <!-- Solo Streams by Member Chart -->
+                <div class="chart-half" style="flex: 1;">
+                    <div class="chart-container" style="margin-bottom: 0;">
+                        <div class="chart-title"
+                            style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                            <span>Solo Streams by Member</span>
+                            <label
+                                style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
+                                <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
+                                <span>Show Listeners</span>
+                            </label>
+                        </div>
+                        <div class="chart-wrapper" style="height: 250px;">
+                            <canvas id="memberChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1637,62 +1709,39 @@
                 </div>
             </div>
 
-            <!-- Full-width Member Stats Section -->
-            <div class="charts-row" style="align-items: flex-start;">
-                <!-- Left: Member Stats Chart -->
-                <div class="chart-half" style="flex: 1;">
-                    <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="chart-title"
-                            style="display: flex; justify-content: center; align-items: center; gap: 12px;">
-                            <span>Solo Streams by Member</span>
-                            <label
-                                style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
-                                <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
-                                <span>Show Listeners</span>
-                            </label>
-                        </div>
-                        <div class="chart-wrapper" style="height: 250px;">
-                            <canvas id="memberChart"></canvas>
-                        </div>
+            <!-- Full-width Solo Tracks Table -->
+            <div class="chart-container" style="width: 100%;">
+                <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
+                    <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
+                        <span>Solo Tracks by Member</span>
+                        <span id="member-filter-label"
+                            style="font-size: 0.8rem; color: #60a5fa;"></span>
+                        <button id="clearMemberFilterBtn"
+                            style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                            Filter</button>
                     </div>
-                </div>
-
-                <!-- Right: Member Tracks Table -->
-                <div class="chart-half" style="flex: 1;">
-                    <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="top-tracks-table" style="max-height: 300px; overflow-y: auto;">
-                            <div class="section-title">
-                                <span>Solo Tracks by Member</span>
-                                <span id="member-filter-label"
-                                    style="font-size: 0.8rem; color: #60a5fa; margin-left: 8px;"></span>
-                                <button id="clearMemberFilterBtn"
-                                    style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
-                                    Filter</button>
-                            </div>
-                            <div id="member-tracks-view">
-                                <table id="memberTracksTable" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 35px; text-align: center;">#</th>
-                                            <th data-sort="title" style="text-align: left; cursor: pointer;"
-                                                class="sortable-header member-sort">Track <span class="sort-icon"></span>
-                                            </th>
-                                            <th data-sort="streams"
-                                                style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                                class="sortable-header member-sort">Total Streams <span
-                                                    class="sort-icon"></span></th>
-                                            <th id="member-change-header" data-sort="change"
-                                                style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                                class="sortable-header member-sort">Change <span class="sort-icon"></span>
-                                            </th>
-                                            <th style="width: 130px; text-align: center;">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="member-tracks-body"></tbody>
-                                    <tfoot id="member-tracks-foot"></tfoot>
-                                </table>
-                            </div>
-                        </div>
+                    <div id="member-tracks-view">
+                        <table id="memberTracksTable" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35px; text-align: center;">#</th>
+                                    <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                        class="sortable-header member-sort">Track <span class="sort-icon"></span>
+                                    </th>
+                                    <th data-sort="streams"
+                                        style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                        class="sortable-header member-sort">Total Streams <span
+                                            class="sort-icon"></span></th>
+                                    <th id="member-change-header" data-sort="change"
+                                        style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                        class="sortable-header member-sort">Change <span class="sort-icon"></span>
+                                    </th>
+                                    <th style="width: 130px; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="member-tracks-body"></tbody>
+                            <tfoot id="member-tracks-foot"></tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1880,7 +1929,13 @@
                     </div>
                 </div>
 
-                <!-- Chart -->
+                <!-- Scale & Chart -->
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <span style="color: #9ca3af; font-size: 0.75rem;">Scale:</span>
+                    <button class="chart-range-btn active" data-scale="absolute" onclick="window.dashboard.setChartScaleMode('absolute')">Absolute</button>
+                    <button class="chart-range-btn" data-scale="fit" onclick="window.dashboard.setChartScaleMode('fit')">Fit to Data</button>
+                </div>
+
                 <div class="listeners-chart-wrapper">
                     <button class="chart-focus-btn" id="chartFocusBtn" onclick="window.dashboard.toggleChartFocusMode()">Focus</button>
                     <canvas id="listenersHistoryChart"></canvas>
@@ -1923,6 +1978,11 @@
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
+            <div class="products-services-panel" id="products-services-panel">
+                <p class="ps-message">Help maintain this project by supporting our services</p>
+                <div class="ps-services-row" id="ps-services-row"></div>
+            </div>
+
             <div class="developer-footer">
                 <a href="mailto:ecapsdev@gmail.com">ecapsdev@gmail.com</a>
                 <span>|</span>
@@ -1933,6 +1993,13 @@
     </div>
 
     <script>
+        const SERVICES_DATA = [
+            { label: 'Data Analytics', icon: '📊', url: 'https://m.me/' },
+            { label: 'App Development', icon: '💻', url: 'https://m.me/' },
+            { label: 'Web Dashboards', icon: '📈', url: 'https://m.me/' },
+            { label: 'Custom Solutions', icon: '🛠️', url: 'https://m.me/' }
+        ];
+
         class SB19Dashboard {
             constructor() {
                 this.listenersData = [];
@@ -1959,6 +2026,7 @@
                 this.artistGenreMap = {}; // artist name -> genre
                 this.selectedGenre = 'All'; // Genre filter
                 this.chartDateRange = 'all'; // Date range: 'all', '7', '14', '30', '90', 'custom'
+                this.chartScaleMode = 'absolute'; // 'absolute' (0 to max) or 'fit' (auto-fit to data range)
                 this.chartCustomStart = ''; // Custom date range start
                 this.chartCustomEnd = ''; // Custom date range end
                 // Map listener CSV names (case-insensitive) to member dataNames
@@ -2968,6 +3036,18 @@
                 this.createKickoffTracksChart();
                 this.createMemberChart();
                 this.populateMemberTracks();
+                this.renderProductsServices();
+            }
+
+            renderProductsServices() {
+                const row = document.getElementById('ps-services-row');
+                if (!row) return;
+
+                row.innerHTML = SERVICES_DATA.map(s => `
+                    <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="ps-service-link">
+                        <span>${s.icon}</span>${s.label}
+                    </a>
+                `).join('');
             }
 
             updateStats() {
@@ -3545,7 +3625,7 @@
                         datasets: [{
                             data: sortedAlbums.map(a => a[1]),
                             backgroundColor: getBackgroundColors(),
-                            borderRadius: 6,
+                            borderRadius: 8,
                             hoverBackgroundColor: colors.map(c => c.replace(/0\.85/, '1')),
                             categoryPercentage: 0.9,
                             barPercentage: 0.9
@@ -3733,7 +3813,7 @@
                         datasets: [{
                             data: streams,
                             backgroundColor: colors,
-                            borderRadius: 4,
+                            borderRadius: 8,
                             hoverBackgroundColor: hoverColors,
                             categoryPercentage: 0.85,
                             barPercentage: 0.9
@@ -4007,7 +4087,7 @@
                     label: 'Streams',
                     data: data,
                     backgroundColor: getBackgroundColors(),
-                    borderRadius: 6,
+                    borderRadius: 8,
                     hoverBackgroundColor: colors.map(c => c.replace('0.8', '1')),
                     xAxisID: 'x',
                     order: 2,
@@ -4596,6 +4676,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id !== 'listeners-detail-view' &&
                         !el.classList.contains('ad-container') &&
+                        !el.classList.contains('products-services-panel') &&
                         !el.classList.contains('developer-footer')) {
                         el.style.display = 'none';
                     }
@@ -4811,6 +4892,14 @@
                     this.createListenersHistoryChart();
                     this.populateListenersHistoryTable();
                 }
+            }
+
+            setChartScaleMode(mode) {
+                this.chartScaleMode = mode;
+                document.querySelectorAll('[data-scale]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.scale === mode);
+                });
+                this.createListenersHistoryChart();
             }
 
             applyCustomDateRange() {
@@ -5127,8 +5216,10 @@
                             y: {
                                 type: 'linear',
                                 position: 'left',
-                                beginAtZero: true,
-                                max: maxValue > 0 ? maxValue : undefined,
+                                ...(this.chartScaleMode === 'absolute' ? {
+                                    beginAtZero: true,
+                                    max: maxValue > 0 ? maxValue : undefined,
+                                } : {}),
                                 title: { display: this.showFollowersOnChart, text: 'Monthly Listeners', color: '#9ca3af' },
                                 grid: { color: 'rgba(255, 255, 255, 0.05)' },
                                 ticks: {
@@ -5140,8 +5231,10 @@
                                 yFollowers: {
                                     type: 'linear',
                                     position: 'right',
-                                    beginAtZero: true,
-                                    max: maxValue > 0 ? maxValue : undefined,
+                                    ...(this.chartScaleMode === 'absolute' ? {
+                                        beginAtZero: true,
+                                        max: maxValue > 0 ? maxValue : undefined,
+                                    } : {}),
                                     title: { display: true, text: 'Followers', color: '#a78bfa' },
                                     grid: { drawOnChartArea: false },
                                     ticks: {
