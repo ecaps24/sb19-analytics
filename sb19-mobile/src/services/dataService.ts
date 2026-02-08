@@ -7,6 +7,7 @@ const FILES = {
   streams: 'selenium_results.csv',
   tracks: 'tracks.csv',
   artists: 'opm_artists_spotify.csv',
+  streams2: 'sb19_streams_results.csv',
 } as const;
 
 type FileKey = keyof typeof FILES;
@@ -44,13 +45,15 @@ export async function fetchAllData(forceRefresh: boolean = false): Promise<{
   streamsCSV: string;
   tracksCSV: string;
   artistsCSV: string;
+  streams2CSV: string;
 }> {
-  const [listenersCSV, streamsCSV, tracksCSV, artistsCSV] = await Promise.all([
+  const [listenersCSV, streamsCSV, tracksCSV, artistsCSV, streams2CSV] = await Promise.all([
     fetchWithCache('listeners', forceRefresh),
     fetchWithCache('streams', forceRefresh),
     fetchWithCache('tracks', forceRefresh),
     fetchWithCache('artists', forceRefresh),
+    fetchWithCache('streams2', forceRefresh).catch(() => ''),
   ]);
 
-  return { listenersCSV, streamsCSV, tracksCSV, artistsCSV };
+  return { listenersCSV, streamsCSV, tracksCSV, artistsCSV, streams2CSV };
 }

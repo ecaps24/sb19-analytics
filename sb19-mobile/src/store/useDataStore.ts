@@ -54,12 +54,17 @@ export const useDataStore = create<DataState>((set, get) => ({
   fetchData: async (forceRefresh = false) => {
     set({ loading: true, error: null });
     try {
-      const { listenersCSV, streamsCSV, tracksCSV, artistsCSV } =
+      const { listenersCSV, streamsCSV, tracksCSV, artistsCSV, streams2CSV } =
         await fetchAllData(forceRefresh);
 
       const tracksMetadata = parseTracksMetadataCSV(tracksCSV);
       const listenersData = parseListenersCSV(listenersCSV);
       const streamsData = parseStreamsCSV(streamsCSV, tracksMetadata);
+      // Parse additional streams (BINI, Cup of Joe, etc.) and merge
+      if (streams2CSV) {
+        const extraStreams = parseStreamsCSV(streams2CSV, tracksMetadata);
+        streamsData.push(...extraStreams);
+      }
       const artistInfoMap = parseArtistsCSV(artistsCSV);
 
       // Get cache timestamp for last updated display
@@ -175,7 +180,24 @@ export const useDataStore = create<DataState>((set, get) => ({
         (name.toLowerCase() === 'sb19' && s.artist_name === 'SB19'),
     );
 
-    if (artistStreams.length === 0) return [];
+    if (artistStreams.length === 0) {
+      // Fall back to track metadata if no stream data exists
+      const metaTracks = tracksMetadata.filter(
+        t => t.artist.toLowerCase() === name.toLowerCase(),
+      );
+      return metaTracks.map(t => ({
+        title: t.title,
+        artist: t.artist,
+        currentStreams: 0,
+        previousStreams: 0,
+        change: 0,
+        changePercent: 0,
+        year: t.year,
+        album: t.album,
+        collaborators: t.collaborators,
+        spotifyUrl: t.spotify_url,
+      }));
+    }
 
     // Group by song title, get latest and previous
     const songMap = new Map<
