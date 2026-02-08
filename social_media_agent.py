@@ -36,6 +36,7 @@ Flags:
 """
 
 import argparse
+import base64
 import csv
 import http.server
 import json
@@ -46,6 +47,7 @@ import threading
 import time
 from collections import defaultdict
 from datetime import datetime, timedelta
+from PIL import Image
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -73,6 +75,26 @@ POSTED_LOG = os.path.join(SCRIPT_DIR, "x_posted_log.json")
 ALBUM_IMAGE_DIR = os.path.join(SCRIPT_DIR, "album_images")
 ALBUM_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "simula_wakas.png")
 LOCAL_INDEX = os.path.join(SCRIPT_DIR, "index.html")
+
+# Listeners screenshot
+MEMBER_PHOTOS_DIR = os.path.join(SCRIPT_DIR, "profiles")
+LISTENERS_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "monthly_listeners.png")
+MEMBER_PHOTO_FILES = {
+    "SB19": "sb19.jpg",
+    "PABLO": "pablo.jpg",
+    "JOSH CULLEN": "josh cullen.jpg",
+    "Stell": "stell.jpg",
+    "FELIP": "felip.jpg",
+    "justin": "justin.jpg",
+}
+MEMBER_BAR_COLORS = {
+    "SB19": "#3b82f6",
+    "PABLO": "#ef4444",
+    "JOSH CULLEN": "#f59e0b",
+    "Stell": "#a855f7",
+    "FELIP": "#10b981",
+    "justin": "#ec4899",
+}
 
 # Milestone thresholds
 MILESTONES = [
@@ -357,11 +379,14 @@ class SocialMediaAgent:
     # ======================================================================
 
     def generate_listeners_post(self):
-        """Monthly listener update for SB19 and members."""
+        """Monthly listener update for SB19 and members.
+
+        Returns (message, image_path_or_None).
+        """
         data = load_listeners_data()
         if not data:
             print("[WARN] No listener data available!")
-            return None
+            return None, None
 
         by_artist = defaultdict(list)
         for entry in data:
@@ -370,7 +395,7 @@ class SocialMediaAgent:
 
         if not by_artist:
             print("[WARN] No main artist data found!")
-            return None
+            return None, None
 
         latest_data = []
         for artist, entries in by_artist.items():
@@ -427,7 +452,15 @@ class SocialMediaAgent:
 
         lines.append("")
         lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
-        return "\n".join(lines)
+        message = "\n".join(lines)
+
+        # Capture social card screenshot
+        image_path = None
+        screenshot_ok = self._capture_listeners_screenshot(latest_data, latest_date_str)
+        if screenshot_ok and os.path.exists(LISTENERS_IMAGE_PATH):
+            image_path = LISTENERS_IMAGE_PATH
+
+        return message, image_path
 
     def generate_daily_post(self):
         """Daily stream update — top 5 gainers."""
@@ -776,39 +809,237 @@ class SocialMediaAgent:
             f"#SB19 #SB19Spotify #SimulaAtWakas #PPop #ATIN #OPM"
         )
 
+        # Build per-track data sorted by streams descending
+        track_list = []
+        for title, r in sorted(latest_map.items(), key=lambda x: x[1]["streams"], reverse=True):
+            prev = prev_map.get(title)
+            change = r["streams"] - prev["streams"] if prev else 0
+            # Clean display name: remove "(Simula at Wakas Tour Kickoff)"
+            display = r["song_title"].replace(" (Simula at Wakas Tour Kickoff)", "")
+            track_list.append({"name": display, "streams": r["streams"], "change": change})
+
         # Capture screenshot
         image_path = None
-        screenshot_ok = self._capture_album_screenshot()
+        screenshot_ok = self._capture_album_screenshot(
+            track_list=track_list,
+            total_streams=total_streams,
+            total_change=total_change,
+            date_str=date_str,
+        )
         if screenshot_ok and os.path.exists(ALBUM_IMAGE_PATH):
             image_path = ALBUM_IMAGE_PATH
 
         return message, image_path
 
-    def _capture_album_screenshot(self):
-        """Capture a screenshot of the Simula at Wakas chart from local dashboard."""
-        print("[INFO] Capturing album screenshot from local dashboard...")
+    def _capture_album_screenshot(self, track_list=None, total_streams=0,
+                                    total_change=0, date_str=""):
+        """Capture a social-media-friendly album card screenshot."""
+        print("[INFO] Capturing album screenshot...")
         os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
 
-        if not os.path.exists(LOCAL_INDEX):
-            print(f"[ERR] index.html not found at: {LOCAL_INDEX}")
+        if not track_list:
+            print("[ERR] No track data for album card")
             return False
 
-        port = 8765
-        handler = http.server.SimpleHTTPRequestHandler
-        httpd = None
+        # Build custom HTML social card
+        max_streams = max(t["streams"] for t in track_list) if track_list else 1
+        # Bar colors cycling through a vibrant palette
+        bar_colors = [
+            "#ec4899", "#6366f1", "#10b981", "#f59e0b", "#a855f7",
+            "#eab308", "#ef4444", "#14b8a6", "#3b82f6", "#f97316",
+            "#8b5cf6", "#06b6d4", "#84cc16", "#e11d4f", "#0ea5e9",
+            "#d946ef", "#22c55e", "#fb923c", "#64748b",
+        ]
+
+        track_rows = ""
+        for i, t in enumerate(track_list):
+            pct = (t["streams"] / max_streams) * 100
+            color = bar_colors[i % len(bar_colors)]
+            change_str = f"+{t['change']:,}" if t["change"] > 0 else f"{t['change']:,}"
+            track_rows += f"""
+            <div class="track-row">
+                <div class="track-rank">{i + 1}</div>
+                <div class="track-info">
+                    <div class="track-name">{t['name']}</div>
+                    <div class="track-bar-container">
+                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="track-stats">
+                    <div class="track-streams">{t['streams']:,}</div>
+                    <div class="track-change">{change_str}</div>
+                </div>
+            </div>"""
+
+        total_str = f"{total_streams:,}"
+        change_display = f"+{total_change:,}" if total_change > 0 else f"{total_change:,}"
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.album-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 18px;
+    letter-spacing: -0.3px;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+}}
+.stat-box {{
+    text-align: center;
+}}
+.stat-value {{
+    font-size: 38px;
+    font-weight: 800;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+.stat-change {{
+    font-size: 38px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}}
+.tracks {{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}}
+.track-row {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 9px 0;
+}}
+.track-rank {{
+    font-size: 18px;
+    font-weight: 700;
+    color: #475569;
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+}}
+.track-info {{
+    flex: 1;
+    min-width: 0;
+}}
+.track-name {{
+    font-size: 19px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.track-bar-container {{
+    height: 8px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 3px;
+    overflow: hidden;
+}}
+.track-bar {{
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}}
+.track-stats {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 120px;
+}}
+.track-streams {{
+    font-size: 19px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.track-change {{
+    font-size: 14px;
+    color: #10b981;
+    font-weight: 500;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="album-title">Simula at Wakas Tour Kickoff Concert Album</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_str}</div>
+                <div class="stat-label">Total Streams</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-change">{change_display}</div>
+                <div class="stat-label">Daily Change</div>
+            </div>
+        </div>
+    </div>
+    <div class="tracks">{track_rows}
+    </div>
+    <div class="footer">
+        <div class="footer-text">As of {date_str} &middot; <span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        # Write temp HTML file
+        temp_html = os.path.join(SCRIPT_DIR, "_album_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
 
         try:
-            original_dir = os.getcwd()
-            os.chdir(SCRIPT_DIR)
-
-            httpd = socketserver.TCPServer(("", port), handler)
-            server_thread = threading.Thread(target=httpd.serve_forever)
-            server_thread.daemon = True
-            server_thread.start()
-            print(f"[INFO] Started local server on port {port}")
-
             options = EdgeOptions()
-            options.add_argument("--start-maximized")
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
             options.add_argument("--disable-notifications")
             options.add_argument("--disable-blink-features=AutomationControlled")
             options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -818,68 +1049,292 @@ class SocialMediaAgent:
             driver = None
             try:
                 driver = webdriver.Edge(service=service, options=options)
-                driver.set_window_size(1920, 1080)
+                driver.set_window_size(1200, 1800)
 
-                url = f"http://localhost:{port}/index.html"
-                print(f"[INFO] Loading: {url}")
-                driver.get(url)
-                time.sleep(10)
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
 
-                try:
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.CSS_SELECTOR, "canvas"))
-                    )
-                    print("[INFO] Charts loaded")
-                except Exception:
-                    print("[WARN] Could not detect charts, proceeding anyway...")
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(ALBUM_IMAGE_PATH)
 
-                # Scroll to chart
-                try:
-                    el = driver.find_element(By.ID, "kickoffChartTitle")
-                    driver.execute_script(
-                        "arguments[0].scrollIntoView({behavior:'instant',block:'start'});", el
-                    )
-                    driver.execute_script("window.scrollBy(0, -100);")
-                    time.sleep(2)
-                    print("[INFO] Scrolled to Simula at Wakas chart")
-                except Exception:
-                    try:
-                        el = driver.find_element(
-                            By.XPATH,
-                            "//*[contains(text(),'Simula at Wakas Tour Kickoff Concert Album')]",
-                        )
-                        driver.execute_script(
-                            "arguments[0].scrollIntoView({behavior:'instant',block:'start'});", el
-                        )
-                        driver.execute_script("window.scrollBy(0, -100);")
-                        time.sleep(2)
-                    except Exception:
-                        driver.execute_script("window.scrollTo(0, 500);")
-                        time.sleep(1)
-
-                # Capture just the kickoff chart container, not the full page
-                try:
-                    chart_el = driver.find_element(By.ID, "kickoffChartTitle")
-                    chart_container = chart_el.find_element(By.XPATH, "./..")
-                    chart_container.screenshot(ALBUM_IMAGE_PATH)
-                except Exception:
-                    # Fallback to full page if element screenshot fails
-                    driver.save_screenshot(ALBUM_IMAGE_PATH)
+                img = Image.open(ALBUM_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(ALBUM_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
                 print(f"[SUCCESS] Screenshot saved: {ALBUM_IMAGE_PATH}")
                 return True
             except Exception as e:
-                print(f"[ERR] Screenshot capture failed: {e}")
+                print(f"[ERR] Card screenshot failed: {e}")
                 return False
             finally:
                 if driver:
                     driver.quit()
-                os.chdir(original_dir)
         except Exception as e:
-            print(f"[ERR] Local server failed: {e}")
+            print(f"[ERR] Screenshot setup failed: {e}")
             return False
         finally:
-            if httpd:
-                httpd.shutdown()
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
+    def _capture_listeners_screenshot(self, artist_data, date_str):
+        """Capture a social-media-friendly monthly listeners card screenshot.
+
+        Args:
+            artist_data: List of dicts with 'artist', 'listeners', 'change' keys.
+            date_str: Formatted date string for the card subtitle.
+
+        Returns:
+            True on success, False on failure.
+        """
+        print("[INFO] Capturing monthly listeners screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not artist_data:
+            print("[ERR] No artist data for listeners card")
+            return False
+
+        # Embed member photos as base64 data URIs
+        photo_data_uris = {}
+        for artist_name, photo_file in MEMBER_PHOTO_FILES.items():
+            photo_path = os.path.join(MEMBER_PHOTOS_DIR, photo_file)
+            if os.path.exists(photo_path):
+                with open(photo_path, "rb") as f:
+                    b64 = base64.b64encode(f.read()).decode("utf-8")
+                ext = photo_file.rsplit(".", 1)[-1].lower()
+                mime = "image/jpeg" if ext in ("jpg", "jpeg") else f"image/{ext}"
+                photo_data_uris[artist_name] = f"data:{mime};base64,{b64}"
+
+        max_listeners = max(d["listeners"] for d in artist_data) if artist_data else 1
+
+        # Build artist rows HTML
+        artist_rows = ""
+        for d in artist_data:
+            # Match artist name case-insensitively for photo/color lookup
+            matched_key = None
+            for key in MEMBER_PHOTO_FILES:
+                if key.upper() == d["artist"].upper():
+                    matched_key = key
+                    break
+            photo_uri = photo_data_uris.get(matched_key, "")
+            color = MEMBER_BAR_COLORS.get(matched_key, "#3b82f6")
+            pct = (d["listeners"] / max_listeners) * 100
+            listeners_str = f"{d['listeners']:,}"
+            change = d["change"]
+            if change > 0:
+                change_str = f"+{change:,}"
+                change_color = "#10b981"
+            elif change < 0:
+                change_str = f"{change:,}"
+                change_color = "#ef4444"
+            else:
+                change_str = "0"
+                change_color = "#64748b"
+
+            photo_html = ""
+            if photo_uri:
+                photo_html = f'<img class="artist-photo" src="{photo_uri}" alt="{d["artist"]}" />'
+            else:
+                photo_html = f'<div class="artist-photo" style="background:{color};"></div>'
+
+            artist_rows += f"""
+            <div class="artist-row">
+                <div class="artist-left">
+                    {photo_html}
+                    <div class="artist-name">{d['artist']}</div>
+                </div>
+                <div class="artist-middle">
+                    <div class="bar-container">
+                        <div class="bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="artist-right">
+                    <div class="artist-listeners">{listeners_str}</div>
+                    <div class="artist-change" style="color: {change_color};">{change_str}</div>
+                </div>
+            </div>"""
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 32px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-title .spotify {{
+    color: #1db954;
+}}
+.card-date {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.artists {{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}}
+.artist-row {{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}}
+.artist-left {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 240px;
+    flex-shrink: 0;
+}}
+.artist-photo {{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid rgba(148, 163, 184, 0.2);
+}}
+.artist-name {{
+    font-size: 22px;
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+}}
+.artist-middle {{
+    flex: 1;
+    min-width: 0;
+}}
+.bar-container {{
+    height: 28px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}}
+.bar {{
+    height: 100%;
+    border-radius: 6px;
+}}
+.artist-right {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 160px;
+}}
+.artist-listeners {{
+    font-size: 24px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.artist-change {{
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 2px;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">SB19 Monthly Listeners on <span class="spotify">Spotify</span></div>
+        <div class="card-date">As of {date_str}</div>
+    </div>
+    <div class="artists">{artist_rows}
+    </div>
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_listeners_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1000)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(LISTENERS_IMAGE_PATH)
+
+                img = Image.open(LISTENERS_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(LISTENERS_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] Listeners screenshot saved: {LISTENERS_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] Listeners card screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] Listeners screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
 
     # ======================================================================
     # Status & preview
@@ -920,10 +1375,12 @@ class SocialMediaAgent:
 
         # 1. Listeners
         print("\n--- MONTHLY LISTENERS ---")
-        msg = self.generate_listeners_post()
+        msg, img = self.generate_listeners_post()
         if msg:
             print(msg)
             print(f"[{len(msg)} chars]")
+            if img:
+                print(f"[IMAGE] {img}")
         else:
             print("[SKIP] No data")
 
@@ -1126,13 +1583,14 @@ def main():
                     print("[SKIP] Use --skip-validation to post anyway.")
                     return
 
-            message = agent.generate_listeners_post()
+            message, auto_image = agent.generate_listeners_post()
             if not message:
                 print("[ERR] Could not generate listeners post.")
                 return
 
+            image_path = args.image or auto_image
             success = agent.post(
-                message, dry_run=args.dry_run, test_mode=args.test, image_path=args.image,
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
             )
             _report(success)
 
