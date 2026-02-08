@@ -42,6 +42,15 @@ export default function ArtistDetailScreen() {
     [getArtistTracks, artistName],
   );
 
+  const totalStreams = useMemo(
+    () => tracks.reduce((sum, t) => sum + t.currentStreams, 0),
+    [tracks],
+  );
+  const totalStreamChange = useMemo(
+    () => tracks.reduce((sum, t) => sum + t.change, 0),
+    [tracks],
+  );
+
   if (!artist) {
     return (
       <View style={styles.container}>
@@ -134,6 +143,39 @@ export default function ArtistDetailScreen() {
           />
         </View>
       </View>
+
+      {/* Total Streams */}
+      {tracks.length > 0 && totalStreams > 0 && (
+        <GlassCard style={styles.totalStreamsCard}>
+          <Text style={styles.listenersLabel}>Total Streams</Text>
+          <Text style={styles.listenersValue}>
+            {formatNumberFull(totalStreams)}
+          </Text>
+          <View style={styles.streamChangeRow}>
+            {totalStreamChange !== 0 && (
+              <>
+                <Ionicons
+                  name={totalStreamChange >= 0 ? 'trending-up' : 'trending-down'}
+                  size={16}
+                  color={totalStreamChange >= 0 ? colors.success : colors.error}
+                />
+                <Text
+                  style={[
+                    styles.streamChangeText,
+                    { color: totalStreamChange >= 0 ? colors.success : colors.error },
+                  ]}
+                >
+                  {totalStreamChange >= 0 ? '+' : ''}
+                  {formatNumber(totalStreamChange)} today
+                </Text>
+              </>
+            )}
+          </View>
+          <Text style={styles.trackCountText}>
+            across {tracks.length} track{tracks.length !== 1 ? 's' : ''}
+          </Text>
+        </GlassCard>
+      )}
 
       {/* Cities */}
       <GlassCard style={styles.section}>
@@ -245,6 +287,25 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     gap: 8,
+  },
+  totalStreamsCard: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  streamChangeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 6,
+  },
+  streamChangeText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  trackCountText: {
+    color: colors.textMuted,
+    fontSize: 13,
+    marginTop: 4,
   },
   section: {
     marginBottom: 16,
