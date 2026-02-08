@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.textPrimary,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
     marginBottom: 16,
   },
   row: {
-    marginBottom: 12,
+    marginBottom: 14,
   },
   labelContainer: {
     flexDirection: 'row',
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
   },
   genreName: {
     color: colors.textPrimary,
-    fontSize: 13,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   count: {
     color: colors.textMuted,
@@ -96,20 +96,20 @@ const styles = StyleSheet.create({
   },
   barBg: {
     flex: 1,
-    height: 10,
+    height: 18,
     backgroundColor: colors.surfaceLight,
-    borderRadius: 5,
+    borderRadius: 9,
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
-    borderRadius: 5,
+    borderRadius: 9,
   },
   value: {
-    color: colors.textSecondary,
-    fontSize: 12,
+    color: colors.textPrimary,
+    fontSize: 13,
     fontWeight: '600',
-    width: 50,
+    width: 55,
     textAlign: 'right',
   },
 });

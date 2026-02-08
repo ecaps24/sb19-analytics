@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import ViewShot from 'react-native-view-shot';
 import { useDataStore } from '../store/useDataStore';
 import { useFavoritesStore } from '../store/useFavoritesStore';
 import { DateRange } from '../types/data';
@@ -19,6 +20,8 @@ import StatCard from '../components/StatCard';
 import CityList from '../components/CityList';
 import ListenerHistoryChart from '../components/ListenerHistoryChart';
 import TrackList from '../components/TrackList';
+import ShareableCard from '../components/ShareableCard';
+import ShareButton from '../components/ShareButton';
 
 type ParamList = {
   ArtistDetail: { artistName: string };
@@ -31,6 +34,7 @@ export default function ArtistDetailScreen() {
   const isFavorite = useFavoritesStore(s => s.favorites.includes(artistName));
   const toggleFavorite = useFavoritesStore(s => s.toggleFavorite);
   const [chartRange, setChartRange] = useState<DateRange>('30');
+  const shareRef = useRef<ViewShot>(null);
 
   const artist = useMemo(
     () => getArtistDetail(artistName),
@@ -74,6 +78,7 @@ export default function ArtistDetailScreen() {
           </View>
         </View>
         <View style={styles.headerActions}>
+          <ShareButton viewShotRef={shareRef} />
           <TouchableOpacity
             style={styles.favBtn}
             onPress={() => toggleFavorite(artistName)}
@@ -96,53 +101,69 @@ export default function ArtistDetailScreen() {
         </View>
       </View>
 
-      {/* Main stats */}
-      <GlassCard style={styles.mainStats}>
-        <Text style={styles.listenersLabel}>Monthly Listeners</Text>
-        <Text style={styles.listenersValue}>
-          {formatNumberFull(artist.currentListeners)}
-        </Text>
-        {artist.followers > 0 && (
-          <Text style={styles.followersText}>
-            {formatNumberFull(artist.followers)} followers
+      {/* Shareable stats card */}
+      <ShareableCard
+        ref={shareRef}
+        artistName={artist.name}
+        subtitle={artist.genre}
+      >
+        {/* Main stats */}
+        <GlassCard solid style={styles.mainStats}>
+          <Text style={styles.listenersLabel}>Monthly Listeners</Text>
+          <Text style={styles.listenersValue}>
+            {formatNumberFull(artist.currentListeners)}
           </Text>
-        )}
-      </GlassCard>
+          {artist.followers > 0 && (
+            <Text style={styles.followersText}>
+              {formatNumberFull(artist.followers)} followers
+            </Text>
+          )}
+        </GlassCard>
 
-      {/* Stats grid */}
-      <View style={styles.statsGrid}>
-        <View style={styles.statsRow}>
-          <StatCard
-            label="ATH"
-            value={formatNumber(artist.allTimeHigh)}
-            color={colors.success}
-          />
-          <StatCard
-            label="7D Change"
-            value={formatPercent(artist.growthPercent7d)}
-            color={artist.growthPercent7d >= 0 ? colors.success : colors.error}
-          />
+        {/* Stats grid */}
+        <View style={styles.statsGrid}>
+          <View style={styles.statsRow}>
+            <StatCard
+              label="ATH"
+              value={formatNumber(artist.allTimeHigh)}
+              color={colors.success}
+              accentColor={colors.success}
+            />
+            <StatCard
+              label="7D Change"
+              value={formatPercent(artist.growthPercent7d)}
+              color={artist.growthPercent7d >= 0 ? colors.success : colors.error}
+              accentColor={colors.primary}
+            />
+          </View>
+          <View style={styles.statsRow}>
+            <StatCard
+              label="ATL"
+              value={formatNumber(artist.allTimeLow)}
+              color={colors.error}
+              accentColor={colors.error}
+            />
+            <StatCard
+              label="30D Change"
+              value={formatPercent(artist.growthPercent30d)}
+              color={artist.growthPercent30d >= 0 ? colors.success : colors.error}
+              accentColor={colors.primary}
+            />
+          </View>
+          <View style={styles.statsRow}>
+            <StatCard
+              label="Days Tracked"
+              value={String(artist.daysTracked)}
+              accentColor={colors.info}
+            />
+            <StatCard
+              label="Average"
+              value={formatNumber(artist.averageListeners)}
+              accentColor={colors.warning}
+            />
+          </View>
         </View>
-        <View style={styles.statsRow}>
-          <StatCard
-            label="ATL"
-            value={formatNumber(artist.allTimeLow)}
-            color={colors.error}
-          />
-          <StatCard
-            label="30D Change"
-            value={formatPercent(artist.growthPercent30d)}
-            color={artist.growthPercent30d >= 0 ? colors.success : colors.error}
-          />
-        </View>
-        <View style={styles.statsRow}>
-          <StatCard label="Days Tracked" value={String(artist.daysTracked)} />
-          <StatCard
-            label="Average"
-            value={formatNumber(artist.averageListeners)}
-          />
-        </View>
-      </View>
+      </ShareableCard>
 
       {/* Total Streams */}
       {tracks.length > 0 && totalStreams > 0 && (
@@ -272,23 +293,24 @@ const styles = StyleSheet.create({
   },
   listenersValue: {
     color: colors.textPrimary,
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: '700',
+    letterSpacing: -0.5,
   },
   followersText: {
     color: colors.textSecondary,
-    fontSize: 14,
-    marginTop: 4,
+    fontSize: 15,
+    marginTop: 6,
   },
   statsGrid: {
     gap: 8,
-    marginBottom: 16,
   },
   statsRow: {
     flexDirection: 'row',
     gap: 8,
   },
   totalStreamsCard: {
+    marginTop: 16,
     marginBottom: 16,
     alignItems: 'center',
   },

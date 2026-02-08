@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import ViewShot from 'react-native-view-shot';
 import { useDataStore } from '../store/useDataStore';
 import { useFilterStore } from '../store/useFilterStore';
 import { DateRange } from '../types/data';
@@ -7,7 +8,8 @@ import ArtistSelector from '../components/ArtistSelector';
 import ArtistChip from '../components/ArtistChip';
 import ListenerHistoryChart from '../components/ListenerHistoryChart';
 import GlassCard from '../components/GlassCard';
-import StatCard from '../components/StatCard';
+import ShareableCard from '../components/ShareableCard';
+import ShareButton from '../components/ShareButton';
 import { colors, getArtistColor } from '../theme/colors';
 import { formatNumber, formatPercent } from '../utils/formatters';
 
@@ -19,6 +21,7 @@ export default function CompareScreen() {
     removeCompareArtist,
   } = useFilterStore();
   const [chartRange, setChartRange] = useState<DateRange>('30');
+  const shareRef = useRef<ViewShot>(null);
 
   const allSummaries = useMemo(
     () => getArtistSummaries('All'),
@@ -44,10 +47,17 @@ export default function CompareScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Compare Artists</Text>
-      <Text style={styles.subtitle}>
-        Select up to 4 artists to compare
-      </Text>
+      <View style={styles.titleRow}>
+        <View>
+          <Text style={styles.title}>Compare Artists</Text>
+          <Text style={styles.subtitle}>
+            Select up to 4 artists to compare
+          </Text>
+        </View>
+        {selectedDetails.length >= 2 && (
+          <ShareButton viewShotRef={shareRef} />
+        )}
+      </View>
 
       {/* Selector */}
       <ArtistSelector
@@ -72,8 +82,11 @@ export default function CompareScreen() {
 
       {/* Chart */}
       {selectedDetails.length >= 2 ? (
-        <>
-          <GlassCard style={styles.section}>
+        <ShareableCard
+          ref={shareRef}
+          subtitle={`${selectedDetails.map(a => a.name).join(' vs ')}`}
+        >
+          <GlassCard solid style={styles.section}>
             <ListenerHistoryChart
               datasets={chartDatasets}
               range={chartRange}
@@ -82,7 +95,7 @@ export default function CompareScreen() {
           </GlassCard>
 
           {/* Stats comparison table */}
-          <GlassCard style={styles.section}>
+          <GlassCard solid style={styles.section}>
             <Text style={styles.sectionTitle}>Stats Comparison</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View>
@@ -153,7 +166,7 @@ export default function CompareScreen() {
               </View>
             </ScrollView>
           </GlassCard>
-        </>
+        </ShareableCard>
       ) : compareArtists.length === 1 ? (
         <View style={styles.hint}>
           <Text style={styles.hintText}>
@@ -180,6 +193,12 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 40,
   },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
   title: {
     color: colors.textPrimary,
     fontSize: 22,
@@ -189,7 +208,6 @@ const styles = StyleSheet.create({
   subtitle: {
     color: colors.textMuted,
     fontSize: 14,
-    marginBottom: 16,
   },
   chips: {
     flexDirection: 'row',

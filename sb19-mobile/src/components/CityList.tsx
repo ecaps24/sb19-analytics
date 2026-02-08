@@ -84,14 +84,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   barBg: {
-    height: 6,
+    height: 10,
     backgroundColor: colors.surfaceLight,
-    borderRadius: 3,
+    borderRadius: 5,
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
     backgroundColor: colors.primary,
-    borderRadius: 3,
+    borderRadius: 5,
   },
 });

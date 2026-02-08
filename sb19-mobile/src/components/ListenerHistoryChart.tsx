@@ -34,7 +34,7 @@ function isMulti(props: ListenerHistoryChartProps): props is MultiChartProps {
 
 export default function ListenerHistoryChart(props: ListenerHistoryChartProps) {
   const { range, onRangeChange } = props;
-  const screenWidth = Dimensions.get('window').width - 64;
+  const screenWidth = Dimensions.get('window').width - 48;
 
   const chartData = useMemo(() => {
     if (isMulti(props)) {
@@ -140,17 +140,19 @@ export default function ListenerHistoryChart(props: ListenerHistoryChartProps) {
           color3={chartData[2]?.color}
           color4={chartData[3]?.color}
           width={screenWidth}
-          height={180}
+          height={220}
           spacing={Math.max(2, screenWidth / Math.max(primaryData.length - 1, 1))}
           initialSpacing={0}
           endSpacing={0}
-          thickness={2}
-          hideDataPoints
+          thickness={3}
+          hideDataPoints={totalPoints >= 30}
+          dataPointsRadius={3}
+          dataPointsColor={chartData[0].color}
           curved
           yAxisColor="transparent"
           xAxisColor={colors.border}
-          yAxisTextStyle={{ color: colors.textMuted, fontSize: 10 }}
-          xAxisLabelTextStyle={{ color: colors.textMuted, fontSize: 9 }}
+          yAxisTextStyle={{ color: colors.textMuted, fontSize: 11 }}
+          xAxisLabelTextStyle={{ color: colors.textMuted, fontSize: 10 }}
           noOfSections={4}
           yAxisOffset={yMin}
           formatYLabel={(val: string) => formatNumber(Number(val))}
@@ -175,8 +177,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.textPrimary,
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
   },
   rangeRow: {
     flexDirection: 'row',
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
   },
   legendText: {
     color: colors.textSecondary,
-    fontSize: 12,
+    fontSize: 13,
   },
   chartWrapper: {
     marginLeft: -10,

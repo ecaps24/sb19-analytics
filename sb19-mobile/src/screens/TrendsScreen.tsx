@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,18 +10,22 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import ViewShot from 'react-native-view-shot';
 import { useDataStore } from '../store/useDataStore';
 import { useFilterStore } from '../store/useFilterStore';
 import { getTopMovers } from '../utils/calculations';
 import ArtistCard from '../components/ArtistCard';
 import GenreBarChart from '../components/GenreBarChart';
 import GlassCard from '../components/GlassCard';
+import ShareableCard from '../components/ShareableCard';
+import ShareButton from '../components/ShareButton';
 import { colors } from '../theme/colors';
 
 export default function TrendsScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const { loading, fetchData, getArtistSummaries } = useDataStore();
   const { trendsPeriod, setTrendsPeriod } = useFilterStore();
+  const shareRef = useRef<ViewShot>(null);
 
   const allSummaries = useMemo(
     () => getArtistSummaries('All'),
@@ -59,26 +63,29 @@ export default function TrendsScreen() {
       {/* Period toggle */}
       <View style={styles.periodRow}>
         <Text style={styles.sectionTitle}>Trends</Text>
-        <View style={styles.periodToggle}>
-          {(['7d', '30d'] as const).map(p => (
-            <TouchableOpacity
-              key={p}
-              style={[
-                styles.periodBtn,
-                trendsPeriod === p && styles.periodBtnActive,
-              ]}
-              onPress={() => setTrendsPeriod(p)}
-            >
-              <Text
+        <View style={styles.periodActions}>
+          <ShareButton viewShotRef={shareRef} />
+          <View style={styles.periodToggle}>
+            {(['7d', '30d'] as const).map(p => (
+              <TouchableOpacity
+                key={p}
                 style={[
-                  styles.periodBtnText,
-                  trendsPeriod === p && styles.periodBtnTextActive,
+                  styles.periodBtn,
+                  trendsPeriod === p && styles.periodBtnActive,
                 ]}
+                onPress={() => setTrendsPeriod(p)}
               >
-                {p.toUpperCase()}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  style={[
+                    styles.periodBtnText,
+                    trendsPeriod === p && styles.periodBtnTextActive,
+                  ]}
+                >
+                  {p.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </View>
 
@@ -140,10 +147,12 @@ export default function TrendsScreen() {
         )}
       </GlassCard>
 
-      {/* Genre Breakdown */}
-      <GlassCard style={styles.section}>
-        <GenreBarChart summaries={allSummaries} />
-      </GlassCard>
+      {/* Genre Breakdown - Shareable */}
+      <ShareableCard ref={shareRef} subtitle="Genre Breakdown">
+        <GlassCard solid>
+          <GenreBarChart summaries={allSummaries} />
+        </GlassCard>
+      </ShareableCard>
     </ScrollView>
   );
 }
@@ -167,6 +176,11 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     fontSize: 22,
     fontWeight: '700',
+  },
+  periodActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   periodToggle: {
     flexDirection: 'row',
