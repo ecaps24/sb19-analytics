@@ -15,6 +15,8 @@ Uses browser automation (Selenium + Edge) to post, avoiding API costs.
 Usage:
     python social_media_agent.py listeners             # Post monthly listener update
     python social_media_agent.py daily                 # Post daily stream top gainers
+    python social_media_agent.py top10                 # Post top 10 SB19 tracks by daily streams
+    python social_media_agent.py solo-top10            # Post top 10 solo member tracks by daily streams
     python social_media_agent.py milestones            # Check and post milestones
     python social_media_agent.py spikes                # Post significant jump alerts
     python social_media_agent.py weekly                # Post weekly summary
@@ -74,6 +76,8 @@ POSTED_LOG = os.path.join(SCRIPT_DIR, "x_posted_log.json")
 # Album screenshot
 ALBUM_IMAGE_DIR = os.path.join(SCRIPT_DIR, "album_images")
 ALBUM_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "simula_wakas.png")
+TOP10_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "top10_streams.png")
+SOLO_TOP10_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "solo_top10_streams.png")
 LOCAL_INDEX = os.path.join(SCRIPT_DIR, "index.html")
 
 # Listeners screenshot
@@ -184,6 +188,15 @@ def format_change(change, use_commas=True):
         if change > 0:
             return f"+{format_number(change)}"
         return format_number(change)
+
+
+def _resolve_solo_artist(name):
+    """Return the canonical SOLO_ARTISTS name for a case-insensitive match, or None."""
+    lower = name.strip().lower()
+    for artist in SOLO_ARTISTS:
+        if artist.lower() == lower:
+            return artist
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -508,6 +521,891 @@ class SocialMediaAgent:
         lines.append("")
         lines.append("#SB19 #SB19Spotify")
         return "\n".join(lines)
+
+    def generate_top10_post(self):
+        """Top 10 SB19 group tracks by daily added streams with screenshot.
+
+        Returns (message, image_path_or_None).
+        """
+        data = load_streams_data()
+        if not data:
+            return None, None
+
+        dates = sorted(set(e["date"] for e in data))
+        if len(dates) < 2:
+            print("[WARN] Not enough data for daily comparison")
+            return None, None
+
+        today, yesterday = dates[-1], dates[-2]
+
+        # Filter to SB19 group tracks only
+        today_map = {
+            e["song_title"]: e for e in data
+            if e["date"] == today and e["artist"].upper() == "SB19"
+        }
+        yest_map = {
+            e["song_title"]: e for e in data
+            if e["date"] == yesterday and e["artist"].upper() == "SB19"
+        }
+
+        gains = []
+        for song, entry in today_map.items():
+            if song in yest_map:
+                change = entry["streams"] - yest_map[song]["streams"]
+                gains.append({
+                    "song": song,
+                    "streams": entry["streams"],
+                    "change": change,
+                })
+
+        gains.sort(key=lambda x: x["change"], reverse=True)
+
+        # Build previous day's ranking (by daily change) for rank comparison
+        prev_gains = []
+        if len(dates) >= 3:
+            day_before = dates[-3]
+            day_before_map = {
+                e["song_title"]: e for e in data
+                if e["date"] == day_before and e["artist"].upper() == "SB19"
+            }
+            for song, entry in yest_map.items():
+                if song in day_before_map:
+                    prev_change = entry["streams"] - day_before_map[song]["streams"]
+                    prev_gains.append({"song": song, "change": prev_change})
+            prev_gains.sort(key=lambda x: x["change"], reverse=True)
+
+        prev_rank_map = {g["song"]: i + 1 for i, g in enumerate(prev_gains)}
+
+        # Compute rank streaks: how many consecutive days each track held its current rank
+        # Build daily rankings for all available dates
+        sb19_data = [e for e in data if e["artist"].upper() == "SB19"]
+        all_dates = sorted(set(e["date"] for e in sb19_data))
+
+        daily_rank_maps = {}
+        for di in range(1, len(all_dates)):
+            curr_d = all_dates[di]
+            prev_d = all_dates[di - 1]
+            curr_map_d = {e["song_title"]: e["streams"] for e in sb19_data if e["date"] == curr_d}
+            prev_map_d = {e["song_title"]: e["streams"] for e in sb19_data if e["date"] == prev_d}
+            day_gains = []
+            for s in curr_map_d:
+                if s in prev_map_d:
+                    day_gains.append((s, curr_map_d[s] - prev_map_d[s]))
+            day_gains.sort(key=lambda x: x[1], reverse=True)
+            daily_rank_maps[curr_d] = {s: r + 1 for r, (s, _) in enumerate(day_gains)}
+
+        # Annotate top 10 with rank change info
+        top = gains[:10]
+        for i, g in enumerate(top):
+            current_rank = i + 1
+            prev_rank = prev_rank_map.get(g["song"])
+            if prev_rank is not None:
+                rank_diff = prev_rank - current_rank  # positive = moved up
+                g["rank_change"] = rank_diff
+                g["prev_rank"] = prev_rank
+            else:
+                g["rank_change"] = None
+                g["prev_rank"] = None
+
+            # Compute streak (consecutive days at this rank, walking backwards)
+            streak = 1
+            for di in range(len(all_dates) - 2, 0, -1):
+                d = all_dates[di]
+                rm = daily_rank_maps.get(d, {})
+                if rm.get(g["song"]) == current_rank:
+                    streak += 1
+                else:
+                    break
+            g["streak"] = streak
+
+        if not top:
+            print("[INFO] No SB19 group stream gains detected")
+            return None, None
+
+        # Parse date for display
+        try:
+            date_formatted = datetime.strptime(
+                today.replace("-", "")[:8], "%Y%m%d"
+            ).strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = today
+
+        # Total daily added across ALL SB19 group tracks
+        total_added = sum(g["change"] for g in gains)
+
+        # Text post
+        lines = [
+            f"SB19 Top 10 Tracks by Daily Streams - {date_formatted}",
+            "opminsights.com",
+            "",
+        ]
+        for i, g in enumerate(top, 1):
+            # Rank indicator
+            rc = g["rank_change"]
+            if rc is not None and rc > 0:
+                rank_ind = f" (+{rc})"
+            elif rc is not None and rc < 0:
+                rank_ind = f" (-{abs(rc)})"
+            elif rc == 0 and g["streak"] > 1:
+                rank_ind = f" ({g['streak']}d)"
+            else:
+                rank_ind = ""
+            lines.append(
+                f"{i:>2}. {g['song']}: {format_change(g['change'], use_commas=False)} "
+                f"({format_number(g['streams'])} total){rank_ind}"
+            )
+        lines.append("")
+        lines.append(f"Total added: {format_change(total_added, use_commas=False)}")
+        lines.append("")
+        lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
+        message = "\n".join(lines)
+
+        # Capture screenshot
+        image_path = None
+        screenshot_ok = self._capture_top10_screenshot(
+            track_list=top,
+            total_added=total_added,
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(TOP10_IMAGE_PATH):
+            image_path = TOP10_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_top10_screenshot(self, track_list=None, total_added=0, date_str=""):
+        """Capture a social-media-friendly top 10 daily streams card."""
+        print("[INFO] Capturing top 10 streams screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not track_list:
+            print("[ERR] No track data for top 10 card")
+            return False
+
+        max_change = max(t["change"] for t in track_list) if track_list else 1
+        if max_change <= 0:
+            max_change = 1
+
+        bar_colors = [
+            "#3b82f6", "#6366f1", "#ec4899", "#10b981", "#f59e0b",
+            "#a855f7", "#ef4444", "#14b8a6", "#f97316", "#8b5cf6",
+        ]
+
+        track_rows = ""
+        for i, t in enumerate(track_list):
+            pct = (t["change"] / max_change) * 100 if t["change"] > 0 else 0
+            color = bar_colors[i % len(bar_colors)]
+            change_str = f"+{t['change']:,}" if t["change"] > 0 else f"{t['change']:,}"
+            streams_str = f"{t['streams']:,}"
+
+            # Rank change indicator
+            rc = t.get("rank_change")
+            streak = t.get("streak", 1)
+            if rc is not None and rc > 0:
+                rank_ind_html = f'<span class="rank-up">▲{rc}</span>'
+            elif rc is not None and rc < 0:
+                rank_ind_html = f'<span class="rank-down">▼{abs(rc)}</span>'
+            elif rc == 0 and streak > 1:
+                rank_ind_html = f'<span class="rank-same">{streak}d</span>'
+            else:
+                rank_ind_html = '<span class="rank-same">―</span>'
+
+            track_rows += f"""
+            <div class="track-row">
+                <div class="track-rank">{i + 1}</div>
+                <div class="rank-indicator">{rank_ind_html}</div>
+                <div class="track-info">
+                    <div class="track-name">{t['song']}</div>
+                    <div class="track-bar-container">
+                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="track-stats">
+                    <div class="track-change">{change_str}</div>
+                    <div class="track-streams">{streams_str}</div>
+                </div>
+            </div>"""
+
+        total_str = f"+{total_added:,}" if total_added > 0 else f"{total_added:,}"
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{
+    text-align: center;
+}}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+.tracks {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}}
+.track-row {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+}}
+.track-rank {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #475569;
+    width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+}}
+.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
+.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
+.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
+.rank-indicator {{
+    width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+}}
+.rank-up {{
+    color: #34d399;
+}}
+.rank-down {{
+    color: #f87171;
+}}
+.rank-same {{
+    color: #9ca3af;
+}}
+.track-info {{
+    flex: 1;
+    min-width: 0;
+}}
+.track-name {{
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.track-bar-container {{
+    height: 30px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}}
+.track-bar {{
+    height: 100%;
+    border-radius: 6px;
+}}
+.track-stats {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 140px;
+}}
+.track-change {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #10b981;
+}}
+.track-streams {{
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 2px;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">SB19 Top 10 Tracks by Daily Streams</div>
+        <div class="card-subtitle">As of {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_str}</div>
+                <div class="stat-label">Total Daily Streams</div>
+            </div>
+        </div>
+    </div>
+    <div class="tracks">{track_rows}
+    </div>
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_top10_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1600)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(TOP10_IMAGE_PATH)
+
+                img = Image.open(TOP10_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(TOP10_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] Top 10 screenshot saved: {TOP10_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] Top 10 screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] Top 10 screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
+    def _capture_solo_top10_screenshot(self, track_list=None, total_added=0, date_str=""):
+        """Capture a social-media-friendly solo top 10 daily streams card."""
+        print("[INFO] Capturing solo top 10 streams screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not track_list:
+            print("[ERR] No track data for solo top 10 card")
+            return False
+
+        max_change = max(t["change"] for t in track_list) if track_list else 1
+        if max_change <= 0:
+            max_change = 1
+
+        track_rows = ""
+        for i, t in enumerate(track_list):
+            pct = (t["change"] / max_change) * 100 if t["change"] > 0 else 0
+            color = MEMBER_BAR_COLORS.get(t["artist"], "#3b82f6")
+            change_str = f"+{t['change']:,}" if t["change"] > 0 else f"{t['change']:,}"
+            streams_str = f"{t['streams']:,}"
+
+            # Rank change indicator
+            rc = t.get("rank_change")
+            streak = t.get("streak", 1)
+            if rc is not None and rc > 0:
+                rank_ind_html = f'<span class="rank-up">&#9650;{rc}</span>'
+            elif rc is not None and rc < 0:
+                rank_ind_html = f'<span class="rank-down">&#9660;{abs(rc)}</span>'
+            elif rc == 0 and streak > 1:
+                rank_ind_html = f'<span class="rank-same">{streak}d</span>'
+            else:
+                rank_ind_html = '<span class="rank-same">&#8213;</span>'
+
+            # Artist badge (colored pill)
+            badge_html = (
+                f'<span class="artist-badge" style="background: {color};">'
+                f'{t["artist"]}</span>'
+            )
+
+            track_rows += f"""
+            <div class="track-row">
+                <div class="track-rank">{i + 1}</div>
+                <div class="rank-indicator">{rank_ind_html}</div>
+                <div class="track-info">
+                    <div class="track-name-row">
+                        <span class="track-name">{t['song']}</span>
+                        {badge_html}
+                    </div>
+                    <div class="track-bar-container">
+                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="track-stats">
+                    <div class="track-change">{change_str}</div>
+                    <div class="track-streams">{streams_str}</div>
+                </div>
+            </div>"""
+
+        total_str = f"+{total_added:,}" if total_added > 0 else f"{total_added:,}"
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{
+    text-align: center;
+}}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+.tracks {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}}
+.track-row {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+}}
+.track-rank {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #475569;
+    width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+}}
+.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
+.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
+.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
+.rank-indicator {{
+    width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+}}
+.rank-up {{
+    color: #34d399;
+}}
+.rank-down {{
+    color: #f87171;
+}}
+.rank-same {{
+    color: #9ca3af;
+}}
+.track-info {{
+    flex: 1;
+    min-width: 0;
+}}
+.track-name-row {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}}
+.track-name {{
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.artist-badge {{
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.9;
+}}
+.track-bar-container {{
+    height: 30px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}}
+.track-bar {{
+    height: 100%;
+    border-radius: 6px;
+}}
+.track-stats {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 140px;
+}}
+.track-change {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #10b981;
+}}
+.track-streams {{
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 2px;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">SB19 Solo Top 10 Tracks by Daily Streams</div>
+        <div class="card-subtitle">As of {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_str}</div>
+                <div class="stat-label">Total Daily Streams</div>
+            </div>
+        </div>
+    </div>
+    <div class="tracks">{track_rows}
+    </div>
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_solo_top10_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1600)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(SOLO_TOP10_IMAGE_PATH)
+
+                img = Image.open(SOLO_TOP10_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(SOLO_TOP10_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] Solo top 10 screenshot saved: {SOLO_TOP10_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] Solo top 10 screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] Solo top 10 screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
+    def generate_solo_top10_post(self):
+        """Top 10 solo member tracks (combined) by daily added streams with screenshot.
+
+        Returns (message, image_path_or_None).
+        """
+        data = load_streams_data()
+        if not data:
+            return None, None
+
+        dates = sorted(set(e["date"] for e in data))
+        if len(dates) < 2:
+            print("[WARN] Not enough data for daily comparison")
+            return None, None
+
+        today, yesterday = dates[-1], dates[-2]
+
+        # Filter to solo artists (case-insensitive) and key by (song, canonical_artist)
+        today_map = {}
+        yest_map = {}
+        for e in data:
+            canonical = _resolve_solo_artist(e["artist"])
+            if canonical is None:
+                continue
+            key = (e["song_title"], canonical)
+            if e["date"] == today:
+                today_map[key] = {**e, "artist": canonical}
+            elif e["date"] == yesterday:
+                yest_map[key] = {**e, "artist": canonical}
+
+        gains = []
+        for key, entry in today_map.items():
+            if key in yest_map:
+                change = entry["streams"] - yest_map[key]["streams"]
+                gains.append({
+                    "song": entry["song_title"],
+                    "artist": entry["artist"],
+                    "streams": entry["streams"],
+                    "change": change,
+                })
+
+        gains.sort(key=lambda x: x["change"], reverse=True)
+
+        # Build previous day's ranking for rank comparison
+        prev_gains = []
+        if len(dates) >= 3:
+            day_before = dates[-3]
+            day_before_map = {}
+            for e in data:
+                canonical = _resolve_solo_artist(e["artist"])
+                if canonical is None:
+                    continue
+                if e["date"] == day_before:
+                    day_before_map[(e["song_title"], canonical)] = {**e, "artist": canonical}
+            for key, entry in yest_map.items():
+                if key in day_before_map:
+                    prev_change = entry["streams"] - day_before_map[key]["streams"]
+                    prev_gains.append({"key": key, "change": prev_change})
+            prev_gains.sort(key=lambda x: x["change"], reverse=True)
+
+        prev_rank_map = {g["key"]: i + 1 for i, g in enumerate(prev_gains)}
+
+        # Build daily rankings for streak computation
+        solo_data = [
+            {**e, "artist": _resolve_solo_artist(e["artist"])}
+            for e in data if _resolve_solo_artist(e["artist"]) is not None
+        ]
+        all_dates = sorted(set(e["date"] for e in solo_data))
+
+        daily_rank_maps = {}
+        for di in range(1, len(all_dates)):
+            curr_d = all_dates[di]
+            prev_d = all_dates[di - 1]
+            curr_map_d = {
+                (e["song_title"], e["artist"]): e["streams"]
+                for e in solo_data if e["date"] == curr_d
+            }
+            prev_map_d = {
+                (e["song_title"], e["artist"]): e["streams"]
+                for e in solo_data if e["date"] == prev_d
+            }
+            day_gains = []
+            for s in curr_map_d:
+                if s in prev_map_d:
+                    day_gains.append((s, curr_map_d[s] - prev_map_d[s]))
+            day_gains.sort(key=lambda x: x[1], reverse=True)
+            daily_rank_maps[curr_d] = {s: r + 1 for r, (s, _) in enumerate(day_gains)}
+
+        # Annotate top 10 with rank change and streak info
+        top = gains[:10]
+        for i, g in enumerate(top):
+            current_rank = i + 1
+            key = (g["song"], g["artist"])
+            prev_rank = prev_rank_map.get(key)
+            if prev_rank is not None:
+                g["rank_change"] = prev_rank - current_rank
+                g["prev_rank"] = prev_rank
+            else:
+                g["rank_change"] = None
+                g["prev_rank"] = None
+
+            streak = 1
+            for di in range(len(all_dates) - 2, 0, -1):
+                d = all_dates[di]
+                rm = daily_rank_maps.get(d, {})
+                if rm.get(key) == current_rank:
+                    streak += 1
+                else:
+                    break
+            g["streak"] = streak
+
+        if not top:
+            print("[INFO] No solo member stream gains detected")
+            return None, None
+
+        # Parse date for display
+        try:
+            date_formatted = datetime.strptime(
+                today.replace("-", "")[:8], "%Y%m%d"
+            ).strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = today
+
+        # Total daily added across ALL solo tracks
+        total_added = sum(g["change"] for g in gains)
+
+        # Text post
+        lines = [
+            f"SB19 Solo Top 10 Tracks by Daily Streams - {date_formatted}",
+            "opminsights.com",
+            "",
+        ]
+        for i, g in enumerate(top, 1):
+            rc = g["rank_change"]
+            if rc is not None and rc > 0:
+                rank_ind = f" (+{rc})"
+            elif rc is not None and rc < 0:
+                rank_ind = f" (-{abs(rc)})"
+            elif rc == 0 and g["streak"] > 1:
+                rank_ind = f" ({g['streak']}d)"
+            else:
+                rank_ind = ""
+            lines.append(
+                f"{i:>2}. {g['song']} ({g['artist']}): {format_change(g['change'], use_commas=False)} "
+                f"({format_number(g['streams'])} total){rank_ind}"
+            )
+        lines.append("")
+        lines.append(f"Total added: {format_change(total_added, use_commas=False)}")
+        lines.append("")
+        lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
+        message = "\n".join(lines)
+
+        # Capture screenshot
+        image_path = None
+        screenshot_ok = self._capture_solo_top10_screenshot(
+            track_list=top,
+            total_added=total_added,
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(SOLO_TOP10_IMAGE_PATH):
+            image_path = SOLO_TOP10_IMAGE_PATH
+
+        return message, image_path
 
     def generate_milestone_posts(self):
         """Detect new milestones and return list of (message, milestone_key) tuples."""
@@ -1393,6 +2291,28 @@ body {{
         else:
             print("[SKIP] No data")
 
+        # 2b. Top 10
+        print("\n--- TOP 10 BY DAILY STREAMS ---")
+        msg, img = self.generate_top10_post()
+        if msg:
+            print(msg)
+            print(f"[{len(msg)} chars]")
+            if img:
+                print(f"[IMAGE] {img}")
+        else:
+            print("[SKIP] No data")
+
+        # 2c. Solo Top 10
+        print("\n--- SOLO TOP 10 BY DAILY STREAMS ---")
+        msg, img = self.generate_solo_top10_post()
+        if msg:
+            print(msg)
+            print(f"[{len(msg)} chars]")
+            if img:
+                print(f"[IMAGE] {img}")
+        else:
+            print("[SKIP] No data")
+
         # 3. Milestones
         print("\n--- MILESTONES ---")
         milestone_posts = self.generate_milestone_posts()
@@ -1491,6 +2411,8 @@ def build_parser():
 Examples:
   python social_media_agent.py listeners                 # Post monthly listener update
   python social_media_agent.py daily                     # Post daily stream top gainers
+  python social_media_agent.py top10                     # Post top 10 SB19 tracks by daily streams
+  python social_media_agent.py solo-top10                # Post top 10 solo member tracks by daily streams
   python social_media_agent.py milestones                # Check & post new milestones
   python social_media_agent.py spikes                    # Post significant jump alerts
   python social_media_agent.py weekly                    # Post weekly summary
@@ -1509,7 +2431,7 @@ Examples:
     parser.add_argument(
         "command",
         choices=[
-            "listeners", "daily", "milestones", "spikes", "weekly",
+            "listeners", "daily", "top10", "solo-top10", "milestones", "spikes", "weekly",
             "album", "solo-top", "custom", "preview", "status", "init-milestones",
         ],
         help="Post type or action to perform",
@@ -1609,6 +2531,44 @@ def main():
 
             success = agent.post(
                 message, dry_run=args.dry_run, test_mode=args.test, image_path=args.image,
+            )
+            _report(success)
+
+        elif args.command == "top10":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_streams_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
+            message, auto_image = agent.generate_top10_post()
+            if not message:
+                print("[ERR] Could not generate top 10 post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
+
+        elif args.command == "solo-top10":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_streams_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
+            message, auto_image = agent.generate_solo_top10_post()
+            if not message:
+                print("[ERR] Could not generate solo top 10 post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
             )
             _report(success)
 
