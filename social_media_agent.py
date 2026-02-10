@@ -134,6 +134,7 @@ SOLO_TOP_N = 5
 
 # Simula at Wakas album tracks
 ALBUM_TRACKS = [
+    "Prologue (Simula at Wakas Tour Kickoff)",
     "Moonlight (Simula at Wakas Tour Kickoff)",
     "I WANT YOU (Simula at Wakas Tour Kickoff)",
     "What? (Simula at Wakas Tour Kickoff)",

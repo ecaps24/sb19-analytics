@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7488911178615185"
         crossorigin="anonymous"></script>
@@ -1547,14 +1548,652 @@
                 min-width: 400px;
             }
         }
+        /* Artist Selector */
+        .artist-selector {
+            position: relative;
+        }
+        .artist-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e5e7eb;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .artist-selector-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(96,165,250,0.4);
+        }
+        .artist-selector-btn .artist-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+            flex-shrink: 0;
+        }
+        .artist-selector-btn .artist-dot.has-tracks {
+            background: #10b981;
+        }
+        .artist-selector-btn .chevron {
+            font-size: 0.6rem;
+            opacity: 0.6;
+            transition: transform 0.2s ease;
+        }
+        .artist-selector-btn.open .chevron {
+            transform: rotate(180deg);
+        }
+        .artist-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            min-width: 260px;
+            max-height: 380px;
+            background: rgba(17, 24, 39, 0.97);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            z-index: 100;
+            overflow: hidden;
+        }
+        .artist-dropdown.open {
+            display: flex;
+            flex-direction: column;
+        }
+        .artist-dropdown-search {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .artist-dropdown-search input {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e5e7eb;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .artist-dropdown-search input:focus {
+            border-color: rgba(96,165,250,0.5);
+        }
+        .artist-dropdown-search input::placeholder {
+            color: #6b7280;
+        }
+        .artist-dropdown-list {
+            overflow-y: auto;
+            max-height: 310px;
+            padding: 4px 0;
+        }
+        .artist-dropdown-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .artist-dropdown-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 3px;
+        }
+        .artist-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            color: #d1d5db;
+            transition: background 0.15s ease;
+        }
+        .artist-dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.15);
+        }
+        .artist-dropdown-item.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+        .artist-dropdown-item .artist-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4b5563;
+            flex-shrink: 0;
+        }
+        .artist-dropdown-item .artist-dot.has-tracks {
+            background: #10b981;
+        }
+        .artist-dropdown-item .tracks-badge {
+            margin-left: auto;
+            font-size: 0.68rem;
+            color: #6b7280;
+            background: rgba(255,255,255,0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        .artist-dropdown-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.06);
+            margin: 4px 12px;
+        }
+
+        /* ========== Auth Modal ========== */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-modal.active { display: flex; }
+        .auth-modal-content {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 420px;
+            padding: 32px;
+            position: relative;
+            animation: authSlideIn 0.3s ease-out;
+        }
+        @keyframes authSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .auth-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .auth-modal-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .auth-panel { display: none; }
+        .auth-panel.active { display: block; }
+        .auth-panel h2 {
+            color: #f9fafb;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .auth-panel .auth-subtitle {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+        }
+        .auth-form { display: flex; flex-direction: column; gap: 16px; }
+        .auth-form-group { display: flex; flex-direction: column; gap: 6px; }
+        .auth-form-group label {
+            color: #d1d5db;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .auth-form-input {
+            background: rgba(255,255,255,0.06);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #f9fafb;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .auth-form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .auth-form-input::placeholder { color: #6b7280; }
+        .auth-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 4px;
+        }
+        .auth-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .auth-btn:active { transform: translateY(0); }
+        .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .auth-error {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #fca5a5;
+            font-size: 0.8rem;
+            display: none;
+        }
+        .auth-error.visible { display: block; }
+        .auth-success {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #6ee7b7;
+            font-size: 0.8rem;
+            display: none;
+        }
+        .auth-success.visible { display: block; }
+        .auth-link {
+            color: #60a5fa;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .auth-link:hover { text-decoration: underline; }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin: 8px 0;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ========== User Menu (Header) ========== */
+        .header-auth-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 16px;
+            right: 20px;
+        }
+        .guest-menu { display: flex; gap: 8px; align-items: center; }
+        .guest-menu .auth-signin-btn {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            color: #d1d5db;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .guest-menu .auth-signin-btn:hover { border-color: #3b82f6; color: #fff; }
+        .guest-menu .auth-getstarted-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .guest-menu .auth-getstarted-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .user-menu { display: none; align-items: center; gap: 10px; position: relative; }
+        .user-menu.active { display: flex; }
+        .tier-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .tier-badge.tier-free { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .tier-badge.tier-basic { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .tier-badge.tier-premium { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .user-avatar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .user-avatar-btn:hover { border-color: #3b82f6; transform: scale(1.05); }
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 9999;
+        }
+        .user-dropdown.active { display: block; }
+        .user-dropdown-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .user-dropdown-header .user-name {
+            color: #f9fafb;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .user-dropdown-header .user-email {
+            color: #9ca3af;
+            font-size: 0.72rem;
+            margin-top: 2px;
+        }
+        .user-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            color: #d1d5db;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+        .user-dropdown-item:hover { background: rgba(255,255,255,0.06); }
+        .user-dropdown-item.danger { color: #f87171; }
+        .user-dropdown-item.danger:hover { background: rgba(239,68,68,0.1); }
+        .user-dropdown-sep { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
+
+        /* ========== Content Gating ========== */
+        .gated-content {
+            position: relative;
+            overflow: hidden;
+        }
+        .gated-blur {
+            filter: blur(6px);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.5;
+        }
+        .gated-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background: rgba(15,23,42,0.4);
+            border-radius: inherit;
+            text-align: center;
+            padding: 24px;
+        }
+        .gated-overlay .gated-lock {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+        .gated-overlay .gated-title {
+            color: #f9fafb;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .gated-overlay .gated-desc {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+            max-width: 260px;
+        }
+        .gated-overlay .gated-cta {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .gated-overlay .gated-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .gated-overlay .gated-cta.premium-cta {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        .gated-overlay .gated-cta.premium-cta:hover { box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
+        .gated-overlay .gated-signin-link {
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .gated-overlay .gated-signin-link:hover { text-decoration: underline; }
+
+        /* ========== Upgrade Modal ========== */
+        .upgrade-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+        .upgrade-modal.active { display: flex; }
+        .upgrade-modal-content {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+            animation: authSlideIn 0.3s ease-out;
+        }
+        .upgrade-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .upgrade-plan-card {
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .upgrade-plan-card:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05); }
+        .upgrade-plan-card.recommended { border-color: rgba(245,158,11,0.4); }
+        .upgrade-plan-card .plan-name { color: #f9fafb; font-size: 1rem; font-weight: 600; }
+        .upgrade-plan-card .plan-price { color: #60a5fa; font-size: 1.25rem; font-weight: 700; margin: 6px 0; }
+        .upgrade-plan-card.recommended .plan-price { color: #fbbf24; }
+        .upgrade-plan-card .plan-features { list-style: none; padding: 0; margin: 10px 0 0; }
+        .upgrade-plan-card .plan-features li {
+            color: #9ca3af;
+            font-size: 0.78rem;
+            padding: 3px 0;
+        }
+        .upgrade-plan-card .plan-features li::before { content: '✓ '; color: #34d399; }
+
+        @media (max-width: 600px) {
+            .header-auth-area { position: static; margin-top: 10px; justify-content: center; }
+            .auth-modal-content { margin: 16px; padding: 24px; max-width: none; }
+            .upgrade-modal-content { margin: 16px; padding: 24px; max-width: none; }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" style="position: relative;">
             <h1>OPM Analytics Dashboard</h1>
             <p>Spotify Performance Tracking</p>
+            <!-- Auth: User Menu Area -->
+            <div class="header-auth-area">
+                <div id="guestMenu" class="guest-menu">
+                    <button class="auth-signin-btn" onclick="window.authManager.showAuthModal('signin')">Sign In</button>
+                    <button class="auth-getstarted-btn" onclick="window.authManager.showAuthModal('signup')">Get Started</button>
+                </div>
+                <div id="userMenu" class="user-menu">
+                    <span id="userTierBadge" class="tier-badge tier-free">Free</span>
+                    <button id="userAvatarBtn" class="user-avatar-btn" onclick="toggleUserDropdown()">?</button>
+                    <div id="userDropdown" class="user-dropdown">
+                        <div class="user-dropdown-header">
+                            <div id="userDropdownName" class="user-name">User</div>
+                            <div id="userDropdownEmail" class="user-email">user@email.com</div>
+                        </div>
+                        <button class="user-dropdown-item" onclick="window.authManager.showUpgradeModal()">⬆ Upgrade Plan</button>
+                        <div class="user-dropdown-sep"></div>
+                        <button class="user-dropdown-item danger" onclick="handleSignOut()">⎋ Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Modal (Sign In / Sign Up / Reset) -->
+        <div id="authModal" class="auth-modal" onclick="if(event.target===this) window.authManager.hideAuthModal()">
+            <div class="auth-modal-content">
+                <button class="auth-modal-close" onclick="window.authManager.hideAuthModal()">✕</button>
+
+                <!-- Sign In Panel -->
+                <div id="authSignIn" class="auth-panel active">
+                    <h2>Welcome back</h2>
+                    <p class="auth-subtitle">Sign in to access your dashboard</p>
+                    <div id="signInError" class="auth-error"></div>
+                    <form class="auth-form" onsubmit="event.preventDefault(); handleSignIn()">
+                        <div class="auth-form-group">
+                            <label for="signInEmail">Email</label>
+                            <input id="signInEmail" class="auth-form-input" type="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signInPassword">Password</label>
+                            <input id="signInPassword" class="auth-form-input" type="password" placeholder="Your password" required>
+                        </div>
+                        <button type="submit" id="signInBtn" class="auth-btn">Sign In</button>
+                    </form>
+                    <div class="auth-footer">
+                        <span class="auth-link" onclick="window.authManager.switchAuthMode('reset')">Forgot password?</span>
+                        &nbsp;·&nbsp;
+                        Don't have an account? <span class="auth-link" onclick="window.authManager.switchAuthMode('signup')">Sign up</span>
+                    </div>
+                </div>
+
+                <!-- Sign Up Panel -->
+                <div id="authSignUp" class="auth-panel">
+                    <h2>Create account</h2>
+                    <p class="auth-subtitle">Get started with OPM Analytics</p>
+                    <div id="signUpError" class="auth-error"></div>
+                    <div id="signUpSuccess" class="auth-success"></div>
+                    <form class="auth-form" onsubmit="event.preventDefault(); handleSignUp()">
+                        <div class="auth-form-group">
+                            <label for="signUpName">Full Name</label>
+                            <input id="signUpName" class="auth-form-input" type="text" placeholder="Your name" required>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signUpEmail">Email</label>
+                            <input id="signUpEmail" class="auth-form-input" type="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signUpPassword">Password</label>
+                            <input id="signUpPassword" class="auth-form-input" type="password" placeholder="At least 6 characters" required minlength="6">
+                        </div>
+                        <button type="submit" id="signUpBtn" class="auth-btn">Create Account</button>
+                    </form>
+                    <div class="auth-footer">
+                        Already have an account? <span class="auth-link" onclick="window.authManager.switchAuthMode('signin')">Sign in</span>
+                    </div>
+                </div>
+
+                <!-- Password Reset Panel -->
+                <div id="authReset" class="auth-panel">
+                    <h2>Reset password</h2>
+                    <p class="auth-subtitle">We'll send you a link to reset your password</p>
+                    <div id="resetError" class="auth-error"></div>
+                    <div id="resetSuccess" class="auth-success"></div>
+                    <form class="auth-form" onsubmit="event.preventDefault(); handleForgotPassword()">
+                        <div class="auth-form-group">
+                            <label for="resetEmail">Email</label>
+                            <input id="resetEmail" class="auth-form-input" type="email" placeholder="you@example.com" required>
+                        </div>
+                        <button type="submit" id="resetBtn" class="auth-btn">Send Reset Link</button>
+                    </form>
+                    <div class="auth-footer">
+                        <span class="auth-link" onclick="window.authManager.switchAuthMode('signin')">Back to sign in</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upgrade Modal -->
+        <div id="upgradeModal" class="upgrade-modal" onclick="if(event.target===this) this.classList.remove('active')">
+            <div class="upgrade-modal-content">
+                <h2 style="color: #f9fafb; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Upgrade Your Plan</h2>
+                <p style="color: #9ca3af; font-size: 0.85rem;">Unlock more analytics and insights</p>
+                <div class="upgrade-plans">
+                    <div class="upgrade-plan-card" onclick="window.authManager.initiateUpgrade('basic')">
+                        <div class="plan-name">Basic</div>
+                        <div class="plan-price">₱99 / month</div>
+                        <ul class="plan-features">
+                            <li>Filter bar with artist selection</li>
+                            <li>Date range controls</li>
+                            <li>Album/Era chart</li>
+                            <li>Solo Streams chart</li>
+                            <li>Tour concert chart</li>
+                        </ul>
+                    </div>
+                    <div class="upgrade-plan-card recommended" onclick="window.authManager.initiateUpgrade('premium')">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="plan-name">Premium</div>
+                            <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #1e293b; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">RECOMMENDED</span>
+                        </div>
+                        <div class="plan-price">₱199 / month</div>
+                        <ul class="plan-features">
+                            <li>Everything in Basic</li>
+                            <li>Top Tracks table with sorting</li>
+                            <li>Solo Tracks table by member</li>
+                            <li>Song detail view with stream history</li>
+                            <li>Listeners detail view with cities</li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="color: #6b7280; font-size: 0.72rem; text-align: center;">Payment via GCash/PayMongo — coming soon</p>
+                <button style="margin-top: 16px; width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; padding: 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-family: inherit;" onclick="document.getElementById('upgradeModal').classList.remove('active')">Maybe Later</button>
+            </div>
         </div>
 
         <div id="loading" class="loading">
@@ -1577,22 +2216,22 @@
                     <div class="stat-value" id="all-time-high">2,828,289</div>
                     <div class="growth" id="ath-date">Peak reached</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="statTotalTracks">
                     <h3>Total Tracks</h3>
                     <div class="stat-value" id="total-tracks">-</div>
                     <div class="growth" id="tracks-info">On Spotify</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="statTotalStreams">
                     <h3>Total Streams</h3>
                     <div class="stat-value" id="total-streams">-</div>
                     <div class="growth" id="streams-info">All tracks combined</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="statTopTrack">
                     <h3>Top Track</h3>
                     <div class="stat-value" id="top-track">-</div>
                     <div class="growth" id="top-track-streams">-</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" id="statPeriodChange">
                     <h3>Period Change</h3>
                     <div class="stat-value" id="period-change">-</div>
                     <div class="growth" id="period-info">Selected range</div>
@@ -1601,6 +2240,19 @@
 
             <!-- Filters -->
             <div class="filter-bar">
+                <div class="filter-group artist-selector">
+                    <button id="artistSelectorBtn" class="artist-selector-btn" onclick="window.dashboard.toggleArtistDropdown()">
+                        <span class="artist-dot has-tracks"></span>
+                        <span id="artistSelectorLabel">SB19</span>
+                        <span class="chevron">▼</span>
+                    </button>
+                    <div id="artistDropdown" class="artist-dropdown">
+                        <div class="artist-dropdown-search">
+                            <input type="text" id="artistSearchInput" placeholder="Search artists..." autocomplete="off">
+                        </div>
+                        <div class="artist-dropdown-list" id="artistDropdownList"></div>
+                    </div>
+                </div>
                 <div class="filter-group">
                     <label for="rangePreset">Date Range:</label>
                     <select id="rangePreset">
@@ -1628,9 +2280,9 @@
             </div>
 
             <!-- Charts Row: Album/Era Chart + Tour Kickoff Tracks Chart + Solo Streams -->
-            <div class="charts-row" style="align-items: flex-start;">
+            <div class="charts-row" id="mainChartsRow" style="align-items: flex-start;">
                 <!-- Album/Era Chart -->
-                <div class="chart-half" style="flex: 1;">
+                <div class="chart-half" id="albumChartSection" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0;">
                         <div class="chart-title">Streams by Album/Era</div>
                         <div class="chart-wrapper" style="height: 250px;">
@@ -1640,7 +2292,7 @@
                 </div>
 
                 <!-- Tour Kickoff Tracks Chart -->
-                <div class="chart-half" style="flex: 1;">
+                <div class="chart-half" id="kickoffChartSection" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0; position: relative;">
                         <div class="chart-title" id="kickoffChartTitle" style="cursor: pointer;" onclick="window.dashboard.filterToKickoffAlbum()">Simula at Wakas Tour Kickoff Concert Album</div>
                         <div class="chart-wrapper" id="kickoffChartWrapper" style="height: 250px;">
@@ -1654,7 +2306,7 @@
                 </div>
 
                 <!-- Solo Streams by Member Chart -->
-                <div class="chart-half" style="flex: 1;">
+                <div class="chart-half" id="memberChartSection" style="flex: 1;">
                     <div class="chart-container" style="margin-bottom: 0;">
                         <div class="chart-title"
                             style="display: flex; justify-content: center; align-items: center; gap: 12px;">
@@ -1673,7 +2325,7 @@
             </div>
 
             <!-- Full-width Top Tracks Table -->
-            <div class="chart-container" style="width: 100%;">
+            <div class="chart-container" id="topTracksSection" style="width: 100%;">
                 <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
                     <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
                         <span>Top Tracks by Total Streams</span>
@@ -1710,7 +2362,7 @@
             </div>
 
             <!-- Full-width Solo Tracks Table -->
-            <div class="chart-container" style="width: 100%;">
+            <div class="chart-container" id="memberTracksSection" style="width: 100%;">
                 <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
                     <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
                         <span>Solo Tracks by Member</span>
@@ -2000,6 +2652,312 @@
             { label: 'Custom Solutions', icon: '🛠️', url: 'https://m.me/' }
         ];
 
+        // ==================== AuthManager ====================
+        // Supabase config — replace with your project values
+        const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+
+        const TIER_LEVELS = { guest: 0, free: 1, basic: 2, premium: 3 };
+
+        class AuthManager {
+            constructor() {
+                this.supabase = null;
+                this.user = null;
+                this.profile = null;
+                this.initialized = false;
+            }
+
+            async init() {
+                try {
+                    if (typeof supabase === 'undefined' || !supabase.createClient) {
+                        console.warn('Supabase SDK not loaded — auth disabled');
+                        this.initialized = true;
+                        this.updateUIForUser();
+                        return;
+                    }
+                    this.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+                    // Check existing session
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (session) {
+                        this.user = session.user;
+                        await this.loadUserProfile();
+                    }
+
+                    // Listen for auth state changes
+                    this.supabase.auth.onAuthStateChange(async (event, session) => {
+                        if (event === 'SIGNED_IN' && session) {
+                            this.user = session.user;
+                            await this.loadUserProfile();
+                            this.updateUIForUser();
+                            this.refreshDashboard();
+                        } else if (event === 'SIGNED_OUT') {
+                            this.user = null;
+                            this.profile = null;
+                            this.updateUIForUser();
+                            this.refreshDashboard();
+                        }
+                    });
+
+                    this.initialized = true;
+                    this.updateUIForUser();
+                    this.refreshDashboard();
+                } catch (err) {
+                    console.error('AuthManager init error:', err);
+                    this.initialized = true;
+                    this.updateUIForUser();
+                }
+            }
+
+            async loadUserProfile() {
+                if (!this.supabase || !this.user) return;
+                try {
+                    const { data, error } = await this.supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', this.user.id)
+                        .single();
+                    if (error) throw error;
+                    this.profile = data;
+                } catch (err) {
+                    console.warn('Could not load profile:', err.message);
+                    // Default profile for new users
+                    this.profile = {
+                        id: this.user.id,
+                        email: this.user.email,
+                        full_name: this.user.user_metadata?.full_name || '',
+                        subscription_tier: 'free',
+                        subscription_status: 'inactive'
+                    };
+                }
+            }
+
+            getUserTier() {
+                if (!this.user) return 'guest';
+                if (!this.profile) return 'free';
+                const tier = this.profile.subscription_tier || 'free';
+                const status = this.profile.subscription_status;
+                // Only basic/premium count if subscription is active
+                if ((tier === 'basic' || tier === 'premium') && status === 'active') return tier;
+                return 'free';
+            }
+
+            hasAccess(requiredTier) {
+                return TIER_LEVELS[this.getUserTier()] >= TIER_LEVELS[requiredTier];
+            }
+
+            async signUp(email, password, fullName) {
+                if (!this.supabase) throw new Error('Auth service not available');
+                const { data, error } = await this.supabase.auth.signUp({
+                    email,
+                    password,
+                    options: { data: { full_name: fullName } }
+                });
+                if (error) throw error;
+                return data;
+            }
+
+            async signIn(email, password) {
+                if (!this.supabase) throw new Error('Auth service not available');
+                const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                return data;
+            }
+
+            async signOut() {
+                if (!this.supabase) return;
+                const { error } = await this.supabase.auth.signOut();
+                if (error) throw error;
+                this.user = null;
+                this.profile = null;
+                this.updateUIForUser();
+                this.refreshDashboard();
+            }
+
+            async resetPassword(email) {
+                if (!this.supabase) throw new Error('Auth service not available');
+                const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + window.location.pathname
+                });
+                if (error) throw error;
+            }
+
+            showAuthModal(mode = 'signin') {
+                const modal = document.getElementById('authModal');
+                modal.classList.add('active');
+                this.switchAuthMode(mode);
+                // Clear previous errors/successes
+                document.querySelectorAll('.auth-error, .auth-success').forEach(el => el.classList.remove('visible'));
+            }
+
+            hideAuthModal() {
+                document.getElementById('authModal').classList.remove('active');
+            }
+
+            switchAuthMode(mode) {
+                document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+                if (mode === 'signin') document.getElementById('authSignIn').classList.add('active');
+                else if (mode === 'signup') document.getElementById('authSignUp').classList.add('active');
+                else if (mode === 'reset') document.getElementById('authReset').classList.add('active');
+                // Clear errors when switching
+                document.querySelectorAll('.auth-error, .auth-success').forEach(el => el.classList.remove('visible'));
+            }
+
+            updateUIForUser() {
+                const guestMenu = document.getElementById('guestMenu');
+                const userMenu = document.getElementById('userMenu');
+                const tierBadge = document.getElementById('userTierBadge');
+                const avatarBtn = document.getElementById('userAvatarBtn');
+                const dropdownName = document.getElementById('userDropdownName');
+                const dropdownEmail = document.getElementById('userDropdownEmail');
+
+                if (this.user) {
+                    guestMenu.style.display = 'none';
+                    userMenu.classList.add('active');
+
+                    const name = this.profile?.full_name || this.user.user_metadata?.full_name || this.user.email?.split('@')[0] || 'U';
+                    const email = this.user.email || '';
+                    const tier = this.getUserTier();
+                    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+                    avatarBtn.textContent = initials;
+                    dropdownName.textContent = name;
+                    dropdownEmail.textContent = email;
+
+                    tierBadge.className = 'tier-badge tier-' + tier;
+                    tierBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                } else {
+                    guestMenu.style.display = 'flex';
+                    userMenu.classList.remove('active');
+                }
+
+                // Close dropdown
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown) dropdown.classList.remove('active');
+            }
+
+            showUpgradeModal() {
+                // Close user dropdown first
+                document.getElementById('userDropdown').classList.remove('active');
+                document.getElementById('upgradeModal').classList.add('active');
+            }
+
+            initiateUpgrade(tier) {
+                // Placeholder for PayMongo integration
+                alert(`Payment integration coming soon!\n\nTo upgrade to ${tier.charAt(0).toUpperCase() + tier.slice(1)}, please contact us.\n\nFor testing, the subscription_tier can be set manually in the Supabase dashboard.`);
+                document.getElementById('upgradeModal').classList.remove('active');
+            }
+
+            refreshDashboard() {
+                if (window.dashboard && typeof window.dashboard.applyContentGating === 'function') {
+                    window.dashboard.applyContentGating();
+                }
+            }
+        }
+
+        // Standalone form handlers (called from HTML onclick/onsubmit)
+        async function handleSignIn() {
+            const email = document.getElementById('signInEmail').value.trim();
+            const password = document.getElementById('signInPassword').value;
+            const errorEl = document.getElementById('signInError');
+            const btn = document.getElementById('signInBtn');
+
+            errorEl.classList.remove('visible');
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+
+            try {
+                await window.authManager.signIn(email, password);
+                window.authManager.hideAuthModal();
+            } catch (err) {
+                errorEl.textContent = err.message || 'Sign in failed';
+                errorEl.classList.add('visible');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
+            }
+        }
+
+        async function handleSignUp() {
+            const fullName = document.getElementById('signUpName').value.trim();
+            const email = document.getElementById('signUpEmail').value.trim();
+            const password = document.getElementById('signUpPassword').value;
+            const errorEl = document.getElementById('signUpError');
+            const successEl = document.getElementById('signUpSuccess');
+            const btn = document.getElementById('signUpBtn');
+
+            errorEl.classList.remove('visible');
+            successEl.classList.remove('visible');
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+
+            try {
+                const data = await window.authManager.signUp(email, password, fullName);
+                if (data.user && !data.session) {
+                    // Email confirmation required
+                    successEl.textContent = 'Account created! Check your email for a confirmation link.';
+                    successEl.classList.add('visible');
+                } else {
+                    // Auto-confirmed
+                    window.authManager.hideAuthModal();
+                }
+            } catch (err) {
+                errorEl.textContent = err.message || 'Sign up failed';
+                errorEl.classList.add('visible');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = document.getElementById('resetEmail').value.trim();
+            const errorEl = document.getElementById('resetError');
+            const successEl = document.getElementById('resetSuccess');
+            const btn = document.getElementById('resetBtn');
+
+            errorEl.classList.remove('visible');
+            successEl.classList.remove('visible');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                await window.authManager.resetPassword(email);
+                successEl.textContent = 'Check your email for a password reset link.';
+                successEl.classList.add('visible');
+            } catch (err) {
+                errorEl.textContent = err.message || 'Reset failed';
+                errorEl.classList.add('visible');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send Reset Link';
+            }
+        }
+
+        async function handleSignOut() {
+            document.getElementById('userDropdown').classList.remove('active');
+            try {
+                await window.authManager.signOut();
+            } catch (err) {
+                console.error('Sign out error:', err);
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+            // Close on outside click
+            if (dropdown.classList.contains('active')) {
+                const closeHandler = (e) => {
+                    if (!dropdown.contains(e.target) && e.target.id !== 'userAvatarBtn') {
+                        dropdown.classList.remove('active');
+                        document.removeEventListener('click', closeHandler);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', closeHandler), 0);
+            }
+        }
+
         class SB19Dashboard {
             constructor() {
                 this.listenersData = [];
@@ -2045,6 +3003,33 @@
                     { name: 'Felip', dataName: 'felip', color: 'rgba(251, 191, 36, 0.8)', borderColor: '#fbbf24', spotifyUrl: 'https://open.spotify.com/artist/3fVNhpt0u1mAH0BjMTWo2j' },
                     { name: 'Justin', dataName: 'Justin', color: 'rgba(45, 212, 191, 0.8)', borderColor: '#2dd4bf', spotifyUrl: 'https://open.spotify.com/artist/4SfQqPGrJMYOvMaD6Z88T1' }
                 ];
+                // Multi-artist support
+                this.selectedArtist = 'SB19';
+                this.artistsWithTracks = new Set();
+                this.allTracksMetadata = {};
+                this.artistConfig = {
+                    'SB19': {
+                        ath: 2828289,
+                        tracksCsvFile: './tracks.csv',
+                        mainAlbums: ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'],
+                        hasMemberBreakdown: true,
+                        hasKickoffChart: true
+                    },
+                    'BINI': {
+                        ath: null,
+                        tracksCsvFile: './bini_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'Cup of Joe': {
+                        ath: null,
+                        tracksCsvFile: './cup_of_joe_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    }
+                };
                 this.init();
             }
 
@@ -2092,13 +3077,19 @@
 
             async init() {
                 try {
+                    // Read artist from URL hash before loading data
+                    const hash = window.location.hash;
+                    const artistMatch = hash.match(/^#artist=(.+?)(?:&|$)/);
+                    if (artistMatch) {
+                        this.selectedArtist = decodeURIComponent(artistMatch[1]);
+                    }
                     await this.loadData();
                     await this.loadSongMetadata();
                     this.setupEventListeners();
-                    this.populateDatePicker(); // Initialize date picker with available dates
+                    this.populateDatePicker();
                     this.render();
                     this.showDashboard();
-                    this.handleHashChange(); // Check for song in URL on page load
+                    this.handleHashChange();
                 } catch (error) {
                     console.error('Dashboard error:', error);
                     this.showError('Failed to load dashboard: ' + error.message);
@@ -2149,12 +3140,24 @@
                     this.listenersData = this.parseListenersCSV(csv);
                 }
 
-                // Load tracks metadata
-                const tracksResponse = await fetch('./tracks.csv?t=' + Date.now());
-                if (tracksResponse.ok) {
-                    const csv = await tracksResponse.text();
-                    this.tracksMetadata = this.parseTracksMetadataCSV(csv);
-                }
+                // Load all track metadata CSVs into allTracksMetadata (parallel)
+                await Promise.all(
+                    Object.entries(this.artistConfig)
+                        .filter(([, config]) => config.tracksCsvFile)
+                        .map(async ([artistName, config]) => {
+                            try {
+                                const resp = await fetch(config.tracksCsvFile + '?t=' + Date.now());
+                                if (resp.ok) {
+                                    const csv = await resp.text();
+                                    this.allTracksMetadata[artistName] = this.parseTracksMetadataCSV(csv);
+                                }
+                            } catch (e) {
+                                console.warn(`Failed to load tracks for ${artistName}:`, e.message);
+                            }
+                        })
+                );
+                // Set active tracksMetadata to selected artist
+                this.tracksMetadata = this.allTracksMetadata[this.selectedArtist] || [];
 
                 // Load streams data from selenium_results.csv
                 const streamsResponse = await fetch('./selenium_results.csv?t=' + Date.now());
@@ -2162,6 +3165,12 @@
                     const csv = await streamsResponse.text();
                     this.streamsData = this.parseStreamsCSV(csv);
                 }
+
+                // Build set of artists that have track stream data
+                this.artistsWithTracks = new Set();
+                this.streamsData.forEach(d => {
+                    if (d.artist_name) this.artistsWithTracks.add(d.artist_name);
+                });
 
                 // Load artist genre map
                 const artistsResponse = await fetch('./opm_artists_spotify.csv?t=' + Date.now());
@@ -2182,13 +3191,9 @@
                     listeners: this.listenersData.length,
                     tracks: this.tracksMetadata.length,
                     streams: this.streamsData.length,
-                    genres: Object.keys(this.artistGenreMap).length
+                    genres: Object.keys(this.artistGenreMap).length,
+                    artistsWithTracks: [...this.artistsWithTracks]
                 });
-                // Debug: check if spotify_url is being loaded
-                if (this.streamsData.length > 0) {
-                    console.log('Sample stream data:', this.streamsData[0]);
-                    console.log('Has spotify_url:', !!this.streamsData[0].spotify_url);
-                }
             }
 
             async loadSongMetadata() {
@@ -2309,12 +3314,13 @@
                 const headers = this.parseCSVLine(lines[0]);
                 const data = [];
 
-                // Create a map for faster metadata lookup
+                // Create a map for faster metadata lookup (from ALL artists' metadata)
                 const metadataMap = new Map();
-                this.tracksMetadata.forEach(track => {
-                    // Use normalized title as key for better matching
-                    const key = this.normalizeForMatch(track.title);
-                    metadataMap.set(key, track);
+                Object.values(this.allTracksMetadata).forEach(tracksList => {
+                    (tracksList || []).forEach(track => {
+                        const key = this.normalizeForMatch(track.title);
+                        metadataMap.set(key, track);
+                    });
                 });
 
                 for (let i = 1; i < lines.length; i++) {
@@ -2528,6 +3534,27 @@
 
                 // Hash change listener for URL routing
                 window.addEventListener('hashchange', () => this.handleHashChange());
+
+                // Artist selector: search input
+                const artistSearchInput = document.getElementById('artistSearchInput');
+                if (artistSearchInput) {
+                    artistSearchInput.addEventListener('input', (e) => {
+                        this.populateArtistSelector(e.target.value);
+                    });
+                }
+
+                // Artist selector: close on outside click
+                document.addEventListener('click', (e) => {
+                    const selector = document.querySelector('.artist-selector');
+                    if (selector && !selector.contains(e.target)) {
+                        this.closeArtistDropdown();
+                    }
+                });
+
+                // Artist selector: close on Escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.closeArtistDropdown();
+                });
             }
 
             updateSortIcons() {
@@ -2565,7 +3592,7 @@
 
             getFilteredListeners() {
                 let data = this.listenersData.filter(d =>
-                    d.artist_name === 'SB19'
+                    d.artist_name === this.selectedArtist
                 );
 
                 if (this.rangePreset !== 'all') {
@@ -2604,14 +3631,17 @@
             }
 
             getLatestStreams() {
-                // Get all SB19 streams data
-                const sb19Streams = this.streamsData.filter(d =>
-                    d.artist_name === 'SB19' || d.artist_name.includes('SB19')
-                );
+                // Get streams for selected artist (SB19 includes collab tracks)
+                const artistStreams = this.streamsData.filter(d => {
+                    if (this.selectedArtist === 'SB19') {
+                        return d.artist_name === 'SB19' || d.artist_name.includes('SB19');
+                    }
+                    return d.artist_name === this.selectedArtist;
+                });
 
                 // Get latest entry per track (by highest streams count since timestamps may be same)
                 const latestByTrack = {};
-                sb19Streams.forEach(d => {
+                artistStreams.forEach(d => {
                     const key = d.song_title;
                     if (!latestByTrack[key] || d.total_streams > latestByTrack[key].total_streams) {
                         latestByTrack[key] = d;
@@ -2622,14 +3652,17 @@
             }
 
             getStreamsByDate() {
-                // Get all SB19 streams data grouped by date
-                const sb19Streams = this.streamsData.filter(d =>
-                    d.artist_name === 'SB19' || d.artist_name.includes('SB19')
-                );
+                // Get streams for selected artist grouped by date
+                const artistStreams = this.streamsData.filter(d => {
+                    if (this.selectedArtist === 'SB19') {
+                        return d.artist_name === 'SB19' || d.artist_name.includes('SB19');
+                    }
+                    return d.artist_name === this.selectedArtist;
+                });
 
                 // Group by date (extract date from timestamp like 20260118_060001)
                 const byDate = {};
-                sb19Streams.forEach(d => {
+                artistStreams.forEach(d => {
                     const dateKey = d.data_date ? d.data_date.substring(0, 10).replace(/-/g, '') : '';
                     if (!dateKey) return;
 
@@ -3005,8 +4038,9 @@
                     }
                 });
 
-                // Define album order (main albums first)
-                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                // Define album order (main albums first, from artistConfig)
+                const config = this.artistConfig[this.selectedArtist];
+                const mainAlbums = config ? config.mainAlbums : [];
                 const sortedAlbums = Array.from(albums).sort((a, b) => {
                     const aMainIndex = mainAlbums.indexOf(a);
                     const bMainIndex = mainAlbums.indexOf(b);
@@ -3029,14 +4063,28 @@
             }
 
             render() {
+                this.updateSectionVisibility();
                 this.updateStats();
-                this.populateAlbumDropdown();
-                this.populateTopTracks();
-                this.createAlbumChart();
-                this.createKickoffTracksChart();
-                this.createMemberChart();
-                this.populateMemberTracks();
+
+                const hasTracks = this.artistsWithTracks.has(this.selectedArtist);
+                const config = this.artistConfig[this.selectedArtist];
+
+                if (hasTracks) {
+                    this.populateAlbumDropdown();
+                    this.populateTopTracks();
+                    this.createAlbumChart();
+                }
+
+                if (config && config.hasKickoffChart) {
+                    this.createKickoffTracksChart();
+                }
+                if (config && config.hasMemberBreakdown) {
+                    this.createMemberChart();
+                    this.populateMemberTracks();
+                }
+
                 this.renderProductsServices();
+                this.applyContentGating();
             }
 
             renderProductsServices() {
@@ -3052,14 +4100,13 @@
 
             updateStats() {
                 const filteredData = this.getFilteredListeners();
-                const sb19Data = filteredData.filter(d => d.artist_name === 'SB19');
                 const latestStreams = this.getLatestStreams();
                 const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
 
                 // Current listeners
-                const sortedSB19 = sb19Data.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
-                const latest = sortedSB19[0];
-                const previous = sortedSB19[1];
+                const sorted = filteredData.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
+                const latest = sorted[0];
+                const previous = sorted[1];
 
                 if (latest) {
                     document.getElementById('current-listeners').textContent = latest.monthly_listeners.toLocaleString();
@@ -3084,9 +4131,9 @@
                     }
                 }
 
-                // All-Time High (Fixed historical peak)
-                const SB19_ATH = 2828289;
-                document.getElementById('all-time-high').textContent = SB19_ATH.toLocaleString();
+                // All-Time High (dynamic per artist)
+                const ath = this.getArtistATH();
+                document.getElementById('all-time-high').textContent = ath.toLocaleString();
                 document.getElementById('ath-date').textContent = '';
 
                 // Total tracks
@@ -3139,6 +4186,196 @@
                 if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
                 if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
                 return num.toString();
+            }
+
+            getArtistATH() {
+                const config = this.artistConfig[this.selectedArtist];
+                if (config && config.ath) return config.ath;
+                // Compute ATH from listenersData
+                const artistData = this.listenersData.filter(d => d.artist_name === this.selectedArtist);
+                if (artistData.length === 0) return 0;
+                return Math.max(...artistData.map(d => d.monthly_listeners));
+            }
+
+            updateSectionVisibility() {
+                const hasTracks = this.artistsWithTracks.has(this.selectedArtist);
+                const isSB19 = this.selectedArtist === 'SB19';
+                const config = this.artistConfig[this.selectedArtist];
+                const hasKickoff = config && config.hasKickoffChart;
+                const hasMember = config && config.hasMemberBreakdown;
+
+                // Stat cards 3-6
+                const trackStatIds = ['statTotalTracks', 'statTotalStreams', 'statTopTrack', 'statPeriodChange'];
+                trackStatIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = hasTracks ? '' : 'none';
+                });
+
+                // Chart sections
+                const albumEl = document.getElementById('albumChartSection');
+                if (albumEl) albumEl.style.display = hasTracks ? '' : 'none';
+
+                const kickoffEl = document.getElementById('kickoffChartSection');
+                if (kickoffEl) kickoffEl.style.display = hasKickoff ? '' : 'none';
+
+                const memberEl = document.getElementById('memberChartSection');
+                if (memberEl) memberEl.style.display = hasMember ? '' : 'none';
+
+                const topTracksEl = document.getElementById('topTracksSection');
+                if (topTracksEl) topTracksEl.style.display = hasTracks ? '' : 'none';
+
+                const memberTracksEl = document.getElementById('memberTracksSection');
+                if (memberTracksEl) memberTracksEl.style.display = hasMember ? '' : 'none';
+
+                // Charts row: hide if no children visible
+                const chartsRow = document.getElementById('mainChartsRow');
+                if (chartsRow) {
+                    const anyChildVisible = Array.from(chartsRow.children).some(ch => ch.style.display !== 'none');
+                    chartsRow.style.display = anyChildVisible ? '' : 'none';
+                }
+
+                // Page title: show artist name (keep default for SB19)
+                const titleEl = document.querySelector('.header h1');
+                if (titleEl) {
+                    titleEl.textContent = isSB19 ? 'OPM Analytics Dashboard' : `${this.selectedArtist} — Analytics`;
+                }
+
+                // Update artist selector button
+                const label = document.getElementById('artistSelectorLabel');
+                if (label) label.textContent = this.selectedArtist;
+                const dot = document.querySelector('#artistSelectorBtn .artist-dot');
+                if (dot) {
+                    dot.className = 'artist-dot' + (hasTracks ? ' has-tracks' : '');
+                }
+            }
+
+            populateArtistSelector(filter = '') {
+                const list = document.getElementById('artistDropdownList');
+                if (!list) return;
+
+                const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+                const filterLower = filter.toLowerCase();
+
+                // Collect all unique artist names from listenersData
+                const allArtists = [...new Set(this.listenersData.map(d => d.artist_name))].filter(Boolean);
+
+                // Categorize: SB19 first, then artists with tracks, then rest
+                const withTracks = [];
+                const listenersOnly = [];
+                allArtists.forEach(name => {
+                    if (name === 'SB19') return; // SB19 always first
+                    if (filterLower && !name.toLowerCase().includes(filterLower)) return;
+                    if (this.artistsWithTracks.has(name) || this.artistConfig[name]) {
+                        withTracks.push(name);
+                    } else {
+                        listenersOnly.push(name);
+                    }
+                });
+                withTracks.sort((a, b) => a.localeCompare(b));
+                listenersOnly.sort((a, b) => a.localeCompare(b));
+
+                let html = '';
+
+                // SB19 always first (unless filtered out)
+                if (!filterLower || 'sb19'.includes(filterLower)) {
+                    const isActive = this.selectedArtist === 'SB19' ? ' active' : '';
+                    html += `<div class="artist-dropdown-item${isActive}" data-artist="SB19">
+                        <span class="artist-dot has-tracks"></span>
+                        <span>SB19</span>
+                        <span class="tracks-badge">tracks</span>
+                    </div>`;
+                }
+
+                // Artists with track data
+                withTracks.forEach(name => {
+                    const isActive = this.selectedArtist === name ? ' active' : '';
+                    const hasTracks = this.artistsWithTracks.has(name) || this.allTracksMetadata[name];
+                    html += `<div class="artist-dropdown-item${isActive}" data-artist="${esc(name)}">
+                        <span class="artist-dot${hasTracks ? ' has-tracks' : ''}"></span>
+                        <span>${esc(name)}</span>
+                        ${hasTracks ? '<span class="tracks-badge">tracks</span>' : ''}
+                    </div>`;
+                });
+
+                // Divider
+                if (withTracks.length > 0 && listenersOnly.length > 0) {
+                    html += '<div class="artist-dropdown-divider"></div>';
+                }
+
+                // Listeners-only artists
+                listenersOnly.forEach(name => {
+                    const isActive = this.selectedArtist === name ? ' active' : '';
+                    html += `<div class="artist-dropdown-item${isActive}" data-artist="${esc(name)}">
+                        <span class="artist-dot"></span>
+                        <span>${esc(name)}</span>
+                    </div>`;
+                });
+
+                list.innerHTML = html || '<div style="padding: 12px; color: #6b7280; text-align: center; font-size: 0.8rem;">No artists found</div>';
+
+                // Attach click handlers
+                list.querySelectorAll('.artist-dropdown-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.selectArtist(item.dataset.artist);
+                    });
+                });
+            }
+
+            selectArtist(name) {
+                if (name === this.selectedArtist) {
+                    this.closeArtistDropdown();
+                    return;
+                }
+                this.selectedArtist = name;
+                this.tracksMetadata = this.allTracksMetadata[name] || [];
+
+                // Reset filters
+                this.albumFilter = null;
+                this.trackFilter = null;
+                this.memberFilter = null;
+                document.getElementById('albumDropdownFilter').value = '';
+                document.getElementById('album-filter-label').textContent = '';
+                document.getElementById('clearFilterBtn').style.display = 'none';
+
+                this.closeArtistDropdown();
+                this.updateArtistHash();
+                this.populateDatePicker();
+                this.render();
+            }
+
+            toggleArtistDropdown() {
+                const dropdown = document.getElementById('artistDropdown');
+                const btn = document.getElementById('artistSelectorBtn');
+                const isOpen = dropdown.classList.contains('open');
+                if (isOpen) {
+                    this.closeArtistDropdown();
+                } else {
+                    dropdown.classList.add('open');
+                    btn.classList.add('open');
+                    this.populateArtistSelector();
+                    const input = document.getElementById('artistSearchInput');
+                    input.value = '';
+                    setTimeout(() => input.focus(), 50);
+                }
+            }
+
+            closeArtistDropdown() {
+                const dropdown = document.getElementById('artistDropdown');
+                const btn = document.getElementById('artistSelectorBtn');
+                if (dropdown) dropdown.classList.remove('open');
+                if (btn) btn.classList.remove('open');
+            }
+
+            updateArtistHash() {
+                const hash = window.location.hash;
+                if (this.selectedArtist === 'SB19') {
+                    // Clean URL for SB19 (default)
+                    if (hash.startsWith('#artist=')) {
+                        history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                } else {
+                    history.replaceState(null, '', '#artist=' + encodeURIComponent(this.selectedArtist));
+                }
             }
 
             createListenersChart() {
@@ -3230,8 +4467,8 @@
 
             populateDailyTable() {
                 const tbody = document.getElementById('daily-table');
-                const sb19Data = this.getFilteredListeners().filter(d => d.artist_name === 'SB19');
-                const sortedData = sb19Data.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
+                const artistData = this.getFilteredListeners();
+                const sortedData = artistData.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
 
                 tbody.innerHTML = sortedData.slice(0, 15).map((d, i) => {
                     const prev = sortedData[i + 1];
@@ -3435,8 +4672,9 @@
                     albumGroups[album].totalStreams += track.total_streams;
                 });
 
-                // Define main albums that should always appear first (in exact order specified)
-                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                // Define main albums from artistConfig
+                const cfgAlbums = this.artistConfig[this.selectedArtist];
+                const mainAlbums = cfgAlbums ? cfgAlbums.mainAlbums : [];
 
                 // Sort albums with main albums at top, preserving the exact order specified
                 const sortedAlbums = Object.entries(albumGroups)
@@ -3565,8 +4803,9 @@
                     albumStreams[album] = data.streams;
                 });
 
-                // Define main albums that should always appear first (in exact order specified)
-                const mainAlbums = ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'];
+                // Define main albums from artistConfig
+                const artistCfg = this.artistConfig[this.selectedArtist];
+                const mainAlbums = artistCfg ? artistCfg.mainAlbums : [];
 
                 const sortedAlbums = Object.entries(albumStreams)
                     .sort((a, b) => {
@@ -3735,6 +4974,7 @@
             }
 
             createKickoffTracksChart() {
+                if (this.selectedArtist !== 'SB19') return;
                 const ctx = document.getElementById('kickoffTracksChart').getContext('2d');
                 const latestStreams = this.getLatestStreams();
                 const { changes: periodChanges } = this.getPeriodChange();
@@ -4047,6 +5287,7 @@
             }
 
             createMemberChart() {
+                if (this.selectedArtist !== 'SB19') return;
                 const ctx = document.getElementById('memberChart').getContext('2d');
                 const memberData = this.getMemberStreamsData();
                 const { changes: memberPeriodChanges } = this.getMemberPeriodChange();
@@ -4442,6 +5683,7 @@
             }
 
             populateMemberTracks() {
+                if (this.selectedArtist !== 'SB19') return;
                 const tbody = document.getElementById('member-tracks-body');
                 const memberData = this.getMemberStreamsData();
                 const { changes: periodChanges, rankChanges, previousRanks, streakDays, label: changeLabel } = this.getMemberPeriodChange();
@@ -4634,7 +5876,67 @@
                 return dailyStreams;
             }
 
+            // ==================== Content Gating ====================
+            applyContentGating() {
+                const am = window.authManager;
+                if (!am || !am.initialized) return;
+
+                const gatingMap = [
+                    { selector: '.filter-bar', requiredTier: 'basic', label: 'Filter Controls', desc: 'Artist selection, date ranges, and more' },
+                    { selector: '#mainChartsRow', requiredTier: 'basic', label: 'Charts', desc: 'Album/Era chart, concert chart, and solo streams' },
+                    { selector: '#topTracksSection', requiredTier: 'premium', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
+                    { selector: '#memberTracksSection', requiredTier: 'premium', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
+                ];
+
+                gatingMap.forEach(({ selector, requiredTier, label, desc }) => {
+                    const el = document.querySelector(selector);
+                    if (!el) return;
+
+                    // Remove any existing gating
+                    el.classList.remove('gated-content');
+                    const existingOverlay = el.querySelector('.gated-overlay');
+                    if (existingOverlay) existingOverlay.remove();
+                    // Remove blur from direct children
+                    el.querySelectorAll('.gated-blur').forEach(c => c.classList.remove('gated-blur'));
+
+                    if (!am.hasAccess(requiredTier)) {
+                        el.classList.add('gated-content');
+
+                        // Blur content children (but not the overlay we're about to add)
+                        Array.from(el.children).forEach(child => child.classList.add('gated-blur'));
+
+                        const isPremium = requiredTier === 'premium';
+                        const tierLabel = isPremium ? 'Premium' : 'Basic';
+
+                        const overlay = document.createElement('div');
+                        overlay.className = 'gated-overlay';
+                        overlay.innerHTML = `
+                            <div class="gated-lock">🔒</div>
+                            <div class="gated-title">${label}</div>
+                            <div class="gated-desc">${desc}</div>
+                            ${am.user
+                                ? `<button class="gated-cta ${isPremium ? 'premium-cta' : ''}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>`
+                                : `<button class="gated-cta" onclick="window.authManager.showAuthModal('signup')">Sign Up to Unlock</button>
+                                   <div class="gated-signin-link" onclick="window.authManager.showAuthModal('signin')">Already have an account? Sign in</div>`
+                            }
+                        `;
+                        el.appendChild(overlay);
+                    }
+                });
+            }
+
             openSongDetail(songTitle) {
+                // Gate: premium only
+                const am = window.authManager;
+                if (am && !am.hasAccess('premium')) {
+                    if (am.user) {
+                        am.showUpgradeModal();
+                    } else {
+                        am.showAuthModal('signup');
+                    }
+                    return;
+                }
+
                 this.currentSong = songTitle;
                 window.location.hash = `song/${encodeURIComponent(songTitle)}`;
 
@@ -4650,7 +5952,6 @@
 
             closeSongDetail() {
                 this.currentSong = null;
-                window.location.hash = '';
 
                 // Show dashboard content, hide song detail
                 document.querySelector('.stats-grid').style.display = '';
@@ -4664,9 +5965,24 @@
                     this.charts.songStreams.destroy();
                     this.charts.songStreams = null;
                 }
+
+                // Restore artist hash and section visibility
+                this.updateArtistHash();
+                this.updateSectionVisibility();
             }
 
             openListenersDetail() {
+                // Gate: premium only
+                const am = window.authManager;
+                if (am && !am.hasAccess('premium')) {
+                    if (am.user) {
+                        am.showUpgradeModal();
+                    } else {
+                        am.showAuthModal('signup');
+                    }
+                    return;
+                }
+
                 this.listenersViewOpen = true;
                 window.location.hash = 'listeners';
 
@@ -4688,7 +6004,6 @@
 
             closeListenersDetail() {
                 this.listenersViewOpen = false;
-                window.location.hash = '';
 
                 // Show all dashboard content, hide listeners detail
                 const dashboard = document.getElementById('dashboard');
@@ -4708,6 +6023,10 @@
                     this.charts.listenersHistory.destroy();
                     this.charts.listenersHistory = null;
                 }
+
+                // Restore artist hash and section visibility
+                this.updateArtistHash();
+                this.updateSectionVisibility();
             }
 
             renderListenersDetail() {
@@ -5316,6 +6635,17 @@
 
             handleHashChange() {
                 const hash = window.location.hash;
+
+                // Handle #artist= prefix
+                const artistMatch = hash.match(/^#artist=(.+?)(?:&|$)/);
+                if (artistMatch) {
+                    const artistName = decodeURIComponent(artistMatch[1]);
+                    if (artistName !== this.selectedArtist) {
+                        this.selectArtist(artistName);
+                    }
+                    return;
+                }
+
                 if (hash.startsWith('#song/')) {
                     const songTitle = decodeURIComponent(hash.replace('#song/', ''));
                     if (songTitle && songTitle !== this.currentSong) {
@@ -5624,7 +6954,9 @@
             }
         }
 
-        // Initialize dashboard (store globally for onclick access)
+        // Initialize auth manager and dashboard (store globally for onclick access)
+        window.authManager = new AuthManager();
+        window.authManager.init(); // async — doesn't block dashboard load
         window.dashboard = new SB19Dashboard();
     </script>
 </body>
