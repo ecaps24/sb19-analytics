@@ -1999,6 +1999,13 @@
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
         .gated-overlay .gated-cta.premium-cta:hover { box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
+        .gated-overlay .gated-trial-link {
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .gated-overlay .gated-trial-link:hover { text-decoration: underline; }
         .gated-overlay .gated-signin-link {
             margin-top: 10px;
             color: #60a5fa;
@@ -6341,6 +6348,7 @@
 
                         const ctaClass = requiredTier === 'premium' ? 'premium-cta' : requiredTier === 'plus' ? 'plus-cta' : '';
                         const tierLabel = requiredTier.charAt(0).toUpperCase() + requiredTier.slice(1);
+                        const hasTrial = requiredTier === 'basic' || requiredTier === 'plus';
 
                         const overlay = document.createElement('div');
                         overlay.className = 'gated-overlay';
@@ -6349,7 +6357,8 @@
                             <div class="gated-title">${label}</div>
                             <div class="gated-desc">${desc}</div>
                             ${am.user
-                                ? `<button class="gated-cta ${ctaClass}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>`
+                                ? `<button class="gated-cta ${ctaClass}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>
+                                   ${hasTrial ? `<div class="gated-trial-link" onclick="window.authManager.activateTrial('${requiredTier}')">or try free for 7 days</div>` : ''}`
                                 : `<button class="gated-cta" onclick="window.authManager.showAuthModal('signup')">Sign Up to Unlock</button>
                                    <div class="gated-signin-link" onclick="window.authManager.showAuthModal('signin')">Already have an account? Sign in</div>`
                             }
