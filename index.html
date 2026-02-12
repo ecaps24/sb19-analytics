@@ -2868,9 +2868,14 @@
                 const btn = [...cards].find(c => c.getAttribute('onclick')?.includes(tier));
                 if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
                 try {
-                    const { data: { session } } = await this.supabase.auth.getSession();
+                    console.log('[Checkout] Starting upgrade to', tier);
+                    const sessionResult = await this.supabase.auth.getSession();
+                    console.log('[Checkout] Session result:', sessionResult.data?.session ? 'exists' : 'null', sessionResult.error || '');
+                    const session = sessionResult.data?.session;
                     if (!session) throw new Error('Session expired. Please sign in again.');
-                    const resp = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+                    const url = `${SUPABASE_URL}/functions/v1/create-checkout`;
+                    console.log('[Checkout] Fetching:', url);
+                    const resp = await fetch(url, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2879,14 +2884,16 @@
                         },
                         body: JSON.stringify({ tier })
                     });
+                    console.log('[Checkout] Response status:', resp.status);
                     const result = await resp.json();
+                    console.log('[Checkout] Result:', result);
                     if (result.checkout_url) {
                         window.location.href = result.checkout_url;
                     } else {
                         throw new Error(result.error || 'Failed to create checkout session');
                     }
                 } catch (err) {
-                    console.error('Payment error:', err);
+                    console.error('[Checkout] Error:', err);
                     this.showToast('Payment error: ' + err.message, 'error');
                 } finally {
                     if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
