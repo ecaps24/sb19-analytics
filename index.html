@@ -2868,33 +2868,18 @@
                 const btn = [...cards].find(c => c.getAttribute('onclick')?.includes(tier));
                 if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
                 try {
-                    console.log('[Checkout] Starting upgrade to', tier);
-                    const sessionResult = await this.supabase.auth.getSession();
-                    console.log('[Checkout] Session result:', sessionResult.data?.session ? 'exists' : 'null', sessionResult.error || '');
-                    const session = sessionResult.data?.session;
-                    if (!session) throw new Error('Session expired. Please sign in again.');
-                    const url = `${SUPABASE_URL}/functions/v1/create-checkout`;
-                    console.log('[Checkout] Fetching:', url);
-                    const resp = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${session.access_token}`,
-                            'apikey': SUPABASE_ANON_KEY
-                        },
-                        body: JSON.stringify({ tier })
+                    const { data, error } = await this.supabase.functions.invoke('create-checkout', {
+                        body: { tier }
                     });
-                    console.log('[Checkout] Response status:', resp.status);
-                    const result = await resp.json();
-                    console.log('[Checkout] Result:', result);
-                    if (result.checkout_url) {
-                        window.location.href = result.checkout_url;
+                    if (error) throw error;
+                    if (data?.checkout_url) {
+                        window.location.href = data.checkout_url;
                     } else {
-                        throw new Error(result.error || 'Failed to create checkout session');
+                        throw new Error(data?.error || 'Failed to create checkout session');
                     }
                 } catch (err) {
                     console.error('[Checkout] Error:', err);
-                    this.showToast('Payment error: ' + err.message, 'error');
+                    this.showToast('Payment error: ' + (err.message || err), 'error');
                 } finally {
                     if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
                 }
