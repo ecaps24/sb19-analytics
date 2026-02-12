@@ -2714,6 +2714,10 @@
                     } else if (urlParams.get('payment') === 'cancelled') {
                         this.showToast('Payment was cancelled.', 'info');
                         window.history.replaceState({}, '', window.location.pathname);
+                    } else if (urlParams.get('payment') === 'error') {
+                        const msg = urlParams.get('msg') || 'Unknown error';
+                        this.showToast('Payment error: ' + msg, 'error');
+                        window.history.replaceState({}, '', window.location.pathname);
                     }
                 } catch (err) {
                     console.error('AuthManager init error:', err);
@@ -2863,25 +2867,17 @@
                     alert('Please sign in first');
                     return;
                 }
-                // Find the clicked card and disable it
-                const cards = document.querySelectorAll('.upgrade-plan-card');
-                const btn = [...cards].find(c => c.getAttribute('onclick')?.includes(tier));
-                if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
                 try {
-                    const { data, error } = await this.supabase.functions.invoke('create-checkout', {
-                        body: { tier }
-                    });
-                    if (error) throw error;
-                    if (data?.checkout_url) {
-                        window.location.href = data.checkout_url;
-                    } else {
-                        throw new Error(data?.error || 'Failed to create checkout session');
-                    }
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (!session) throw new Error('Session expired. Please sign in again.');
+                    // Navigate directly to edge function — avoids CORS entirely
+                    const checkoutUrl = `${SUPABASE_URL}/functions/v1/create-checkout?tier=${tier}&token=${session.access_token}`;
+                    document.getElementById('upgradeModal').classList.remove('active');
+                    this.showToast('Redirecting to payment...', 'info');
+                    window.location.href = checkoutUrl;
                 } catch (err) {
                     console.error('[Checkout] Error:', err);
                     this.showToast('Payment error: ' + (err.message || err), 'error');
-                } finally {
-                    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
                 }
             }
 

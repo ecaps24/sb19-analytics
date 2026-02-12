@@ -1,5 +1,4 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { handleCors, getCorsHeaders } from '../_shared/cors.ts';
 import { createCheckoutSession } from '../_shared/paymongo.ts';
 
 const TIER_PRICES: Record<string, { amount: number; name: string }> = {
@@ -10,58 +9,29 @@ const TIER_PRICES: Record<string, { amount: number; name: string }> = {
 const DASHBOARD_URL = 'https://ecaps24.github.io/sb19-analytics/';
 
 Deno.serve(async (req: Request) => {
-  // Handle CORS preflight
-  const corsResp = handleCors(req);
-  if (corsResp) return corsResp;
-
-  const headers = getCorsHeaders(req);
-
   try {
-    if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: { ...headers, 'Content-Type': 'application/json' },
-      });
+    const url = new URL(req.url);
+    const tier = url.searchParams.get('tier');
+    const token = url.searchParams.get('token');
+
+    // Validate inputs
+    if (!token) {
+      return Response.redirect(`${DASHBOARD_URL}?payment=error&msg=missing_token`, 302);
+    }
+    if (!tier || !TIER_PRICES[tier]) {
+      return Response.redirect(`${DASHBOARD_URL}?payment=error&msg=invalid_tier`, 302);
     }
 
-    // Verify user is authenticated
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Missing authorization' }), {
-        status: 401,
-        headers: { ...headers, 'Content-Type': 'application/json' },
-      });
-    }
-
+    // Verify user from token
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_ANON_KEY')!,
-      { global: { headers: { Authorization: authHeader } } }
+      { global: { headers: { Authorization: `Bearer ${token}` } } }
     );
 
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...headers, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Parse request body
-    const { tier } = await req.json();
-
-    if (!tier || !TIER_PRICES[tier]) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid tier. Must be "basic" or "premium".' }),
-        {
-          status: 400,
-          headers: { ...headers, 'Content-Type': 'application/json' },
-        }
-      );
+      return Response.redirect(`${DASHBOARD_URL}?payment=error&msg=unauthorized`, 302);
     }
 
     const priceInfo = TIER_PRICES[tier];
@@ -93,7 +63,7 @@ Deno.serve(async (req: Request) => {
     const checkoutId = checkoutResult.data.id;
     const checkoutUrl = checkoutResult.data.attributes.checkout_url;
 
-    // Insert pending payment record (use service role for insert)
+    // Insert pending payment record
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -108,21 +78,13 @@ Deno.serve(async (req: Request) => {
       status: 'pending',
     });
 
-    return new Response(
-      JSON.stringify({ checkout_url: checkoutUrl }),
-      {
-        status: 200,
-        headers: { ...headers, 'Content-Type': 'application/json' },
-      }
-    );
+    // Redirect directly to PayMongo checkout — no CORS needed
+    return Response.redirect(checkoutUrl, 302);
   } catch (err) {
     console.error('create-checkout error:', err);
-    return new Response(
-      JSON.stringify({ error: err.message || 'Internal server error' }),
-      {
-        status: 500,
-        headers: { ...headers, 'Content-Type': 'application/json' },
-      }
+    return Response.redirect(
+      `${DASHBOARD_URL}?payment=error&msg=${encodeURIComponent(err.message || 'server_error')}`,
+      302
     );
   }
 });
