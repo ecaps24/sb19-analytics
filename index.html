@@ -2206,11 +2206,10 @@
                         <div class="plan-name">Basic</div>
                         <div class="plan-price">₱49 / month</div>
                         <ul class="plan-features">
-                            <li>Filter bar with artist selection</li>
-                            <li>Date range controls</li>
-                            <li>Album/Era chart</li>
-                            <li>Solo Streams chart</li>
-                            <li>Tour concert chart</li>
+                            <li>Full Album/Era chart</li>
+                            <li>Concert &amp; Solo Streams charts</li>
+                            <li>Top Tracks table with sorting</li>
+                            <li>Solo Tracks table by member</li>
                         </ul>
                         <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('basic')">Try free for 7 days</span>
                     </div>
@@ -2222,10 +2221,9 @@
                         <div class="plan-price">₱99 / month</div>
                         <ul class="plan-features">
                             <li>Everything in Basic</li>
-                            <li>Top Tracks table with sorting</li>
-                            <li>Solo Tracks table by member</li>
                             <li>Song detail view with stream history</li>
                             <li>Listeners detail view with cities</li>
+                            <li>Drill-down into any track or artist</li>
                         </ul>
                         <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('plus')">Try free for 7 days</span>
                     </div>
@@ -6390,8 +6388,8 @@
                 const gatingMap = [
                     { selector: '#kickoffChartSection', requiredTier: 'basic', label: 'Concert Chart', desc: 'Tour kickoff concert album streams' },
                     { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
-                    { selector: '#topTracksSection', requiredTier: 'plus', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
-                    { selector: '#memberTracksSection', requiredTier: 'plus', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
+                    { selector: '#topTracksSection', requiredTier: 'basic', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
+                    { selector: '#memberTracksSection', requiredTier: 'basic', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
                 ];
 
                 // Album chart: free users see a snippet with top 3 bars hidden
