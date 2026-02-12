@@ -2869,11 +2869,13 @@
                 if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
                 try {
                     const { data: { session } } = await this.supabase.auth.getSession();
+                    if (!session) throw new Error('Session expired. Please sign in again.');
                     const resp = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${session.access_token}`
+                            'Authorization': `Bearer ${session.access_token}`,
+                            'apikey': SUPABASE_ANON_KEY
                         },
                         body: JSON.stringify({ tier })
                     });
