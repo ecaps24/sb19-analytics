@@ -9,7 +9,10 @@ CREATE TABLE public.profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT,
   full_name TEXT DEFAULT '',
-  subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'basic', 'premium')),
+  subscription_tier TEXT DEFAULT 'free' CHECK (subscription_tier IN ('free', 'basic', 'plus', 'premium')),
+  is_admin BOOLEAN DEFAULT false,
+  trial_tier TEXT DEFAULT NULL,
+  trial_activated_at TIMESTAMPTZ DEFAULT NULL,
   subscription_status TEXT DEFAULT 'inactive' CHECK (subscription_status IN ('active', 'inactive')),
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
@@ -45,7 +48,7 @@ CREATE POLICY "Users can read own profile"
   ON public.profiles FOR SELECT
   USING (auth.uid() = id);
 
--- Users can update own profile (but NOT subscription_tier or subscription_status)
+-- Users can update own profile (but NOT subscription_tier, subscription_status, or is_admin)
 CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id)
@@ -53,6 +56,7 @@ CREATE POLICY "Users can update own profile"
     auth.uid() = id
     AND subscription_tier = (SELECT subscription_tier FROM public.profiles WHERE id = auth.uid())
     AND subscription_status = (SELECT subscription_status FROM public.profiles WHERE id = auth.uid())
+    AND is_admin = (SELECT is_admin FROM public.profiles WHERE id = auth.uid())
   );
 
 -- Step 4: Updated_at auto-timestamp
@@ -85,7 +89,7 @@ CREATE TABLE IF NOT EXISTS public.payments (
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   paymongo_checkout_id TEXT,
   paymongo_payment_id TEXT,
-  tier TEXT NOT NULL CHECK (tier IN ('basic', 'premium')),
+  tier TEXT NOT NULL CHECK (tier IN ('basic', 'plus', 'premium')),
   amount INTEGER NOT NULL,
   currency TEXT DEFAULT 'PHP',
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'failed', 'expired')),
@@ -106,3 +110,8 @@ CREATE TRIGGER payments_updated_at
   BEFORE UPDATE ON public.payments
   FOR EACH ROW
   EXECUTE FUNCTION public.update_updated_at();
+
+-- ============================================================
+-- Step 6: Set admin user
+-- ============================================================
+UPDATE public.profiles SET is_admin = true WHERE email = 'edwin.f.capidos@gmail.com';

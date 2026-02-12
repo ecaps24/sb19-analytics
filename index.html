@@ -1869,7 +1869,9 @@
         }
         .tier-badge.tier-free { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
         .tier-badge.tier-basic { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .tier-badge.tier-plus { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
         .tier-badge.tier-premium { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .tier-badge.tier-admin { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.2)); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
         .user-avatar-btn {
             width: 36px;
             height: 36px;
@@ -1989,6 +1991,10 @@
             transition: all 0.2s;
         }
         .gated-overlay .gated-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        .gated-overlay .gated-cta.plus-cta {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        .gated-overlay .gated-cta.plus-cta:hover { box-shadow: 0 4px 12px rgba(139,92,246,0.4); }
         .gated-overlay .gated-cta.premium-cta {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
@@ -2019,7 +2025,7 @@
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             width: 100%;
-            max-width: 480px;
+            max-width: 720px;
             padding: 32px;
             animation: authSlideIn 0.3s ease-out;
         }
@@ -2038,10 +2044,9 @@
             transition: all 0.2s;
         }
         .upgrade-plan-card:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05); }
-        .upgrade-plan-card.recommended { border-color: rgba(245,158,11,0.4); }
+        .upgrade-plan-card.recommended { border-color: rgba(139,92,246,0.4); }
         .upgrade-plan-card .plan-name { color: #f9fafb; font-size: 1rem; font-weight: 600; }
         .upgrade-plan-card .plan-price { color: #60a5fa; font-size: 1.25rem; font-weight: 700; margin: 6px 0; }
-        .upgrade-plan-card.recommended .plan-price { color: #fbbf24; }
         .upgrade-plan-card .plan-features { list-style: none; padding: 0; margin: 10px 0 0; }
         .upgrade-plan-card .plan-features li {
             color: #9ca3af;
@@ -2049,6 +2054,31 @@
             padding: 3px 0;
         }
         .upgrade-plan-card .plan-features li::before { content: '✓ '; color: #34d399; }
+        .upgrade-plan-card.recommended .plan-price { color: #a78bfa; }
+        .plan-trial-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .plan-trial-link:hover { color: #93c5fd; }
+        .export-btn {
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.3);
+            color: #fbbf24;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            margin-left: auto;
+        }
+        .export-btn:hover { background: rgba(245,158,11,0.25); }
 
         @media (max-width: 600px) {
             .header-auth-area { position: static; margin-top: 10px; justify-content: center; }
@@ -2164,10 +2194,10 @@
             <div class="upgrade-modal-content">
                 <h2 style="color: #f9fafb; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Upgrade Your Plan</h2>
                 <p style="color: #9ca3af; font-size: 0.85rem;">Unlock more analytics and insights</p>
-                <div class="upgrade-plans">
-                    <div class="upgrade-plan-card" onclick="window.authManager.initiateUpgrade('basic')">
+                <div class="upgrade-plans" style="flex-direction: row; flex-wrap: wrap;">
+                    <div class="upgrade-plan-card" style="flex: 1; min-width: 180px;" onclick="window.authManager.initiateUpgrade('basic')">
                         <div class="plan-name">Basic</div>
-                        <div class="plan-price">₱99 / month</div>
+                        <div class="plan-price">₱49 / month</div>
                         <ul class="plan-features">
                             <li>Filter bar with artist selection</li>
                             <li>Date range controls</li>
@@ -2175,19 +2205,30 @@
                             <li>Solo Streams chart</li>
                             <li>Tour concert chart</li>
                         </ul>
+                        <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('basic')">Try free for 7 days</span>
                     </div>
-                    <div class="upgrade-plan-card recommended" onclick="window.authManager.initiateUpgrade('premium')">
+                    <div class="upgrade-plan-card recommended" style="flex: 1; min-width: 180px;" onclick="window.authManager.initiateUpgrade('plus')">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <div class="plan-name">Premium</div>
-                            <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #1e293b; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">RECOMMENDED</span>
+                            <div class="plan-name">Plus</div>
+                            <span style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">RECOMMENDED</span>
                         </div>
-                        <div class="plan-price">₱199 / month</div>
+                        <div class="plan-price">₱99 / month</div>
                         <ul class="plan-features">
                             <li>Everything in Basic</li>
                             <li>Top Tracks table with sorting</li>
                             <li>Solo Tracks table by member</li>
                             <li>Song detail view with stream history</li>
                             <li>Listeners detail view with cities</li>
+                        </ul>
+                        <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('plus')">Try free for 7 days</span>
+                    </div>
+                    <div class="upgrade-plan-card" style="flex: 1; min-width: 180px; border-color: rgba(245,158,11,0.3);" onclick="window.authManager.initiateUpgrade('premium')">
+                        <div class="plan-name">Premium</div>
+                        <div class="plan-price" style="color: #fbbf24;">₱299 / month</div>
+                        <ul class="plan-features">
+                            <li>Everything in Plus</li>
+                            <li>Export data as CSV</li>
+                            <li>Priority support</li>
                         </ul>
                     </div>
                 </div>
@@ -2335,8 +2376,9 @@
                         <span id="album-filter-label"
                             style="font-size: 0.8rem; color: #60a5fa;"></span>
                         <button id="clearFilterBtn"
-                            style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                            style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
                             Filter</button>
+                        <button class="export-btn" style="display: none;" onclick="window.dashboard.exportTopTracks()">Export CSV</button>
                     </div>
                     <div id="tracks-view">
                         <table id="topTracksTable" style="width: 100%;">
@@ -2369,8 +2411,9 @@
                         <span id="member-filter-label"
                             style="font-size: 0.8rem; color: #60a5fa;"></span>
                         <button id="clearMemberFilterBtn"
-                            style="display: none; margin-left: auto; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                            style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
                             Filter</button>
+                        <button class="export-btn" style="display: none;" onclick="window.dashboard.exportMemberTracks()">Export CSV</button>
                     </div>
                     <div id="member-tracks-view">
                         <table id="memberTracksTable" style="width: 100%;">
@@ -2657,7 +2700,8 @@
         const SUPABASE_URL = 'https://xqsifpdsueqgjjzlggms.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_P-0gey3lufEAp82uSU4h8A_DhSFxtIp';
 
-        const TIER_LEVELS = { guest: 0, free: 1, basic: 2, premium: 3 };
+        const TIER_LEVELS = { guest: 0, free: 1, basic: 2, plus: 3, premium: 4 };
+        const ADMIN_EMAIL = 'edwin.f.capidos@gmail.com';
 
         class AuthManager {
             constructor() {
@@ -2719,6 +2763,21 @@
                         this.showToast('Payment error: ' + msg, 'error');
                         window.history.replaceState({}, '', window.location.pathname);
                     }
+
+                    // Handle trial return
+                    if (urlParams.get('trial') === 'success') {
+                        if (this.user) await this.loadUserProfile();
+                        this.updateUIForUser();
+                        this.refreshDashboard();
+                        const trialTier = urlParams.get('tier') || '';
+                        this.showToast(`Free trial activated! You now have ${trialTier.charAt(0).toUpperCase() + trialTier.slice(1)} access for 7 days.`, 'success');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    } else if (urlParams.get('trial') === 'error') {
+                        const msg = urlParams.get('msg') || 'Unknown error';
+                        const friendlyMsg = msg === 'already_used' ? 'You have already used your free trial.' : 'Trial error: ' + msg;
+                        this.showToast(friendlyMsg, 'error');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
                 } catch (err) {
                     console.error('AuthManager init error:', err);
                     this.initialized = true;
@@ -2752,10 +2811,11 @@
             getUserTier() {
                 if (!this.user) return 'guest';
                 if (!this.profile) return 'free';
+                if (this.isAdmin()) return 'premium';
                 const tier = this.profile.subscription_tier || 'free';
                 const status = this.profile.subscription_status;
                 const expires = this.profile.subscription_expires_at;
-                if ((tier === 'basic' || tier === 'premium') && status === 'active') {
+                if (['basic', 'plus', 'premium'].includes(tier) && status === 'active') {
                     if (expires && new Date(expires) < new Date()) return 'free';
                     return tier;
                 }
@@ -2764,6 +2824,11 @@
 
             hasAccess(requiredTier) {
                 return TIER_LEVELS[this.getUserTier()] >= TIER_LEVELS[requiredTier];
+            }
+
+            isAdmin() {
+                if (!this.user) return false;
+                return this.profile?.is_admin === true || this.user.email === ADMIN_EMAIL;
             }
 
             async signUp(email, password, fullName) {
@@ -2844,8 +2909,17 @@
                     dropdownName.textContent = name;
                     dropdownEmail.textContent = email;
 
-                    tierBadge.className = 'tier-badge tier-' + tier;
-                    tierBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    if (this.isAdmin()) {
+                        tierBadge.className = 'tier-badge tier-admin';
+                        tierBadge.textContent = 'Admin';
+                    } else {
+                        tierBadge.className = 'tier-badge tier-' + tier;
+                        tierBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                    }
+
+                    // Hide upgrade option for admins
+                    const upgradeItem = document.querySelector('.user-dropdown-item[onclick*="showUpgradeModal"]');
+                    if (upgradeItem) upgradeItem.style.display = this.isAdmin() ? 'none' : '';
                 } else {
                     guestMenu.style.display = 'flex';
                     userMenu.classList.remove('active');
@@ -2878,6 +2952,24 @@
                 } catch (err) {
                     console.error('[Checkout] Error:', err);
                     this.showToast('Payment error: ' + (err.message || err), 'error');
+                }
+            }
+
+            async activateTrial(tier) {
+                if (!this.supabase || !this.user) {
+                    this.showAuthModal('signup');
+                    return;
+                }
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (!session) throw new Error('Session expired. Please sign in again.');
+                    const trialUrl = `${SUPABASE_URL}/functions/v1/activate-trial?tier=${tier}&token=${session.access_token}`;
+                    document.getElementById('upgradeModal').classList.remove('active');
+                    this.showToast('Activating your free trial...', 'info');
+                    window.location.href = trialUrl;
+                } catch (err) {
+                    console.error('[Trial] Error:', err);
+                    this.showToast('Trial error: ' + (err.message || err), 'error');
                 }
             }
 
@@ -6152,16 +6244,83 @@
                 return dailyStreams;
             }
 
+            // ==================== Data Export ====================
+            downloadCSV(filename, csvContent) {
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.click();
+                URL.revokeObjectURL(url);
+            }
+
+            exportTopTracks() {
+                const am = window.authManager;
+                if (!am || !am.hasAccess('premium')) {
+                    if (am) am.showUpgradeModal();
+                    return;
+                }
+                const rows = document.querySelectorAll('#top-tracks-body tr');
+                if (!rows.length) return;
+                let csv = '#,Track,Total Streams,Change\n';
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 4) {
+                        const rank = cells[0].textContent.trim();
+                        const title = cells[1].textContent.trim().replace(/,/g, ' ');
+                        const streams = cells[2].textContent.trim().replace(/,/g, '');
+                        const change = cells[3].textContent.trim().replace(/,/g, '');
+                        csv += `${rank},"${title}",${streams},${change}\n`;
+                    }
+                });
+                this.downloadCSV('sb19_top_tracks.csv', csv);
+            }
+
+            exportMemberTracks() {
+                const am = window.authManager;
+                if (!am || !am.hasAccess('premium')) {
+                    if (am) am.showUpgradeModal();
+                    return;
+                }
+                const rows = document.querySelectorAll('#member-tracks-body tr');
+                if (!rows.length) return;
+                let csv = '#,Track,Total Streams,Change\n';
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 4) {
+                        const rank = cells[0].textContent.trim();
+                        const title = cells[1].textContent.trim().replace(/,/g, ' ');
+                        const streams = cells[2].textContent.trim().replace(/,/g, '');
+                        const change = cells[3].textContent.trim().replace(/,/g, '');
+                        csv += `${rank},"${title}",${streams},${change}\n`;
+                    }
+                });
+                this.downloadCSV('sb19_member_tracks.csv', csv);
+            }
+
             // ==================== Content Gating ====================
             applyContentGating() {
                 const am = window.authManager;
                 if (!am || !am.initialized) return;
 
+                // Admin bypass — remove all gating and show export buttons
+                if (am.isAdmin()) {
+                    document.querySelectorAll('.gated-content').forEach(el => {
+                        el.classList.remove('gated-content');
+                        const overlay = el.querySelector('.gated-overlay');
+                        if (overlay) overlay.remove();
+                        el.querySelectorAll('.gated-blur').forEach(c => c.classList.remove('gated-blur'));
+                    });
+                    document.querySelectorAll('.export-btn').forEach(b => b.style.display = '');
+                    return;
+                }
+
                 const gatingMap = [
                     { selector: '.filter-bar', requiredTier: 'basic', label: 'Filter Controls', desc: 'Artist selection, date ranges, and more' },
                     { selector: '#mainChartsRow', requiredTier: 'basic', label: 'Charts', desc: 'Album/Era chart, concert chart, and solo streams' },
-                    { selector: '#topTracksSection', requiredTier: 'premium', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
-                    { selector: '#memberTracksSection', requiredTier: 'premium', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
+                    { selector: '#topTracksSection', requiredTier: 'plus', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
+                    { selector: '#memberTracksSection', requiredTier: 'plus', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
                 ];
 
                 gatingMap.forEach(({ selector, requiredTier, label, desc }) => {
@@ -6181,8 +6340,8 @@
                         // Blur content children (but not the overlay we're about to add)
                         Array.from(el.children).forEach(child => child.classList.add('gated-blur'));
 
-                        const isPremium = requiredTier === 'premium';
-                        const tierLabel = isPremium ? 'Premium' : 'Basic';
+                        const ctaClass = requiredTier === 'premium' ? 'premium-cta' : requiredTier === 'plus' ? 'plus-cta' : '';
+                        const tierLabel = requiredTier.charAt(0).toUpperCase() + requiredTier.slice(1);
 
                         const overlay = document.createElement('div');
                         overlay.className = 'gated-overlay';
@@ -6191,7 +6350,7 @@
                             <div class="gated-title">${label}</div>
                             <div class="gated-desc">${desc}</div>
                             ${am.user
-                                ? `<button class="gated-cta ${isPremium ? 'premium-cta' : ''}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>`
+                                ? `<button class="gated-cta ${ctaClass}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>`
                                 : `<button class="gated-cta" onclick="window.authManager.showAuthModal('signup')">Sign Up to Unlock</button>
                                    <div class="gated-signin-link" onclick="window.authManager.showAuthModal('signin')">Already have an account? Sign in</div>`
                             }
@@ -6199,12 +6358,17 @@
                         el.appendChild(overlay);
                     }
                 });
+
+                // Show/hide export buttons based on premium access
+                document.querySelectorAll('.export-btn').forEach(b => {
+                    b.style.display = am.hasAccess('premium') ? '' : 'none';
+                });
             }
 
             openSongDetail(songTitle) {
-                // Gate: premium only
+                // Gate: plus tier required
                 const am = window.authManager;
-                if (am && !am.hasAccess('premium')) {
+                if (am && !am.hasAccess('plus')) {
                     if (am.user) {
                         am.showUpgradeModal();
                     } else {
@@ -6248,9 +6412,9 @@
             }
 
             openListenersDetail() {
-                // Gate: premium only
+                // Gate: plus tier required
                 const am = window.authManager;
-                if (am && !am.hasAccess('premium')) {
+                if (am && !am.hasAccess('plus')) {
                     if (am.user) {
                         am.showUpgradeModal();
                     } else {

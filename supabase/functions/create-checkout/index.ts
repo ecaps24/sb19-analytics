@@ -2,8 +2,9 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { createCheckoutSession } from '../_shared/paymongo.ts';
 
 const TIER_PRICES: Record<string, { amount: number; name: string }> = {
-  basic: { amount: 9900, name: 'SB19 Analytics — Basic Plan (Monthly)' },
-  premium: { amount: 19900, name: 'SB19 Analytics — Premium Plan (Monthly)' },
+  basic: { amount: 4900, name: 'SB19 Analytics — Basic Plan (Monthly)' },
+  plus: { amount: 9900, name: 'SB19 Analytics — Plus Plan (Monthly)' },
+  premium: { amount: 29900, name: 'SB19 Analytics — Premium Plan (Monthly)' },
 };
 
 const DASHBOARD_URL = 'https://ecaps24.github.io/sb19-analytics/';

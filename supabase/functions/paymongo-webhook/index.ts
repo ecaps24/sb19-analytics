@@ -93,8 +93,9 @@ Deno.serve(async (req: Request) => {
 
     const userId = metadata.user_id;
     const tier = metadata.tier;
+    const validTiers = ['basic', 'plus', 'premium'];
 
-    if (!userId || !tier) {
+    if (!userId || !tier || !validTiers.includes(tier)) {
       console.error('Missing metadata in webhook:', metadata);
       return new Response(JSON.stringify({ error: 'Missing metadata' }), {
         status: 400,
