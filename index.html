@@ -5344,6 +5344,10 @@
                     },
                     plugins: [ChartDataLabels]
                 });
+
+                // Apply free-tier gating (hide top 3 bars) after chart is created
+                const am = window.authManager;
+                if (am && am.initialized) this.applyAlbumChartGating(am);
             }
 
             createKickoffTracksChart() {
