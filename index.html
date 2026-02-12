@@ -6307,6 +6307,67 @@
             }
 
             // ==================== Content Gating ====================
+            applyAlbumChartGating(am) {
+                const chart = this.charts.album;
+                const section = document.getElementById('albumChartSection');
+                if (!section) return;
+
+                // Remove existing album gating overlay
+                const existing = section.querySelector('.album-gating-overlay');
+                if (existing) existing.remove();
+
+                if (!chart || am.hasAccess('basic')) {
+                    // Restore full chart if user has access
+                    if (chart && chart._originalData) {
+                        chart.data.labels = chart._originalData.labels;
+                        chart.data.datasets[0].data = chart._originalData.data;
+                        chart.data.datasets[0].backgroundColor = chart._originalData.colors;
+                        this.albumChartColors = chart._originalData.originalColors;
+                        delete chart._originalData;
+                        chart.update();
+                    }
+                    return;
+                }
+
+                // Save original data if not already saved
+                if (!chart._originalData) {
+                    chart._originalData = {
+                        labels: chart.data.labels.slice(),
+                        data: chart.data.datasets[0].data.slice(),
+                        colors: chart.data.datasets[0].backgroundColor.slice(),
+                        originalColors: this.albumChartColors.slice()
+                    };
+                }
+
+                const totalBars = chart._originalData.labels.length;
+                const hiddenCount = Math.min(3, totalBars);
+                const visibleCount = totalBars - hiddenCount;
+
+                // Show only the bottom bars (lower-ranked), hide top 3
+                chart.data.labels = chart._originalData.labels.slice(hiddenCount);
+                chart.data.datasets[0].data = chart._originalData.data.slice(hiddenCount);
+                chart.data.datasets[0].backgroundColor = chart._originalData.colors.slice(hiddenCount);
+                this.albumChartColors = chart._originalData.originalColors.slice(hiddenCount);
+                chart.update();
+
+                // Add a gradient overlay at the top hinting at hidden content
+                const overlay = document.createElement('div');
+                overlay.className = 'album-gating-overlay';
+                overlay.style.cssText = `position:absolute;top:0;left:0;right:0;height:60px;
+                    background:linear-gradient(to bottom, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0) 100%);
+                    display:flex;align-items:flex-start;justify-content:center;padding-top:10px;z-index:5;
+                    pointer-events:none;border-radius:inherit;`;
+                overlay.innerHTML = `<span style="color:#9ca3af;font-size:0.72rem;pointer-events:auto;cursor:pointer;"
+                    onclick="window.authManager.showUpgradeModal()">+ ${hiddenCount} more albums — <span style="color:#60a5fa;">Upgrade to Basic</span> or <span style="color:#60a5fa;" onclick="event.stopPropagation();window.authManager.activateTrial('basic')">try free for 7 days</span></span>`;
+
+                // Make the chart container position relative for overlay
+                const container = section.querySelector('.chart-container');
+                if (container) {
+                    container.style.position = 'relative';
+                    container.appendChild(overlay);
+                }
+            }
+
             applyContentGating() {
                 const am = window.authManager;
                 if (!am || !am.initialized) return;
@@ -6319,15 +6380,22 @@
                         if (overlay) overlay.remove();
                         el.querySelectorAll('.gated-blur').forEach(c => c.classList.remove('gated-blur'));
                     });
+                    const albumOverlay = document.querySelector('.album-gating-overlay');
+                    if (albumOverlay) albumOverlay.remove();
                     document.querySelectorAll('.export-btn').forEach(b => b.style.display = '');
+                    this.applyAlbumChartGating(am);
                     return;
                 }
 
                 const gatingMap = [
-                    { selector: '#mainChartsRow', requiredTier: 'basic', label: 'Charts', desc: 'Album/Era chart, concert chart, and solo streams' },
+                    { selector: '#kickoffChartSection', requiredTier: 'basic', label: 'Concert Chart', desc: 'Tour kickoff concert album streams' },
+                    { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
                     { selector: '#topTracksSection', requiredTier: 'plus', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberTracksSection', requiredTier: 'plus', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
                 ];
+
+                // Album chart: free users see a snippet with top 3 bars hidden
+                this.applyAlbumChartGating(am);
 
                 gatingMap.forEach(({ selector, requiredTier, label, desc }) => {
                     const el = document.querySelector(selector);
