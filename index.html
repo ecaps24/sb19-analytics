@@ -2191,7 +2191,7 @@
                         </ul>
                     </div>
                 </div>
-                <p style="color: #6b7280; font-size: 0.72rem; text-align: center;">Payment via GCash/PayMongo — coming soon</p>
+                <p style="color: #6b7280; font-size: 0.72rem; text-align: center;">Payment via GCash, Card, Maya &amp; more — powered by PayMongo</p>
                 <button style="margin-top: 16px; width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; padding: 10px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-family: inherit;" onclick="document.getElementById('upgradeModal').classList.remove('active')">Maybe Later</button>
             </div>
         </div>
@@ -2654,8 +2654,8 @@
 
         // ==================== AuthManager ====================
         // Supabase config — replace with your project values
-        const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';
-        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+        const SUPABASE_URL = 'https://xqsifpdsueqgjjzlggms.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_P-0gey3lufEAp82uSU4h8A_DhSFxtIp';
 
         const TIER_LEVELS = { guest: 0, free: 1, basic: 2, premium: 3 };
 
@@ -2702,6 +2702,19 @@
                     this.initialized = true;
                     this.updateUIForUser();
                     this.refreshDashboard();
+
+                    // Handle payment return from PayMongo
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('payment') === 'success') {
+                        if (this.user) await this.loadUserProfile();
+                        this.updateUIForUser();
+                        this.refreshDashboard();
+                        this.showToast('Payment successful! Your plan has been upgraded.', 'success');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    } else if (urlParams.get('payment') === 'cancelled') {
+                        this.showToast('Payment was cancelled.', 'info');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
                 } catch (err) {
                     console.error('AuthManager init error:', err);
                     this.initialized = true;
@@ -2737,8 +2750,11 @@
                 if (!this.profile) return 'free';
                 const tier = this.profile.subscription_tier || 'free';
                 const status = this.profile.subscription_status;
-                // Only basic/premium count if subscription is active
-                if ((tier === 'basic' || tier === 'premium') && status === 'active') return tier;
+                const expires = this.profile.subscription_expires_at;
+                if ((tier === 'basic' || tier === 'premium') && status === 'active') {
+                    if (expires && new Date(expires) < new Date()) return 'free';
+                    return tier;
+                }
                 return 'free';
             }
 
@@ -2842,10 +2858,70 @@
                 document.getElementById('upgradeModal').classList.add('active');
             }
 
-            initiateUpgrade(tier) {
-                // Placeholder for PayMongo integration
-                alert(`Payment integration coming soon!\n\nTo upgrade to ${tier.charAt(0).toUpperCase() + tier.slice(1)}, please contact us.\n\nFor testing, the subscription_tier can be set manually in the Supabase dashboard.`);
-                document.getElementById('upgradeModal').classList.remove('active');
+            async initiateUpgrade(tier) {
+                if (!this.supabase || !this.user) {
+                    alert('Please sign in first');
+                    return;
+                }
+                // Find the clicked card and disable it
+                const cards = document.querySelectorAll('.upgrade-plan-card');
+                const btn = [...cards].find(c => c.getAttribute('onclick')?.includes(tier));
+                if (btn) { btn.style.opacity = '0.6'; btn.style.pointerEvents = 'none'; }
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    const resp = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${session.access_token}`
+                        },
+                        body: JSON.stringify({ tier })
+                    });
+                    const result = await resp.json();
+                    if (result.checkout_url) {
+                        window.location.href = result.checkout_url;
+                    } else {
+                        throw new Error(result.error || 'Failed to create checkout session');
+                    }
+                } catch (err) {
+                    console.error('Payment error:', err);
+                    this.showToast('Payment error: ' + err.message, 'error');
+                } finally {
+                    if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; }
+                }
+            }
+
+            showToast(message, type = 'info') {
+                const existing = document.getElementById('paymentToast');
+                if (existing) existing.remove();
+
+                const colors = {
+                    success: { bg: 'rgba(16,185,129,0.95)', icon: '\u2713' },
+                    error: { bg: 'rgba(239,68,68,0.95)', icon: '\u2717' },
+                    info: { bg: 'rgba(59,130,246,0.95)', icon: '\u2139' }
+                };
+                const c = colors[type] || colors.info;
+
+                const toast = document.createElement('div');
+                toast.id = 'paymentToast';
+                toast.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100000;
+                    background:${c.bg};color:#fff;padding:14px 24px;border-radius:12px;font-size:0.85rem;
+                    font-family:Inter,system-ui,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.3);
+                    backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px;
+                    animation:slideInDown 0.3s ease-out;max-width:90vw;`;
+                toast.innerHTML = `<span style="font-size:1.1rem">${c.icon}</span><span>${message}</span>`;
+                document.body.appendChild(toast);
+
+                // Add animation keyframes if not already present
+                if (!document.getElementById('toastAnimStyle')) {
+                    const style = document.createElement('style');
+                    style.id = 'toastAnimStyle';
+                    style.textContent = `@keyframes slideInDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`;
+                    document.head.appendChild(style);
+                }
+
+                setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; }, 4000);
+                setTimeout(() => toast.remove(), 4500);
             }
 
             refreshDashboard() {
@@ -3025,6 +3101,216 @@
                     'Cup of Joe': {
                         ath: null,
                         tracksCsvFile: './cup_of_joe_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'BGYO': {
+                        ath: null,
+                        tracksCsvFile: './bgyo_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    '4th Impact': {
+                        ath: null,
+                        tracksCsvFile: './4th_impact_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'ALAMAT': {
+                        ath: null,
+                        tracksCsvFile: './alamat_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'HORI7ON': {
+                        ath: null,
+                        tracksCsvFile: './hori7on_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'MNL48': {
+                        ath: null,
+                        tracksCsvFile: './mnl48_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'Press Hit Play': {
+                        ath: null,
+                        tracksCsvFile: './press_hit_play_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'PPOP Generation': {
+                        ath: null,
+                        tracksCsvFile: './ppop_generation_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'G22': {
+                        ath: null,
+                        tracksCsvFile: './g22_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'VXON': {
+                        ath: null,
+                        tracksCsvFile: './vxon_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    '1st.One': {
+                        ath: null,
+                        tracksCsvFile: './1st_one_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'KAIA': {
+                        ath: null,
+                        tracksCsvFile: './kaia_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'DIONE': {
+                        ath: null,
+                        tracksCsvFile: './dione_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'FINIX': {
+                        ath: null,
+                        tracksCsvFile: './finix_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'YGIG': {
+                        ath: null,
+                        tracksCsvFile: './ygig_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'GAT': {
+                        ath: null,
+                        tracksCsvFile: './gat_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'AJAA': {
+                        ath: null,
+                        tracksCsvFile: './ajaa_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'Pix!e': {
+                        ath: null,
+                        tracksCsvFile: './pixie_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'New:ID': {
+                        ath: null,
+                        tracksCsvFile: './newid_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'CALISTA': {
+                        ath: null,
+                        tracksCsvFile: './calista_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'Raya': {
+                        ath: null,
+                        tracksCsvFile: './raya_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    '1621': {
+                        ath: null,
+                        tracksCsvFile: './1621_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'Cloud 7': {
+                        ath: null,
+                        tracksCsvFile: './cloud_7_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'VVINK': {
+                        ath: null,
+                        tracksCsvFile: './vvink_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'YARA': {
+                        ath: null,
+                        tracksCsvFile: './yara_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    '6ENSE': {
+                        ath: null,
+                        tracksCsvFile: './6ense_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'BILIB': {
+                        ath: null,
+                        tracksCsvFile: './bilib_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'SY\u2022NC': {
+                        ath: null,
+                        tracksCsvFile: './sync_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'ASTER': {
+                        ath: null,
+                        tracksCsvFile: './aster_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'DAYDREAM': {
+                        ath: null,
+                        tracksCsvFile: './daydream_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasKickoffChart: false
+                    },
+                    'DESTINI': {
+                        ath: null,
+                        tracksCsvFile: './destini_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
                         hasKickoffChart: false
