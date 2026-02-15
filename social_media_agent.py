@@ -83,6 +83,8 @@ LOCAL_INDEX = os.path.join(SCRIPT_DIR, "index.html")
 # Listeners screenshot
 MEMBER_PHOTOS_DIR = os.path.join(SCRIPT_DIR, "profiles")
 LISTENERS_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "monthly_listeners.png")
+OPM_TOP_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "opm_top_listeners.png")
+PPOP_TOP_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "ppop_top_listeners.png")
 MEMBER_PHOTO_FILES = {
     "SB19": "sb19.jpg",
     "PABLO": "pablo.jpg",
@@ -1483,6 +1485,1047 @@ body {{
             posts.append(msg)
         return posts
 
+    def generate_opm_top_post(self):
+        """Top 10 OPM artists by monthly listeners with SB19 rank.
+
+        Returns (message, image_path_or_None).
+        """
+        data = load_listeners_data()
+        if not data:
+            return None, None
+
+        # Get the latest date
+        latest_date = max(e["date"] for e in data)
+        latest = [e for e in data if e["date"] == latest_date]
+
+        if not latest:
+            print("[WARN] No data for latest date")
+            return None, None
+
+        # Exclude SB19 solo members from ranking
+        sb19_solo = {a.lower() for a in SOLO_ARTISTS}
+        all_artists = [e for e in latest if e["artist"].lower() not in sb19_solo]
+
+        # Deduplicate by artist name (keep highest listeners if duplicated)
+        artist_map = {}
+        for e in all_artists:
+            key = e["artist"].lower()
+            if key not in artist_map or e["listeners"] > artist_map[key]["listeners"]:
+                artist_map[key] = e
+        ranked = sorted(artist_map.values(), key=lambda x: x["listeners"], reverse=True)
+
+        # Find SB19's entry and rank
+        sb19_entry = None
+        sb19_rank = None
+        for i, e in enumerate(ranked, 1):
+            if e["artist"].upper() == "SB19":
+                sb19_entry = e
+                sb19_rank = i
+                break
+
+        top10 = ranked[:10]
+
+        if not top10:
+            print("[INFO] No OPM artist data found")
+            return None, None
+
+        # Get previous date data for change comparison
+        all_dates = sorted(set(e["date"] for e in data))
+        prev_date = None
+        for d in reversed(all_dates):
+            if d < latest_date:
+                prev_date = d
+                break
+
+        prev_map = {}
+        prev_rank_map = {}
+        if prev_date:
+            prev_entries = [e for e in data if e["date"] == prev_date and e["artist"].lower() not in sb19_solo]
+            prev_artist_map = {}
+            for e in prev_entries:
+                key = e["artist"].lower()
+                if key not in prev_artist_map or e["listeners"] > prev_artist_map[key]["listeners"]:
+                    prev_artist_map[key] = e
+            for key, e in prev_artist_map.items():
+                prev_map[key] = e["listeners"]
+            # Build previous ranking to compute rank changes
+            prev_ranked = sorted(prev_artist_map.values(), key=lambda x: x["listeners"], reverse=True)
+            for i, e in enumerate(prev_ranked, 1):
+                prev_rank_map[e["artist"].lower()] = i
+
+        # Format date
+        try:
+            date_formatted = datetime.strptime(latest_date[:8], "%Y%m%d").strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = latest_date
+
+        # Compute rank changes for top 10 and SB19
+        def _rank_indicator(artist_key, current_rank):
+            prev_r = prev_rank_map.get(artist_key)
+            if prev_r is None:
+                return "", None
+            diff = prev_r - current_rank  # positive = moved up
+            if diff > 0:
+                return f" (+{diff})", diff
+            elif diff < 0:
+                return f" ({diff})", diff
+            return "", 0
+
+        # Build text post
+        lines = [
+            f"OPM Top 10 Artists by Monthly Listeners",
+            f"Spotify | {date_formatted}",
+            "opminsights.com",
+            "",
+        ]
+        for i, e in enumerate(top10, 1):
+            change_str = ""
+            prev_val = prev_map.get(e["artist"].lower())
+            if prev_val is not None:
+                diff = e["listeners"] - prev_val
+                if diff > 0:
+                    change_str = f" (+{format_with_commas(diff)})"
+                elif diff < 0:
+                    change_str = f" ({format_with_commas(diff)})"
+            rank_str, _ = _rank_indicator(e["artist"].lower(), i)
+            lines.append(f"{i:>2}. {e['artist']}: {format_with_commas(e['listeners'])}{change_str}{rank_str}")
+
+        if sb19_entry and sb19_rank:
+            lines.append("")
+            change_str = ""
+            prev_val = prev_map.get("sb19")
+            if prev_val is not None:
+                diff = sb19_entry["listeners"] - prev_val
+                if diff > 0:
+                    change_str = f" (+{format_with_commas(diff)})"
+                elif diff < 0:
+                    change_str = f" ({format_with_commas(diff)})"
+            rank_str, _ = _rank_indicator("sb19", sb19_rank)
+            lines.append(f"{sb19_rank}. SB19: {format_with_commas(sb19_entry['listeners'])}{change_str}{rank_str}")
+
+        lines.append("")
+        lines.append(f"Out of {len(ranked)} OPM artists tracked")
+        lines.append("")
+        lines.append("#OPM #OPMSpotify #PPop #SB19 #SpotifyPH")
+        message = "\n".join(lines)
+
+        # Build data for screenshot
+        card_data = []
+        for i, e in enumerate(top10, 1):
+            prev_val = prev_map.get(e["artist"].lower())
+            change = (e["listeners"] - prev_val) if prev_val is not None else 0
+            _, rank_change = _rank_indicator(e["artist"].lower(), i)
+            card_data.append({
+                "rank": i,
+                "artist": e["artist"],
+                "listeners": e["listeners"],
+                "change": change,
+                "rank_change": rank_change,
+            })
+
+        sb19_card = None
+        if sb19_entry and sb19_rank:
+            prev_val = prev_map.get("sb19")
+            sb19_change = (sb19_entry["listeners"] - prev_val) if prev_val is not None else 0
+            _, sb19_rc = _rank_indicator("sb19", sb19_rank)
+            sb19_card = {
+                "rank": sb19_rank,
+                "artist": "SB19",
+                "listeners": sb19_entry["listeners"],
+                "change": sb19_change,
+                "rank_change": sb19_rc,
+            }
+
+        image_path = None
+        screenshot_ok = self._capture_opm_top_screenshot(
+            top10_data=card_data,
+            sb19_data=sb19_card,
+            total_artists=len(ranked),
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(OPM_TOP_IMAGE_PATH):
+            image_path = OPM_TOP_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_opm_top_screenshot(self, top10_data=None, sb19_data=None,
+                                     total_artists=0, date_str=""):
+        """Capture a social-media-friendly OPM top 10 monthly listeners card."""
+        print("[INFO] Capturing OPM top listeners screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not top10_data:
+            print("[ERR] No data for OPM top card")
+            return False
+
+        max_listeners = top10_data[0]["listeners"] if top10_data else 1
+
+        genre_colors = {
+            "opm ballad": "#ec4899",
+            "opm pop": "#3b82f6",
+            "opm rock": "#ef4444",
+            "opm indie": "#a855f7",
+            "opm classic": "#f59e0b",
+            "opm hip-hop": "#10b981",
+            "p-pop": "#06b6d4",
+        }
+        default_color = "#6366f1"
+
+        # Reload latest data to get genres
+        data = load_listeners_data()
+        latest_date = max(e["date"] for e in data)
+        genre_map = {}
+        for e in data:
+            if e["date"] == latest_date:
+                genre_map[e["artist"].lower()] = "p-pop"  # default
+        # Re-read CSV for genre field
+        genre_lookup = {}
+        if os.path.exists(LISTENERS_FILE):
+            with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    ts = row.get("timestamp", "")
+                    if ts[:8] == latest_date:
+                        genre_lookup[row["artist_name"].lower()] = row.get("genre", "")
+
+        def _rank_change_html(rc):
+            if rc is not None and rc > 0:
+                return f'<span class="rank-up">▲{rc}</span>'
+            elif rc is not None and rc < 0:
+                return f'<span class="rank-down">▼{abs(rc)}</span>'
+            else:
+                return '<span class="rank-same">―</span>'
+
+        track_rows = ""
+        for t in top10_data:
+            pct = (t["listeners"] / max_listeners) * 100
+            genre = genre_lookup.get(t["artist"].lower(), "")
+            color = genre_colors.get(genre.lower(), default_color)
+            listeners_str = f"{t['listeners']:,}"
+            change = t["change"]
+            if change > 0:
+                change_html = f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                change_html = f'<span class="change-down">{change:,}</span>'
+            else:
+                change_html = '<span class="change-same">―</span>'
+            genre_label = genre if genre else ""
+            rc_html = _rank_change_html(t.get("rank_change"))
+
+            track_rows += f"""
+            <div class="track-row">
+                <div class="track-rank">{t['rank']}</div>
+                <div class="rank-indicator">{rc_html}</div>
+                <div class="track-info">
+                    <div class="track-name">{t['artist']}</div>
+                    <div class="track-genre">{genre_label}</div>
+                    <div class="track-bar-container">
+                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="track-stats">
+                    <div class="track-listeners">{listeners_str}</div>
+                    <div class="track-change">{change_html}</div>
+                </div>
+            </div>"""
+
+        # SB19 row
+        sb19_row = ""
+        if sb19_data:
+            sb19_pct = (sb19_data["listeners"] / max_listeners) * 100
+            sb19_listeners_str = f"{sb19_data['listeners']:,}"
+            sb19_change = sb19_data["change"]
+            if sb19_change > 0:
+                sb19_change_html = f'<span class="change-up">+{sb19_change:,}</span>'
+            elif sb19_change < 0:
+                sb19_change_html = f'<span class="change-down">{sb19_change:,}</span>'
+            else:
+                sb19_change_html = '<span class="change-same">―</span>'
+            sb19_rc_html = _rank_change_html(sb19_data.get("rank_change"))
+
+            sb19_row = f"""
+            <div class="sb19-section">
+                <div class="sb19-divider"></div>
+                <div class="track-row sb19-row">
+                    <div class="track-rank sb19-rank">{sb19_data['rank']}</div>
+                    <div class="rank-indicator">{sb19_rc_html}</div>
+                    <div class="track-info">
+                        <div class="track-name sb19-name">SB19</div>
+                        <div class="track-genre">P-Pop</div>
+                        <div class="track-bar-container">
+                            <div class="track-bar" style="width: {sb19_pct}%; background: #06b6d4;"></div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-listeners sb19-listeners">{sb19_listeners_str}</div>
+                        <div class="track-change">{sb19_change_html}</div>
+                    </div>
+                </div>
+            </div>"""
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{ text-align: center; }}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+.tracks {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}}
+.track-row {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+}}
+.track-rank {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #475569;
+    width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+}}
+.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
+.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
+.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
+.rank-indicator {{
+    width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+}}
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.track-info {{
+    flex: 1;
+    min-width: 0;
+}}
+.track-name {{
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.track-genre {{
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}}
+.track-bar-container {{
+    height: 42px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}}
+.track-bar {{
+    height: 100%;
+    border-radius: 6px;
+    min-width: 4px;
+}}
+.track-stats {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 160px;
+}}
+.track-listeners {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.track-change {{
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 2px;
+}}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
+.sb19-section {{
+    margin-top: 8px;
+}}
+.sb19-divider {{
+    border-top: 2px dashed rgba(6, 182, 212, 0.3);
+    margin: 12px 0;
+}}
+.sb19-row {{
+    background: rgba(6, 182, 212, 0.08);
+    border-radius: 12px;
+    padding: 14px 16px !important;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+}}
+.sb19-rank {{
+    color: #06b6d4 !important;
+    font-size: 24px !important;
+}}
+.sb19-name {{
+    color: #22d3ee !important;
+    font-size: 20px !important;
+}}
+.sb19-listeners {{
+    color: #22d3ee !important;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">OPM Top 10 Artists by Monthly Listeners</div>
+        <div class="card-subtitle">Spotify | {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_artists}</div>
+                <div class="stat-label">Artists Tracked</div>
+            </div>
+        </div>
+    </div>
+    <div class="tracks">{track_rows}
+    </div>
+    {sb19_row}
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_opm_top_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1800)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(OPM_TOP_IMAGE_PATH)
+
+                img = Image.open(OPM_TOP_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(OPM_TOP_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] OPM top screenshot saved: {OPM_TOP_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] OPM top screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] OPM top screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
+    def generate_ppop_top_post(self):
+        """Top P-Pop groups by monthly listeners with SB19 solo section.
+
+        Returns (message, image_path_or_None).
+        """
+        data = load_listeners_data()
+        if not data:
+            return None, None
+
+        latest_date = max(e["date"] for e in data)
+        latest = [e for e in data if e["date"] == latest_date]
+
+        if not latest:
+            print("[WARN] No data for latest date")
+            return None, None
+
+        # Re-read CSV for genre field
+        genre_lookup = {}
+        if os.path.exists(LISTENERS_FILE):
+            with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    ts = row.get("timestamp", "")
+                    if ts[:8] == latest_date:
+                        genre_lookup[row["artist_name"].lower()] = row.get("genre", "")
+
+        # Separate P-Pop groups and SB19 Solo
+        ppop_artists = {}
+        solo_artists = {}
+        for e in latest:
+            key = e["artist"].lower()
+            genre = genre_lookup.get(key, "")
+            if genre == "P-Pop":
+                if key not in ppop_artists or e["listeners"] > ppop_artists[key]["listeners"]:
+                    ppop_artists[key] = e
+            elif genre == "SB19 Solo":
+                if key not in solo_artists or e["listeners"] > solo_artists[key]["listeners"]:
+                    solo_artists[key] = e
+
+        ppop_ranked = sorted(ppop_artists.values(), key=lambda x: x["listeners"], reverse=True)
+        solo_ranked = sorted(solo_artists.values(), key=lambda x: x["listeners"], reverse=True)
+
+        top10 = ppop_ranked[:10]
+        if not top10:
+            print("[INFO] No P-Pop artist data found")
+            return None, None
+
+        # Previous day data for changes and rank comparison
+        all_dates = sorted(set(e["date"] for e in data))
+        prev_date = None
+        for d in reversed(all_dates):
+            if d < latest_date:
+                prev_date = d
+                break
+
+        prev_ppop_map = {}
+        prev_ppop_rank_map = {}
+        if prev_date:
+            prev_genre_lookup = {}
+            if os.path.exists(LISTENERS_FILE):
+                with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        ts = row.get("timestamp", "")
+                        if ts[:8] == prev_date:
+                            prev_genre_lookup[row["artist_name"].lower()] = row.get("genre", "")
+
+            prev_entries = [e for e in data if e["date"] == prev_date]
+            prev_ppop = {}
+            for e in prev_entries:
+                key = e["artist"].lower()
+                genre = prev_genre_lookup.get(key, "")
+                if genre == "P-Pop":
+                    if key not in prev_ppop or e["listeners"] > prev_ppop[key]["listeners"]:
+                        prev_ppop[key] = e
+
+            for key, e in prev_ppop.items():
+                prev_ppop_map[key] = e["listeners"]
+            prev_ppop_ranked = sorted(prev_ppop.values(), key=lambda x: x["listeners"], reverse=True)
+            for i, e in enumerate(prev_ppop_ranked, 1):
+                prev_ppop_rank_map[e["artist"].lower()] = i
+
+        # Format date
+        try:
+            date_formatted = datetime.strptime(latest_date[:8], "%Y%m%d").strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = latest_date
+
+        def _rank_ind(rank_map, artist_key, current_rank):
+            prev_r = rank_map.get(artist_key)
+            if prev_r is None:
+                return "", None
+            diff = prev_r - current_rank
+            if diff > 0:
+                return f" (+{diff})", diff
+            elif diff < 0:
+                return f" ({diff})", diff
+            return "", 0
+
+        # Build text post
+        lines = [
+            "P-Pop Top 10 Groups by Monthly Listeners",
+            f"Spotify | {date_formatted}",
+            "opminsights.com",
+            "",
+        ]
+        for i, e in enumerate(top10, 1):
+            key = e["artist"].lower()
+            change_str = ""
+            prev_val = prev_ppop_map.get(key)
+            if prev_val is not None:
+                diff = e["listeners"] - prev_val
+                if diff > 0:
+                    change_str = f" (+{format_with_commas(diff)})"
+                elif diff < 0:
+                    change_str = f" ({format_with_commas(diff)})"
+            rank_str, _ = _rank_ind(prev_ppop_rank_map, key, i)
+            lines.append(f"{i:>2}. {e['artist']}: {format_with_commas(e['listeners'])}{change_str}{rank_str}")
+
+        lines.append("")
+        lines.append(f"Out of {len(ppop_ranked)} P-Pop groups tracked")
+        lines.append("*SB19 solo artists excluded (see separate post)")
+        lines.append("")
+        lines.append("#PPop #PPopSpotify #SB19 #BINI #SpotifyPH")
+        message = "\n".join(lines)
+
+        # Build data for screenshot
+        card_data = []
+        for i, e in enumerate(top10, 1):
+            key = e["artist"].lower()
+            prev_val = prev_ppop_map.get(key)
+            change = (e["listeners"] - prev_val) if prev_val is not None else 0
+            _, rank_change = _rank_ind(prev_ppop_rank_map, key, i)
+            card_data.append({
+                "rank": i,
+                "artist": e["artist"],
+                "listeners": e["listeners"],
+                "change": change,
+                "rank_change": rank_change,
+            })
+
+        image_path = None
+        screenshot_ok = self._capture_ppop_top_screenshot(
+            top10_data=card_data,
+            solo_data=None,
+            total_groups=len(ppop_ranked),
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(PPOP_TOP_IMAGE_PATH):
+            image_path = PPOP_TOP_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_ppop_top_screenshot(self, top10_data=None, solo_data=None,
+                                      total_groups=0, date_str=""):
+        """Capture a social-media-friendly P-Pop top listeners card."""
+        print("[INFO] Capturing P-Pop top listeners screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not top10_data:
+            print("[ERR] No data for P-Pop top card")
+            return False
+
+        max_listeners = top10_data[0]["listeners"] if top10_data else 1
+
+        # Assign distinct colors per group
+        group_colors = [
+            "#ec4899", "#3b82f6", "#10b981", "#f59e0b", "#a855f7",
+            "#ef4444", "#06b6d4", "#6366f1", "#14b8a6", "#f97316",
+        ]
+
+        def _rank_change_html(rc):
+            if rc is not None and rc > 0:
+                return f'<span class="rank-up">▲{rc}</span>'
+            elif rc is not None and rc < 0:
+                return f'<span class="rank-down">▼{abs(rc)}</span>'
+            else:
+                return '<span class="rank-same">―</span>'
+
+        track_rows = ""
+        for i, t in enumerate(top10_data):
+            pct = (t["listeners"] / max_listeners) * 100
+            color = group_colors[i % len(group_colors)]
+            listeners_str = f"{t['listeners']:,}"
+            change = t["change"]
+            if change > 0:
+                change_html = f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                change_html = f'<span class="change-down">{change:,}</span>'
+            else:
+                change_html = '<span class="change-same">―</span>'
+            rc_html = _rank_change_html(t.get("rank_change"))
+
+            # Highlight SB19 row
+            is_sb19 = t["artist"].upper() == "SB19"
+            row_class = "track-row sb19-highlight" if is_sb19 else "track-row"
+
+            track_rows += f"""
+            <div class="{row_class}">
+                <div class="track-rank">{t['rank']}</div>
+                <div class="rank-indicator">{rc_html}</div>
+                <div class="track-info">
+                    <div class="track-name">{t['artist']}</div>
+                    <div class="track-bar-container">
+                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    </div>
+                </div>
+                <div class="track-stats">
+                    <div class="track-listeners">{listeners_str}</div>
+                    <div class="track-change">{change_html}</div>
+                </div>
+            </div>"""
+
+        # SB19 Solo section
+        solo_section = ""
+        if solo_data:
+            solo_max = solo_data[0]["listeners"] if solo_data else 1
+            solo_rows = ""
+            solo_colors = {
+                "pablo": "#ef4444",
+                "josh cullen": "#f59e0b",
+                "stell": "#a855f7",
+                "felip": "#10b981",
+                "justin": "#3b82f6",
+            }
+            for t in solo_data:
+                pct = (t["listeners"] / solo_max) * 100
+                color = solo_colors.get(t["artist"].lower(), "#6366f1")
+                listeners_str = f"{t['listeners']:,}"
+                change = t["change"]
+                if change > 0:
+                    change_html = f'<span class="change-up">+{change:,}</span>'
+                elif change < 0:
+                    change_html = f'<span class="change-down">{change:,}</span>'
+                else:
+                    change_html = '<span class="change-same">―</span>'
+                rc_html = _rank_change_html(t.get("rank_change"))
+
+                solo_rows += f"""
+                <div class="track-row">
+                    <div class="track-rank solo-rank">{t['rank']}</div>
+                    <div class="rank-indicator">{rc_html}</div>
+                    <div class="track-info">
+                        <div class="track-name">{t['artist']}</div>
+                        <div class="track-bar-container">
+                            <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-listeners">{listeners_str}</div>
+                        <div class="track-change">{change_html}</div>
+                    </div>
+                </div>"""
+
+            solo_section = f"""
+            <div class="solo-section">
+                <div class="solo-divider"></div>
+                <div class="solo-header">SB19 Solo</div>
+                <div class="tracks">{solo_rows}
+                </div>
+            </div>"""
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(6, 182, 212, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{ text-align: center; }}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #06b6d4;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+.tracks {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}}
+.track-row {{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+}}
+.track-rank {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #475569;
+    width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+}}
+.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
+.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
+.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
+.rank-indicator {{
+    width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 600;
+}}
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.track-info {{
+    flex: 1;
+    min-width: 0;
+}}
+.track-name {{
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.track-bar-container {{
+    height: 42px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+}}
+.track-bar {{
+    height: 100%;
+    border-radius: 6px;
+    min-width: 4px;
+}}
+.track-stats {{
+    text-align: right;
+    flex-shrink: 0;
+    min-width: 160px;
+}}
+.track-listeners {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.track-change {{
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 2px;
+}}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
+.sb19-highlight {{
+    background: rgba(6, 182, 212, 0.08);
+    border-radius: 12px;
+    padding: 14px 16px !important;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+}}
+.sb19-highlight .track-name {{
+    color: #22d3ee;
+}}
+.sb19-highlight .track-listeners {{
+    color: #22d3ee;
+}}
+.solo-section {{
+    margin-top: 8px;
+}}
+.solo-divider {{
+    border-top: 2px dashed rgba(6, 182, 212, 0.3);
+    margin: 16px 0;
+}}
+.solo-header {{
+    font-size: 20px;
+    font-weight: 700;
+    color: #22d3ee;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+}}
+.solo-rank {{
+    color: #06b6d4 !important;
+}}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #06b6d4;
+    font-weight: 600;
+}}
+.footer-note {{
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+    margin-bottom: 8px;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">P-Pop Top 10 Groups by Monthly Listeners</div>
+        <div class="card-subtitle">Spotify | {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_groups}</div>
+                <div class="stat-label">Groups Tracked</div>
+            </div>
+        </div>
+    </div>
+    <div class="tracks">{track_rows}
+    </div>
+    {solo_section}
+    <div class="footer">
+        <div class="footer-note">*SB19 solo artists excluded (see separate post)</div>
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_ppop_top_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 2000)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(PPOP_TOP_IMAGE_PATH)
+
+                img = Image.open(PPOP_TOP_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(PPOP_TOP_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] P-Pop top screenshot saved: {PPOP_TOP_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] P-Pop top screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] P-Pop top screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
     def generate_weekly_post(self):
         """Weekly summary of listener changes for SB19 members."""
         data = load_listeners_data()
@@ -2364,6 +3407,28 @@ body {{
         else:
             print("[SKIP] No data")
 
+        # 8. OPM Top
+        print("\n--- OPM TOP 10 MONTHLY LISTENERS ---")
+        opm_msg, opm_img = self.generate_opm_top_post()
+        if opm_msg:
+            print(opm_msg)
+            print(f"[{len(opm_msg)} chars]")
+            if opm_img:
+                print(f"[IMAGE] {opm_img}")
+        else:
+            print("[SKIP] No data")
+
+        # 9. P-Pop Top
+        print("\n--- P-POP TOP 10 MONTHLY LISTENERS ---")
+        ppop_msg, ppop_img = self.generate_ppop_top_post()
+        if ppop_msg:
+            print(ppop_msg)
+            print(f"[{len(ppop_msg)} chars]")
+            if ppop_img:
+                print(f"[IMAGE] {ppop_img}")
+        else:
+            print("[SKIP] No data")
+
         print("\n" + "=" * 60)
 
     # ======================================================================
@@ -2433,7 +3498,7 @@ Examples:
         "command",
         choices=[
             "listeners", "daily", "top10", "solo-top10", "milestones", "spikes", "weekly",
-            "album", "solo-top", "custom", "preview", "status", "init-milestones",
+            "album", "solo-top", "opm-top", "ppop-top", "custom", "preview", "status", "init-milestones",
         ],
         help="Post type or action to perform",
     )
@@ -2648,6 +3713,30 @@ def main():
                     image_path=args.image,
                 )
                 _report(success)
+
+        elif args.command == "opm-top":
+            message, auto_image = agent.generate_opm_top_post()
+            if not message:
+                print("[ERR] Could not generate OPM top post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
+
+        elif args.command == "ppop-top":
+            message, auto_image = agent.generate_ppop_top_post()
+            if not message:
+                print("[ERR] Could not generate P-Pop top post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
 
         elif args.command == "album":
             if not args.skip_validation and not args.dry_run:
