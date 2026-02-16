@@ -275,6 +275,86 @@
             color: #60a5fa;
         }
 
+        /* Trends View Tabs */
+        .trends-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0;
+            overflow-x: auto;
+        }
+        .trends-tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .trends-tab-btn:hover {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.04);
+        }
+        .trends-tab-btn.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+        .trends-tab-panel {
+            display: none;
+        }
+        .trends-tab-panel.active {
+            display: block;
+        }
+        .trends-controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .trends-controls-row select,
+        .trends-controls-row input[type="text"] {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #e5e7eb;
+            font-size: 0.8rem;
+        }
+        .trends-controls-row select { min-width: 130px; }
+        .trends-controls-row input[type="text"] { min-width: 150px; }
+        .trends-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 8px;
+            background: rgba(17, 24, 39, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 12px;
+        }
+        .trends-summary-tables {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        #trends-view.focus-mode {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1000;
+            background: #0f172a;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
         .chart-focus-btn {
             position: absolute;
             top: 8px;
@@ -1267,6 +1347,17 @@
             #showAllKickoffBtn {
                 padding: 6px 12px;
                 font-size: 0.7rem;
+            }
+
+            .trends-summary-tables {
+                grid-template-columns: 1fr;
+            }
+            .trends-tabs {
+                gap: 0;
+            }
+            .trends-tab-btn {
+                padding: 8px 12px;
+                font-size: 0.78rem;
             }
 
         }
@@ -2282,6 +2373,11 @@
                     <div class="stat-value" id="period-change">-</div>
                     <div class="growth" id="period-info">Selected range</div>
                 </div>
+                <div class="stat-card" id="statTrends">
+                    <h3>Analytics & Trends</h3>
+                    <div class="stat-value" style="font-size: 1rem; cursor: pointer;" onclick="window.dashboard.openTrendsView()">View Trends</div>
+                    <div class="growth">Compare artists & tracks</div>
+                </div>
             </div>
 
             <!-- Filters -->
@@ -2534,6 +2630,171 @@
                     <div id="songTabCredits" class="song-tab-panel" style="display: none;">
                         <div id="songCreditsContent" class="credits-grid">
                             <p class="no-content">Credits not available yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trends View -->
+            <div id="trends-view" class="listeners-detail-container" style="display: none;">
+                <div class="listeners-detail-header">
+                    <button class="song-back-btn" onclick="window.dashboard.closeTrendsView()">Back to Dashboard</button>
+                    <div class="listeners-title-section">
+                        <h2>Analytics & Trends</h2>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="trends-tabs">
+                    <button class="trends-tab-btn active" data-tab="artist" onclick="window.dashboard.switchTrendsTab('artist')">Artist Trends</button>
+                    <button class="trends-tab-btn" data-tab="track" onclick="window.dashboard.switchTrendsTab('track')">Track Trends</button>
+                    <button class="trends-tab-btn" data-tab="summary" onclick="window.dashboard.switchTrendsTab('summary')">Summary</button>
+                </div>
+
+                <!-- Tab 1: Artist Trends -->
+                <div id="trendsTabArtist" class="trends-tab-panel active">
+                    <div class="listeners-stats-row">
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Fastest Growing (7D)</span>
+                            <span id="trendsFastestGrowing" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Biggest Decline (7D)</span>
+                            <span id="trendsBiggestDecline" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Highest Listeners</span>
+                            <span id="trendsHighestListeners" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Artists Tracked</span>
+                            <span id="trendsArtistsTracked" class="listeners-stat-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="trends-controls-row">
+                        <select id="trendsGenreFilter" onchange="window.dashboard.filterTrendsArtistsByGenre()">
+                            <option value="All">All Genres</option>
+                        </select>
+                        <input type="text" id="trendsArtistSearch" placeholder="Search artists..." oninput="window.dashboard.filterTrendsArtistCheckboxes()">
+                        <button class="chart-range-btn" id="trendsSelectAllBtn" onclick="window.dashboard.toggleTrendsSelectAll()">Select All</button>
+                    </div>
+                    <div id="trendsArtistCheckboxGroup" class="trends-checkbox-group"></div>
+
+                    <div class="trends-controls-row">
+                        <button class="chart-range-btn" data-trange="7" onclick="window.dashboard.setTrendsDateRange('7')">7D</button>
+                        <button class="chart-range-btn" data-trange="14" onclick="window.dashboard.setTrendsDateRange('14')">14D</button>
+                        <button class="chart-range-btn" data-trange="30" onclick="window.dashboard.setTrendsDateRange('30')">30D</button>
+                        <button class="chart-range-btn" data-trange="90" onclick="window.dashboard.setTrendsDateRange('90')">90D</button>
+                        <button class="chart-range-btn active" data-trange="all" onclick="window.dashboard.setTrendsDateRange('all')">All</button>
+                        <button class="chart-focus-btn" onclick="window.dashboard.toggleTrendsFocusMode()" style="position:static;">Focus</button>
+                    </div>
+
+                    <div class="listeners-chart-wrapper" style="position:relative; height:400px; margin-bottom:16px;">
+                        <canvas id="trendsArtistChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Track Trends -->
+                <div id="trendsTabTrack" class="trends-tab-panel">
+                    <div class="listeners-stats-row">
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Most Streamed Track</span>
+                            <span id="trendsMostStreamed" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Fastest Growing (7D)</span>
+                            <span id="trendsFastestTrack" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Tracks Tracked</span>
+                            <span id="trendsTracksTracked" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Total Streams (Selected)</span>
+                            <span id="trendsSelectedStreams" class="listeners-stat-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="trends-controls-row">
+                        <select id="trendsTrackArtistFilter" onchange="window.dashboard.filterTrendsTracksByArtist()">
+                            <option value="All">All Artists</option>
+                        </select>
+                        <input type="text" id="trendsTrackSearch" placeholder="Search tracks..." oninput="window.dashboard.filterTrendsTrackCheckboxes()">
+                        <button class="chart-range-btn" id="trendsTrackSelectAllBtn" onclick="window.dashboard.toggleTrendsTrackSelectAll()">Select All</button>
+                    </div>
+                    <div id="trendsTrackCheckboxGroup" class="trends-checkbox-group"></div>
+
+                    <div class="trends-controls-row">
+                        <button class="chart-range-btn" data-ttrange="7" onclick="window.dashboard.setTrendsTrackDateRange('7')">7D</button>
+                        <button class="chart-range-btn" data-ttrange="14" onclick="window.dashboard.setTrendsTrackDateRange('14')">14D</button>
+                        <button class="chart-range-btn" data-ttrange="30" onclick="window.dashboard.setTrendsTrackDateRange('30')">30D</button>
+                        <button class="chart-range-btn" data-ttrange="90" onclick="window.dashboard.setTrendsTrackDateRange('90')">90D</button>
+                        <button class="chart-range-btn active" data-ttrange="all" onclick="window.dashboard.setTrendsTrackDateRange('all')">All</button>
+                    </div>
+
+                    <div class="listeners-chart-wrapper" style="position:relative; height:400px; margin-bottom:16px;">
+                        <canvas id="trendsTrackChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Summary -->
+                <div id="trendsTabSummary" class="trends-tab-panel">
+                    <div class="listeners-stats-row">
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Highest Current Listeners</span>
+                            <span id="summaryHighestListeners" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Most Streamed Track</span>
+                            <span id="summaryMostStreamed" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Biggest 30D Gain</span>
+                            <span id="summaryBiggestGain" class="listeners-stat-value">-</span>
+                        </div>
+                        <div class="listeners-stat-item">
+                            <span class="listeners-stat-label">Biggest 30D Loss</span>
+                            <span id="summaryBiggestLoss" class="listeners-stat-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="trends-summary-tables">
+                        <div class="listeners-history-table">
+                            <div class="table-header">Top 20 Artists by Monthly Listeners</div>
+                            <div style="overflow-x:auto;">
+                                <table id="summaryArtistsTable" style="width:100%; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border-bottom:1px solid rgba(255,255,255,0.1); font-size:0.75rem; color:#9ca3af;">
+                                            <th style="padding:8px; text-align:left;">#</th>
+                                            <th style="padding:8px; text-align:left;">Artist</th>
+                                            <th style="padding:8px; text-align:left;">Genre</th>
+                                            <th style="padding:8px; text-align:right;">Listeners</th>
+                                            <th style="padding:8px; text-align:right;">7D</th>
+                                            <th style="padding:8px; text-align:right;">30D</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="summaryArtistsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="listeners-history-table">
+                            <div class="table-header">Top 20 Tracks by Total Streams</div>
+                            <div style="overflow-x:auto;">
+                                <table id="summaryTracksTable" style="width:100%; border-collapse:collapse;">
+                                    <thead>
+                                        <tr style="border-bottom:1px solid rgba(255,255,255,0.1); font-size:0.75rem; color:#9ca3af;">
+                                            <th style="padding:8px; text-align:left;">#</th>
+                                            <th style="padding:8px; text-align:left;">Title</th>
+                                            <th style="padding:8px; text-align:left;">Artist</th>
+                                            <th style="padding:8px; text-align:right;">Streams</th>
+                                            <th style="padding:8px; text-align:right;">7D Growth</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="summaryTracksBody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3150,6 +3411,15 @@
                 this.chartScaleMode = 'absolute'; // 'absolute' (0 to max) or 'fit' (auto-fit to data range)
                 this.chartCustomStart = ''; // Custom date range start
                 this.chartCustomEnd = ''; // Custom date range end
+                // Trends view state
+                this.trendsViewOpen = false;
+                this.trendsSelectedArtists = [];
+                this.trendsSelectedTracks = [];
+                this.trendsDateRange = 'all';
+                this.trendsTrackDateRange = 'all';
+                this.trendsGenre = 'All';
+                this.trendsTrackArtistFilter = 'All';
+                this.trendsActiveTab = 'artist';
                 // Map listener CSV names (case-insensitive) to member dataNames
                 this.listenerNameMap = {
                     'pablo': 'Pablo',
@@ -6528,7 +6798,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'listeners-detail-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'trends-view') {
                         // Keep other detail views hidden
                         el.style.display = 'none';
                     } else {
@@ -7151,6 +7421,668 @@
                 }).join('');
             }
 
+            // ===== Trends View Methods =====
+
+            openTrendsView() {
+                this.trendsViewOpen = true;
+                window.location.hash = 'trends';
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id !== 'trends-view' &&
+                        !el.classList.contains('ad-container') &&
+                        !el.classList.contains('products-services-panel') &&
+                        !el.classList.contains('developer-footer')) {
+                        el.style.display = 'none';
+                    }
+                });
+                document.getElementById('trends-view').style.display = 'block';
+
+                this.renderTrendsView();
+            }
+
+            closeTrendsView() {
+                this.trendsViewOpen = false;
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id === 'trends-view') {
+                        el.style.display = 'none';
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view') {
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = '';
+                    }
+                });
+
+                // Remove focus mode
+                document.getElementById('trends-view').classList.remove('focus-mode');
+
+                // Destroy trends charts
+                if (this.charts.trendsArtist) {
+                    this.charts.trendsArtist.destroy();
+                    this.charts.trendsArtist = null;
+                }
+                if (this.charts.trendsTrack) {
+                    this.charts.trendsTrack.destroy();
+                    this.charts.trendsTrack = null;
+                }
+
+                this.updateArtistHash();
+                this.updateSectionVisibility();
+            }
+
+            renderTrendsView() {
+                try {
+                    this.populateTrendsGenreFilter();
+                    this.renderTrendsArtistCheckboxes();
+                    this.updateTrendsArtistStats();
+                    this.createTrendsArtistChart();
+
+                    this.populateTrendsTrackArtistFilter();
+                    this.renderTrendsTrackCheckboxes();
+                    this.updateTrendsTrackStats();
+
+                    this.renderTrendsSummary();
+                } catch (error) {
+                    console.error('Error rendering trends view:', error);
+                }
+            }
+
+            switchTrendsTab(tab) {
+                this.trendsActiveTab = tab;
+                document.querySelectorAll('.trends-tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.tab === tab);
+                });
+                document.querySelectorAll('.trends-tab-panel').forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                const panelId = tab === 'artist' ? 'trendsTabArtist' : tab === 'track' ? 'trendsTabTrack' : 'trendsTabSummary';
+                document.getElementById(panelId).classList.add('active');
+
+                // Render tab content on switch
+                if (tab === 'track') {
+                    this.createTrendsTrackChart();
+                } else if (tab === 'summary') {
+                    this.renderTrendsSummary();
+                }
+            }
+
+            toggleTrendsFocusMode() {
+                const view = document.getElementById('trends-view');
+                view.classList.toggle('focus-mode');
+                // Resize active chart
+                setTimeout(() => {
+                    if (this.trendsActiveTab === 'artist' && this.charts.trendsArtist) {
+                        this.charts.trendsArtist.resize();
+                    } else if (this.trendsActiveTab === 'track' && this.charts.trendsTrack) {
+                        this.charts.trendsTrack.resize();
+                    }
+                }, 50);
+            }
+
+            getTrendsDateFilter(range) {
+                if (range === 'all') return { start: null, end: null };
+                const days = parseInt(range);
+                const end = new Date();
+                const start = new Date();
+                start.setDate(start.getDate() - days);
+                return {
+                    start: start.toISOString().substring(0, 10),
+                    end: end.toISOString().substring(0, 10)
+                };
+            }
+
+            // --- Artist Trends Tab ---
+
+            populateTrendsGenreFilter() {
+                const select = document.getElementById('trendsGenreFilter');
+                if (!select) return;
+                const genres = [...new Set(Object.values(this.artistGenreMap))].sort();
+                select.innerHTML = '<option value="All">All Genres</option>' +
+                    genres.map(g => `<option value="${g}" ${g === this.trendsGenre ? 'selected' : ''}>${g}</option>`).join('');
+            }
+
+            renderTrendsArtistCheckboxes(filter = '') {
+                const container = document.getElementById('trendsArtistCheckboxGroup');
+                if (!container) return;
+                let artists = this.getAvailableArtists();
+                const query = (filter || document.getElementById('trendsArtistSearch')?.value || '').toLowerCase().trim();
+
+                if (this.trendsGenre && this.trendsGenre !== 'All') {
+                    artists = artists.filter(a => this.artistGenreMap[a] === this.trendsGenre);
+                }
+                const filtered = query ? artists.filter(a => a.toLowerCase().includes(query)) : artists;
+
+                container.innerHTML = filtered.map(artist => {
+                    const color = this.getArtistColor(artist);
+                    const isSelected = this.trendsSelectedArtists.includes(artist);
+                    return `
+                        <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
+                               style="--artist-color: ${color.border}">
+                            <input type="checkbox" value="${artist}" ${isSelected ? 'checked' : ''}
+                                   onchange="window.dashboard.toggleTrendsArtist('${artist.replace(/'/g, "\\'")}')">
+                            <span class="artist-dot"></span>
+                            <span class="artist-name">${artist}</span>
+                        </label>`;
+                }).join('');
+
+                const allSelected = filtered.length > 0 && filtered.every(a => this.trendsSelectedArtists.includes(a));
+                const btn = document.getElementById('trendsSelectAllBtn');
+                if (btn) btn.textContent = allSelected ? 'Deselect All' : 'Select All';
+            }
+
+            toggleTrendsArtist(artist) {
+                const idx = this.trendsSelectedArtists.indexOf(artist);
+                if (idx > -1) {
+                    this.trendsSelectedArtists.splice(idx, 1);
+                } else {
+                    this.trendsSelectedArtists.push(artist);
+                }
+                this.renderTrendsArtistCheckboxes();
+                this.createTrendsArtistChart();
+                this.updateTrendsArtistStats();
+            }
+
+            filterTrendsArtistCheckboxes() {
+                this.renderTrendsArtistCheckboxes();
+            }
+
+            filterTrendsArtistsByGenre() {
+                this.trendsGenre = document.getElementById('trendsGenreFilter').value;
+                this.renderTrendsArtistCheckboxes();
+            }
+
+            toggleTrendsSelectAll() {
+                let artists = this.getAvailableArtists();
+                if (this.trendsGenre && this.trendsGenre !== 'All') {
+                    artists = artists.filter(a => this.artistGenreMap[a] === this.trendsGenre);
+                }
+                const query = (document.getElementById('trendsArtistSearch')?.value || '').toLowerCase().trim();
+                if (query) artists = artists.filter(a => a.toLowerCase().includes(query));
+
+                const allSelected = artists.every(a => this.trendsSelectedArtists.includes(a));
+                if (allSelected) {
+                    this.trendsSelectedArtists = this.trendsSelectedArtists.filter(a => !artists.includes(a));
+                } else {
+                    artists.forEach(a => {
+                        if (!this.trendsSelectedArtists.includes(a)) this.trendsSelectedArtists.push(a);
+                    });
+                }
+                this.renderTrendsArtistCheckboxes();
+                this.createTrendsArtistChart();
+                this.updateTrendsArtistStats();
+            }
+
+            setTrendsDateRange(range) {
+                this.trendsDateRange = range;
+                document.querySelectorAll('[data-trange]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.trange === range);
+                });
+                this.createTrendsArtistChart();
+            }
+
+            updateTrendsArtistStats() {
+                const artists = this.getAvailableArtists();
+                document.getElementById('trendsArtistsTracked').textContent = artists.length.toString();
+
+                // Compute per-artist latest listeners and 7D change
+                let fastestGrowing = { name: '-', change: -Infinity };
+                let biggestDecline = { name: '-', change: Infinity };
+                let highestListeners = { name: '-', val: 0 };
+
+                artists.forEach(artist => {
+                    const hist = this.getArtistHistoricalListeners(artist);
+                    if (hist.length === 0) return;
+                    const latest = hist[hist.length - 1].monthly_listeners;
+                    if (latest > highestListeners.val) {
+                        highestListeners = { name: artist, val: latest };
+                    }
+                    if (hist.length >= 7) {
+                        const change = latest - hist[hist.length - 7].monthly_listeners;
+                        if (change > fastestGrowing.change) fastestGrowing = { name: artist, change };
+                        if (change < biggestDecline.change) biggestDecline = { name: artist, change };
+                    }
+                });
+
+                document.getElementById('trendsFastestGrowing').textContent = fastestGrowing.name !== '-'
+                    ? `${fastestGrowing.name} (+${fastestGrowing.change.toLocaleString()})` : '-';
+                const declineEl = document.getElementById('trendsBiggestDecline');
+                declineEl.textContent = biggestDecline.name !== '-'
+                    ? `${biggestDecline.name} (${biggestDecline.change.toLocaleString()})` : '-';
+                declineEl.style.color = biggestDecline.change < 0 ? '#f87171' : '';
+                document.getElementById('trendsHighestListeners').textContent = highestListeners.name !== '-'
+                    ? `${highestListeners.name} (${highestListeners.val.toLocaleString()})` : '-';
+            }
+
+            createTrendsArtistChart() {
+                const canvas = document.getElementById('trendsArtistChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+
+                if (this.charts.trendsArtist) {
+                    this.charts.trendsArtist.destroy();
+                    this.charts.trendsArtist = null;
+                }
+
+                if (this.trendsSelectedArtists.length === 0) return;
+
+                const dateFilter = this.getTrendsDateFilter(this.trendsDateRange);
+                const datasets = [];
+
+                this.trendsSelectedArtists.forEach(artist => {
+                    let hist = this.getArtistHistoricalListeners(artist);
+                    if (dateFilter.start) {
+                        hist = hist.filter(d => d.data_date >= dateFilter.start);
+                    }
+                    if (hist.length === 0) return;
+                    const color = this.getArtistColor(artist);
+                    datasets.push({
+                        label: artist,
+                        data: hist.map(d => ({ x: d.data_date, y: d.monthly_listeners })),
+                        borderColor: color.line,
+                        backgroundColor: color.bg,
+                        borderWidth: 2,
+                        pointRadius: hist.length > 60 ? 0 : 2,
+                        pointHoverRadius: 4,
+                        fill: false,
+                        tension: 0.3
+                    });
+                });
+
+                if (datasets.length === 0) return;
+
+                const self = this;
+                this.charts.trendsArtist = new Chart(ctx, {
+                    type: 'line',
+                    data: { datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: {
+                                display: datasets.length <= 15,
+                                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: { unit: 'day', tooltipFormat: 'MMM d, yyyy' },
+                                ticks: { color: '#6b7280', maxTicksLimit: 12, font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#6b7280',
+                                    font: { size: 10 },
+                                    callback: function(val) { return self.formatNumber(val); }
+                                },
+                                grid: { color: 'rgba(255,255,255,0.06)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Track Trends Tab ---
+
+            getAvailableTracks() {
+                // Get unique tracks with their latest total streams
+                const trackMap = {};
+                this.streamsData.forEach(d => {
+                    const key = d.song_title + '|||' + d.artist_name;
+                    if (!trackMap[key] || d.total_streams > trackMap[key].total_streams) {
+                        trackMap[key] = {
+                            song_title: d.song_title,
+                            artist_name: d.artist_name,
+                            total_streams: d.total_streams
+                        };
+                    }
+                });
+                return Object.values(trackMap).sort((a, b) => b.total_streams - a.total_streams);
+            }
+
+            getTrackHistoricalStreams(songTitle, artistName) {
+                const trackData = this.streamsData
+                    .filter(d => d.song_title === songTitle && d.artist_name === artistName && d.total_streams > 0)
+                    .sort((a, b) => (a.data_date || '').localeCompare(b.data_date || ''));
+
+                const byDate = {};
+                trackData.forEach(d => {
+                    const dateKey = d.data_date ? d.data_date.substring(0, 10) : '';
+                    if (dateKey && !byDate[dateKey]) {
+                        byDate[dateKey] = { ...d, data_date: dateKey };
+                    }
+                });
+                return Object.values(byDate).sort((a, b) => a.data_date.localeCompare(b.data_date));
+            }
+
+            populateTrendsTrackArtistFilter() {
+                const select = document.getElementById('trendsTrackArtistFilter');
+                if (!select) return;
+                const artists = [...new Set(this.streamsData.map(d => d.artist_name))].sort();
+                select.innerHTML = '<option value="All">All Artists</option>' +
+                    artists.map(a => `<option value="${a}" ${a === this.trendsTrackArtistFilter ? 'selected' : ''}>${a}</option>`).join('');
+            }
+
+            renderTrendsTrackCheckboxes(filter = '') {
+                const container = document.getElementById('trendsTrackCheckboxGroup');
+                if (!container) return;
+                let tracks = this.getAvailableTracks();
+                const query = (filter || document.getElementById('trendsTrackSearch')?.value || '').toLowerCase().trim();
+
+                if (this.trendsTrackArtistFilter && this.trendsTrackArtistFilter !== 'All') {
+                    tracks = tracks.filter(t => t.artist_name === this.trendsTrackArtistFilter);
+                }
+                if (query) {
+                    tracks = tracks.filter(t => t.song_title.toLowerCase().includes(query) || t.artist_name.toLowerCase().includes(query));
+                }
+
+                // Show top 50 only
+                tracks = tracks.slice(0, 50);
+
+                container.innerHTML = tracks.map(track => {
+                    const color = this.getArtistColor(track.artist_name);
+                    const isSelected = this.trendsSelectedTracks.some(t => t.song_title === track.song_title && t.artist_name === track.artist_name);
+                    const safeTitle = track.song_title.replace(/'/g, "\\'");
+                    const safeArtist = track.artist_name.replace(/'/g, "\\'");
+                    return `
+                        <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
+                               style="--artist-color: ${color.border}">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''}
+                                   onchange="window.dashboard.toggleTrendsTrack('${safeTitle}','${safeArtist}')">
+                            <span class="artist-dot"></span>
+                            <span class="artist-name">${track.song_title} <small style="opacity:0.6">(${track.artist_name})</small></span>
+                        </label>`;
+                }).join('');
+
+                const allSelected = tracks.length > 0 && tracks.every(t =>
+                    this.trendsSelectedTracks.some(s => s.song_title === t.song_title && s.artist_name === t.artist_name));
+                const btn = document.getElementById('trendsTrackSelectAllBtn');
+                if (btn) btn.textContent = allSelected ? 'Deselect All' : 'Select All';
+            }
+
+            toggleTrendsTrack(songTitle, artistName) {
+                const idx = this.trendsSelectedTracks.findIndex(t => t.song_title === songTitle && t.artist_name === artistName);
+                if (idx > -1) {
+                    this.trendsSelectedTracks.splice(idx, 1);
+                } else {
+                    if (this.trendsSelectedTracks.length >= 10) return; // max 10
+                    this.trendsSelectedTracks.push({ song_title: songTitle, artist_name: artistName });
+                }
+                this.renderTrendsTrackCheckboxes();
+                this.createTrendsTrackChart();
+                this.updateTrendsTrackStats();
+            }
+
+            filterTrendsTrackCheckboxes() {
+                this.renderTrendsTrackCheckboxes();
+            }
+
+            filterTrendsTracksByArtist() {
+                this.trendsTrackArtistFilter = document.getElementById('trendsTrackArtistFilter').value;
+                this.renderTrendsTrackCheckboxes();
+            }
+
+            toggleTrendsTrackSelectAll() {
+                let tracks = this.getAvailableTracks();
+                if (this.trendsTrackArtistFilter && this.trendsTrackArtistFilter !== 'All') {
+                    tracks = tracks.filter(t => t.artist_name === this.trendsTrackArtistFilter);
+                }
+                const query = (document.getElementById('trendsTrackSearch')?.value || '').toLowerCase().trim();
+                if (query) tracks = tracks.filter(t => t.song_title.toLowerCase().includes(query) || t.artist_name.toLowerCase().includes(query));
+                tracks = tracks.slice(0, 10); // max 10
+
+                const allSelected = tracks.every(t =>
+                    this.trendsSelectedTracks.some(s => s.song_title === t.song_title && s.artist_name === t.artist_name));
+
+                if (allSelected) {
+                    this.trendsSelectedTracks = this.trendsSelectedTracks.filter(s =>
+                        !tracks.some(t => t.song_title === s.song_title && t.artist_name === s.artist_name));
+                } else {
+                    tracks.forEach(t => {
+                        if (!this.trendsSelectedTracks.some(s => s.song_title === t.song_title && s.artist_name === t.artist_name)) {
+                            if (this.trendsSelectedTracks.length < 10) {
+                                this.trendsSelectedTracks.push({ song_title: t.song_title, artist_name: t.artist_name });
+                            }
+                        }
+                    });
+                }
+                this.renderTrendsTrackCheckboxes();
+                this.createTrendsTrackChart();
+                this.updateTrendsTrackStats();
+            }
+
+            setTrendsTrackDateRange(range) {
+                this.trendsTrackDateRange = range;
+                document.querySelectorAll('[data-ttrange]').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.ttrange === range);
+                });
+                this.createTrendsTrackChart();
+            }
+
+            updateTrendsTrackStats() {
+                const allTracks = this.getAvailableTracks();
+                document.getElementById('trendsTracksTracked').textContent = allTracks.length.toString();
+
+                if (allTracks.length > 0) {
+                    document.getElementById('trendsMostStreamed').textContent =
+                        `${allTracks[0].song_title} (${allTracks[0].total_streams.toLocaleString()})`;
+                }
+
+                // Fastest growing track (7D)
+                let fastest = { title: '-', growth: -Infinity };
+                allTracks.slice(0, 50).forEach(track => {
+                    const hist = this.getTrackHistoricalStreams(track.song_title, track.artist_name);
+                    if (hist.length >= 7) {
+                        const growth = hist[hist.length - 1].total_streams - hist[hist.length - 7].total_streams;
+                        if (growth > fastest.growth) fastest = { title: track.song_title, growth };
+                    }
+                });
+                document.getElementById('trendsFastestTrack').textContent = fastest.title !== '-'
+                    ? `${fastest.title} (+${fastest.growth.toLocaleString()})` : '-';
+
+                // Total streams of selected tracks
+                const selectedTotal = this.trendsSelectedTracks.reduce((sum, t) => {
+                    const match = allTracks.find(a => a.song_title === t.song_title && a.artist_name === t.artist_name);
+                    return sum + (match ? match.total_streams : 0);
+                }, 0);
+                document.getElementById('trendsSelectedStreams').textContent = selectedTotal > 0 ? selectedTotal.toLocaleString() : '-';
+            }
+
+            createTrendsTrackChart() {
+                const canvas = document.getElementById('trendsTrackChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+
+                if (this.charts.trendsTrack) {
+                    this.charts.trendsTrack.destroy();
+                    this.charts.trendsTrack = null;
+                }
+
+                if (this.trendsSelectedTracks.length === 0) return;
+
+                const dateFilter = this.getTrendsDateFilter(this.trendsTrackDateRange);
+                const datasets = [];
+                const trackColors = [
+                    '#60a5fa', '#f87171', '#34d399', '#fbbf24', '#a78bfa',
+                    '#fb923c', '#2dd4bf', '#ec4899', '#8b5cf6', '#22c55e'
+                ];
+
+                this.trendsSelectedTracks.forEach((track, i) => {
+                    let hist = this.getTrackHistoricalStreams(track.song_title, track.artist_name);
+                    if (dateFilter.start) {
+                        hist = hist.filter(d => d.data_date >= dateFilter.start);
+                    }
+                    if (hist.length === 0) return;
+                    const color = trackColors[i % trackColors.length];
+                    datasets.push({
+                        label: track.song_title + ' (' + track.artist_name + ')',
+                        data: hist.map(d => ({ x: d.data_date, y: d.total_streams })),
+                        borderColor: color,
+                        backgroundColor: color,
+                        borderWidth: 2,
+                        pointRadius: hist.length > 60 ? 0 : 2,
+                        pointHoverRadius: 4,
+                        fill: false,
+                        tension: 0.3
+                    });
+                });
+
+                if (datasets.length === 0) return;
+
+                const self = this;
+                this.charts.trendsTrack = new Chart(ctx, {
+                    type: 'line',
+                    data: { datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: {
+                                display: datasets.length <= 10,
+                                labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: { unit: 'day', tooltipFormat: 'MMM d, yyyy' },
+                                ticks: { color: '#6b7280', maxTicksLimit: 12, font: { size: 10 } },
+                                grid: { color: 'rgba(255,255,255,0.04)' }
+                            },
+                            y: {
+                                ticks: {
+                                    color: '#6b7280',
+                                    font: { size: 10 },
+                                    callback: function(val) { return self.formatNumber(val); }
+                                },
+                                grid: { color: 'rgba(255,255,255,0.06)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Summary Tab ---
+
+            renderTrendsSummary() {
+                const artists = this.getAvailableArtists();
+                const allTracks = this.getAvailableTracks();
+
+                // Build artist summary data
+                const artistSummary = [];
+                artists.forEach(artist => {
+                    const hist = this.getArtistHistoricalListeners(artist);
+                    if (hist.length === 0) return;
+                    const latest = hist[hist.length - 1].monthly_listeners;
+                    let change7 = null, change30 = null;
+                    if (hist.length >= 7) change7 = latest - hist[hist.length - 7].monthly_listeners;
+                    if (hist.length >= 30) change30 = latest - hist[hist.length - 30].monthly_listeners;
+                    artistSummary.push({
+                        name: artist,
+                        genre: this.artistGenreMap[artist] || '-',
+                        listeners: latest,
+                        change7,
+                        change30
+                    });
+                });
+                artistSummary.sort((a, b) => b.listeners - a.listeners);
+
+                // Build track summary data
+                const trackSummary = [];
+                allTracks.slice(0, 50).forEach(track => {
+                    const hist = this.getTrackHistoricalStreams(track.song_title, track.artist_name);
+                    let growth7 = null;
+                    if (hist.length >= 7) growth7 = hist[hist.length - 1].total_streams - hist[hist.length - 7].total_streams;
+                    trackSummary.push({
+                        title: track.song_title,
+                        artist: track.artist_name,
+                        streams: track.total_streams,
+                        growth7
+                    });
+                });
+
+                // Summary stats
+                if (artistSummary.length > 0) {
+                    document.getElementById('summaryHighestListeners').textContent =
+                        `${artistSummary[0].name} (${artistSummary[0].listeners.toLocaleString()})`;
+                }
+                if (allTracks.length > 0) {
+                    document.getElementById('summaryMostStreamed').textContent =
+                        `${allTracks[0].song_title} (${allTracks[0].total_streams.toLocaleString()})`;
+                }
+
+                const with30D = artistSummary.filter(a => a.change30 !== null);
+                const gainEl = document.getElementById('summaryBiggestGain');
+                const lossEl = document.getElementById('summaryBiggestLoss');
+                if (with30D.length > 0) {
+                    const biggestGain = with30D.reduce((best, a) => a.change30 > best.change30 ? a : best, with30D[0]);
+                    const biggestLoss = with30D.reduce((worst, a) => a.change30 < worst.change30 ? a : worst, with30D[0]);
+                    gainEl.textContent = `${biggestGain.name} (+${biggestGain.change30.toLocaleString()})`;
+                    gainEl.style.color = biggestGain.change30 > 0 ? '#34d399' : '#9ca3af';
+                    lossEl.textContent = `${biggestLoss.name} (${biggestLoss.change30.toLocaleString()})`;
+                    lossEl.style.color = biggestLoss.change30 < 0 ? '#f87171' : '#9ca3af';
+                } else {
+                    gainEl.textContent = '-';
+                    gainEl.style.color = '';
+                    lossEl.textContent = '-';
+                    lossEl.style.color = '';
+                }
+
+                // Top 20 artists table
+                const artistsBody = document.getElementById('summaryArtistsBody');
+                if (artistsBody) {
+                    artistsBody.innerHTML = artistSummary.slice(0, 20).map((a, i) => {
+                        const c7 = a.change7 !== null ? ((a.change7 >= 0 ? '+' : '') + a.change7.toLocaleString()) : '-';
+                        const c30 = a.change30 !== null ? ((a.change30 >= 0 ? '+' : '') + a.change30.toLocaleString()) : '-';
+                        const c7color = a.change7 > 0 ? '#34d399' : a.change7 < 0 ? '#f87171' : '#9ca3af';
+                        const c30color = a.change30 > 0 ? '#34d399' : a.change30 < 0 ? '#f87171' : '#9ca3af';
+                        return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
+                            <td style="padding:6px 8px; color:#6b7280;">${i + 1}</td>
+                            <td style="padding:6px 8px; color:#e5e7eb;">${a.name}</td>
+                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${a.genre}</td>
+                            <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${a.listeners.toLocaleString()}</td>
+                            <td style="padding:6px 8px; text-align:right; color:${c7color};">${c7}</td>
+                            <td style="padding:6px 8px; text-align:right; color:${c30color};">${c30}</td>
+                        </tr>`;
+                    }).join('');
+                }
+
+                // Top 20 tracks table
+                const tracksBody = document.getElementById('summaryTracksBody');
+                if (tracksBody) {
+                    tracksBody.innerHTML = trackSummary.slice(0, 20).map((t, i) => {
+                        const g7 = t.growth7 !== null ? ((t.growth7 >= 0 ? '+' : '') + t.growth7.toLocaleString()) : '-';
+                        const g7color = t.growth7 > 0 ? '#34d399' : t.growth7 < 0 ? '#f87171' : '#9ca3af';
+                        return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
+                            <td style="padding:6px 8px; color:#6b7280;">${i + 1}</td>
+                            <td style="padding:6px 8px; color:#e5e7eb;">${t.title}</td>
+                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${t.artist}</td>
+                            <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${t.streams.toLocaleString()}</td>
+                            <td style="padding:6px 8px; text-align:right; color:${g7color};">${g7}</td>
+                        </tr>`;
+                    }).join('');
+                }
+            }
+
             handleHashChange() {
                 const hash = window.location.hash;
 
@@ -7173,12 +8105,19 @@
                     if (!this.listenersViewOpen) {
                         this.openListenersDetail();
                     }
+                } else if (hash === '#trends') {
+                    if (!this.trendsViewOpen) {
+                        this.openTrendsView();
+                    }
                 } else {
                     if (this.currentSong) {
                         this.closeSongDetail();
                     }
                     if (this.listenersViewOpen) {
                         this.closeListenersDetail();
+                    }
+                    if (this.trendsViewOpen) {
+                        this.closeTrendsView();
                     }
                 }
             }
