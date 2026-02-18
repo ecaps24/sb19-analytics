@@ -132,7 +132,11 @@ X_HANDLES = {
 }
 
 # Number of top tracks to show per solo artist
-SOLO_TOP_N = 5
+SOLO_TOP_N = 3
+
+# X (Twitter) character limit (standard, non-Premium)
+X_CHAR_LIMIT = 280
+SITE_TAG = "opminsights.com"
 
 # Simula at Wakas album tracks
 ALBUM_TRACKS = [
@@ -191,6 +195,25 @@ def format_change(change, use_commas=True):
         if change > 0:
             return f"+{format_number(change)}"
         return format_number(change)
+
+
+def enforce_char_limit(message):
+    """Print a warning if message exceeds 280-character X limit. Returns message unchanged."""
+    char_count = len(message)
+    if char_count > X_CHAR_LIMIT:
+        print(f"[WARN] Post is {char_count} chars — EXCEEDS {X_CHAR_LIMIT} limit by {char_count - X_CHAR_LIMIT}!")
+    else:
+        print(f"[INFO] Post length: {char_count}/{X_CHAR_LIMIT} chars — OK")
+    return message
+
+
+def short_date(date_str):
+    """Convert YYYYMMDD or YYYY-MM-DD to short format like 'Feb 18'."""
+    cleaned = date_str.replace("-", "")[:8]
+    try:
+        return datetime.strptime(cleaned, "%Y%m%d").strftime("%b %d")
+    except ValueError:
+        return date_str
 
 
 def _resolve_solo_artist(name):
@@ -445,30 +468,21 @@ class SocialMediaAgent:
             except ValueError:
                 pass
 
-        if latest_date_str:
-            lines = [
-                f"A'TIN! Here's SB19's Monthly Listeners on Spotify as of {latest_date_str}. See full details at opminsights.com",
-                "",
-            ]
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(max(all_timestamps)[:8]) if all_timestamps else ""
+        if date_short:
+            message = (
+                f"SB19 Monthly Listeners on Spotify | {date_short}\n\n"
+                f"{SITE_TAG}\n"
+                f"#SB19 #OPM"
+            )
         else:
-            lines = [
-                "A'TIN! Here's SB19's Monthly Listeners on Spotify! See full details at opminsights.com",
-                "",
-            ]
-
-        for entry in latest_data:
-            handle = ""
-            for name, h in X_HANDLES.items():
-                if name.upper() == entry["artist"].upper():
-                    handle = h
-                    break
-            listener_str = format_with_commas(entry["listeners"])
-            change_str = f"({format_change(entry['change'])})"
-            lines.append(f"{entry['artist']} {handle}: {listener_str} {change_str}")
-
-        lines.append("")
-        lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
-        message = "\n".join(lines)
+            message = (
+                f"SB19 Monthly Listeners on Spotify\n\n"
+                f"{SITE_TAG}\n"
+                f"#SB19 #OPM"
+            )
+        enforce_char_limit(message)
 
         # Capture social card screenshot
         image_path = None
@@ -516,14 +530,25 @@ class SocialMediaAgent:
         except ValueError:
             date_formatted = today
 
+        # Compact format for 280-char limit
+        date_short = short_date(today)
         top = gains[:5]
-        lines = [f"SB19 Daily Stream Update - {date_formatted}", ""]
-        lines.append("Top Gainers:")
+        lines = [f"SB19 Top Gainers | {date_short}", ""]
         for i, g in enumerate(top, 1):
-            lines.append(f"{i}. {g['song']} ({g['artist']}): {format_change(g['change'], use_commas=False)}")
+            lines.append(f"{i}. {g['song']}: {format_change(g['change'], use_commas=False)}")
         lines.append("")
-        lines.append("#SB19 #SB19Spotify")
-        return "\n".join(lines)
+        lines.append(f"{SITE_TAG} #SB19")
+        message = "\n".join(lines)
+        # Safety: if over 280, reduce to 3 tracks
+        if len(message) > X_CHAR_LIMIT:
+            lines = [f"SB19 Top Gainers | {date_short}", ""]
+            for i, g in enumerate(gains[:3], 1):
+                lines.append(f"{i}. {g['song']}: {format_change(g['change'], use_commas=False)}")
+            lines.append("")
+            lines.append(f"{SITE_TAG} #SB19")
+            message = "\n".join(lines)
+        enforce_char_limit(message)
+        return message
 
     def generate_top10_post(self):
         """Top 10 SB19 group tracks by daily added streams with screenshot.
@@ -636,32 +661,16 @@ class SocialMediaAgent:
         # Total daily added across ALL SB19 group tracks
         total_added = sum(g["change"] for g in gains)
 
-        # Text post
-        lines = [
-            f"SB19 Top 10 Tracks by Daily Streams - {date_formatted}",
-            "opminsights.com",
-            "",
-        ]
-        for i, g in enumerate(top, 1):
-            # Rank indicator
-            rc = g["rank_change"]
-            if rc is not None and rc > 0:
-                rank_ind = f" (+{rc})"
-            elif rc is not None and rc < 0:
-                rank_ind = f" (-{abs(rc)})"
-            elif rc == 0 and g["streak"] > 1:
-                rank_ind = f" ({g['streak']}d)"
-            else:
-                rank_ind = ""
-            lines.append(
-                f"{i:>2}. {g['song']}: {format_change(g['change'], use_commas=False)} "
-                f"({format_number(g['streams'])} total){rank_ind}"
-            )
-        lines.append("")
-        lines.append(f"Total added: {format_change(total_added, use_commas=False)}")
-        lines.append("")
-        lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
-        message = "\n".join(lines)
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(today)
+        total_str_text = format_change(total_added, use_commas=False)
+        message = (
+            f"SB19 Top 10 Tracks by Daily Streams | {date_short}\n\n"
+            f"Total added: {total_str_text}\n\n"
+            f"{SITE_TAG}\n"
+            f"#SB19 #OPM"
+        )
+        enforce_char_limit(message)
 
         # Capture screenshot
         image_path = None
@@ -883,6 +892,22 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+.track-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #3b82f6;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -897,6 +922,7 @@ body {{
     </div>
     <div class="tracks">{track_rows}
     </div>
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -1179,6 +1205,22 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+.track-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #3b82f6;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -1193,6 +1235,7 @@ body {{
     </div>
     <div class="tracks">{track_rows}
     </div>
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -1372,31 +1415,16 @@ body {{
         # Total daily added across ALL solo tracks
         total_added = sum(g["change"] for g in gains)
 
-        # Text post
-        lines = [
-            f"SB19 Solo Top 10 Tracks by Daily Streams - {date_formatted}",
-            "opminsights.com",
-            "",
-        ]
-        for i, g in enumerate(top, 1):
-            rc = g["rank_change"]
-            if rc is not None and rc > 0:
-                rank_ind = f" (+{rc})"
-            elif rc is not None and rc < 0:
-                rank_ind = f" (-{abs(rc)})"
-            elif rc == 0 and g["streak"] > 1:
-                rank_ind = f" ({g['streak']}d)"
-            else:
-                rank_ind = ""
-            lines.append(
-                f"{i:>2}. {g['song']} ({g['artist']}): {format_change(g['change'], use_commas=False)} "
-                f"({format_number(g['streams'])} total){rank_ind}"
-            )
-        lines.append("")
-        lines.append(f"Total added: {format_change(total_added, use_commas=False)}")
-        lines.append("")
-        lines.append("#SB19 #SB19Spotify #PPop #ATIN #OPM")
-        message = "\n".join(lines)
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(today)
+        total_str_text = format_change(total_added, use_commas=False)
+        message = (
+            f"SB19 Solo Top 10 by Daily Streams | {date_short}\n\n"
+            f"Total added: {total_str_text}\n\n"
+            f"{SITE_TAG}\n"
+            f"#SB19 #OPM"
+        )
+        enforce_char_limit(message)
 
         # Capture screenshot
         image_path = None
@@ -1433,11 +1461,11 @@ body {{
                 if streams >= milestone and milestone_key not in posted_log.get("milestones", {}):
                     label = MILESTONE_LABELS.get(milestone, format_number(milestone))
                     msg = (
-                        f"MILESTONE ACHIEVED!\n\n"
-                        f"\"{song}\" by {artist} has surpassed {label} streams on Spotify!\n\n"
-                        f"Current streams: {format_number(streams)}\n\n"
-                        f"#SB19 #SB19Spotify #{artist.replace(' ', '')}"
+                        f"MILESTONE! \"{song}\" by {artist} surpassed {label} Spotify streams!\n\n"
+                        f"Now at {format_number(streams)}\n\n"
+                        f"{SITE_TAG} #SB19"
                     )
+                    enforce_char_limit(msg)
                     posts.append((msg, milestone_key))
         return posts
 
@@ -1476,12 +1504,12 @@ body {{
         posts = []
         for spike in spikes[:3]:
             msg = (
-                f"TRENDING!\n\n"
-                f"\"{spike['song']}\" by {spike['artist']} is on fire!\n\n"
-                f"+{format_number(spike['change'])} streams ({spike['pct']:.1f}% increase)\n\n"
+                f"TRENDING! \"{spike['song']}\" by {spike['artist']} "
+                f"+{format_number(spike['change'])} streams ({spike['pct']:.1f}%)\n\n"
                 f"Total: {format_number(spike['streams'])}\n\n"
-                f"#SB19 #SB19Spotify"
+                f"{SITE_TAG} #SB19"
             )
+            enforce_char_limit(msg)
             posts.append(msg)
         return posts
 
@@ -1571,43 +1599,18 @@ body {{
                 return f" ({diff})", diff
             return "", 0
 
-        # Build text post
-        lines = [
-            f"OPM Top 10 Artists by Monthly Listeners",
-            f"Spotify | {date_formatted}",
-            "opminsights.com",
-            "",
-        ]
-        for i, e in enumerate(top10, 1):
-            change_str = ""
-            prev_val = prev_map.get(e["artist"].lower())
-            if prev_val is not None:
-                diff = e["listeners"] - prev_val
-                if diff > 0:
-                    change_str = f" (+{format_with_commas(diff)})"
-                elif diff < 0:
-                    change_str = f" ({format_with_commas(diff)})"
-            rank_str, _ = _rank_indicator(e["artist"].lower(), i)
-            lines.append(f"{i:>2}. {e['artist']}: {format_with_commas(e['listeners'])}{change_str}{rank_str}")
-
-        if sb19_entry and sb19_rank:
-            lines.append("")
-            change_str = ""
-            prev_val = prev_map.get("sb19")
-            if prev_val is not None:
-                diff = sb19_entry["listeners"] - prev_val
-                if diff > 0:
-                    change_str = f" (+{format_with_commas(diff)})"
-                elif diff < 0:
-                    change_str = f" ({format_with_commas(diff)})"
-            rank_str, _ = _rank_indicator("sb19", sb19_rank)
-            lines.append(f"{sb19_rank}. SB19: {format_with_commas(sb19_entry['listeners'])}{change_str}{rank_str}")
-
-        lines.append("")
-        lines.append(f"Out of {len(ranked)} OPM artists tracked")
-        lines.append("")
-        lines.append("#OPM #OPMSpotify #PPop #SB19 #SpotifyPH")
-        message = "\n".join(lines)
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(latest_date)
+        sb19_line = ""
+        if sb19_rank:
+            sb19_line = f"\n\nSB19 ranked #{sb19_rank} out of {len(ranked)} artists"
+        message = (
+            f"OPM Top 10 Artists by Monthly Listeners | Spotify | {date_short}"
+            f"{sb19_line}\n\n"
+            f"{SITE_TAG}\n"
+            f"#OPM #SB19"
+        )
+        enforce_char_limit(message)
 
         # Build data for screenshot
         card_data = []
@@ -1942,6 +1945,22 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+.track-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #3b82f6;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -1957,6 +1976,7 @@ body {{
     <div class="tracks">{track_rows}
     </div>
     {sb19_row}
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -2110,32 +2130,15 @@ body {{
                 return f" ({diff})", diff
             return "", 0
 
-        # Build text post
-        lines = [
-            "P-Pop Top 10 Groups by Monthly Listeners",
-            f"Spotify | {date_formatted}",
-            "opminsights.com",
-            "",
-        ]
-        for i, e in enumerate(top10, 1):
-            key = e["artist"].lower()
-            change_str = ""
-            prev_val = prev_ppop_map.get(key)
-            if prev_val is not None:
-                diff = e["listeners"] - prev_val
-                if diff > 0:
-                    change_str = f" (+{format_with_commas(diff)})"
-                elif diff < 0:
-                    change_str = f" ({format_with_commas(diff)})"
-            rank_str, _ = _rank_ind(prev_ppop_rank_map, key, i)
-            lines.append(f"{i:>2}. {e['artist']}: {format_with_commas(e['listeners'])}{change_str}{rank_str}")
-
-        lines.append("")
-        lines.append(f"Out of {len(ppop_ranked)} P-Pop groups tracked")
-        lines.append("*SB19 solo artists excluded (see separate post)")
-        lines.append("")
-        lines.append("#PPop #PPopSpotify #SB19 #BINI #SpotifyPH")
-        message = "\n".join(lines)
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(latest_date)
+        message = (
+            f"P-Pop Top 10 Groups by Monthly Listeners | Spotify | {date_short}\n\n"
+            f"Out of {len(ppop_ranked)} P-Pop groups tracked\n\n"
+            f"{SITE_TAG}\n"
+            f"#PPop #SB19"
+        )
+        enforce_char_limit(message)
 
         # Build data for screenshot
         card_data = []
@@ -2456,6 +2459,22 @@ body {{
     font-style: italic;
     margin-bottom: 8px;
 }}
+.track-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #06b6d4;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -2471,6 +2490,7 @@ body {{
     <div class="tracks">{track_rows}
     </div>
     {solo_section}
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-note">*SB19 solo artists excluded (see separate post)</div>
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
@@ -2569,13 +2589,16 @@ body {{
 
         changes.sort(key=lambda x: x["listeners"], reverse=True)
 
-        lines = ["SB19 Weekly Listener Recap", ""]
+        # Compact format for 280-char limit
+        lines = ["SB19 Weekly Recap", ""]
         for c in changes:
             sign = "+" if c["change"] >= 0 else ""
             lines.append(f"{c['artist']}: {format_number(c['listeners'])} ({sign}{c['pct']:.1f}%)")
         lines.append("")
-        lines.append("#SB19 #SB19Spotify")
-        return "\n".join(lines)
+        lines.append(f"{SITE_TAG} #SB19")
+        message = "\n".join(lines)
+        enforce_char_limit(message)
+        return message
 
     def generate_solo_top_posts(self, top_n=None):
         """Generate one post per solo artist showing their top tracks with rank tenure.
@@ -2651,17 +2674,16 @@ body {{
 
                 rank_tenure[song] = streak
 
-            # Build post for this artist
+            # Build compact post for this artist (280-char limit)
             handle = X_HANDLES.get(artist, "")
+            date_short = short_date(latest_date)
             lines = [
-                f"{artist} {handle} Top Tracks on Spotify as of {date_display}",
+                f"{artist} {handle} Top Tracks | {date_short}",
                 "",
             ]
 
             for rank, (song, streams) in enumerate(latest_tracks[:top_n]):
                 streams_str = format_number(streams)
-                tenure = rank_tenure.get(song, 1)
-
                 # Daily change
                 prev_streams = prev_maps.get((song, artist))
                 if prev_streams is not None:
@@ -2669,20 +2691,30 @@ body {{
                     change_str = f" ({format_change(change, use_commas=False)})"
                 else:
                     change_str = ""
-
-                if tenure <= 1:
-                    tenure_str = "NEW"
-                else:
-                    tenure_str = f"{tenure}d at #{rank + 1}"
-
                 lines.append(
-                    f"{rank + 1}. {song}: {streams_str}{change_str} [{tenure_str}]"
+                    f"{rank + 1}. {song}: {streams_str}{change_str}"
                 )
 
             lines.append("")
-            lines.append(f"#SB19 #{artist.replace(' ', '')} #SB19Spotify #OPM")
-
-            posts.append((artist, "\n".join(lines)))
+            lines.append(f"{SITE_TAG} #SB19")
+            message = "\n".join(lines)
+            # Safety: if over 280, reduce to 2 tracks
+            if len(message) > X_CHAR_LIMIT:
+                lines = [f"{artist} {handle} Top Tracks | {date_short}", ""]
+                for rank, (song, streams) in enumerate(latest_tracks[:2]):
+                    streams_str = format_number(streams)
+                    prev_streams = prev_maps.get((song, artist))
+                    if prev_streams is not None:
+                        change = streams - prev_streams
+                        change_str = f" ({format_change(change, use_commas=False)})"
+                    else:
+                        change_str = ""
+                    lines.append(f"{rank + 1}. {song}: {streams_str}{change_str}")
+                lines.append("")
+                lines.append(f"{SITE_TAG} #SB19")
+                message = "\n".join(lines)
+            enforce_char_limit(message)
+            posts.append((artist, message))
 
         return posts
 
@@ -2744,12 +2776,14 @@ body {{
         total_str = format_with_commas(total_streams)
         change_str = format_change(total_change)
 
+        # Compact caption for 280-char limit (image carries the data)
+        date_short = short_date(date_str)
         message = (
-            f"SB19's Simula at Wakas Tour Kickoff Concert Album has now reached "
-            f"{total_str} total streams ({change_str}) as of {date_str}. "
-            f"See full details at opminsights.com\n\n"
-            f"#SB19 #SB19Spotify #SimulaAtWakas #PPop #ATIN #OPM"
+            f"SB19 Simula at Wakas Concert Album: {total_str} total streams ({change_str}) | {date_short}\n\n"
+            f"{SITE_TAG}\n"
+            f"#SB19 #SimulaAtWakas"
         )
+        enforce_char_limit(message)
 
         # Build per-track data sorted by streams descending
         track_list = []
@@ -2950,6 +2984,22 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+.track-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #3b82f6;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -2967,6 +3017,7 @@ body {{
     </div>
     <div class="tracks">{track_rows}
     </div>
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-text">As of {date_str} &middot; <span class="footer-site">opminsights.com</span></div>
     </div>
@@ -3216,6 +3267,22 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+.artist-row:nth-child(even) {{
+    filter: blur(3px);
+    opacity: 0.7;
+}}
+.cta-footer {{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}}
+.cta-footer span {{
+    color: #3b82f6;
+    font-weight: 700;
+}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
@@ -3224,6 +3291,7 @@ body {{
     </div>
     <div class="artists">{artist_rows}
     </div>
+    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -3315,12 +3383,17 @@ body {{
         print("SOCIAL MEDIA AGENT - POST PREVIEW")
         print("=" * 60)
 
+        def _char_status(msg):
+            n = len(msg)
+            status = "OK" if n <= X_CHAR_LIMIT else "OVER"
+            return f"[{n}/{X_CHAR_LIMIT} chars] {status}"
+
         # 1. Listeners
         print("\n--- MONTHLY LISTENERS ---")
         msg, img = self.generate_listeners_post()
         if msg:
             print(msg)
-            print(f"[{len(msg)} chars]")
+            print(_char_status(msg))
             if img:
                 print(f"[IMAGE] {img}")
         else:
@@ -3331,7 +3404,7 @@ body {{
         msg = self.generate_daily_post()
         if msg:
             print(msg)
-            print(f"[{len(msg)} chars]")
+            print(_char_status(msg))
         else:
             print("[SKIP] No data")
 
@@ -3340,7 +3413,7 @@ body {{
         msg, img = self.generate_top10_post()
         if msg:
             print(msg)
-            print(f"[{len(msg)} chars]")
+            print(_char_status(msg))
             if img:
                 print(f"[IMAGE] {img}")
         else:
@@ -3351,7 +3424,7 @@ body {{
         msg, img = self.generate_solo_top10_post()
         if msg:
             print(msg)
-            print(f"[{len(msg)} chars]")
+            print(_char_status(msg))
             if img:
                 print(f"[IMAGE] {img}")
         else:
@@ -3363,7 +3436,7 @@ body {{
         if milestone_posts:
             for m, key in milestone_posts:
                 print(m)
-                print(f"  key: {key}")
+                print(f"  {_char_status(m)} | key: {key}")
                 print()
         else:
             print("[SKIP] No new milestones")
@@ -3374,6 +3447,7 @@ body {{
         if spike_posts:
             for s in spike_posts:
                 print(s)
+                print(_char_status(s))
                 print()
         else:
             print("[SKIP] No significant spikes")
@@ -3383,7 +3457,7 @@ body {{
         msg = self.generate_weekly_post()
         if msg:
             print(msg)
-            print(f"[{len(msg)} chars]")
+            print(_char_status(msg))
         else:
             print("[SKIP] No data")
 
@@ -3393,7 +3467,7 @@ body {{
         if solo_posts:
             for artist, msg in solo_posts:
                 print(msg)
-                print(f"[{len(msg)} chars]")
+                print(_char_status(msg))
                 print()
         else:
             print("[SKIP] No data")
@@ -3403,7 +3477,7 @@ body {{
         album_msg, _ = self.generate_album_post()
         if album_msg:
             print(album_msg)
-            print(f"[{len(album_msg)} chars]")
+            print(_char_status(album_msg))
         else:
             print("[SKIP] No data")
 
@@ -3412,7 +3486,7 @@ body {{
         opm_msg, opm_img = self.generate_opm_top_post()
         if opm_msg:
             print(opm_msg)
-            print(f"[{len(opm_msg)} chars]")
+            print(_char_status(opm_msg))
             if opm_img:
                 print(f"[IMAGE] {opm_img}")
         else:
@@ -3423,7 +3497,7 @@ body {{
         ppop_msg, ppop_img = self.generate_ppop_top_post()
         if ppop_msg:
             print(ppop_msg)
-            print(f"[{len(ppop_msg)} chars]")
+            print(_char_status(ppop_msg))
             if ppop_img:
                 print(f"[IMAGE] {ppop_img}")
         else:
@@ -3519,8 +3593,8 @@ Examples:
     parser.add_argument("--no-profile", action="store_true", help="Don't use Edge user profile")
     parser.add_argument("--artist", type=str, metavar="NAME",
                         help="Solo artist to post for (solo-top command). E.g. PABLO, FELIP")
-    parser.add_argument("--top", type=int, default=5, metavar="N",
-                        help="Number of top tracks per artist (default: 5)")
+    parser.add_argument("--top", type=int, default=SOLO_TOP_N, metavar="N",
+                        help=f"Number of top tracks per artist (default: {SOLO_TOP_N})")
 
     return parser
 

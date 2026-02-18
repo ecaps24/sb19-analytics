@@ -227,8 +227,12 @@ class XBrowserPoster:
         print("-" * 60)
         print(message)
         print("-" * 60)
-        # X Premium allows up to 25,000 characters
-        print(f"[INFO] Character count: {len(message)}")
+        # Standard X limit: 280 characters
+        char_count = len(message)
+        if char_count > 280:
+            print(f"[WARN] Post is {char_count} chars - EXCEEDS 280 limit by {char_count - 280}!")
+        else:
+            print(f"[INFO] Character count: {char_count}/280")
 
         if dry_run:
             print("[DRY RUN] Post preview complete. Not sending.")
@@ -259,8 +263,8 @@ class XBrowserPoster:
 
             print("[INFO] Found compose textarea, entering text...")
 
-            # Click to focus
-            textarea.click()
+            # Click to focus (use JS click to bypass any overlay/mask)
+            self.driver.execute_script("arguments[0].click();", textarea)
             time.sleep(0.5)
 
             # Type the message with human-like delay
