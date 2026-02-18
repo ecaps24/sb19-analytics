@@ -1959,6 +1959,7 @@
             letter-spacing: 0.05em;
         }
         .tier-badge.tier-free { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .tier-badge.tier-daypass { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
         .tier-badge.tier-basic { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
         .tier-badge.tier-plus { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
         .tier-badge.tier-premium { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
@@ -2090,13 +2091,6 @@
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
         .gated-overlay .gated-cta.premium-cta:hover { box-shadow: 0 4px 12px rgba(245,158,11,0.4); }
-        .gated-overlay .gated-trial-link {
-            margin-top: 10px;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-        .gated-overlay .gated-trial-link:hover { text-decoration: underline; }
         .gated-overlay .gated-signin-link {
             margin-top: 10px;
             color: #60a5fa;
@@ -2142,6 +2136,7 @@
             transition: all 0.2s;
         }
         .upgrade-plan-card:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.05); }
+        .upgrade-plan-card.daypass:hover { border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.05); }
         .upgrade-plan-card.recommended { border-color: rgba(139,92,246,0.4); }
         .upgrade-plan-card .plan-name { color: #f9fafb; font-size: 1rem; font-weight: 600; }
         .upgrade-plan-card .plan-price { color: #60a5fa; font-size: 1.25rem; font-weight: 700; margin: 6px 0; }
@@ -2153,16 +2148,6 @@
         }
         .upgrade-plan-card .plan-features li::before { content: '✓ '; color: #34d399; }
         .upgrade-plan-card.recommended .plan-price { color: #a78bfa; }
-        .plan-trial-link {
-            display: inline-block;
-            margin-top: 10px;
-            color: #60a5fa;
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-        .plan-trial-link:hover { color: #93c5fd; }
         .export-btn {
             background: rgba(245,158,11,0.15);
             border: 1px solid rgba(245,158,11,0.3);
@@ -2293,6 +2278,19 @@
                 <h2 style="color: #f9fafb; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Upgrade Your Plan</h2>
                 <p style="color: #9ca3af; font-size: 0.85rem;">Unlock more analytics and insights</p>
                 <div class="upgrade-plans" style="flex-direction: row; flex-wrap: wrap;">
+                    <div class="upgrade-plan-card daypass" style="flex: 1; min-width: 180px; border-color: rgba(16,185,129,0.3);" onclick="window.authManager.activateDayPass()">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="plan-name">Day Pass</div>
+                            <span style="background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">FREE</span>
+                        </div>
+                        <div class="plan-price" style="color: #34d399;">₱0</div>
+                        <ul class="plan-features">
+                            <li>Full access for 1 day</li>
+                            <li>All Basic features unlocked</li>
+                            <li>No payment required</li>
+                        </ul>
+                        <span style="display:inline-block;margin-top:10px;color:#34d399;font-size:0.75rem;text-decoration:underline;text-underline-offset:2px;">Unlock for free →</span>
+                    </div>
                     <div class="upgrade-plan-card" style="flex: 1; min-width: 180px;" onclick="window.authManager.initiateUpgrade('basic')">
                         <div class="plan-name">Basic</div>
                         <div class="plan-price">₱49 / month</div>
@@ -2302,7 +2300,6 @@
                             <li>Top Tracks table with sorting</li>
                             <li>Solo Tracks table by member</li>
                         </ul>
-                        <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('basic')">Try free for 7 days</span>
                     </div>
                     <div class="upgrade-plan-card recommended" style="flex: 1; min-width: 180px;" onclick="window.authManager.initiateUpgrade('plus')">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -2316,7 +2313,6 @@
                             <li>Listeners detail view with cities</li>
                             <li>Drill-down into any track or artist</li>
                         </ul>
-                        <span class="plan-trial-link" onclick="event.stopPropagation(); window.authManager.activateTrial('plus')">Try free for 7 days</span>
                     </div>
                     <div class="upgrade-plan-card" style="flex: 1; min-width: 180px; border-color: rgba(245,158,11,0.3);" onclick="window.authManager.initiateUpgrade('premium')">
                         <div class="plan-name">Premium</div>
@@ -2966,7 +2962,7 @@
         const SUPABASE_URL = 'https://xqsifpdsueqgjjzlggms.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_P-0gey3lufEAp82uSU4h8A_DhSFxtIp';
 
-        const TIER_LEVELS = { guest: 0, free: 1, basic: 2, plus: 3, premium: 4 };
+        const TIER_LEVELS = { guest: 0, free: 1, daypass: 2, basic: 2, plus: 3, premium: 4 };
         const ADMIN_EMAIL = 'edwin.f.capidos@gmail.com';
 
         class AuthManager {
@@ -2986,6 +2982,8 @@
                         return;
                     }
                     this.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    // Clean up legacy global day pass key
+                    localStorage.removeItem('daypass_expires');
 
                     // Check existing session
                     const { data: { session } } = await this.supabase.auth.getSession();
@@ -2996,22 +2994,38 @@
 
                     // Listen for auth state changes
                     this.supabase.auth.onAuthStateChange(async (event, session) => {
-                        if (event === 'SIGNED_IN' && session) {
-                            this.user = session.user;
-                            await this.loadUserProfile();
-                            this.updateUIForUser();
-                            this.refreshDashboard();
-                        } else if (event === 'SIGNED_OUT') {
-                            this.user = null;
-                            this.profile = null;
-                            this.updateUIForUser();
-                            this.refreshDashboard();
+                        try {
+                            if (event === 'SIGNED_IN' && session) {
+                                this.user = session.user;
+                                await this.loadUserProfile();
+                                this.updateUIForUser();
+                                if (sessionStorage.getItem('pendingUpgrade')) {
+                                    sessionStorage.removeItem('pendingUpgrade');
+                                    this.showUpgradeModal();
+                                } else {
+                                    this.refreshDashboard();
+                                }
+                            } else if (event === 'SIGNED_OUT') {
+                                this.user = null;
+                                this.profile = null;
+                                this.updateUIForUser();
+                                this.refreshDashboard();
+                            }
+                        } catch (err) {
+                            console.error('[Auth] State change error:', err);
                         }
                     });
 
                     this.initialized = true;
                     this.updateUIForUser();
-                    this.refreshDashboard();
+
+                    // If user is already signed in and has a pending upgrade, show upgrade modal
+                    if (this.user && sessionStorage.getItem('pendingUpgrade')) {
+                        sessionStorage.removeItem('pendingUpgrade');
+                        this.showUpgradeModal();
+                    } else {
+                        this.refreshDashboard();
+                    }
 
                     // Handle payment return from PayMongo
                     const urlParams = new URLSearchParams(window.location.search);
@@ -3042,6 +3056,19 @@
                         const msg = urlParams.get('msg') || 'Unknown error';
                         const friendlyMsg = msg === 'already_used' ? 'You have already used your free trial.' : 'Trial error: ' + msg;
                         this.showToast(friendlyMsg, 'error');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    }
+
+                    // Handle day pass return
+                    if (urlParams.get('daypass') === 'success') {
+                        if (this.user) await this.loadUserProfile();
+                        this.updateUIForUser();
+                        this.refreshDashboard();
+                        this.showToast('Day Pass activated! You have 24-hour access.', 'success');
+                        window.history.replaceState({}, '', window.location.pathname);
+                    } else if (urlParams.get('daypass') === 'error') {
+                        const msg = urlParams.get('msg') || 'Unknown error';
+                        this.showToast('Day Pass error: ' + msg, 'error');
                         window.history.replaceState({}, '', window.location.pathname);
                     }
                 } catch (err) {
@@ -3075,13 +3102,17 @@
             }
 
             getUserTier() {
+                return this._getBaseTier();
+            }
+
+            _getBaseTier() {
                 if (!this.user) return 'guest';
                 if (!this.profile) return 'free';
                 if (this.isAdmin()) return 'premium';
                 const tier = this.profile.subscription_tier || 'free';
                 const status = this.profile.subscription_status;
                 const expires = this.profile.subscription_expires_at;
-                if (['basic', 'plus', 'premium'].includes(tier) && status === 'active') {
+                if (['daypass', 'basic', 'plus', 'premium'].includes(tier) && status === 'active') {
                     if (expires && new Date(expires) < new Date()) return 'free';
                     return tier;
                 }
@@ -3117,8 +3148,12 @@
 
             async signOut() {
                 if (!this.supabase) return;
+                const userId = this.user?.id;
                 const { error } = await this.supabase.auth.signOut();
                 if (error) throw error;
+                // Clean up legacy localStorage day pass keys
+                if (userId) localStorage.removeItem(`daypass_expires_${userId}`);
+                localStorage.removeItem('daypass_expires');
                 this.user = null;
                 this.profile = null;
                 this.updateUIForUser();
@@ -3180,7 +3215,7 @@
                         tierBadge.textContent = 'Admin';
                     } else {
                         tierBadge.className = 'tier-badge tier-' + tier;
-                        tierBadge.textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+                        tierBadge.textContent = tier === 'daypass' ? 'Day Pass' : tier.charAt(0).toUpperCase() + tier.slice(1);
                     }
 
                     // Hide upgrade option for admins
@@ -3221,21 +3256,22 @@
                 }
             }
 
-            async activateTrial(tier) {
-                if (!this.supabase || !this.user) {
-                    this.showAuthModal('signup');
+            async activateDayPass() {
+                if (!this.user) {
+                    sessionStorage.setItem('pendingUpgrade', 'true');
+                    this.showAuthModal('signin');
                     return;
                 }
                 try {
                     const { data: { session } } = await this.supabase.auth.getSession();
                     if (!session) throw new Error('Session expired. Please sign in again.');
-                    const trialUrl = `${SUPABASE_URL}/functions/v1/activate-trial?tier=${tier}&token=${session.access_token}`;
                     document.getElementById('upgradeModal').classList.remove('active');
-                    this.showToast('Activating your free trial...', 'info');
-                    window.location.href = trialUrl;
+                    this.showToast('Activating Day Pass...', 'info');
+                    window.open('https://www.lazada.com.ph/products/pdp-i1268578300-s4583964880.html?spm=a2o4l.pdp_revamp.0.0.52c2c65fCmboNr&promotionId=900000077656007', '_blank');
+                    window.location.href = `${SUPABASE_URL}/functions/v1/activate-daypass?token=${session.access_token}`;
                 } catch (err) {
-                    console.error('[Trial] Error:', err);
-                    this.showToast('Trial error: ' + (err.message || err), 'error');
+                    console.error('[DayPass] Error:', err);
+                    this.showToast('Could not activate Day Pass: ' + (err.message || err), 'error');
                 }
             }
 
@@ -3291,8 +3327,20 @@
             btn.textContent = 'Signing in...';
 
             try {
-                await window.authManager.signIn(email, password);
+                const data = await window.authManager.signIn(email, password);
+                // Set user immediately so UI updates even if onAuthStateChange is delayed
+                if (data.session) {
+                    window.authManager.user = data.session.user;
+                    await window.authManager.loadUserProfile();
+                }
                 window.authManager.hideAuthModal();
+                window.authManager.updateUIForUser();
+                if (sessionStorage.getItem('pendingUpgrade')) {
+                    sessionStorage.removeItem('pendingUpgrade');
+                    window.authManager.showUpgradeModal();
+                } else {
+                    window.authManager.refreshDashboard();
+                }
             } catch (err) {
                 errorEl.textContent = err.message || 'Sign in failed';
                 errorEl.classList.add('visible');
@@ -3319,7 +3367,7 @@
                 const data = await window.authManager.signUp(email, password, fullName);
                 if (data.user && !data.session) {
                     // Email confirmation required
-                    successEl.textContent = 'Account created! Check your email for a confirmation link.';
+                    successEl.textContent = 'Account created! Check your email to confirm, then sign in to unlock.';
                     successEl.classList.add('visible');
                 } else {
                     // Auto-confirmed
@@ -6579,6 +6627,7 @@
             }
 
             // ==================== Content Gating ====================
+
             applyAlbumChartGating(am) {
                 const chart = this.charts.album;
                 const section = document.getElementById('albumChartSection');
@@ -6630,7 +6679,7 @@
                     display:flex;align-items:flex-start;justify-content:center;padding-top:10px;z-index:5;
                     pointer-events:none;border-radius:inherit;`;
                 overlay.innerHTML = `<span style="color:#9ca3af;font-size:0.72rem;pointer-events:auto;cursor:pointer;"
-                    onclick="window.authManager.showUpgradeModal()">+ ${hiddenCount} more albums — <span style="color:#60a5fa;">Upgrade to Basic</span> or <span style="color:#60a5fa;" onclick="event.stopPropagation();window.authManager.activateTrial('basic')">try free for 7 days</span></span>`;
+                    onclick="window.authManager.activateDayPass()">+ ${hiddenCount} more albums — <span style="color:#60a5fa;">Unlock for free</span></span>`;
 
                 // Make the chart container position relative for overlay
                 const container = section.querySelector('.chart-container');
@@ -6642,7 +6691,33 @@
 
             applyContentGating() {
                 const am = window.authManager;
-                if (!am || !am.initialized) return;
+
+                // If authManager isn't ready yet, gate everything by default
+                if (!am || !am.initialized) {
+                    const defaultGating = [
+                        { selector: '#kickoffChartSection', label: 'Concert Chart', desc: 'Tour kickoff concert album streams' },
+                        { selector: '#memberChartSection', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
+                        { selector: '#topTracksSection', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
+                        { selector: '#memberTracksSection', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
+                    ];
+                    defaultGating.forEach(({ selector, label, desc }) => {
+                        const el = document.querySelector(selector);
+                        if (!el || el.querySelector('.gated-overlay')) return;
+                        el.classList.add('gated-content');
+                        Array.from(el.children).forEach(child => child.classList.add('gated-blur'));
+                        const overlay = document.createElement('div');
+                        overlay.className = 'gated-overlay';
+                        overlay.innerHTML = `
+                            <div class="gated-lock">🔒</div>
+                            <div class="gated-title">${label}</div>
+                            <div class="gated-desc">${desc}</div>
+                            <button class="gated-cta" onclick="window.authManager ? window.authManager.activateDayPass() : sessionStorage.setItem('pendingUpgrade','true')">Unlock for free</button>
+                        `;
+                        el.appendChild(overlay);
+                    });
+                    document.querySelectorAll('.export-btn').forEach(b => b.style.display = 'none');
+                    return;
+                }
 
                 // Admin bypass — remove all gating and show export buttons
                 if (am.isAdmin()) {
@@ -6686,22 +6761,13 @@
                         // Blur content children (but not the overlay we're about to add)
                         Array.from(el.children).forEach(child => child.classList.add('gated-blur'));
 
-                        const ctaClass = requiredTier === 'premium' ? 'premium-cta' : requiredTier === 'plus' ? 'plus-cta' : '';
-                        const tierLabel = requiredTier.charAt(0).toUpperCase() + requiredTier.slice(1);
-                        const hasTrial = requiredTier === 'basic' || requiredTier === 'plus';
-
                         const overlay = document.createElement('div');
                         overlay.className = 'gated-overlay';
                         overlay.innerHTML = `
                             <div class="gated-lock">🔒</div>
                             <div class="gated-title">${label}</div>
                             <div class="gated-desc">${desc}</div>
-                            ${am.user
-                                ? `<button class="gated-cta ${ctaClass}" onclick="window.authManager.showUpgradeModal()">Upgrade to ${tierLabel}</button>
-                                   ${hasTrial ? `<div class="gated-trial-link" onclick="window.authManager.activateTrial('${requiredTier}')">or try free for 7 days</div>` : ''}`
-                                : `<button class="gated-cta" onclick="window.authManager.showAuthModal('signup')">Sign Up to Unlock</button>
-                                   <div class="gated-signin-link" onclick="window.authManager.showAuthModal('signin')">Already have an account? Sign in</div>`
-                            }
+                            <button class="gated-cta" onclick="window.authManager.activateDayPass()">Unlock for free</button>
                         `;
                         el.appendChild(overlay);
                     }
