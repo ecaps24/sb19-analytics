@@ -455,6 +455,71 @@
             backdrop-filter: blur(10px);
         }
 
+        /* VISA Single Hero Card */
+        .visa-hero-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 290px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .visa-hero-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .visa-hero-bg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35);
+        }
+        .visa-hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.85) 100%);
+        }
+        .visa-hero-content {
+            position: relative; z-index: 1;
+            height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+        }
+        .visa-badge {
+            background: rgba(59,130,246,0.85);
+            color: #fff; font-size: 0.65rem; font-weight: 700;
+            padding: 3px 10px; border-radius: 999px;
+            letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+        .visa-title {
+            font-size: 2.5rem; font-weight: 800; color: #fff;
+            letter-spacing: 2px; line-height: 1;
+        }
+        .visa-artist {
+            font-size: 0.95rem; color: rgba(255,255,255,0.7);
+            font-weight: 500; margin-top: 4px;
+        }
+        .visa-streams {
+            font-size: 2rem; font-weight: 700; color: #60a5fa;
+            margin-top: 14px;
+        }
+        .visa-streams.coming-soon {
+            font-size: 1rem; color: rgba(255,255,255,0.5);
+        }
+        .visa-change {
+            font-size: 0.85rem; color: #34d399; font-weight: 600;
+            margin-top: 2px;
+        }
+        .visa-spotify-link {
+            display: inline-block; margin-top: 12px;
+            background: rgba(30,215,96,0.85); color: #fff;
+            font-size: 0.8rem; font-weight: 600;
+            padding: 6px 16px; border-radius: 999px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .visa-spotify-link:hover { background: rgba(30,215,96,1); }
+
         .chart-title {
             font-size: 1rem;
             margin-bottom: 12px;
@@ -1344,10 +1409,9 @@
                 min-width: 120px;
             }
 
-            #showAllKickoffBtn {
-                padding: 6px 12px;
-                font-size: 0.7rem;
-            }
+            .visa-hero-card { height: 260px; }
+            .visa-title { font-size: 2rem; }
+            .visa-streams { font-size: 1.6rem; }
 
             .trends-summary-tables {
                 grid-template-columns: 1fr;
@@ -1358,6 +1422,14 @@
             .trends-tab-btn {
                 padding: 8px 12px;
                 font-size: 0.78rem;
+            }
+
+            .artist-pills-panel {
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .artist-pills-controls input {
+                width: 100px;
             }
 
         }
@@ -1444,10 +1516,6 @@
                 height: 200px;
             }
 
-            #kickoffChartWrapper {
-                height: 200px !important;
-            }
-
             .section-title {
                 font-size: 0.85rem;
                 padding: 8px 10px;
@@ -1518,12 +1586,10 @@
                 max-height: 350px !important;
             }
 
-            #showAllKickoffBtn {
-                bottom: 4px;
-                right: 4px;
-                padding: 4px 8px;
-                font-size: 0.65rem;
-            }
+            .visa-hero-card { height: 230px; }
+            .visa-title { font-size: 1.6rem; }
+            .visa-streams { font-size: 1.3rem; }
+            .visa-badge { font-size: 0.6rem; }
 
             /* Touch-friendly tap targets */
             .clickable-track {
@@ -1605,6 +1671,27 @@
             .ps-service-link {
                 padding: 5px 10px;
                 font-size: 0.7rem;
+            }
+
+            .artist-pills-panel {
+                padding: 6px 8px;
+                gap: 6px;
+            }
+            .artist-pills-controls {
+                gap: 4px;
+            }
+            .artist-pills-controls input {
+                width: 80px;
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+            .artist-pills-controls select {
+                padding: 4px 6px;
+                font-size: 0.75rem;
+            }
+            .artist-pill {
+                padding: 4px 10px;
+                font-size: 0.72rem;
             }
 
         }
@@ -1770,6 +1857,112 @@
             height: 1px;
             background: rgba(255,255,255,0.06);
             margin: 4px 12px;
+        }
+
+        /* ========== Artist Pills Panel ========== */
+        .artist-pills-panel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+        .artist-pills-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .artist-pills-controls input {
+            width: 130px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #e5e7eb;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            outline: none;
+        }
+        .artist-pills-controls input:focus {
+            border-color: rgba(96,165,250,0.5);
+        }
+        .artist-pills-controls input::placeholder {
+            color: #6b7280;
+        }
+        .artist-pills-controls select {
+            background: #111827;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #e5e7eb;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .artist-pills-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .artist-pills-scroll {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            flex: 1;
+            padding: 2px 0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .artist-pills-scroll::-webkit-scrollbar {
+            height: 3px;
+        }
+        .artist-pills-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .artist-pills-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.12);
+            border-radius: 2px;
+        }
+        .artist-pills-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .artist-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #d1d5db;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .artist-pill:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+        .artist-pill.active {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: rgba(96, 165, 250, 0.5);
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        .artist-pill .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4b5563;
+            flex-shrink: 0;
+        }
+        .artist-pill .pill-dot.has-tracks {
+            background: #10b981;
         }
 
         /* ========== Auth Modal ========== */
@@ -2417,7 +2610,19 @@
                 </div>
             </div>
 
-            <!-- Charts Row: Album/Era Chart + Tour Kickoff Tracks Chart + Solo Streams -->
+            <!-- Artist Pills Panel -->
+            <div class="artist-pills-panel" id="artistPillsPanel">
+                <div class="artist-pills-controls">
+                    <input type="text" id="artistPillSearch" placeholder="Search artists..." autocomplete="off">
+                    <select id="artistPillGenre">
+                        <option value="">All Genres</option>
+                    </select>
+                </div>
+                <div class="artist-pills-divider"></div>
+                <div class="artist-pills-scroll" id="artistPillsScroll"></div>
+            </div>
+
+            <!-- Charts Row: Album/Era Chart + VISA Single Card + Solo Streams -->
             <div class="charts-row" id="mainChartsRow" style="align-items: flex-start;">
                 <!-- Album/Era Chart -->
                 <div class="chart-half" id="albumChartSection" style="flex: 1;">
@@ -2429,17 +2634,23 @@
                     </div>
                 </div>
 
-                <!-- Tour Kickoff Tracks Chart -->
-                <div class="chart-half" id="kickoffChartSection" style="flex: 1;">
-                    <div class="chart-container" style="margin-bottom: 0; position: relative;">
-                        <div class="chart-title" id="kickoffChartTitle" style="cursor: pointer;" onclick="window.dashboard.filterToKickoffAlbum()">Simula at Wakas Tour Kickoff Concert Album</div>
-                        <div class="chart-wrapper" id="kickoffChartWrapper" style="height: 250px;">
-                            <canvas id="kickoffTracksChart"></canvas>
+                <!-- VISA Single Hero Card -->
+                <div class="chart-half" id="visaCardSection" style="flex: 1;">
+                    <div class="visa-hero-card" onclick="window.dashboard.filterToVisa()">
+                        <img src="photos/visa.png" class="visa-hero-bg" alt="VISA artwork" />
+                        <div class="visa-hero-overlay"></div>
+                        <div class="visa-hero-content">
+                            <span class="visa-badge">NEW SINGLE</span>
+                            <div class="visa-title">VISA</div>
+                            <div class="visa-artist">SB19</div>
+                            <div class="visa-streams" id="visaStreamCount">Streams Coming Soon</div>
+                            <div class="visa-change" id="visaStreamChange"></div>
+                            <a href="https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7"
+                               target="_blank" rel="noopener" class="visa-spotify-link"
+                               onclick="event.stopPropagation();">
+                                Play on Spotify
+                            </a>
                         </div>
-                        <button id="showAllKickoffBtn" onclick="window.dashboard.toggleShowAllKickoff()"
-                            style="position: absolute; bottom: 8px; right: 8px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">
-                            Show All
-                        </button>
                     </div>
                 </div>
 
@@ -3442,7 +3653,6 @@
                 this.albumFilter = null; // For filtering tracks by album
                 this.trackFilter = null; // For filtering to a specific track
                 this.memberFilter = null; // For filtering tracks by member
-                this.showAllKickoff = false; // For showing all kickoff tracks
                 this.sortColumn = 'change'; // Default sort by change (added streams)
                 this.sortDirection = 'desc'; // Default descending
                 this.memberSortColumn = 'change'; // Default sort for member tracks
@@ -3494,231 +3704,294 @@
                         tracksCsvFile: './tracks.csv',
                         mainAlbums: ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'],
                         hasMemberBreakdown: true,
-                        hasKickoffChart: true
+                        hasVisaCard: true
                     },
                     'BINI': {
                         ath: null,
                         tracksCsvFile: './bini_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'Cup of Joe': {
                         ath: null,
                         tracksCsvFile: './cup_of_joe_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'BGYO': {
                         ath: null,
                         tracksCsvFile: './bgyo_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     '4th Impact': {
                         ath: null,
                         tracksCsvFile: './4th_impact_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'ALAMAT': {
                         ath: null,
                         tracksCsvFile: './alamat_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'HORI7ON': {
                         ath: null,
                         tracksCsvFile: './hori7on_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'MNL48': {
                         ath: null,
                         tracksCsvFile: './mnl48_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'Press Hit Play': {
                         ath: null,
                         tracksCsvFile: './press_hit_play_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'PPOP Generation': {
                         ath: null,
                         tracksCsvFile: './ppop_generation_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'G22': {
                         ath: null,
                         tracksCsvFile: './g22_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'VXON': {
                         ath: null,
                         tracksCsvFile: './vxon_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     '1st.One': {
                         ath: null,
                         tracksCsvFile: './1st_one_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'KAIA': {
                         ath: null,
                         tracksCsvFile: './kaia_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'DIONE': {
                         ath: null,
                         tracksCsvFile: './dione_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'FINIX': {
                         ath: null,
                         tracksCsvFile: './finix_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'YGIG': {
                         ath: null,
                         tracksCsvFile: './ygig_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'GAT': {
                         ath: null,
                         tracksCsvFile: './gat_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'AJAA': {
                         ath: null,
                         tracksCsvFile: './ajaa_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'Pix!e': {
                         ath: null,
                         tracksCsvFile: './pixie_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'New:ID': {
                         ath: null,
                         tracksCsvFile: './newid_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'CALISTA': {
                         ath: null,
                         tracksCsvFile: './calista_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'Raya': {
                         ath: null,
                         tracksCsvFile: './raya_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     '1621': {
                         ath: null,
                         tracksCsvFile: './1621_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'Cloud 7': {
                         ath: null,
                         tracksCsvFile: './cloud_7_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'VVINK': {
                         ath: null,
                         tracksCsvFile: './vvink_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'YARA': {
                         ath: null,
                         tracksCsvFile: './yara_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     '6ENSE': {
                         ath: null,
                         tracksCsvFile: './6ense_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'BILIB': {
                         ath: null,
                         tracksCsvFile: './bilib_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'SY\u2022NC': {
                         ath: null,
                         tracksCsvFile: './sync_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'ASTER': {
                         ath: null,
                         tracksCsvFile: './aster_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'DAYDREAM': {
                         ath: null,
                         tracksCsvFile: './daydream_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
                     },
                     'DESTINI': {
                         ath: null,
                         tracksCsvFile: './destini_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
-                        hasKickoffChart: false
+                        hasVisaCard: false
+                    },
+                    'Arthur Nery': {
+                        ath: null,
+                        tracksCsvFile: './arthur_nery_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'fitterkarma': {
+                        ath: null,
+                        tracksCsvFile: './fitterkarma_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'December Avenue': {
+                        ath: null,
+                        tracksCsvFile: './december_avenue_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'IV of Spades': {
+                        ath: null,
+                        tracksCsvFile: './iv_of_spades_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'Rob Deniel': {
+                        ath: null,
+                        tracksCsvFile: './rob_deniel_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'Ben&Ben': {
+                        ath: null,
+                        tracksCsvFile: './ben_ben_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'Up Dharma Down': {
+                        ath: null,
+                        tracksCsvFile: './up_dharma_down_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'Soapdish': {
+                        ath: null,
+                        tracksCsvFile: './soapdish_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
+                    },
+                    'Earl Agustin': {
+                        ath: null,
+                        tracksCsvFile: './earl_agustin_tracks.csv',
+                        mainAlbums: [],
+                        hasMemberBreakdown: false,
+                        hasVisaCard: false
                     }
                 };
                 this.init();
@@ -3778,6 +4051,7 @@
                     await this.loadSongMetadata();
                     this.setupEventListeners();
                     this.populateDatePicker();
+                    this.populateArtistPills();
                     this.render();
                     this.showDashboard();
                     this.handleHashChange();
@@ -4246,6 +4520,16 @@
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') this.closeArtistDropdown();
                 });
+
+                // Artist pills panel: search and genre filter
+                const pillSearch = document.getElementById('artistPillSearch');
+                if (pillSearch) {
+                    pillSearch.addEventListener('input', () => this.populateArtistPills());
+                }
+                const pillGenre = document.getElementById('artistPillGenre');
+                if (pillGenre) {
+                    pillGenre.addEventListener('change', () => this.populateArtistPills());
+                }
             }
 
             updateSortIcons() {
@@ -4766,8 +5050,8 @@
                     this.createAlbumChart();
                 }
 
-                if (config && config.hasKickoffChart) {
-                    this.createKickoffTracksChart();
+                if (config && config.hasVisaCard) {
+                    this.renderVisaCard();
                 }
                 if (config && config.hasMemberBreakdown) {
                     this.createMemberChart();
@@ -4892,7 +5176,7 @@
                 const hasTracks = this.artistsWithTracks.has(this.selectedArtist);
                 const isSB19 = this.selectedArtist === 'SB19';
                 const config = this.artistConfig[this.selectedArtist];
-                const hasKickoff = config && config.hasKickoffChart;
+                const hasVisaCard = config && config.hasVisaCard;
                 const hasMember = config && config.hasMemberBreakdown;
 
                 // Stat cards 3-6
@@ -4906,8 +5190,8 @@
                 const albumEl = document.getElementById('albumChartSection');
                 if (albumEl) albumEl.style.display = hasTracks ? '' : 'none';
 
-                const kickoffEl = document.getElementById('kickoffChartSection');
-                if (kickoffEl) kickoffEl.style.display = hasKickoff ? '' : 'none';
+                const visaEl = document.getElementById('visaCardSection');
+                if (visaEl) visaEl.style.display = hasVisaCard ? '' : 'none';
 
                 const memberEl = document.getElementById('memberChartSection');
                 if (memberEl) memberEl.style.display = hasMember ? '' : 'none';
@@ -5012,6 +5296,84 @@
                 });
             }
 
+            populateArtistPills() {
+                const container = document.getElementById('artistPillsScroll');
+                const genreSelect = document.getElementById('artistPillGenre');
+                const searchInput = document.getElementById('artistPillSearch');
+                if (!container) return;
+
+                const filter = (searchInput ? searchInput.value : '').toLowerCase();
+                const genre = genreSelect ? genreSelect.value : '';
+                const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+                // Populate genre dropdown if empty (beyond the default option)
+                if (genreSelect && genreSelect.options.length <= 1 && Object.keys(this.artistGenreMap).length > 0) {
+                    const genres = [...new Set(Object.values(this.artistGenreMap))].sort();
+                    genres.forEach(g => {
+                        const opt = document.createElement('option');
+                        opt.value = g;
+                        opt.textContent = g;
+                        genreSelect.appendChild(opt);
+                    });
+                }
+
+                // Collect all unique artist names
+                const allArtists = [...new Set(this.listenersData.map(d => d.artist_name))].filter(Boolean);
+
+                // Categorize
+                const withTracks = [];
+                const listenersOnly = [];
+                allArtists.forEach(name => {
+                    if (name === 'SB19') return;
+                    if (filter && !name.toLowerCase().includes(filter)) return;
+                    if (genre && this.artistGenreMap[name] !== genre) return;
+                    if (this.artistsWithTracks.has(name) || this.artistConfig[name]) {
+                        withTracks.push(name);
+                    } else {
+                        listenersOnly.push(name);
+                    }
+                });
+                withTracks.sort((a, b) => a.localeCompare(b));
+                listenersOnly.sort((a, b) => a.localeCompare(b));
+
+                let html = '';
+
+                // SB19 always first
+                const sb19Genre = this.artistGenreMap['SB19'] || 'P-Pop';
+                if ((!filter || 'sb19'.includes(filter)) && (!genre || genre === sb19Genre)) {
+                    const isActive = this.selectedArtist === 'SB19' ? ' active' : '';
+                    html += `<div class="artist-pill${isActive}" data-artist="SB19"><span class="pill-dot has-tracks"></span>SB19</div>`;
+                }
+
+                // Artists with tracks
+                withTracks.forEach(name => {
+                    const isActive = this.selectedArtist === name ? ' active' : '';
+                    const hasTracks = this.artistsWithTracks.has(name) || this.allTracksMetadata[name];
+                    html += `<div class="artist-pill${isActive}" data-artist="${esc(name)}"><span class="pill-dot${hasTracks ? ' has-tracks' : ''}"></span>${esc(name)}</div>`;
+                });
+
+                // Listeners-only artists
+                listenersOnly.forEach(name => {
+                    const isActive = this.selectedArtist === name ? ' active' : '';
+                    html += `<div class="artist-pill${isActive}" data-artist="${esc(name)}"><span class="pill-dot"></span>${esc(name)}</div>`;
+                });
+
+                container.innerHTML = html || '<span style="color: #6b7280; font-size: 0.8rem; padding: 4px 8px;">No artists found</span>';
+
+                // Click handlers
+                container.querySelectorAll('.artist-pill').forEach(pill => {
+                    pill.addEventListener('click', () => {
+                        this.selectArtist(pill.dataset.artist);
+                    });
+                });
+
+                // Scroll active pill into view
+                const activePill = container.querySelector('.artist-pill.active');
+                if (activePill) {
+                    activePill.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+                }
+            }
+
             selectArtist(name) {
                 if (name === this.selectedArtist) {
                     this.closeArtistDropdown();
@@ -5031,6 +5393,7 @@
                 this.closeArtistDropdown();
                 this.updateArtistHash();
                 this.populateDatePicker();
+                this.populateArtistPills();
                 this.render();
             }
 
@@ -5193,7 +5556,7 @@
                 // Update sort icons
                 this.updateSortIcons();
 
-                // Apply track filter if set (specific track from kickoff chart)
+                // Apply track filter if set (specific track from VISA card or chart click)
                 if (this.trackFilter) {
                     latestStreams = latestStreams.filter(track => track.song_title === this.trackFilter);
                 }
@@ -5668,253 +6031,49 @@
                 if (am && am.initialized) this.applyAlbumChartGating(am);
             }
 
-            createKickoffTracksChart() {
+            renderVisaCard() {
                 if (this.selectedArtist !== 'SB19') return;
-                const ctx = document.getElementById('kickoffTracksChart').getContext('2d');
                 const latestStreams = this.getLatestStreams();
                 const { changes: periodChanges } = this.getPeriodChange();
 
-                // Filter tracks from Tour Kickoff album
-                const kickoffTracks = latestStreams.filter(track => {
-                    const title = track.song_title || '';
-                    return title.includes('(Simula at Wakas Tour Kickoff)');
-                });
+                const visaTrack = latestStreams.find(t => t.song_title === 'VISA');
+                const streamEl = document.getElementById('visaStreamCount');
+                const changeEl = document.getElementById('visaStreamChange');
 
-                // Sort by streams descending
-                const allSortedTracks = kickoffTracks.sort((a, b) => b.total_streams - a.total_streams);
-
-                // Show all or top 8 based on state
-                const sortedTracks = this.showAllKickoff ? allSortedTracks : allSortedTracks.slice(0, 8);
-                const trackCount = sortedTracks.length;
-
-                // Adjust chart height based on number of tracks (mobile-aware)
-                const chartWrapper = document.getElementById('kickoffChartWrapper');
-                const isMobile = window.innerWidth <= 480;
-                if (this.showAllKickoff) {
-                    const rowHeight = isMobile ? 18 : 22;
-                    const minHeight = isMobile ? 300 : 400;
-                    chartWrapper.style.height = `${Math.max(minHeight, trackCount * rowHeight)}px`;
+                if (visaTrack && visaTrack.total_streams > 0) {
+                    streamEl.textContent = visaTrack.total_streams.toLocaleString();
+                    streamEl.classList.remove('coming-soon');
+                    const change = periodChanges['VISA'] || 0;
+                    if (change > 0) {
+                        changeEl.textContent = '+' + change.toLocaleString();
+                        changeEl.style.color = '#34d399';
+                    } else if (change < 0) {
+                        changeEl.textContent = change.toLocaleString();
+                        changeEl.style.color = '#f87171';
+                    } else {
+                        changeEl.textContent = '';
+                    }
                 } else {
-                    chartWrapper.style.height = isMobile ? '200px' : '250px';
+                    streamEl.textContent = 'Streams Coming Soon';
+                    streamEl.classList.add('coming-soon');
+                    changeEl.textContent = '';
                 }
-
-                // Shorten track names by removing the suffix
-                const labels = sortedTracks.map(track => {
-                    return track.song_title.replace(' (Simula at Wakas Tour Kickoff)', '');
-                });
-
-                const streams = sortedTracks.map(t => t.total_streams);
-                const changes = sortedTracks.map(t => periodChanges[t.song_title] || 0);
-
-                // Generate blue gradient colors dynamically
-                // Multi-color palette for each track
-                const colorPalette = [
-                    'rgba(236, 72, 153, 0.85)',   // Pink
-                    'rgba(59, 130, 246, 0.85)',   // Blue
-                    'rgba(52, 211, 153, 0.85)',   // Green
-                    'rgba(251, 146, 60, 0.85)',   // Orange
-                    'rgba(168, 85, 247, 0.85)',   // Purple
-                    'rgba(234, 179, 8, 0.85)',    // Yellow
-                    'rgba(236, 72, 72, 0.85)',    // Red
-                    'rgba(20, 184, 166, 0.85)',   // Teal
-                    'rgba(139, 92, 246, 0.85)',   // Violet
-                    'rgba(34, 197, 94, 0.85)',    // Emerald
-                    'rgba(249, 115, 22, 0.85)',   // Deep Orange
-                    'rgba(14, 165, 233, 0.85)',   // Sky Blue
-                    'rgba(244, 63, 94, 0.85)',    // Rose
-                    'rgba(132, 204, 22, 0.85)',   // Lime
-                    'rgba(217, 70, 239, 0.85)',   // Fuchsia
-                    'rgba(6, 182, 212, 0.85)',    // Cyan
-                    'rgba(245, 158, 11, 0.85)',   // Amber
-                    'rgba(99, 102, 241, 0.85)',   // Indigo
-                    'rgba(16, 185, 129, 0.85)'    // Emerald
-                ];
-                const colors = sortedTracks.map((_, i) => colorPalette[i % colorPalette.length]);
-                const hoverColors = colors.map(c => c.replace(/0\.85\)/, '1)'));
-
-                // Store full song titles for click handling
-                const fullTitles = sortedTracks.map(t => t.song_title);
-
-                const self = this;
-
-                if (this.charts.kickoff) {
-                    this.charts.kickoff.destroy();
-                }
-
-                this.charts.kickoff = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: streams,
-                            backgroundColor: colors,
-                            borderRadius: 8,
-                            hoverBackgroundColor: hoverColors,
-                            categoryPercentage: 0.85,
-                            barPercentage: 0.9
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        indexAxis: 'y',
-                        layout: {
-                            padding: { right: 50 }
-                        },
-                        onClick: (event, elements) => {
-                            if (elements.length > 0) {
-                                // Clicked on a bar - filter table to show only this track
-                                const index = elements[0].index;
-                                const songTitle = fullTitles[index];
-                                const shortTitle = labels[index];
-
-                                if (self.trackFilter === songTitle) {
-                                    // Already filtered to this track, clear filter
-                                    self.trackFilter = null;
-                                    self.albumFilter = null;
-                                    document.getElementById('album-filter-label').textContent = '';
-                                    document.getElementById('clearFilterBtn').style.display = 'none';
-                                    document.getElementById('albumDropdownFilter').value = '';
-                                } else {
-                                    // Filter to this specific track
-                                    self.trackFilter = songTitle;
-                                    self.albumFilter = 'Simula at Wakas Tour Kickoff';
-                                    document.getElementById('album-filter-label').textContent = `(${shortTitle})`;
-                                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
-                                    document.getElementById('albumDropdownFilter').value = 'Simula at Wakas Tour Kickoff';
-                                }
-                                self.populateTopTracks();
-                            } else {
-                                // Clicked elsewhere - filter to Tour Kickoff album
-                                self.trackFilter = null;
-                                self.filterToKickoffAlbum();
-                            }
-                        },
-                        onHover: (event, elements) => {
-                            event.native.target.style.cursor = 'pointer';
-                        },
-                        scales: {
-                            x: {
-                                grid: { color: 'rgba(255,255,255,0.06)' },
-                                ticks: {
-                                    color: '#9ca3af',
-                                    callback: (v) => v.toLocaleString()
-                                }
-                            },
-                            y: {
-                                grid: { display: false },
-                                ticks: {
-                                    color: '#e5e7eb',
-                                    font: { size: 9 }
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: (ctx) => `${ctx.parsed.x.toLocaleString()} streams (click to filter)`
-                                }
-                            },
-                            datalabels: {
-                                labels: {
-                                    total: {
-                                        anchor: 'end',
-                                        align: 'right',
-                                        color: '#e5e7eb',
-                                        font: {
-                                            size: 10,
-                                            weight: '600'
-                                        },
-                                        formatter: (value) => this.formatNumber(value),
-                                        padding: { left: 4 }
-                                    },
-                                    change: {
-                                        anchor: 'end',
-                                        align: 'right',
-                                        color: (context) => {
-                                            const change = changes[context.dataIndex];
-                                            return change >= 0 ? '#34d399' : '#f87171';
-                                        },
-                                        font: {
-                                            size: 8,
-                                            weight: '500'
-                                        },
-                                        formatter: (value, context) => {
-                                            const change = changes[context.dataIndex];
-                                            if (change !== 0) {
-                                                const sign = change >= 0 ? '+' : '';
-                                                return `(${sign}${this.formatNumber(change)})`;
-                                            }
-                                            return null;
-                                        },
-                                        offset: 35
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    plugins: [ChartDataLabels]
-                });
             }
 
-            filterToKickoffAlbum() {
-                const albumName = 'Simula at Wakas Tour Kickoff';
-                this.trackFilter = null; // Clear any specific track filter
-                if (this.albumFilter === albumName) {
-                    // If already filtered, clear it
+            filterToVisa() {
+                if (this.trackFilter === 'VISA') {
+                    this.trackFilter = null;
                     this.albumFilter = null;
                     document.getElementById('album-filter-label').textContent = '';
                     document.getElementById('clearFilterBtn').style.display = 'none';
                     document.getElementById('albumDropdownFilter').value = '';
                 } else {
-                    this.albumFilter = albumName;
-                    document.getElementById('album-filter-label').textContent = '';
+                    this.trackFilter = 'VISA';
+                    this.albumFilter = 'Single';
                     document.getElementById('clearFilterBtn').style.display = 'inline-block';
-                    document.getElementById('albumDropdownFilter').value = albumName;
-                }
-                // Update album chart highlighting
-                if (this.charts.album) {
-                    const albumLabels = this.charts.album.data.labels;
-                    const grayedOut = 'rgba(100, 100, 100, 0.3)';
-                    this.charts.album.data.datasets[0].backgroundColor = this.albumFilter
-                        ? albumLabels.map((label, i) => label === this.albumFilter ? this.albumChartColors[i] : grayedOut)
-                        : this.albumChartColors.slice();
-                    this.charts.album.update();
+                    document.getElementById('album-filter-label').textContent = 'VISA';
                 }
                 this.populateTopTracks();
-            }
-
-            toggleShowAllKickoff() {
-                this.showAllKickoff = !this.showAllKickoff;
-
-                // Update button text
-                const btn = document.getElementById('showAllKickoffBtn');
-                btn.textContent = this.showAllKickoff ? 'Show Less' : 'Show All';
-
-                // Recreate the chart with new settings
-                this.createKickoffTracksChart();
-
-                // Also filter the table to show Tour Kickoff album
-                if (this.showAllKickoff) {
-                    this.albumFilter = 'Simula at Wakas Tour Kickoff';
-                    this.trackFilter = null;
-                    document.getElementById('albumDropdownFilter').value = 'Simula at Wakas Tour Kickoff';
-                    document.getElementById('clearFilterBtn').style.display = 'inline-block';
-                    document.getElementById('album-filter-label').textContent = '';
-
-                    // Update album chart highlighting
-                    if (this.charts.album && this.albumChartColors) {
-                        const albumLabels = this.charts.album.data.labels;
-                        const grayedOut = 'rgba(100, 100, 100, 0.3)';
-                        this.charts.album.data.datasets[0].backgroundColor = albumLabels.map((label, i) =>
-                            label === this.albumFilter ? this.albumChartColors[i] : grayedOut
-                        );
-                        this.charts.album.update();
-                    }
-
-                    this.populateTopTracks();
-                }
             }
 
             getMemberStreamsData() {
@@ -6695,7 +6854,7 @@
                 // If authManager isn't ready yet, gate everything by default
                 if (!am || !am.initialized) {
                     const defaultGating = [
-                        { selector: '#kickoffChartSection', label: 'Concert Chart', desc: 'Tour kickoff concert album streams' },
+                        { selector: '#visaCardSection', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
                         { selector: '#memberChartSection', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
                         { selector: '#topTracksSection', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                         { selector: '#memberTracksSection', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
@@ -6735,7 +6894,7 @@
                 }
 
                 const gatingMap = [
-                    { selector: '#kickoffChartSection', requiredTier: 'basic', label: 'Concert Chart', desc: 'Tour kickoff concert album streams' },
+                    { selector: '#visaCardSection', requiredTier: 'basic', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
                     { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
                     { selector: '#topTracksSection', requiredTier: 'basic', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberTracksSection', requiredTier: 'basic', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
@@ -6797,6 +6956,8 @@
                 // Hide dashboard content, show song detail
                 document.querySelector('.stats-grid').style.display = 'none';
                 document.querySelector('.filter-bar').style.display = 'none';
+                const pillsPanel = document.getElementById('artistPillsPanel');
+                if (pillsPanel) pillsPanel.style.display = 'none';
                 document.querySelectorAll('.charts-row').forEach(el => el.style.display = 'none');
                 document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = 'none');
                 document.getElementById('song-detail-view').style.display = 'block';
@@ -6810,6 +6971,8 @@
                 // Show dashboard content, hide song detail
                 document.querySelector('.stats-grid').style.display = '';
                 document.querySelector('.filter-bar').style.display = '';
+                const pillsPanel2 = document.getElementById('artistPillsPanel');
+                if (pillsPanel2) pillsPanel2.style.display = '';
                 document.querySelectorAll('.charts-row').forEach(el => el.style.display = '');
                 document.querySelectorAll('.container > .chart-container').forEach(el => el.style.display = '');
                 document.getElementById('song-detail-view').style.display = 'none';
@@ -6938,6 +7101,11 @@
                     'Sarah Geronimo': { bg: 'rgba(244, 114, 182, 0.8)', border: '#f472b6', line: '#f472b6' },
                     'Zack Tabudlo': { bg: 'rgba(168, 85, 247, 0.8)', border: '#a855f7', line: '#a855f7' },
                     'Arthur Nery': { bg: 'rgba(249, 115, 22, 0.8)', border: '#f97316', line: '#f97316' },
+                    'fitterkarma': { bg: 'rgba(220, 38, 38, 0.8)', border: '#dc2626', line: '#dc2626' },
+                    'Rob Deniel': { bg: 'rgba(5, 150, 105, 0.8)', border: '#059669', line: '#059669' },
+                    'Up Dharma Down': { bg: 'rgba(79, 70, 229, 0.8)', border: '#4f46e5', line: '#4f46e5' },
+                    'Soapdish': { bg: 'rgba(217, 119, 6, 0.8)', border: '#d97706', line: '#d97706' },
+                    'Earl Agustin': { bg: 'rgba(6, 182, 212, 0.8)', border: '#06b6d4', line: '#06b6d4' },
                 };
 
                 if (colors[artistName]) {
