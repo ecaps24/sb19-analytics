@@ -615,6 +615,36 @@
             0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
             50% { opacity: 0.4; box-shadow: 0 0 0 4px rgba(255,255,255,0); }
         }
+        .yt-bottom-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-top: 12px;
+        }
+        .yt-refresh-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-size: 1rem;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .yt-refresh-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+        .yt-refresh-btn.spinning .yt-refresh-icon {
+            animation: ytSpin 0.6s linear;
+        }
+        @keyframes ytSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .yt-refresh-icon { display: inline-block; }
+        .yt-last-refresh {
+            font-size: 0.6rem; color: rgba(255,255,255,0.35);
+            margin-top: 6px;
+        }
         .yt-watch-link:hover { background: rgba(239,68,68,1); }
         .yt-error-msg {
             font-size: 0.8rem; color: rgba(255,255,255,0.5);
@@ -1703,6 +1733,8 @@
             .yt-stat-value { font-size: 1rem; }
             .yt-stats-grid { gap: 6px; max-width: 260px; }
             .yt-stat-label { font-size: 0.6rem; }
+            .yt-refresh-btn { width: 28px; height: 28px; font-size: 0.85rem; }
+            .yt-last-refresh { font-size: 0.55rem; }
 
             /* Touch-friendly tap targets */
             .clickable-track {
@@ -2794,10 +2826,16 @@
                                     <div class="yt-stat-change" id="ytCommentChange"></div>
                                 </div>
                             </div>
-                            <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
-                               onclick="event.stopPropagation();">
-                                Watch on YouTube
-                            </a>
+                            <div class="yt-bottom-row">
+                                <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
+                                   onclick="event.stopPropagation();">
+                                    Watch on YouTube
+                                </a>
+                                <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
+                                    <span class="yt-refresh-icon">&#8635;</span>
+                                </button>
+                            </div>
+                            <div class="yt-last-refresh" id="ytLastRefresh"></div>
                         </div>
                     </div>
                 </div>
@@ -6311,6 +6349,24 @@
                 viewEl.textContent = stats.views.toLocaleString();
                 likeEl.textContent = stats.likes.toLocaleString();
                 commentEl.textContent = stats.comments.toLocaleString();
+
+                // Update last-refreshed timestamp
+                const refreshEl = document.getElementById('ytLastRefresh');
+                if (refreshEl) {
+                    const now = new Date();
+                    const timeStr = now.toLocaleString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric',
+                        hour: 'numeric', minute: '2-digit', hour12: true
+                    });
+                    refreshEl.textContent = isCached ? `Cached · ${timeStr}` : `Last refreshed · ${timeStr}`;
+                }
+
+                // Spin the refresh button briefly
+                const btn = document.querySelector('.yt-refresh-btn');
+                if (btn) {
+                    btn.classList.add('spinning');
+                    setTimeout(() => btn.classList.remove('spinning'), 600);
+                }
 
                 if (isCached) {
                     let cachedLabel = viewEl.closest('.yt-hero-content').querySelector('.yt-error-msg');
