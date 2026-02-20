@@ -3391,6 +3391,8 @@
                                 <th>Email</th>
                                 <th>Tier</th>
                                 <th>Status</th>
+                                <th>Expires</th>
+                                <th>Last Login</th>
                                 <th>Admin</th>
                                 <th>Joined</th>
                             </tr>
@@ -9393,19 +9395,31 @@
                 if (!am || !am.supabase || !am.isAdmin()) return;
 
                 const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#9ca3af; padding:24px;">Loading users...</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#9ca3af; padding:24px;">Loading users...</td></tr>';
 
                 try {
+                    // Fetch profiles
                     const { data, error } = await am.supabase
                         .from('profiles')
                         .select('*')
                         .order('created_at', { ascending: false });
                     if (error) throw error;
                     this.usersData = data || [];
+
+                    // Try to fetch last_sign_in via RPC (optional — fails gracefully)
+                    try {
+                        const { data: loginData } = await am.supabase.rpc('admin_get_user_logins');
+                        if (loginData) {
+                            const loginMap = {};
+                            loginData.forEach(r => { loginMap[r.id] = r.last_sign_in_at; });
+                            this.usersData.forEach(u => { u._last_sign_in = loginMap[u.id] || null; });
+                        }
+                    } catch (_) { /* RPC not available — skip */ }
+
                     this.renderUsersView();
                 } catch (err) {
                     console.error('Failed to load users:', err.message);
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#f87171; padding:24px;">Failed to load users: ${err.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#f87171; padding:24px;">Failed to load users: ${err.message}</td></tr>`;
                 }
             }
 
@@ -9438,7 +9452,7 @@
             renderUsersTable(users) {
                 const tbody = document.getElementById('usersTableBody');
                 if (!users.length) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#9ca3af; padding:24px;">No users found.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:#9ca3af; padding:24px;">No users found.</td></tr>';
                     return;
                 }
 
@@ -9449,12 +9463,26 @@
                     const tierLabel = tier === 'daypass' ? 'Day Pass' : tier.charAt(0).toUpperCase() + tier.slice(1);
                     const statusActive = u.subscription_status === 'active';
                     const joined = u.created_at ? new Date(u.created_at).toLocaleDateString() : '-';
+                    // Subscription expiry
+                    let expiresStr = '-';
+                    let expiresStyle = 'color:#9ca3af;';
+                    if (u.subscription_expires_at) {
+                        const exp = new Date(u.subscription_expires_at);
+                        expiresStr = exp.toLocaleDateString();
+                        if (exp < new Date()) expiresStyle = 'color:#f87171;'; // expired
+                        else if (exp - Date.now() < 3 * 24 * 60 * 60 * 1000) expiresStyle = 'color:#fbbf24;'; // expiring soon
+                        else expiresStyle = 'color:#34d399;'; // valid
+                    }
+                    // Last login
+                    const lastLogin = u._last_sign_in ? new Date(u._last_sign_in).toLocaleDateString() : (u.updated_at ? new Date(u.updated_at).toLocaleDateString() : '-');
                     return `<tr>
                         <td style="color:#6b7280;">${i + 1}</td>
                         <td>${name}</td>
                         <td style="color:#9ca3af; font-size:0.75rem;">${email}</td>
                         <td><span class="users-tier-pill t-${tier}">${tierLabel}</span></td>
                         <td><span class="users-status-dot ${statusActive ? 'active' : 'inactive'}"></span>${statusActive ? 'Active' : 'Inactive'}</td>
+                        <td style="font-size:0.75rem; ${expiresStyle}">${expiresStr}</td>
+                        <td style="color:#9ca3af; font-size:0.75rem;">${lastLogin}</td>
                         <td>${u.is_admin ? '<span style="color:#f87171;">Yes</span>' : '<span style="color:#6b7280;">No</span>'}</td>
                         <td style="color:#9ca3af; font-size:0.75rem;">${joined}</td>
                     </tr>`;
