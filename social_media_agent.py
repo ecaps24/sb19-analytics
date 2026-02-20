@@ -119,6 +119,14 @@ MILESTONE_LABELS = {
 SPIKE_THRESHOLD_PERCENT = 50
 SPIKE_THRESHOLD_ABSOLUTE = 100_000
 
+# YouTube VISA MV
+YOUTUBE_API_KEY = "AIzaSyCG-ZWidx7LVzf8NSts4lvUwwEMMao34q8"
+YOUTUBE_VIDEO_ID = "0t6GNcINKeU"
+YOUTUBE_VIDEO_URL = "https://youtu.be/0t6GNcINKeU"
+YT_HISTORY_FILE = os.path.join(SCRIPT_DIR, "yt_visa_history.json")
+YT_STREAMS_CSV = os.path.join(SCRIPT_DIR, "yt_visa_streams.csv")
+YT_VISA_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "yt_visa_stats.png")
+
 # Main artists with X handles
 MAIN_ARTISTS = ["SB19", "PABLO", "JOSH CULLEN", "Stell", "FELIP", "justin"]
 SOLO_ARTISTS = ["PABLO", "JOSH CULLEN", "Stell", "FELIP", "justin"]
@@ -134,8 +142,8 @@ X_HANDLES = {
 # Number of top tracks to show per solo artist
 SOLO_TOP_N = 3
 
-# X (Twitter) character limit (standard, non-Premium)
-X_CHAR_LIMIT = 280
+# X (Twitter) character limit (Premium)
+X_CHAR_LIMIT = 25000
 SITE_TAG = "opminsights.com"
 
 # Simula at Wakas album tracks
@@ -2807,6 +2815,533 @@ body {{
 
         return message, image_path
 
+    def _read_yt_csv_last_row(self):
+        """Read the last row from yt_visa_streams.csv. Returns dict or None."""
+        if not os.path.exists(YT_STREAMS_CSV):
+            return None
+        last = None
+        with open(YT_STREAMS_CSV, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                last = row
+        if last:
+            return {
+                "views": int(last.get("views", 0)),
+                "likes": int(last.get("likes", 0)),
+                "comments": int(last.get("comments", 0)),
+                "timestamp": last.get("timestamp", ""),
+            }
+        return None
+
+    def _append_yt_csv(self, timestamp, views, likes, comments):
+        """Append a row to yt_visa_streams.csv, creating it if needed."""
+        write_header = not os.path.exists(YT_STREAMS_CSV)
+        with open(YT_STREAMS_CSV, "a", encoding="utf-8", newline="") as f:
+            writer = csv.writer(f)
+            if write_header:
+                writer.writerow(["timestamp", "views", "likes", "comments"])
+            writer.writerow([timestamp, views, likes, comments])
+
+    def generate_youtube_visa_post(self):
+        """Fetch VISA MV YouTube stats and generate a post with screenshot.
+
+        Returns (message, image_path) or (None, None) on failure.
+        """
+        import urllib.request
+
+        url = (
+            f"https://www.googleapis.com/youtube/v3/videos"
+            f"?part=statistics&id={YOUTUBE_VIDEO_ID}&key={YOUTUBE_API_KEY}"
+        )
+
+        try:
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+        except Exception as e:
+            print(f"[ERR] YouTube API call failed: {e}")
+            return None, None
+
+        items = data.get("items", [])
+        if not items:
+            print("[ERR] No video data returned from YouTube API")
+            return None, None
+
+        stats = items[0]["statistics"]
+        views = int(stats.get("viewCount", 0))
+        likes = int(stats.get("likeCount", 0))
+        comments = int(stats.get("commentCount", 0))
+
+        now = datetime.now()
+        now_str = now.strftime("%b %d, %Y %I:%M %p")
+        timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        # Read previous run from CSV
+        prev = self._read_yt_csv_last_row()
+        view_change = views - prev["views"] if prev else 0
+        like_change = likes - prev["likes"] if prev else 0
+        comment_change = comments - prev["comments"] if prev else 0
+
+        # Append current stats to CSV
+        self._append_yt_csv(timestamp, views, likes, comments)
+        print(f"[INFO] Logged to {YT_STREAMS_CSV}: {views} views, {likes} likes, {comments} comments")
+
+        # Also update daily JSON history for dashboard
+        today = now.strftime("%Y-%m-%d")
+        history = {}
+        if os.path.exists(YT_HISTORY_FILE):
+            try:
+                with open(YT_HISTORY_FILE, "r") as f:
+                    history = json.load(f)
+            except Exception:
+                history = {}
+        history[today] = {"views": views, "likes": likes, "comments": comments}
+        try:
+            with open(YT_HISTORY_FILE, "w") as f:
+                json.dump(history, f, indent=2)
+        except Exception:
+            pass
+
+        # Build post text
+        def stat_line(label, value, change):
+            line = f"{label}: {format_with_commas(value)}"
+            if change > 0:
+                line += f" (+{format_with_commas(change)})"
+            elif change < 0:
+                line += f" ({format_with_commas(change)})"
+            return line
+
+        lines = [
+            f"SB19 VISA MV Update as of {now_str}",
+            "",
+            SITE_TAG,
+            YOUTUBE_VIDEO_URL,
+            "",
+            stat_line("Views", views, view_change),
+            stat_line("Likes", likes, like_change),
+            stat_line("Comments", comments, comment_change),
+            "",
+            "#SB19 #VISA #MV #OPM",
+        ]
+
+        message = "\n".join(lines)
+        enforce_char_limit(message)
+
+        # Capture social card screenshot
+        image_path = None
+        ok = self._capture_youtube_visa_screenshot(
+            views=views, likes=likes, comments=comments,
+            view_change=view_change, like_change=like_change,
+            comment_change=comment_change, now_str=now_str,
+        )
+        if ok and os.path.exists(YT_VISA_IMAGE_PATH):
+            image_path = YT_VISA_IMAGE_PATH
+
+        return message, image_path
+
+    def _compute_hourly_deltas(self):
+        """Read yt_visa_streams.csv and compute hourly view deltas for the chart."""
+        if not os.path.exists(YT_STREAMS_CSV):
+            return [], []
+        rows = []
+        with open(YT_STREAMS_CSV, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                rows.append(row)
+        if len(rows) < 2:
+            return [], []
+
+        # Bucket by hour, take max views per hour
+        hourly = {}
+        for row in rows:
+            ts = row.get("timestamp", "")
+            hour_key = ts[:13]  # "YYYY-MM-DD HH"
+            v = int(row.get("views", 0))
+            if hour_key not in hourly or v > hourly[hour_key]:
+                hourly[hour_key] = v
+
+        sorted_hours = sorted(hourly.keys())
+        labels = []
+        deltas = []
+        for i in range(1, len(sorted_hours)):
+            delta = hourly[sorted_hours[i]] - hourly[sorted_hours[i - 1]]
+            if delta < 0:
+                delta = 0
+            hour_label = sorted_hours[i][-2:] + ":00"
+            labels.append(hour_label)
+            deltas.append(delta)
+
+        return labels, deltas
+
+    def _capture_youtube_visa_screenshot(self, views, likes, comments,
+                                          view_change, like_change,
+                                          comment_change, now_str):
+        """Capture a social-media-friendly YouTube VISA stats card."""
+        print("[INFO] Capturing YouTube VISA screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        # Encode VISA artwork as base64 for the card background
+        visa_img_path = os.path.join(SCRIPT_DIR, "photos", "visa.png")
+        bg_data_uri = ""
+        if os.path.exists(visa_img_path):
+            with open(visa_img_path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode("utf-8")
+                bg_data_uri = f"data:image/png;base64,{b64}"
+
+        def stat_with_change(value, change):
+            val_str = f"{value:,}"
+            if change > 0:
+                return val_str, f"+{change:,}"
+            elif change < 0:
+                return val_str, f"{change:,}"
+            return val_str, ""
+
+        def format_k(v):
+            if v >= 1_000_000:
+                return f"{v / 1_000_000:.1f}M"
+            if v >= 1_000:
+                return f"{v / 1_000:.1f}K"
+            return str(v)
+
+        v_str, v_chg = stat_with_change(views, view_change)
+        l_str, l_chg = stat_with_change(likes, like_change)
+        c_str, c_chg = stat_with_change(comments, comment_change)
+
+        # Change color
+        chg_color_v = "#34d399" if view_change >= 0 else "#f87171"
+        chg_color_l = "#34d399" if like_change >= 0 else "#f87171"
+        chg_color_c = "#34d399" if comment_change >= 0 else "#f87171"
+
+        v_chg_html = f'<div class="stat-change" style="color:{chg_color_v}">{v_chg}</div>' if v_chg else ""
+        l_chg_html = f'<div class="stat-change" style="color:{chg_color_l}">{l_chg}</div>' if l_chg else ""
+        c_chg_html = f'<div class="stat-change" style="color:{chg_color_c}">{c_chg}</div>' if c_chg else ""
+
+        # Build hourly chart bars (pure CSS)
+        chart_labels, chart_deltas = self._compute_hourly_deltas()
+        # Projection: average of last 3 hours (or fewer if not enough data)
+        projection = 0
+        if chart_deltas:
+            recent = chart_deltas[-3:] if len(chart_deltas) >= 3 else chart_deltas
+            projection = int(sum(recent) / len(recent))
+
+        all_values = chart_deltas + ([projection] if projection > 0 else [])
+        max_delta = max(all_values) if all_values else 1
+        chart_bars_html = ""
+        if chart_deltas:
+            bars = []
+            for i, (label, delta) in enumerate(zip(chart_labels, chart_deltas)):
+                pct = max(int((delta / max_delta) * 100), 4) if max_delta > 0 else 4
+                val_label = format_k(delta) if delta > 0 else ""
+                bars.append(
+                    f'<div class="bar-col">'
+                    f'<div class="bar-val">{val_label}</div>'
+                    f'<div class="bar" style="height:{pct}%"></div>'
+                    f'<div class="bar-label">{label}</div>'
+                    f'</div>'
+                )
+            # Add projection bar
+            if projection > 0:
+                last_hour = int(chart_labels[-1][:2]) if chart_labels else 0
+                next_hour = (last_hour + 1) % 24
+                next_label = f"{next_hour:02d}:00"
+                proj_pct = max(int((projection / max_delta) * 100), 4)
+                proj_val = f"~{format_k(projection)}"
+                bars.append(
+                    f'<div class="bar-col">'
+                    f'<div class="bar-val bar-val-proj">{proj_val}</div>'
+                    f'<div class="bar bar-proj" style="height:{proj_pct}%"></div>'
+                    f'<div class="bar-label">{next_label}</div>'
+                    f'</div>'
+                )
+            chart_bars_html = f"""
+        <div class="chart-section">
+            <div class="chart-title">Hourly Views</div>
+            <div class="chart-row">{"".join(bars)}</div>
+        </div>"""
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    height: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}}
+.bg-image {{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.3) blur(2px);
+    transform: scale(1.1);
+}}
+.bg-overlay {{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(15,23,42,0.6) 0%,
+        rgba(15,23,42,0.4) 25%,
+        rgba(15,23,42,0.7) 55%,
+        rgba(15,23,42,0.95) 100%);
+}}
+.content {{
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 60px 24px;
+    text-align: center;
+}}
+.header-row {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+}}
+.yt-icon {{
+    width: 48px;
+    height: 34px;
+    background: #ff0000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}}
+.yt-icon::after {{
+    content: '';
+    display: block;
+    width: 0; height: 0;
+    border-left: 15px solid white;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    margin-left: 3px;
+}}
+.title {{
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 6px;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}}
+.artist {{
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}}
+.stats-grid {{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 780px;
+    margin-bottom: 0;
+}}
+.stat-box {{
+    text-align: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px 16px;
+}}
+.stat-value {{
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}}
+.stat-label {{
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 6px;
+}}
+.stat-change {{
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 4px;
+}}
+/* ── Hourly chart ── */
+.chart-section {{
+    width: 100%;
+    max-width: 780px;
+    margin-top: 28px;
+}}
+.chart-title {{
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: left;
+}}
+.chart-row {{
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 200px;
+    width: 100%;
+}}
+.bar-col {{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    min-width: 0;
+}}
+.bar {{
+    width: 60%;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(56,189,248,0.9) 0%, rgba(59,130,246,0.5) 100%);
+    min-height: 4px;
+}}
+.bar-val {{
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 4px;
+    white-space: nowrap;
+}}
+.bar-label {{
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 5px;
+    font-weight: 500;
+}}
+.bar-proj {{
+    background: none;
+    border: 2px dashed rgba(56,189,248,0.5);
+    opacity: 0.7;
+}}
+.bar-val-proj {{
+    color: rgba(56,189,248,0.6);
+    font-style: italic;
+}}
+.footer {{
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px 60px 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #64748b;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    {"<img src='" + bg_data_uri + "' class='bg-image' />" if bg_data_uri else ""}
+    <div class="bg-overlay"></div>
+    <div class="content">
+        <div class="header-row">
+            <div class="yt-icon"></div>
+            <div class="title">VISA</div>
+            <div class="artist">&nbsp;&middot;&nbsp;SB19</div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value">{v_str}</div>
+                <div class="stat-label">Views</div>
+                {v_chg_html}
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{l_str}</div>
+                <div class="stat-label">Likes</div>
+                {l_chg_html}
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{c_str}</div>
+                <div class="stat-label">Comments</div>
+                {c_chg_html}
+            </div>
+        </div>{chart_bars_html}
+    </div>
+    <div class="footer">
+        <div class="footer-text">As of {now_str} &middot; <span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_yt_visa_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1200)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(YT_VISA_IMAGE_PATH)
+
+                img = Image.open(YT_VISA_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(YT_VISA_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] Screenshot saved: {YT_VISA_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] Card screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] Screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
     def _capture_album_screenshot(self, track_list=None, total_streams=0,
                                     total_change=0, date_str=""):
         """Capture a social-media-friendly album card screenshot."""
@@ -3567,6 +4102,8 @@ Examples:
   python social_media_agent.py listeners --dry-run       # Preview without posting
   python social_media_agent.py solo-top                  # Post top tracks for each solo member
   python social_media_agent.py solo-top --artist PABLO   # Post only PABLO's top tracks
+  python social_media_agent.py youtube-visa              # Post VISA MV YouTube stats
+  python social_media_agent.py youtube-visa --dry-run    # Preview YouTube VISA post
   python social_media_agent.py custom "msg" --image pic.png
         """,
     )
@@ -3575,7 +4112,8 @@ Examples:
         "command",
         choices=[
             "listeners", "daily", "top10", "solo-top10", "milestones", "spikes", "weekly",
-            "album", "solo-top", "opm-top", "ppop-top", "custom", "preview", "status", "init-milestones",
+            "album", "solo-top", "opm-top", "ppop-top", "youtube-visa",
+            "custom", "preview", "status", "init-milestones",
         ],
         help="Post type or action to perform",
     )
@@ -3831,6 +4369,18 @@ def main():
             image = args.image or screenshot_path
             success = agent.post(
                 message, dry_run=args.dry_run, test_mode=args.test, image_path=image,
+            )
+            _report(success)
+
+        elif args.command == "youtube-visa":
+            message, auto_image = agent.generate_youtube_visa_post()
+            if not message:
+                print("[ERR] Could not generate YouTube VISA post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
             )
             _report(success)
 

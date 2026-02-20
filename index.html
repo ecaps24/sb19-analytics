@@ -541,102 +541,104 @@
         }
         .yt-hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.85) 100%);
+            background: linear-gradient(180deg, rgba(15,23,42,0.7) 0%, rgba(15,23,42,0.4) 40%, rgba(15,23,42,0.75) 100%);
         }
         .yt-hero-content {
             position: relative; z-index: 1;
             height: 100%;
             display: flex; flex-direction: column;
-            justify-content: space-between;
-            padding: 14px 16px; text-align: center;
+            padding: 0;
         }
-        .yt-top-bar {
+        /* ── Top zone: identity + stats ── */
+        .yt-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
-            width: 100%;
+            padding: 14px 16px 0 16px;
         }
-        .yt-top-left {
-            display: flex; align-items: center; gap: 6px;
-        }
-        .yt-top-center {
-            text-align: center;
-        }
-        .yt-top-right {
-            display: flex; align-items: center;
+        .yt-identity {
+            display: flex; align-items: center; gap: 10px;
         }
         .yt-title {
-            font-size: 2rem; font-weight: 800; color: #fff;
+            font-size: 1.8rem; font-weight: 800; color: #fff;
             letter-spacing: 2px; line-height: 1;
         }
         .yt-artist {
-            font-size: 0.95rem; color: rgba(255,255,255,0.7);
-            font-weight: 500; margin-top: 4px;
-        }
-        .yt-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: auto 0;
-            width: 100%;
-            max-width: 340px;
-            align-self: center;
-        }
-        .yt-stat {
-            text-align: center;
-        }
-        .yt-stat-value {
-            font-size: 1.25rem; font-weight: 700; color: #f87171;
-            line-height: 1.2;
-        }
-        .yt-stat-label {
-            font-size: 0.65rem; color: rgba(255,255,255,0.6);
-            text-transform: uppercase; letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-        .yt-stat-change {
-            font-size: 0.7rem; font-weight: 600;
-            margin-top: 1px;
-        }
-        .yt-stat-change.positive { color: #34d399; }
-        .yt-stat-change.negative { color: #f87171; }
-        .yt-watch-link {
-            display: inline-block;
-            background: rgba(239,68,68,0.85); color: #fff;
-            font-size: 0.7rem; font-weight: 600;
-            padding: 4px 12px; border-radius: 999px;
-            text-decoration: none;
-            transition: background 0.2s;
+            font-size: 0.8rem; color: rgba(255,255,255,0.55);
+            font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .yt-live-badge {
             display: inline-flex; align-items: center; gap: 5px;
             background: rgba(239,68,68,0.9);
-            color: #fff; font-size: 0.6rem; font-weight: 700;
-            padding: 3px 10px; border-radius: 999px;
+            color: #fff; font-size: 0.55rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 999px;
             letter-spacing: 1.5px;
         }
         .yt-live-dot {
-            width: 8px; height: 8px;
-            background: #fff;
-            border-radius: 50%;
+            width: 7px; height: 7px;
+            background: #fff; border-radius: 50%;
             animation: ytLivePulse 1.5s ease-in-out infinite;
         }
         @keyframes ytLivePulse {
             0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
             50% { opacity: 0.4; box-shadow: 0 0 0 4px rgba(255,255,255,0); }
         }
+        .yt-controls {
+            display: flex; align-items: center; gap: 6px;
+        }
+        /* ── Stats row ── */
+        .yt-stats-strip {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 16px 6px;
+        }
+        .yt-stat {
+            display: flex; align-items: baseline; gap: 5px;
+        }
+        .yt-stat-value {
+            font-size: 1.35rem; font-weight: 700; color: #fff;
+            line-height: 1;
+        }
+        .yt-stat-label {
+            font-size: 0.6rem; color: rgba(255,255,255,0.4);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        .yt-stat-change {
+            font-size: 0.65rem; font-weight: 600;
+            margin-left: 2px;
+        }
+        .yt-stat-change.positive { color: #34d399; }
+        .yt-stat-change.negative { color: #f87171; }
+        /* ── Controls ── */
+        .yt-watch-link {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+            font-size: 0.65rem; font-weight: 600;
+            padding: 4px 10px; border-radius: 999px;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.2s;
+        }
+        .yt-watch-link:hover {
+            background: rgba(239,68,68,0.85); color: #fff;
+            border-color: transparent;
+        }
         .yt-refresh-btn {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; font-size: 1rem;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.6); font-size: 0.85rem;
+            width: 26px; height: 26px;
+            border-radius: 50%; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease;
         }
         .yt-refresh-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.18);
+            color: #fff;
             transform: rotate(90deg);
         }
         .yt-refresh-btn.spinning .yt-refresh-icon {
@@ -647,22 +649,25 @@
             to { transform: rotate(360deg); }
         }
         .yt-refresh-icon { display: inline-block; }
-        .yt-last-refresh {
-            font-size: 0.6rem; color: rgba(255,255,255,0.35);
-            margin-top: 6px;
+        /* ── Footer ── */
+        .yt-footer {
+            position: absolute; bottom: 6px; left: 0; right: 0;
+            text-align: center; z-index: 1;
         }
-        .yt-watch-link:hover { background: rgba(239,68,68,1); }
+        .yt-last-refresh {
+            font-size: 0.55rem; color: rgba(255,255,255,0.25);
+        }
         .yt-error-msg {
             font-size: 0.8rem; color: rgba(255,255,255,0.5);
             margin-top: 10px;
         }
+        /* ── Chart ── */
         .yt-hourly-chart {
             position: absolute;
             bottom: 0; left: 0;
-            width: 100%; height: 55%;
+            width: 100%; height: 65%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.6;
         }
 
         .chart-title {
@@ -1559,9 +1564,9 @@
             .visa-streams { font-size: 1.6rem; }
 
             .yt-hero-card { height: 260px; }
-            .yt-title { font-size: 2rem; }
-            .yt-stat-value { font-size: 1.1rem; }
-            .yt-stats-grid { gap: 8px; }
+            .yt-title { font-size: 1.6rem; }
+            .yt-stat-value { font-size: 1.15rem; }
+            .yt-stats-strip { gap: 14px; }
 
             .trends-summary-tables {
                 grid-template-columns: 1fr;
@@ -1742,12 +1747,12 @@
             .visa-badge { font-size: 0.6rem; }
 
             .yt-hero-card { height: 230px; }
-            .yt-title { font-size: 1.6rem; }
-            .yt-badge { font-size: 0.6rem; }
+            .yt-title { font-size: 1.4rem; }
             .yt-stat-value { font-size: 1rem; }
-            .yt-stats-grid { gap: 6px; max-width: 260px; }
-            .yt-stat-label { font-size: 0.6rem; }
-            .yt-refresh-btn { width: 28px; height: 28px; font-size: 0.85rem; }
+            .yt-stats-strip { gap: 10px; padding: 8px 12px 4px; }
+            .yt-stat-label { font-size: 0.55rem; }
+            .yt-refresh-btn { width: 24px; height: 24px; font-size: 0.8rem; }
+            .yt-watch-link { font-size: 0.6rem; padding: 3px 8px; }
             .yt-last-refresh { font-size: 0.55rem; }
 
             /* Touch-friendly tap targets */
@@ -2820,42 +2825,40 @@
                         <div class="yt-hero-overlay"></div>
                         <canvas id="ytHourlyChart" class="yt-hourly-chart"></canvas>
                         <div class="yt-hero-content">
-                            <div class="yt-top-bar">
-                                <div class="yt-top-left">
+                            <div class="yt-header">
+                                <div class="yt-identity">
+                                    <span class="yt-title">VISA</span>
+                                    <span class="yt-artist">SB19</span>
+                                    <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
+                                </div>
+                                <div class="yt-controls">
                                     <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
-                                       onclick="event.stopPropagation();">
-                                        Watch on YouTube
-                                    </a>
+                                       onclick="event.stopPropagation();">&#9654; YouTube</a>
                                     <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
                                         <span class="yt-refresh-icon">&#8635;</span>
                                     </button>
                                 </div>
-                                <div class="yt-top-center">
-                                    <div class="yt-title">VISA</div>
-                                    <div class="yt-artist">SB19</div>
+                            </div>
+                            <div class="yt-stats-strip">
+                                <div class="yt-stat">
+                                    <span class="yt-stat-value" id="ytViewCount">--</span>
+                                    <span class="yt-stat-label">views</span>
+                                    <span class="yt-stat-change" id="ytViewChange"></span>
                                 </div>
-                                <div class="yt-top-right">
-                                    <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
+                                <div class="yt-stat">
+                                    <span class="yt-stat-value" id="ytLikeCount">--</span>
+                                    <span class="yt-stat-label">likes</span>
+                                    <span class="yt-stat-change" id="ytLikeChange"></span>
+                                </div>
+                                <div class="yt-stat">
+                                    <span class="yt-stat-value" id="ytCommentCount">--</span>
+                                    <span class="yt-stat-label">comments</span>
+                                    <span class="yt-stat-change" id="ytCommentChange"></span>
                                 </div>
                             </div>
-                            <div class="yt-stats-grid">
-                                <div class="yt-stat">
-                                    <div class="yt-stat-value" id="ytViewCount">--</div>
-                                    <div class="yt-stat-label">Views</div>
-                                    <div class="yt-stat-change" id="ytViewChange"></div>
-                                </div>
-                                <div class="yt-stat">
-                                    <div class="yt-stat-value" id="ytLikeCount">--</div>
-                                    <div class="yt-stat-label">Likes</div>
-                                    <div class="yt-stat-change" id="ytLikeChange"></div>
-                                </div>
-                                <div class="yt-stat">
-                                    <div class="yt-stat-value" id="ytCommentCount">--</div>
-                                    <div class="yt-stat-label">Comments</div>
-                                    <div class="yt-stat-change" id="ytCommentChange"></div>
-                                </div>
+                            <div class="yt-footer">
+                                <div class="yt-last-refresh" id="ytLastRefresh"></div>
                             </div>
-                            <div class="yt-last-refresh" id="ytLastRefresh"></div>
                         </div>
                     </div>
                 </div>
@@ -6559,14 +6562,50 @@
                 const canvas = document.getElementById('ytHourlyChart');
                 if (!canvas) return;
 
+                // Compute projection from avg of last 3 hours
+                let projValue = 0;
+                if (data.length >= 1) {
+                    const recent = data.slice(-3);
+                    projValue = Math.round(recent.reduce((a, b) => a + b, 0) / recent.length);
+                }
+
+                // Build arrays with projection appended
+                const allLabels = [...labels];
+                const allData = [...data];
+                if (projValue > 0 && labels.length > 0) {
+                    const lastLabel = labels[labels.length - 1];
+                    const lastMatch = lastLabel.match(/^(\d+)(AM|PM)$/);
+                    if (lastMatch) {
+                        let h = parseInt(lastMatch[1]);
+                        let ampm = lastMatch[2];
+                        h++;
+                        if (h === 12) ampm = ampm === 'AM' ? 'PM' : 'AM';
+                        if (h > 12) h -= 12;
+                        allLabels.push(`~${h}${ampm}`);
+                    } else {
+                        allLabels.push('next');
+                    }
+                    allData.push(projValue);
+                }
+                const projIndex = projValue > 0 ? allData.length - 1 : -1;
+
                 if (this.ytHourlyChart) {
-                    this.ytHourlyChart.data.labels = labels;
-                    this.ytHourlyChart.data.datasets[0].data = data;
+                    this.ytHourlyChart.data.labels = allLabels;
+                    this.ytHourlyChart.data.datasets[0].data = allData;
+                    // Update per-bar styles
+                    const bgColors = allData.map((_, i) => i === projIndex ? 'transparent' : null);
+                    const bdColors = allData.map((_, i) => i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
+                    const bdWidths = allData.map((_, i) => i === projIndex ? 2 : 1);
+                    const bdDash = allData.map((_, i) => i === projIndex ? [4, 3] : []);
+                    this.ytHourlyChart.data.datasets[0].backgroundColor = bgColors.map((c, i) => c || this._ytChartGradient);
+                    this.ytHourlyChart.data.datasets[0].borderColor = bdColors;
+                    this.ytHourlyChart.data.datasets[0].borderWidth = bdWidths;
+                    this.ytHourlyChart.data.datasets[0].borderDash = bdDash;
                     this.ytHourlyChart.update('none');
                     return;
                 }
 
-                if (labels.length === 0) return;
+                if (allLabels.length === 0) return;
 
                 const formatK = (v) => {
                     if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
@@ -6574,48 +6613,72 @@
                     return v.toString();
                 };
 
+                const ctx = canvas.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, 'rgba(56,189,248,0.9)');
+                gradient.addColorStop(1, 'rgba(59,130,246,0.5)');
+                this._ytChartGradient = gradient;
+
+                // Per-bar colors: projection bar is transparent with dashed border
+                const bgColors = allData.map((_, i) => i === projIndex ? 'transparent' : gradient);
+                const bdColors = allData.map((_, i) => i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
+                const bdWidths = allData.map((_, i) => i === projIndex ? 2 : 1);
+
                 this.ytHourlyChart = new Chart(canvas, {
                     type: 'bar',
                     data: {
-                        labels,
+                        labels: allLabels,
                         datasets: [{
-                            data,
-                            backgroundColor: 'rgba(248,113,113,0.7)',
-                            borderColor: 'rgba(248,113,113,0.9)',
-                            borderWidth: 2,
-                            borderRadius: 4,
-                            barPercentage: 0.7,
-                            categoryPercentage: 0.8
+                            data: allData,
+                            backgroundColor: bgColors,
+                            borderColor: bdColors,
+                            borderWidth: bdWidths,
+                            borderRadius: 20,
+                            borderSkipped: false,
+                            barPercentage: 0.4,
+                            categoryPercentage: 0.8,
+                            segment: {
+                                borderDash: (ctx) => ctx.dataIndex === projIndex ? [4, 3] : []
+                            }
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         animation: false,
+                        layout: {
+                            padding: { top: 18, left: 4, right: 4 }
+                        },
                         plugins: {
                             legend: { display: false },
                             tooltip: { enabled: false },
                             datalabels: {
                                 anchor: 'end',
-                                align: 'end',
-                                color: 'rgba(255,255,255,0.85)',
-                                font: { size: 11, weight: '600' },
-                                formatter: (v) => v > 0 ? formatK(v) : ''
+                                align: 'top',
+                                color: (ctx) => ctx.dataIndex === projIndex ? 'rgba(56,189,248,0.6)' : '#fff',
+                                font: { size: 9, weight: '700' },
+                                textShadowColor: 'rgba(0,0,0,0.6)',
+                                textShadowBlur: 3,
+                                formatter: (v, ctx) => {
+                                    if (v <= 0) return '';
+                                    const prefix = ctx.dataIndex === projIndex ? '~' : '';
+                                    return prefix + formatK(v);
+                                }
                             }
                         },
                         scales: {
                             x: {
                                 grid: { display: false },
                                 ticks: {
-                                    color: 'rgba(255,255,255,0.4)',
-                                    font: { size: 9 }
+                                    color: 'rgba(255,255,255,0.45)',
+                                    font: { size: 8, weight: '500' }
                                 },
                                 border: { display: false }
                             },
                             y: {
                                 display: false,
                                 beginAtZero: true,
-                                grace: '20%'
+                                grace: '25%'
                             }
                         }
                     },
