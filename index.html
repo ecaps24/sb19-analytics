@@ -2320,7 +2320,30 @@
         .tier-badge.tier-basic { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
         .tier-badge.tier-plus { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
         .tier-badge.tier-premium { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
-        .tier-badge.tier-admin { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.2)); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .tier-badge.tier-admin { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.2)); color: #f87171; border: 1px solid rgba(239,68,68,0.3); cursor: pointer; transition: all 0.2s ease; }
+        .tier-badge.tier-admin:hover { background: linear-gradient(135deg, rgba(239,68,68,0.35), rgba(220,38,38,0.35)); transform: translateY(-1px); }
+        /* Users management view */
+        .users-view-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .users-view-table thead tr { border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: #9ca3af; }
+        .users-view-table th, .users-view-table td { padding: 10px 12px; text-align: left; }
+        .users-view-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; }
+        .users-view-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+        .users-tier-pill { font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; }
+        .users-tier-pill.t-free { background: rgba(16,185,129,0.15); color: #34d399; }
+        .users-tier-pill.t-daypass { background: rgba(16,185,129,0.15); color: #34d399; }
+        .users-tier-pill.t-basic { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .users-tier-pill.t-plus { background: rgba(139,92,246,0.15); color: #a78bfa; }
+        .users-tier-pill.t-premium { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .users-tier-pill.t-admin { background: rgba(239,68,68,0.15); color: #f87171; }
+        .users-status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .users-status-dot.active { background: #10b981; }
+        .users-status-dot.inactive { background: #6b7280; }
+        .users-search-input { padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(17,24,39,0.8); color: #e2e8f0; font-size: 0.8rem; width: 260px; }
+        .users-search-input:focus { outline: none; border-color: #3b82f6; }
+        .users-summary-cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .users-summary-card { flex: 1; min-width: 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; text-align: center; }
+        .users-summary-card .usc-value { font-size: 1.5rem; font-weight: 700; color: #f1f5f9; }
+        .users-summary-card .usc-label { font-size: 0.7rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
         .user-avatar-btn {
             width: 36px;
             height: 36px;
@@ -3342,6 +3365,41 @@
                 </div>
             </div>
 
+            <!-- Admin Users View -->
+            <div id="users-view" class="listeners-detail-container" style="display: none;">
+                <div class="listeners-detail-header">
+                    <button class="song-back-btn" onclick="window.dashboard.closeUsersView()">Back to Dashboard</button>
+                    <div class="listeners-title-section">
+                        <h2>User Management</h2>
+                    </div>
+                </div>
+
+                <div class="users-summary-cards" id="usersSummaryCards"></div>
+
+                <div style="margin-bottom: 12px;">
+                    <input type="text" class="users-search-input" id="usersSearchInput"
+                           placeholder="Search by name or email..."
+                           oninput="window.dashboard.filterUsersTable()">
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="users-view-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Tier</th>
+                                <th>Status</th>
+                                <th>Admin</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Bottom Ad -->
             <div class="ad-container" style="margin-top: 16px;">
                 <ins class="adsbygoogle"
@@ -3631,9 +3689,13 @@
                     if (this.isAdmin()) {
                         tierBadge.className = 'tier-badge tier-admin';
                         tierBadge.textContent = 'Admin';
+                        tierBadge.onclick = () => window.dashboard && window.dashboard.openUsersView();
+                        tierBadge.title = 'User Management';
                     } else {
                         tierBadge.className = 'tier-badge tier-' + tier;
                         tierBadge.textContent = tier === 'daypass' ? 'Day Pass' : tier.charAt(0).toUpperCase() + tier.slice(1);
+                        tierBadge.onclick = null;
+                        tierBadge.title = '';
                     }
 
                     // Hide upgrade option for admins
@@ -3878,6 +3940,9 @@
                 this.chartCustomEnd = ''; // Custom date range end
                 // Trends view state
                 this.trendsViewOpen = false;
+                // Users view state (admin only)
+                this.usersViewOpen = false;
+                this.usersData = [];
                 this.trendsSelectedArtists = [];
                 this.trendsSelectedTracks = [];
                 this.trendsDateRange = 'all';
@@ -7669,7 +7734,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'listeners-detail-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'trends-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'trends-view' || el.id === 'users-view') {
                         // Keep other detail views hidden
                         el.style.display = 'none';
                     } else {
@@ -8324,7 +8389,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'trends-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'users-view') {
                         el.style.display = 'none';
                     } else {
                         el.style.display = '';
@@ -8985,6 +9050,10 @@
                     if (!this.trendsViewOpen) {
                         this.openTrendsView();
                     }
+                } else if (hash === '#users') {
+                    if (!this.usersViewOpen) {
+                        this.openUsersView();
+                    }
                 } else {
                     if (this.currentSong) {
                         this.closeSongDetail();
@@ -8994,6 +9063,9 @@
                     }
                     if (this.trendsViewOpen) {
                         this.closeTrendsView();
+                    }
+                    if (this.usersViewOpen) {
+                        this.closeUsersView();
                     }
                 }
             }
@@ -9273,6 +9345,133 @@
                 } else {
                     container.innerHTML = '<p class="no-content">Credits not available yet.</p>';
                 }
+            }
+
+            // ===== Admin Users View Methods =====
+
+            openUsersView() {
+                const am = window.authManager;
+                if (!am || !am.isAdmin()) return;
+
+                this.usersViewOpen = true;
+                window.location.hash = 'users';
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id !== 'users-view' &&
+                        !el.classList.contains('ad-container') &&
+                        !el.classList.contains('products-services-panel') &&
+                        !el.classList.contains('developer-footer')) {
+                        el.style.display = 'none';
+                    }
+                });
+                document.getElementById('users-view').style.display = 'block';
+
+                this.loadAndRenderUsers();
+            }
+
+            closeUsersView() {
+                this.usersViewOpen = false;
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id === 'users-view') {
+                        el.style.display = 'none';
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'trends-view') {
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = '';
+                    }
+                });
+
+                this.updateArtistHash();
+                this.updateSectionVisibility();
+            }
+
+            async loadAndRenderUsers() {
+                const am = window.authManager;
+                if (!am || !am.supabase || !am.isAdmin()) return;
+
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#9ca3af; padding:24px;">Loading users...</td></tr>';
+
+                try {
+                    const { data, error } = await am.supabase
+                        .from('profiles')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    if (error) throw error;
+                    this.usersData = data || [];
+                    this.renderUsersView();
+                } catch (err) {
+                    console.error('Failed to load users:', err.message);
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#f87171; padding:24px;">Failed to load users: ${err.message}</td></tr>`;
+                }
+            }
+
+            renderUsersView() {
+                const users = this.usersData;
+
+                // Summary cards
+                const totalUsers = users.length;
+                const adminCount = users.filter(u => u.is_admin).length;
+                const activeCount = users.filter(u => u.subscription_status === 'active').length;
+                const tierCounts = {};
+                users.forEach(u => {
+                    const t = u.subscription_tier || 'free';
+                    tierCounts[t] = (tierCounts[t] || 0) + 1;
+                });
+
+                const summaryEl = document.getElementById('usersSummaryCards');
+                summaryEl.innerHTML = `
+                    <div class="users-summary-card"><div class="usc-value">${totalUsers}</div><div class="usc-label">Total Users</div></div>
+                    <div class="users-summary-card"><div class="usc-value">${adminCount}</div><div class="usc-label">Admins</div></div>
+                    <div class="users-summary-card"><div class="usc-value">${activeCount}</div><div class="usc-label">Active Subs</div></div>
+                    <div class="users-summary-card"><div class="usc-value">${tierCounts['premium'] || 0}</div><div class="usc-label">Premium</div></div>
+                    <div class="users-summary-card"><div class="usc-value">${tierCounts['plus'] || 0}</div><div class="usc-label">Plus</div></div>
+                    <div class="users-summary-card"><div class="usc-value">${tierCounts['basic'] || 0}</div><div class="usc-label">Basic</div></div>
+                `;
+
+                this.renderUsersTable(users);
+            }
+
+            renderUsersTable(users) {
+                const tbody = document.getElementById('usersTableBody');
+                if (!users.length) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#9ca3af; padding:24px;">No users found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = users.map((u, i) => {
+                    const name = u.full_name || '-';
+                    const email = u.email || '-';
+                    const tier = u.is_admin ? 'admin' : (u.subscription_tier || 'free');
+                    const tierLabel = tier === 'daypass' ? 'Day Pass' : tier.charAt(0).toUpperCase() + tier.slice(1);
+                    const statusActive = u.subscription_status === 'active';
+                    const joined = u.created_at ? new Date(u.created_at).toLocaleDateString() : '-';
+                    return `<tr>
+                        <td style="color:#6b7280;">${i + 1}</td>
+                        <td>${name}</td>
+                        <td style="color:#9ca3af; font-size:0.75rem;">${email}</td>
+                        <td><span class="users-tier-pill t-${tier}">${tierLabel}</span></td>
+                        <td><span class="users-status-dot ${statusActive ? 'active' : 'inactive'}"></span>${statusActive ? 'Active' : 'Inactive'}</td>
+                        <td>${u.is_admin ? '<span style="color:#f87171;">Yes</span>' : '<span style="color:#6b7280;">No</span>'}</td>
+                        <td style="color:#9ca3af; font-size:0.75rem;">${joined}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            filterUsersTable() {
+                const query = (document.getElementById('usersSearchInput').value || '').toLowerCase().trim();
+                if (!query) {
+                    this.renderUsersTable(this.usersData);
+                    return;
+                }
+                const filtered = this.usersData.filter(u =>
+                    (u.full_name || '').toLowerCase().includes(query) ||
+                    (u.email || '').toLowerCase().includes(query)
+                );
+                this.renderUsersTable(filtered);
             }
 
             showDashboard() {
