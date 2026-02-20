@@ -520,6 +520,90 @@
         }
         .visa-spotify-link:hover { background: rgba(30,215,96,1); }
 
+        /* YouTube VISA Card */
+        .yt-hero-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 290px;
+            cursor: default;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .yt-hero-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .yt-hero-bg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35);
+        }
+        .yt-hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.85) 100%);
+        }
+        .yt-hero-content {
+            position: relative; z-index: 1;
+            height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+        }
+        .yt-badge {
+            background: rgba(239,68,68,0.85);
+            color: #fff; font-size: 0.65rem; font-weight: 700;
+            padding: 3px 10px; border-radius: 999px;
+            letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+        .yt-title {
+            font-size: 2.5rem; font-weight: 800; color: #fff;
+            letter-spacing: 2px; line-height: 1;
+        }
+        .yt-artist {
+            font-size: 0.95rem; color: rgba(255,255,255,0.7);
+            font-weight: 500; margin-top: 4px;
+        }
+        .yt-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 14px;
+            width: 100%;
+            max-width: 320px;
+        }
+        .yt-stat {
+            text-align: center;
+        }
+        .yt-stat-value {
+            font-size: 1.25rem; font-weight: 700; color: #f87171;
+            line-height: 1.2;
+        }
+        .yt-stat-label {
+            font-size: 0.65rem; color: rgba(255,255,255,0.6);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .yt-stat-change {
+            font-size: 0.7rem; font-weight: 600;
+            margin-top: 1px;
+        }
+        .yt-stat-change.positive { color: #34d399; }
+        .yt-stat-change.negative { color: #f87171; }
+        .yt-watch-link {
+            display: inline-block; margin-top: 12px;
+            background: rgba(239,68,68,0.85); color: #fff;
+            font-size: 0.8rem; font-weight: 600;
+            padding: 6px 16px; border-radius: 999px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .yt-watch-link:hover { background: rgba(239,68,68,1); }
+        .yt-error-msg {
+            font-size: 0.8rem; color: rgba(255,255,255,0.5);
+            margin-top: 10px;
+        }
+
         .chart-title {
             font-size: 1rem;
             margin-bottom: 12px;
@@ -1413,6 +1497,11 @@
             .visa-title { font-size: 2rem; }
             .visa-streams { font-size: 1.6rem; }
 
+            .yt-hero-card { height: 260px; }
+            .yt-title { font-size: 2rem; }
+            .yt-stat-value { font-size: 1.1rem; }
+            .yt-stats-grid { gap: 8px; }
+
             .trends-summary-tables {
                 grid-template-columns: 1fr;
             }
@@ -1590,6 +1679,13 @@
             .visa-title { font-size: 1.6rem; }
             .visa-streams { font-size: 1.3rem; }
             .visa-badge { font-size: 0.6rem; }
+
+            .yt-hero-card { height: 230px; }
+            .yt-title { font-size: 1.6rem; }
+            .yt-badge { font-size: 0.6rem; }
+            .yt-stat-value { font-size: 1rem; }
+            .yt-stats-grid { gap: 6px; max-width: 260px; }
+            .yt-stat-label { font-size: 0.6rem; }
 
             /* Touch-friendly tap targets */
             .clickable-track {
@@ -2622,7 +2718,7 @@
                 <div class="artist-pills-scroll" id="artistPillsScroll"></div>
             </div>
 
-            <!-- Charts Row: Album/Era Chart + VISA Single Card + Solo Streams -->
+            <!-- Charts Row: Album/Era Chart + VISA Single Card + YouTube Card -->
             <div class="charts-row" id="mainChartsRow" style="align-items: flex-start;">
                 <!-- Album/Era Chart -->
                 <div class="chart-half" id="albumChartSection" style="flex: 1;">
@@ -2654,20 +2750,36 @@
                     </div>
                 </div>
 
-                <!-- Solo Streams by Member Chart -->
-                <div class="chart-half" id="memberChartSection" style="flex: 1;">
-                    <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="chart-title"
-                            style="display: flex; justify-content: center; align-items: center; gap: 12px;">
-                            <span>Solo Streams by Member</span>
-                            <label
-                                style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
-                                <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
-                                <span>Show Listeners</span>
-                            </label>
-                        </div>
-                        <div class="chart-wrapper" style="height: 250px;">
-                            <canvas id="memberChart"></canvas>
+                <!-- YouTube VISA Card -->
+                <div class="chart-half" id="youtubeCardSection" style="flex: 1;">
+                    <div class="yt-hero-card">
+                        <img src="photos/visa.png" class="yt-hero-bg" alt="VISA artwork" />
+                        <div class="yt-hero-overlay"></div>
+                        <div class="yt-hero-content">
+                            <span class="yt-badge">MUSIC VIDEO</span>
+                            <div class="yt-title">VISA</div>
+                            <div class="yt-artist">SB19</div>
+                            <div class="yt-stats-grid">
+                                <div class="yt-stat">
+                                    <div class="yt-stat-value" id="ytViewCount">--</div>
+                                    <div class="yt-stat-label">Views</div>
+                                    <div class="yt-stat-change" id="ytViewChange"></div>
+                                </div>
+                                <div class="yt-stat">
+                                    <div class="yt-stat-value" id="ytLikeCount">--</div>
+                                    <div class="yt-stat-label">Likes</div>
+                                    <div class="yt-stat-change" id="ytLikeChange"></div>
+                                </div>
+                                <div class="yt-stat">
+                                    <div class="yt-stat-value" id="ytCommentCount">--</div>
+                                    <div class="yt-stat-label">Comments</div>
+                                    <div class="yt-stat-change" id="ytCommentChange"></div>
+                                </div>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
+                               onclick="event.stopPropagation();">
+                                Watch on YouTube
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -2708,6 +2820,22 @@
                             <tfoot id="top-tracks-foot"></tfoot>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <!-- Solo Streams by Member Chart (full-width) -->
+            <div class="chart-container" id="memberChartSection" style="width: 100%;">
+                <div class="chart-title"
+                    style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                    <span>Solo Streams by Member</span>
+                    <label
+                        style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
+                        <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
+                        <span>Show Listeners</span>
+                    </label>
+                </div>
+                <div class="chart-wrapper" style="height: 250px;">
+                    <canvas id="memberChart"></canvas>
                 </div>
             </div>
 
@@ -3698,13 +3826,22 @@
                 this.selectedArtist = 'SB19';
                 this.artistsWithTracks = new Set();
                 this.allTracksMetadata = {};
+                this.youtubeConfig = {
+                    apiKey: 'AIzaSyCG-ZWidx7LVzf8NSts4lvUwwEMMao34q8',
+                    videoId: '0t6GNcINKeU',
+                    refreshInterval: 5 * 60 * 1000,
+                    storageKey: 'sb19_yt_visa_history',
+                    cacheKey: 'sb19_yt_visa_cache'
+                };
+                this.ytRefreshTimer = null;
                 this.artistConfig = {
                     'SB19': {
                         ath: 2828289,
                         tracksCsvFile: './tracks.csv',
                         mainAlbums: ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'],
                         hasMemberBreakdown: true,
-                        hasVisaCard: true
+                        hasVisaCard: true,
+                        hasYoutubeCard: true
                     },
                     'BINI': {
                         ath: null,
@@ -5053,6 +5190,11 @@
                 if (config && config.hasVisaCard) {
                     this.renderVisaCard();
                 }
+                if (config && config.hasYoutubeCard) {
+                    this.startYouTubeRefresh();
+                } else {
+                    this.stopYouTubeRefresh();
+                }
                 if (config && config.hasMemberBreakdown) {
                     this.createMemberChart();
                     this.populateMemberTracks();
@@ -5192,6 +5334,10 @@
 
                 const visaEl = document.getElementById('visaCardSection');
                 if (visaEl) visaEl.style.display = hasVisaCard ? '' : 'none';
+
+                const hasYoutube = config && config.hasYoutubeCard;
+                const ytEl = document.getElementById('youtubeCardSection');
+                if (ytEl) ytEl.style.display = hasYoutube ? '' : 'none';
 
                 const memberEl = document.getElementById('memberChartSection');
                 if (memberEl) memberEl.style.display = hasMember ? '' : 'none';
@@ -6060,6 +6206,172 @@
                 }
             }
 
+            async fetchYouTubeStats() {
+                const cfg = this.youtubeConfig;
+                const viewEl = document.getElementById('ytViewCount');
+                const likeEl = document.getElementById('ytLikeCount');
+                const commentEl = document.getElementById('ytCommentCount');
+
+                if (!viewEl) return;
+
+                // If no API key, try loading from cache, else show setup message
+                if (!cfg.apiKey) {
+                    const cached = this.loadYouTubeCache();
+                    if (cached) {
+                        this.displayYouTubeStats(cached);
+                        this.trackYouTubeDailyChange(cached);
+                    } else {
+                        viewEl.textContent = '--';
+                        likeEl.textContent = '--';
+                        commentEl.textContent = '--';
+                        const errEl = document.querySelector('.yt-error-msg');
+                        if (!errEl) {
+                            const msg = document.createElement('div');
+                            msg.className = 'yt-error-msg';
+                            msg.textContent = 'Set up YouTube API key';
+                            viewEl.closest('.yt-hero-content').appendChild(msg);
+                        }
+                    }
+                    return;
+                }
+
+                try {
+                    const url = `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${cfg.videoId}&key=${cfg.apiKey}`;
+                    const resp = await fetch(url);
+
+                    if (!resp.ok) {
+                        // Quota exceeded or invalid key — fall back to cache
+                        const cached = this.loadYouTubeCache();
+                        if (cached) {
+                            this.displayYouTubeStats(cached, true);
+                            this.trackYouTubeDailyChange(cached);
+                        } else {
+                            viewEl.textContent = 'Error';
+                            likeEl.textContent = '--';
+                            commentEl.textContent = '--';
+                        }
+                        return;
+                    }
+
+                    const data = await resp.json();
+                    if (!data.items || data.items.length === 0) return;
+
+                    const stats = data.items[0].statistics;
+                    const parsed = {
+                        views: parseInt(stats.viewCount) || 0,
+                        likes: parseInt(stats.likeCount) || 0,
+                        comments: parseInt(stats.commentCount) || 0,
+                        fetchedAt: new Date().toISOString()
+                    };
+
+                    // Cache latest result
+                    localStorage.setItem(cfg.cacheKey, JSON.stringify(parsed));
+
+                    // Remove any error message
+                    const errEl = viewEl.closest('.yt-hero-content').querySelector('.yt-error-msg');
+                    if (errEl) errEl.remove();
+
+                    this.displayYouTubeStats(parsed);
+                    this.trackYouTubeDailyChange(parsed);
+
+                } catch (err) {
+                    console.warn('YouTube API fetch failed:', err);
+                    const cached = this.loadYouTubeCache();
+                    if (cached) {
+                        this.displayYouTubeStats(cached, true);
+                        this.trackYouTubeDailyChange(cached);
+                    }
+                }
+            }
+
+            displayYouTubeStats(stats, isCached = false) {
+                const viewEl = document.getElementById('ytViewCount');
+                const likeEl = document.getElementById('ytLikeCount');
+                const commentEl = document.getElementById('ytCommentCount');
+                if (!viewEl) return;
+
+                viewEl.textContent = stats.views.toLocaleString();
+                likeEl.textContent = stats.likes.toLocaleString();
+                commentEl.textContent = stats.comments.toLocaleString();
+
+                if (isCached) {
+                    let cachedLabel = viewEl.closest('.yt-hero-content').querySelector('.yt-error-msg');
+                    if (!cachedLabel) {
+                        cachedLabel = document.createElement('div');
+                        cachedLabel.className = 'yt-error-msg';
+                        viewEl.closest('.yt-hero-content').appendChild(cachedLabel);
+                    }
+                    cachedLabel.textContent = '(cached)';
+                } else {
+                    const errEl = viewEl.closest('.yt-hero-content').querySelector('.yt-error-msg');
+                    if (errEl) errEl.remove();
+                }
+            }
+
+            trackYouTubeDailyChange(current) {
+                const cfg = this.youtubeConfig;
+                const today = new Date().toISOString().slice(0, 10);
+                let history = {};
+                try {
+                    history = JSON.parse(localStorage.getItem(cfg.storageKey)) || {};
+                } catch (e) { history = {}; }
+
+                // Store today's snapshot if not yet stored
+                if (!history[today]) {
+                    history[today] = { views: current.views, likes: current.likes, comments: current.comments };
+                    localStorage.setItem(cfg.storageKey, JSON.stringify(history));
+                }
+
+                // Find previous day's data
+                const dates = Object.keys(history).sort();
+                const todayIdx = dates.indexOf(today);
+                if (todayIdx <= 0) return; // no previous data
+
+                const prevDate = dates[todayIdx - 1];
+                const prev = history[prevDate];
+
+                const pairs = [
+                    { change: current.views - prev.views, el: document.getElementById('ytViewChange') },
+                    { change: current.likes - prev.likes, el: document.getElementById('ytLikeChange') },
+                    { change: current.comments - prev.comments, el: document.getElementById('ytCommentChange') }
+                ];
+
+                pairs.forEach(({ change, el }) => {
+                    if (!el) return;
+                    if (change > 0) {
+                        el.textContent = '+' + change.toLocaleString();
+                        el.className = 'yt-stat-change positive';
+                    } else if (change < 0) {
+                        el.textContent = change.toLocaleString();
+                        el.className = 'yt-stat-change negative';
+                    } else {
+                        el.textContent = '';
+                        el.className = 'yt-stat-change';
+                    }
+                });
+            }
+
+            loadYouTubeCache() {
+                try {
+                    const data = JSON.parse(localStorage.getItem(this.youtubeConfig.cacheKey));
+                    if (data && typeof data.views === 'number') return data;
+                } catch (e) {}
+                return null;
+            }
+
+            startYouTubeRefresh() {
+                this.stopYouTubeRefresh();
+                this.fetchYouTubeStats();
+                this.ytRefreshTimer = setInterval(() => this.fetchYouTubeStats(), this.youtubeConfig.refreshInterval);
+            }
+
+            stopYouTubeRefresh() {
+                if (this.ytRefreshTimer) {
+                    clearInterval(this.ytRefreshTimer);
+                    this.ytRefreshTimer = null;
+                }
+            }
+
             filterToVisa() {
                 if (this.trackFilter === 'VISA') {
                     this.trackFilter = null;
@@ -6855,6 +7167,7 @@
                 if (!am || !am.initialized) {
                     const defaultGating = [
                         { selector: '#visaCardSection', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                        { selector: '#youtubeCardSection', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
                         { selector: '#memberChartSection', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
                         { selector: '#topTracksSection', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                         { selector: '#memberTracksSection', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
@@ -6895,6 +7208,7 @@
 
                 const gatingMap = [
                     { selector: '#visaCardSection', requiredTier: 'basic', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                    { selector: '#youtubeCardSection', requiredTier: 'basic', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
                     { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
                     { selector: '#topTracksSection', requiredTier: 'basic', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberTracksSection', requiredTier: 'basic', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
