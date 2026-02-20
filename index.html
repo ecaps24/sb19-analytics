@@ -6592,15 +6592,12 @@
                 if (this.ytHourlyChart) {
                     this.ytHourlyChart.data.labels = allLabels;
                     this.ytHourlyChart.data.datasets[0].data = allData;
-                    // Update per-bar styles
-                    const bgColors = allData.map((_, i) => i === projIndex ? 'transparent' : null);
-                    const bdColors = allData.map((_, i) => i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
-                    const bdWidths = allData.map((_, i) => i === projIndex ? 2 : 1);
-                    const bdDash = allData.map((_, i) => i === projIndex ? [4, 3] : []);
-                    this.ytHourlyChart.data.datasets[0].backgroundColor = bgColors.map((c, i) => c || this._ytChartGradient);
-                    this.ytHourlyChart.data.datasets[0].borderColor = bdColors;
-                    this.ytHourlyChart.data.datasets[0].borderWidth = bdWidths;
-                    this.ytHourlyChart.data.datasets[0].borderDash = bdDash;
+                    this.ytHourlyChart.data.datasets[0].backgroundColor = allData.map((_, i) =>
+                        i === projIndex ? 'rgba(56,189,248,0.15)' : this._ytChartGradient);
+                    this.ytHourlyChart.data.datasets[0].borderColor = allData.map((_, i) =>
+                        i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
+                    this.ytHourlyChart.data.datasets[0].borderWidth = allData.map((_, i) =>
+                        i === projIndex ? 2 : 1);
                     this.ytHourlyChart.update('none');
                     return;
                 }
@@ -6619,27 +6616,22 @@
                 gradient.addColorStop(1, 'rgba(59,130,246,0.5)');
                 this._ytChartGradient = gradient;
 
-                // Per-bar colors: projection bar is transparent with dashed border
-                const bgColors = allData.map((_, i) => i === projIndex ? 'transparent' : gradient);
-                const bdColors = allData.map((_, i) => i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
-                const bdWidths = allData.map((_, i) => i === projIndex ? 2 : 1);
-
                 this.ytHourlyChart = new Chart(canvas, {
                     type: 'bar',
                     data: {
                         labels: allLabels,
                         datasets: [{
                             data: allData,
-                            backgroundColor: bgColors,
-                            borderColor: bdColors,
-                            borderWidth: bdWidths,
+                            backgroundColor: allData.map((_, i) =>
+                                i === projIndex ? 'rgba(56,189,248,0.15)' : gradient),
+                            borderColor: allData.map((_, i) =>
+                                i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)'),
+                            borderWidth: allData.map((_, i) =>
+                                i === projIndex ? 2 : 1),
                             borderRadius: 20,
                             borderSkipped: false,
                             barPercentage: 0.4,
-                            categoryPercentage: 0.8,
-                            segment: {
-                                borderDash: (ctx) => ctx.dataIndex === projIndex ? [4, 3] : []
-                            }
+                            categoryPercentage: 0.8
                         }]
                     },
                     options: {
