@@ -333,6 +333,8 @@ class SB19SeleniumRPA:
             print("[INFO] Freshness check disabled via --skip-check flag.")
 
         results = []
+        consecutive_errors = 0
+        max_consecutive_errors = 3  # Restart browser after this many consecutive failures
 
         try:
             for i, track in enumerate(tracks):
@@ -340,50 +342,67 @@ class SB19SeleniumRPA:
                 artist = track.get("Artist", "Unknown")
                 url = track.get("Spotify Link")
                 slug = self._slugify(f"{artist}_{title}")
-                
+
                 print(f"\n[{i+1}/{len(tracks)}] Processing: {title} - {artist}")
                 print(f"       URL: {url}")
-                
+
+                result = None
                 try:
                     self.driver.get(url)
                     time.sleep(5) # Wait for initial load
-                    
+
                     # Scroll down a bit to ensure lazy-loaded elements trigger (sometimes needed)
                     self.driver.execute_script("window.scrollBy(0, 500);")
                     time.sleep(2)
-                    
+
                     page_source = self.driver.page_source
                     saved_path = self.save_page_source(page_source, slug)
-                    
+
                     streams = self.extract_streams_from_html(page_source)
-                    
+
                     if streams:
                         print(f"       [SUCCESS] Streams: {streams}")
                     else:
                         print(f"       [WARN] Could not extract streams.")
                         streams = "N/A"
-                        
+
                     # Use override date if provided, otherwise use current datetime
                     if self.override_date:
                         timestamp = f"{self.override_date} {datetime.now().strftime('%H:%M:%S')}"
                     else:
                         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                    results.append({
+                    result = {
                         "timestamp": timestamp,
                         "song_title": title,
                         "artist": artist,
                         "streams": streams,
                         "url": url,
                         "saved_file": saved_path
-                    })
-                    
+                    }
+                    results.append(result)
+                    consecutive_errors = 0
+
                 except Exception as e:
                     print(f"       [ERR] Error processing track: {e}")
-                    
-                # Save result immediately
-                self._save_result(results[-1])
-                
+                    consecutive_errors += 1
+
+                    # Restart browser if session died
+                    if consecutive_errors >= max_consecutive_errors:
+                        print(f"\n[RECOVERY] {consecutive_errors} consecutive errors detected. Restarting browser...")
+                        try:
+                            self.driver.quit()
+                        except Exception:
+                            pass
+                        time.sleep(3)
+                        self.driver = self._setup_driver()
+                        consecutive_errors = 0
+                        print("[RECOVERY] Browser restarted successfully.\n")
+
+                # Save result immediately (only if we got a new result)
+                if result:
+                    self._save_result(result)
+
                 # Small pause between tracks
                 time.sleep(2)
                 

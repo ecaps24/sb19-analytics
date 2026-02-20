@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPM Analytics - Spotify Performance Tracking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: #050a18;
+            color: #e5e7eb;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated mesh gradient background */
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-mesh .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .bg-mesh .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: #3b82f6;
+            top: -10%;
+            left: -5%;
+            animation-delay: 0s;
+        }
+
+        .bg-mesh .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #8b5cf6;
+            top: 30%;
+            right: -10%;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+
+        .bg-mesh .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #06b6d4;
+            bottom: -5%;
+            left: 30%;
+            animation-delay: -14s;
+            animation-duration: 22s;
+        }
+
+        .bg-mesh .orb-4 {
+            width: 300px;
+            height: 300px;
+            background: #ec4899;
+            top: 60%;
+            left: -5%;
+            animation-delay: -3s;
+            animation-duration: 18s;
+            opacity: 0.2;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, -40px) scale(1.1); }
+            50% { transform: translate(-30px, 50px) scale(0.95); }
+            75% { transform: translate(40px, 30px) scale(1.05); }
+        }
+
+        /* Noise overlay */
+        .bg-mesh::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            text-align: center;
+            padding: 48px 20px 40px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 100px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: #60a5fa;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .hero-badge .pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #34d399;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 40%, #ec4899 70%, #f97316 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero .subtitle {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            font-weight: 400;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35);
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .hero-nav .arrow {
+            transition: transform 0.3s;
+        }
+
+        .hero-nav:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ============ STAT CARDS ============ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            position: relative;
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent, #3b82f6), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:nth-child(1) { --accent: #3b82f6; animation-delay: 0.05s; }
+        .stat-card:nth-child(2) { --accent: #8b5cf6; animation-delay: 0.1s; }
+        .stat-card:nth-child(3) { --accent: #ec4899; animation-delay: 0.15s; }
+        .stat-card:nth-child(4) { --accent: #34d399; animation-delay: 0.2s; }
+        .stat-card:nth-child(5) { --accent: #f97316; animation-delay: 0.25s; }
+        .stat-card:nth-child(6) { --accent: #06b6d4; animation-delay: 0.3s; }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, var(--accent, #3b82f6)22, var(--accent, #3b82f6)08);
+            border: 1px solid var(--accent, #3b82f6)33;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #f8fafc;
+            line-height: 1.1;
+            margin-bottom: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-card .detail {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .stat-card .detail.up {
+            color: #34d399;
+        }
+
+        .stat-card .detail.down {
+            color: #f87171;
+        }
+
+        /* ============ SECTION HEADERS ============ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header .accent-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.4), transparent);
+        }
+
+        /* ============ GLASS PANELS ============ */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: border-color 0.3s;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ============ CHARTS ============ */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .chart-panel {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            transition: border-color 0.3s;
+        }
+
+        .chart-panel:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-panel h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .top20-wrapper {
+            position: relative;
+            height: 620px;
+        }
+
+        /* ============ LEADERBOARD ============ */
+        .leaderboard-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .search-box {
+            flex: 0 1 280px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.7);
+            color: #e5e7eb;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .search-box:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .search-box::placeholder {
+            color: #475569;
+        }
+
+        .genre-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .genre-pill {
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .genre-pill:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #cbd5e1;
+        }
+
+        .genre-pill.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.15));
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .result-count {
+            font-size: 0.78rem;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        /* ============ TABLE ============ */
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 10px 12px;
+            color: #475569;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            transition: color 0.2s;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .data-table th:hover {
+            color: #94a3b8;
+        }
+
+        .data-table th.sorted {
+            color: #60a5fa;
+        }
+
+        .data-table th .sort-arrow {
+            margin-left: 4px;
+            font-size: 0.6rem;
+            opacity: 0.7;
+        }
+
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: #cbd5e1;
+            transition: background 0.15s;
+        }
+
+        .data-table tbody tr {
+            transition: all 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.06);
+        }
+
+        .data-table tbody tr:hover td {
+            color: #e2e8f0;
+        }
+
+        .rank-col {
+            color: #475569;
+            font-weight: 700;
+            width: 50px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .rank-medal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        .rank-medal.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
+        .rank-medal.silver { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #334155; }
+        .rank-medal.bronze { background: linear-gradient(135deg, #fb923c, #ea580c); color: #431407; }
+
+        .artist-link {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .artist-link:hover {
+            color: #60a5fa;
+        }
+
+        .genre-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .num-col {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 500;
+        }
+
+        .change-up { color: #34d399; }
+        .change-down { color: #f87171; }
+        .change-neutral { color: #475569; }
+
+        /* ============ TRACKS ============ */
+        .tracks-stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tracks-stat {
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tracks-stat .ts-label {
+            font-size: 0.7rem;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .tracks-stat .ts-value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #f1f5f9;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            text-align: center;
+            padding: 40px 0 24px;
+            color: #334155;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============ LOADING ============ */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            gap: 20px;
+        }
+
+        .loader-ring {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid rgba(59, 130, 246, 0.1);
+            border-top-color: #3b82f6;
+            border-right-color: #8b5cf6;
+            animation: spin 0.9s cubic-bezier(0.4, 0.15, 0.6, 0.85) infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .error-screen {
+            text-align: center;
+            padding: 60px 20px;
+            color: #f87171;
+        }
+
+        .dashboard-content {
+            display: none;
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-wrapper { height: 250px; }
+            .top20-wrapper { height: 500px; }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .hero h1 { font-size: 2.2rem; }
+            .hero { padding: 32px 16px 28px; }
+
+            .leaderboard-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box { flex: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            .chart-wrapper { height: 220px; }
+            .top20-wrapper { height: 450px; }
+
+            .stat-card { padding: 16px; }
+            .stat-card .value { font-size: 1.4rem; }
+
+            .data-table { font-size: 0.78rem; }
+            .data-table th, .data-table td { padding: 8px 6px; }
+
+            .hero h1 { font-size: 1.8rem; }
+            .glass-panel, .chart-panel { padding: 16px; border-radius: 12px; }
+        }
+
+        @media (max-width: 360px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated background -->
+    <div class="bg-mesh">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-badge"><span class="pulse-dot"></span> Live Tracking</div>
+            <h1><span class="gradient-text">OPM Analytics</span></h1>
+            <p class="subtitle">Spotify Performance Tracking for OPM Artists</p>
+            <a href="../index.html" class="hero-nav">
+                View Artist Dashboard <span class="arrow">&rarr;</span>
+            </a>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="loader-ring"></div>
+            <div class="loading-text">Loading OPM data...</div>
+        </div>
+
+        <!-- Error -->
+        <div id="errorScreen" class="error-screen" style="display:none;"></div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboardContent" class="dashboard-content">
+
+            <!-- Summary Stats -->
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <!-- Genre Charts -->
+            <div class="section-header">
+                <h2>Genre Breakdown</h2>
+                <div class="accent-line"></div>
+            </div>
+            <div class="charts-row">
+                <div class="chart-panel">
+                    <h3>Average Monthly Listeners by Genre</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="genreBarChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-panel">
+                    <h3>Artist Distribution</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="genreDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top 20 Artists -->
+            <div class="glass-panel">
+                <div class="section-header">
+                    <h2>Top 20 Artists</h2>
+                    <div class="accent-line"></div>
+                </div>
+                <div class="top20-wrapper">
+                    <canvas id="top20Chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="glass-panel">
+                <div class="section-header">
+                    <h2>Artist Leaderboard</h2>
+                    <div class="accent-line"></div>
+                </div>
+                <div class="leaderboard-controls">
+                    <input type="text" class="search-box" id="searchBox" placeholder="Search artists...">
+                    <div class="genre-pills" id="genrePills"></div>
+                </div>
+                <div id="resultCount" class="result-count"></div>
+                <div class="table-scroll">
+                    <table class="data-table" id="leaderboardTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="rank"># <span class="sort-arrow"></span></th>
+                                <th data-sort="name">Artist <span class="sort-arrow"></span></th>
+                                <th data-sort="genre">Genre <span class="sort-arrow"></span></th>
+                                <th data-sort="listeners" style="text-align:right">Monthly Listeners <span class="sort-arrow"></span></th>
+                                <th data-sort="followers" style="text-align:right">Followers <span class="sort-arrow"></span></th>
+                                <th data-sort="change" style="text-align:right">Change <span class="sort-arrow"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tracks Section -->
+            <div class="glass-panel" id="tracksSection" style="display:none;">
+                <div class="section-header">
+                    <h2>Track Catalog</h2>
+                    <div class="accent-line"></div>
+                </div>
+                <div class="tracks-stats-row" id="tracksStats"></div>
+                <div class="table-scroll">
+                    <table class="data-table" id="tracksTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Track</th>
+                                <th>Artist</th>
+                                <th>Year</th>
+                                <th>Album/EP/Single</th>
+                                <th>Collaborators</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tracksBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                Data updated daily &middot; <a href="../index.html">View Artist Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class OPMHomeDashboard {
+            constructor() {
+                this.listenersData = [];
+                this.artistGenreMap = {};
+                this.artistUrlMap = {};
+                this.tracksData = [];
+                this.leaderboard = [];
+                this.genreStats = {};
+                this.latestDate = '';
+                this.prevDate = '';
+                this.activeGenre = 'All';
+                this.searchQuery = '';
+                this.sortCol = 'listeners';
+                this.sortDir = 'desc';
+                this.genreColors = {
+                    'P-Pop': '#60a5fa',
+                    'SB19 Solo': '#f97316',
+                    'OPM Pop': '#34d399',
+                    'OPM Ballad': '#a78bfa',
+                    'OPM Rock': '#ef4444',
+                    'OPM Indie': '#fbbf24',
+                    'OPM Classic': '#ec4899',
+                    'OPM Hip-Hop': '#14b8a6'
+                };
+                this.charts = {};
+                this.init();
+            }
+
+            async init() {
+                try {
+                    await this.loadData();
+                    this.processData();
+                    this.showDashboard();
+                    this.renderStats();
+                    this.renderGenreCharts();
+                    this.renderTop20Chart();
+                    this.renderGenrePills();
+                    this.renderLeaderboard();
+                    this.renderTracksSection();
+                    this.setupEventListeners();
+                } catch (error) {
+                    console.error('Dashboard error:', error);
+                    this.showError('Failed to load dashboard: ' + error.message);
+                }
+            }
+
+            // --- CSV Parsing ---
+
+            parseCSVLine(line, delimiter = null) {
+                if (!delimiter) {
+                    delimiter = line.includes(';') ? ';' : ',';
+                }
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (inQuotes) {
+                        if (char === '"') {
+                            if (i + 1 < line.length && line[i + 1] === '"') {
+                                current += '"';
+                                i++;
+                            } else {
+                                inQuotes = false;
+                            }
+                        } else {
+                            current += char;
+                        }
+                    } else {
+                        if (char === '"') {
+                            inQuotes = true;
+                        } else if (char === delimiter) {
+                            values.push(current);
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                }
+                values.push(current);
+                return values;
+            }
+
+            parseListenersCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+
+                const rawHeaders = this.parseCSVLine(lines[0]);
+                const headers = rawHeaders.map(h => h.trim().replace(/^\uFEFF/, ''));
+                const headerCount = headers.length;
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i]);
+                    let row = {};
+
+                    if (values.length <= 4 && headerCount > 4) {
+                        row.artist_name = (values[0] || '').trim();
+                        row.monthly_listeners = (values[1] || '').trim();
+                        row.timestamp = (values[2] || '').trim();
+                    } else {
+                        headers.forEach((h, idx) => {
+                            if (h) row[h] = (values[idx] || '').trim();
+                        });
+                    }
+
+                    const artist = row.artist_name || '';
+                    const listeners = parseInt((row.monthly_listeners || '0').replace(/,/g, ''));
+                    let dataDate = row.data_date || row.timestamp || '';
+
+                    if (dataDate) {
+                        if (dataDate.includes('_') && dataDate.length >= 8) {
+                            const year = dataDate.substring(0, 4);
+                            const month = dataDate.substring(4, 6);
+                            const day = dataDate.substring(6, 8);
+                            dataDate = `${year}-${month}-${day}`;
+                        }
+                    }
+
+                    if (artist && !isNaN(listeners) && listeners > 0 && dataDate &&
+                        !artist.includes('Unknown') && !artist.includes('Unsupported')) {
+                        const entry = {
+                            artist_name: artist,
+                            monthly_listeners: listeners,
+                            data_date: dataDate,
+                            genre: row.genre || '',
+                        };
+                        const rawFollowers = (row.followers || '').replace(/,/g, '');
+                        if (rawFollowers && !isNaN(parseInt(rawFollowers))) {
+                            entry.followers = parseInt(rawFollowers);
+                        }
+                        data.push(entry);
+                    }
+                }
+                return data.sort((a, b) => new Date(a.data_date) - new Date(b.data_date));
+            }
+
+            parseTracksCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+                const headers = this.parseCSVLine(lines[0]);
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i]);
+                    const row = {};
+                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+
+                    const title = row['Song Title'] || '';
+                    if (title) {
+                        data.push({
+                            title,
+                            artist: row['Artist'] || '',
+                            year: parseInt(row['Year']) || 0,
+                            album: row['Album/EP/Single'] || 'Single',
+                            collaborators: row['Collaborating Artist(s)'] || '',
+                            spotify_url: row['Spotify Link'] || ''
+                        });
+                    }
+                }
+                return data;
+            }
+
+            // --- Data Loading ---
+
+            async loadData() {
+                const [listenersResp, artistsResp, tracksResp] = await Promise.all([
+                    fetch('../monthly_listeners.csv?t=' + Date.now()),
+                    fetch('../opm_artists_spotify.csv?t=' + Date.now()),
+                    fetch('../opm_top10_tracks.csv?t=' + Date.now()).catch(() => null)
+                ]);
+
+                if (!listenersResp.ok) throw new Error('Failed to load monthly_listeners.csv');
+                this.listenersData = this.parseListenersCSV(await listenersResp.text());
+
+                if (artistsResp.ok) {
+                    const csv = await artistsResp.text();
+                    const lines = csv.trim().split('\n');
+                    for (let i = 1; i < lines.length; i++) {
+                        const parts = lines[i].split(',');
+                        if (parts.length >= 3) {
+                            const name = parts[0].trim();
+                            const url = parts[1].trim();
+                            const genre = parts[parts.length - 1].trim();
+                            if (name && genre) {
+                                this.artistGenreMap[name] = genre;
+                                this.artistUrlMap[name] = url;
+                            }
+                        }
+                    }
+                }
+
+                if (tracksResp && tracksResp.ok) {
+                    this.tracksData = this.parseTracksCSV(await tracksResp.text());
+                }
+
+                console.log('Data loaded:', {
+                    listeners: this.listenersData.length,
+                    genres: Object.keys(this.artistGenreMap).length,
+                    tracks: this.tracksData.length
+                });
+            }
+
+            // --- Data Processing ---
+
+            processData() {
+                const dateSet = new Set();
+                this.listenersData.forEach(d => dateSet.add(d.data_date));
+                const dates = [...dateSet].sort();
+
+                this.latestDate = dates[dates.length - 1] || '';
+                this.prevDate = dates.length >= 2 ? dates[dates.length - 2] : '';
+
+                const latestMap = new Map();
+                this.listenersData.forEach(d => {
+                    if (d.data_date === this.latestDate) {
+                        latestMap.set(d.artist_name, d);
+                    }
+                });
+
+                const prevMap = new Map();
+                if (this.prevDate) {
+                    this.listenersData.forEach(d => {
+                        if (d.data_date === this.prevDate) {
+                            prevMap.set(d.artist_name, d);
+                        }
+                    });
+                }
+
+                this.leaderboard = [];
+                latestMap.forEach((d, name) => {
+                    const genre = d.genre || this.artistGenreMap[name] || this.findGenre(name) || 'Unknown';
+                    const prev = prevMap.get(name);
+                    const change = prev ? d.monthly_listeners - prev.monthly_listeners : 0;
+                    this.leaderboard.push({
+                        name,
+                        genre,
+                        listeners: d.monthly_listeners,
+                        followers: d.followers || 0,
+                        change
+                    });
+                });
+
+                this.leaderboard.sort((a, b) => b.listeners - a.listeners);
+
+                this.genreStats = {};
+                this.leaderboard.forEach(a => {
+                    if (!this.genreStats[a.genre]) {
+                        this.genreStats[a.genre] = { listeners: 0, count: 0 };
+                    }
+                    this.genreStats[a.genre].listeners += a.listeners;
+                    this.genreStats[a.genre].count += 1;
+                });
+
+                const subtitle = document.querySelector('.hero .subtitle');
+                if (subtitle) {
+                    subtitle.textContent = `Spotify Performance Tracking for ${this.leaderboard.length} OPM Artists`;
+                }
+            }
+
+            findGenre(name) {
+                const lower = name.toLowerCase();
+                for (const [key, genre] of Object.entries(this.artistGenreMap)) {
+                    if (key.toLowerCase() === lower) return genre;
+                }
+                return '';
+            }
+
+            // --- Utilities ---
+
+            formatNumber(num) {
+                if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+                if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+                if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+                return num.toLocaleString();
+            }
+
+            getGenreColor(genre) {
+                return this.genreColors[genre] || '#475569';
+            }
+
+            // --- UI State ---
+
+            showDashboard() {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+            }
+
+            showError(msg) {
+                document.getElementById('loadingScreen').style.display = 'none';
+                const el = document.getElementById('errorScreen');
+                el.style.display = 'block';
+                el.innerHTML = `<h2 style="margin-bottom:8px;">Error</h2><p>${msg}</p>`;
+            }
+
+            // --- Rendering ---
+
+            renderStats() {
+                const totalArtists = this.leaderboard.length;
+                const combinedListeners = this.leaderboard.reduce((s, a) => s + a.listeners, 0);
+                const topArtist = this.leaderboard[0] || { name: '-', listeners: 0 };
+
+                const sorted = [...this.leaderboard].sort((a, b) => b.change - a.change);
+                const biggestGainer = sorted[0] || { name: '-', change: 0 };
+
+                const genreCount = Object.keys(this.genreStats).length;
+                const trackCount = this.tracksData.length;
+
+                const cards = [
+                    { icon: '\u{1F3B5}', label: 'Artists Tracked', value: totalArtists, detail: `Snapshot: ${this.latestDate}` },
+                    { icon: '\u{1F50A}', label: 'Combined Listeners', value: this.formatNumber(combinedListeners), detail: combinedListeners.toLocaleString() + ' total' },
+                    { icon: '\u{1F451}', label: 'Top Artist', value: topArtist.name, detail: this.formatNumber(topArtist.listeners) + ' listeners' },
+                    {
+                        icon: '\u{1F4C8}', label: 'Biggest Gainer', value: biggestGainer.name,
+                        detail: (biggestGainer.change >= 0 ? '+' : '') + this.formatNumber(biggestGainer.change),
+                        detailClass: biggestGainer.change >= 0 ? 'up' : 'down'
+                    },
+                    { icon: '\u{1F3AD}', label: 'Genres Tracked', value: genreCount, detail: Object.keys(this.genreStats).join(', ') },
+                    { icon: '\u{1F4BF}', label: 'Tracks Cataloged', value: trackCount, detail: trackCount > 0 ? `From ${new Set(this.tracksData.map(t => t.artist)).size} artists` : 'No track data' }
+                ];
+
+                document.getElementById('statsGrid').innerHTML = cards.map(c => `
+                    <div class="stat-card">
+                        <div class="stat-icon">${c.icon}</div>
+                        <div class="label">${c.label}</div>
+                        <div class="value">${c.value}</div>
+                        <div class="detail ${c.detailClass || ''}">${c.detail}</div>
+                    </div>
+                `).join('');
+            }
+
+            renderGenreCharts() {
+                const genres = Object.keys(this.genreColors);
+                const genreData = genres.map(g => {
+                    const stat = this.genreStats[g] || {};
+                    const total = stat.listeners || 0;
+                    const count = stat.count || 0;
+                    return {
+                        genre: g,
+                        listeners: total,
+                        avgListeners: count > 0 ? Math.round(total / count) : 0,
+                        count,
+                        color: this.genreColors[g]
+                    };
+                }).filter(g => g.count > 0);
+
+                const barData = [...genreData].sort((a, b) => b.avgListeners - a.avgListeners);
+
+                this.charts.genreBar = new Chart(document.getElementById('genreBarChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: barData.map(g => g.genre),
+                        datasets: [{
+                            data: barData.map(g => g.avgListeners),
+                            backgroundColor: barData.map(g => g.color + 'cc'),
+                            hoverBackgroundColor: barData.map(g => g.color),
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#94a3b8',
+                                font: { size: 11, weight: 700, family: 'Inter' },
+                                formatter: v => this.formatNumber(v)
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#475569', font: { size: 10 }, callback: v => this.formatNumber(v) },
+                                grid: { color: 'rgba(255,255,255,0.03)' },
+                                border: { display: false }
+                            },
+                            y: {
+                                ticks: { color: '#cbd5e1', font: { size: 12, weight: 600 } },
+                                grid: { display: false },
+                                border: { display: false }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+
+                this.charts.genreDoughnut = new Chart(document.getElementById('genreDoughnutChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: genreData.map(g => g.genre),
+                        datasets: [{
+                            data: genreData.map(g => g.count),
+                            backgroundColor: genreData.map(g => g.color + 'cc'),
+                            hoverBackgroundColor: genreData.map(g => g.color),
+                            borderColor: '#0a0f1e',
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '58%',
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: '#cbd5e1',
+                                    padding: 14,
+                                    usePointStyle: true,
+                                    pointStyleWidth: 10,
+                                    font: { size: 11, weight: 500 },
+                                    generateLabels: (chart) => {
+                                        const data = chart.data;
+                                        return data.labels.map((label, i) => ({
+                                            text: `${label} (${data.datasets[0].data[i]})`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            strokeStyle: 'transparent',
+                                            pointStyle: 'circle',
+                                            index: i
+                                        }));
+                                    }
+                                }
+                            },
+                            datalabels: { display: false }
+                        }
+                    }
+                });
+            }
+
+            renderTop20Chart() {
+                const top20 = this.leaderboard.slice(0, 20).reverse();
+
+                this.charts.top20 = new Chart(document.getElementById('top20Chart'), {
+                    type: 'bar',
+                    data: {
+                        labels: top20.map(a => a.name),
+                        datasets: [{
+                            data: top20.map(a => a.listeners),
+                            backgroundColor: top20.map(a => this.getGenreColor(a.genre) + 'bb'),
+                            hoverBackgroundColor: top20.map(a => this.getGenreColor(a.genre)),
+                            borderRadius: 6,
+                            borderSkipped: false,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: (e, elements) => {
+                            if (elements.length > 0) {
+                                const idx = elements[0].index;
+                                const artist = top20[idx].name;
+                                window.open('../index.html#artist=' + encodeURIComponent(artist), '_self');
+                            }
+                        },
+                        onHover: (e, elements) => {
+                            e.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: '#94a3b8',
+                                font: { size: 11, weight: 700, family: 'Inter' },
+                                formatter: v => this.formatNumber(v)
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                borderColor: 'rgba(59, 130, 246, 0.3)',
+                                borderWidth: 1,
+                                titleColor: '#f1f5f9',
+                                bodyColor: '#94a3b8',
+                                cornerRadius: 8,
+                                padding: 12,
+                                callbacks: {
+                                    afterLabel: (ctx) => {
+                                        const a = top20[ctx.dataIndex];
+                                        return `Genre: ${a.genre}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#475569', font: { size: 10 }, callback: v => this.formatNumber(v) },
+                                grid: { color: 'rgba(255,255,255,0.03)' },
+                                border: { display: false }
+                            },
+                            y: {
+                                ticks: { color: '#cbd5e1', font: { size: 12, weight: 600 } },
+                                grid: { display: false },
+                                border: { display: false }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            renderGenrePills() {
+                const genres = Object.keys(this.genreColors);
+                const pills = [{ genre: 'All', count: this.leaderboard.length }];
+                genres.forEach(g => {
+                    const stat = this.genreStats[g];
+                    if (stat && stat.count > 0) {
+                        pills.push({ genre: g, count: stat.count });
+                    }
+                });
+
+                document.getElementById('genrePills').innerHTML = pills.map(p =>
+                    `<button class="genre-pill ${p.genre === this.activeGenre ? 'active' : ''}" data-genre="${p.genre}">${p.genre} (${p.count})</button>`
+                ).join('');
+            }
+
+            renderLeaderboard() {
+                let filtered = [...this.leaderboard];
+
+                if (this.activeGenre !== 'All') {
+                    filtered = filtered.filter(a => a.genre === this.activeGenre);
+                }
+
+                if (this.searchQuery) {
+                    const q = this.searchQuery.toLowerCase();
+                    filtered = filtered.filter(a => a.name.toLowerCase().includes(q));
+                }
+
+                filtered.sort((a, b) => {
+                    let va, vb;
+                    switch (this.sortCol) {
+                        case 'name': va = a.name.toLowerCase(); vb = b.name.toLowerCase(); break;
+                        case 'genre': va = a.genre; vb = b.genre; break;
+                        case 'listeners': va = a.listeners; vb = b.listeners; break;
+                        case 'followers': va = a.followers; vb = b.followers; break;
+                        case 'change': va = a.change; vb = b.change; break;
+                        default: va = a.listeners; vb = b.listeners;
+                    }
+                    if (typeof va === 'string') {
+                        return this.sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+                    }
+                    return this.sortDir === 'asc' ? va - vb : vb - va;
+                });
+
+                document.getElementById('resultCount').textContent =
+                    `Showing ${filtered.length} of ${this.leaderboard.length} artists`;
+
+                document.getElementById('leaderboardBody').innerHTML = filtered.map((a, i) => {
+                    const changeStr = a.change === 0 ? '-' :
+                        (a.change > 0 ? '+' : '') + this.formatNumber(a.change);
+                    const changeClass = a.change > 0 ? 'change-up' : a.change < 0 ? 'change-down' : 'change-neutral';
+
+                    let rankCell;
+                    if (i === 0) rankCell = `<span class="rank-medal gold">1</span>`;
+                    else if (i === 1) rankCell = `<span class="rank-medal silver">2</span>`;
+                    else if (i === 2) rankCell = `<span class="rank-medal bronze">3</span>`;
+                    else rankCell = i + 1;
+
+                    const gc = this.getGenreColor(a.genre);
+
+                    return `<tr>
+                        <td class="rank-col">${rankCell}</td>
+                        <td><a class="artist-link" href="../index.html#artist=${encodeURIComponent(a.name)}">${a.name}</a></td>
+                        <td><span class="genre-badge" style="background:${gc}18;color:${gc};border:1px solid ${gc}33">${a.genre}</span></td>
+                        <td class="num-col">${a.listeners.toLocaleString()}</td>
+                        <td class="num-col">${a.followers ? a.followers.toLocaleString() : '-'}</td>
+                        <td class="num-col"><span class="${changeClass}">${changeStr}</span></td>
+                    </tr>`;
+                }).join('');
+
+                document.querySelectorAll('#leaderboardTable th').forEach(th => {
+                    const col = th.dataset.sort;
+                    const arrow = th.querySelector('.sort-arrow');
+                    if (!col || !arrow) return;
+                    if (col === this.sortCol) {
+                        th.classList.add('sorted');
+                        arrow.textContent = this.sortDir === 'asc' ? '\u25B2' : '\u25BC';
+                    } else {
+                        th.classList.remove('sorted');
+                        arrow.textContent = '';
+                    }
+                });
+            }
+
+            renderTracksSection() {
+                if (this.tracksData.length === 0) return;
+
+                const section = document.getElementById('tracksSection');
+                section.style.display = 'block';
+
+                const totalTracks = this.tracksData.length;
+                const artistsWithTracks = new Set(this.tracksData.map(t => t.artist)).size;
+                const albums = this.tracksData.filter(t => t.album && !['Single', 'single'].includes(t.album)).length;
+                const singles = totalTracks - albums;
+
+                document.getElementById('tracksStats').innerHTML = [
+                    { label: 'Total Tracks', value: totalTracks },
+                    { label: 'Artists', value: artistsWithTracks },
+                    { label: 'Album/EP Tracks', value: albums },
+                    { label: 'Singles', value: singles }
+                ].map(s => `
+                    <div class="tracks-stat">
+                        <div class="ts-label">${s.label}</div>
+                        <div class="ts-value">${s.value}</div>
+                    </div>
+                `).join('');
+
+                const display = this.tracksData.slice(0, 100);
+                document.getElementById('tracksBody').innerHTML = display.map((t, i) => `
+                    <tr>
+                        <td class="rank-col">${i + 1}</td>
+                        <td>${t.title}</td>
+                        <td><a class="artist-link" href="../index.html#artist=${encodeURIComponent(t.artist)}">${t.artist}</a></td>
+                        <td>${t.year || '-'}</td>
+                        <td>${t.album}</td>
+                        <td style="color:#475569">${t.collaborators || '-'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // --- Event Listeners ---
+
+            setupEventListeners() {
+                document.getElementById('searchBox').addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.trim();
+                    this.renderLeaderboard();
+                });
+
+                document.getElementById('genrePills').addEventListener('click', (e) => {
+                    const pill = e.target.closest('.genre-pill');
+                    if (!pill) return;
+                    this.activeGenre = pill.dataset.genre;
+                    document.querySelectorAll('.genre-pill').forEach(p =>
+                        p.classList.toggle('active', p.dataset.genre === this.activeGenre));
+                    this.renderLeaderboard();
+                });
+
+                document.querySelectorAll('#leaderboardTable th[data-sort]').forEach(th => {
+                    th.addEventListener('click', () => {
+                        const col = th.dataset.sort;
+                        if (this.sortCol === col) {
+                            this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            this.sortCol = col;
+                            this.sortDir = col === 'name' || col === 'genre' ? 'asc' : 'desc';
+                        }
+                        this.renderLeaderboard();
+                    });
+                });
+            }
+        }
+
+        window.opmHome = new OPMHomeDashboard();
+    </script>
+</body>
+
+</html>

@@ -3133,8 +3133,10 @@ body {{
             else:
                 photo_html = f'<div class="artist-photo" style="background:{color};"></div>'
 
+            is_solo = d["artist"].upper() != "SB19"
+            row_class = "artist-row solo" if is_solo else "artist-row"
             artist_rows += f"""
-            <div class="artist-row">
+            <div class="{row_class}">
                 <div class="artist-left">
                     {photo_html}
                     <div class="artist-name">{d['artist']}</div>
@@ -3267,9 +3269,10 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
-.artist-row:nth-child(even) {{
-    filter: blur(3px);
-    opacity: 0.7;
+.artist-row.solo .artist-middle,
+.artist-row.solo .artist-right {{
+    filter: blur(6px);
+    opacity: 0.25;
 }}
 .cta-footer {{
     text-align: center;
