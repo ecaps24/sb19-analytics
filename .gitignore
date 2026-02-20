@@ -18,6 +18,12 @@ OCR/
 .DS_Store
 Thumbs.db
 
+# Scraped pages (too many files)
+saved_pages/
+
+# Log files
+*.log
+
 # X (Twitter) API credentials - KEEP SECRET
 x_config.json
 x_posted_log.json

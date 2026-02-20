@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - OPM Insights Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        a { color: #60a5fa; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .loading-overlay .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(96, 165, 250, 0.2);
+            border-top-color: #60a5fa;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay p { color: #9ca3af; font-size: 0.9rem; }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+        .back-link {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #60a5fa; text-decoration: none; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: rgba(17, 24, 39, 0.7);
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        .stat-card h3 {
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        /* Filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+        .filter-bar input[type="text"] {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            min-width: 200px;
+            flex: 1;
+        }
+        .filter-bar input[type="text"]::placeholder { color: #6b7280; }
+        .filter-bar input[type="text"]:focus {
+            outline: none;
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+        .filter-bar select {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+        .result-count {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-left: auto;
+        }
+
+        /* Table */
+        .table-wrap {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+        .table-scroll {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            white-space: nowrap;
+        }
+        th {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.03) 100%);
+            font-weight: 600;
+            color: #d1d5db;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        th:hover {
+            background: rgba(96, 165, 250, 0.1);
+        }
+        td {
+            font-size: 0.85rem;
+            color: #e5e7eb;
+        }
+        tbody tr:hover {
+            background: rgba(96, 165, 250, 0.05);
+        }
+        .sort-icon {
+            font-size: 0.7rem;
+            margin-left: 4px;
+            opacity: 0.5;
+        }
+        .sort-icon.active {
+            opacity: 1;
+            color: #60a5fa;
+        }
+
+        /* Tier badges */
+        .tier-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+        }
+        .tier-badge.tier-free { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .tier-badge.tier-daypass { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .tier-badge.tier-basic { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .tier-badge.tier-plus { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+        .tier-badge.tier-premium { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(234,179,8,0.2)); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .tier-badge.tier-admin { background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.2)); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+        /* Status dot */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .status-dot.active { background: #34d399; }
+        .status-dot.inactive { background: #6b7280; }
+        .status-dot.expired { background: #f59e0b; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .page-header h1 { font-size: 1.25rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-bar input[type="text"] { min-width: unset; }
+            .result-count { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Verifying admin access...</p>
+    </div>
+
+    <div class="container" id="mainContent" style="display:none;">
+        <!-- Header -->
+        <div class="page-header">
+            <h1>User Management</h1>
+            <a href="/" class="back-link">&larr; Back to Dashboard</a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <div class="stat-value" id="statTotal">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Free</h3>
+                <div class="stat-value" id="statFree">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Basic</h3>
+                <div class="stat-value" id="statBasic">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Plus</h3>
+                <div class="stat-value" id="statPlus">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Premium</h3>
+                <div class="stat-value" id="statPremium">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Recent (7d)</h3>
+                <div class="stat-value" id="statRecent">-</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-bar">
+            <input type="text" id="searchInput" placeholder="Search name or email...">
+            <select id="tierFilter">
+                <option value="">All Tiers</option>
+                <option value="free">Free</option>
+                <option value="daypass">Day Pass</option>
+                <option value="basic">Basic</option>
+                <option value="plus">Plus</option>
+                <option value="premium">Premium</option>
+            </select>
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="expired">Expired</option>
+            </select>
+            <span class="result-count" id="resultCount"></span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-sort="full_name">Name <span class="sort-icon" data-col="full_name"></span></th>
+                            <th data-sort="email">Email <span class="sort-icon" data-col="email"></span></th>
+                            <th data-sort="subscription_tier">Tier <span class="sort-icon" data-col="subscription_tier"></span></th>
+                            <th data-sort="subscription_status">Status <span class="sort-icon" data-col="subscription_status"></span></th>
+                            <th data-sort="subscription_expires_at">Expires <span class="sort-icon" data-col="subscription_expires_at"></span></th>
+                            <th data-sort="created_at">Signed Up <span class="sort-icon" data-col="created_at"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://xqsifpdsueqgjjzlggms.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_P-0gey3lufEAp82uSU4h8A_DhSFxtIp';
+        const ADMIN_EMAIL = 'edwin.f.capidos@gmail.com';
+
+        let sb;
+        let allUsers = [];
+        let sortCol = 'created_at';
+        let sortAsc = false;
+
+        async function init() {
+            try {
+                sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+                // Check session
+                const { data: { session } } = await sb.auth.getSession();
+                if (!session) return redirect();
+
+                // Check admin
+                const { data: profile, error } = await sb.from('profiles')
+                    .select('is_admin')
+                    .eq('id', session.user.id)
+                    .single();
+
+                const isAdmin = (profile && profile.is_admin === true) || session.user.email === ADMIN_EMAIL;
+                if (!isAdmin) return redirect();
+
+                // Admin confirmed — show content
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+
+                await loadUsers();
+                setupListeners();
+            } catch (err) {
+                console.error('Init error:', err);
+                redirect();
+            }
+        }
+
+        function redirect() {
+            window.location.href = '/';
+        }
+
+        async function loadUsers() {
+            const { data, error } = await sb.from('profiles')
+                .select('id, email, full_name, subscription_tier, subscription_status, subscription_expires_at, is_admin, created_at')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Failed to load users:', error);
+                document.getElementById('usersTableBody').innerHTML =
+                    '<tr><td colspan="6" class="empty-state">Failed to load users.</td></tr>';
+                return;
+            }
+
+            allUsers = data || [];
+            updateStats();
+            renderTable();
+        }
+
+        function updateStats() {
+            const now = new Date();
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            document.getElementById('statTotal').textContent = allUsers.length;
+            document.getElementById('statFree').textContent = allUsers.filter(u => getEffectiveTier(u) === 'free').length;
+            document.getElementById('statBasic').textContent = allUsers.filter(u => getEffectiveTier(u) === 'basic').length;
+            document.getElementById('statPlus').textContent = allUsers.filter(u => getEffectiveTier(u) === 'plus').length;
+            document.getElementById('statPremium').textContent = allUsers.filter(u => getEffectiveTier(u) === 'premium').length;
+            document.getElementById('statRecent').textContent = allUsers.filter(u => new Date(u.created_at) >= weekAgo).length;
+        }
+
+        function getEffectiveTier(user) {
+            if (user.is_admin) return 'premium';
+            const tier = user.subscription_tier || 'free';
+            const status = user.subscription_status;
+            const expires = user.subscription_expires_at;
+            if (['daypass', 'basic', 'plus', 'premium'].includes(tier) && status === 'active') {
+                if (expires && new Date(expires) < new Date()) return 'free';
+                return tier;
+            }
+            return 'free';
+        }
+
+        function getEffectiveStatus(user) {
+            const tier = user.subscription_tier || 'free';
+            const status = user.subscription_status;
+            const expires = user.subscription_expires_at;
+            if (['daypass', 'basic', 'plus', 'premium'].includes(tier) && status === 'active') {
+                if (expires && new Date(expires) < new Date()) return 'expired';
+                return 'active';
+            }
+            return status || 'inactive';
+        }
+
+        function getFilteredUsers() {
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            const tierFilter = document.getElementById('tierFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filtered = allUsers;
+
+            if (search) {
+                filtered = filtered.filter(u =>
+                    (u.full_name || '').toLowerCase().includes(search) ||
+                    (u.email || '').toLowerCase().includes(search)
+                );
+            }
+            if (tierFilter) {
+                filtered = filtered.filter(u => getEffectiveTier(u) === tierFilter);
+            }
+            if (statusFilter) {
+                filtered = filtered.filter(u => getEffectiveStatus(u) === statusFilter);
+            }
+
+            // Sort
+            filtered.sort((a, b) => {
+                let va = a[sortCol] || '';
+                let vb = b[sortCol] || '';
+                if (sortCol === 'subscription_tier') {
+                    va = getEffectiveTier(a);
+                    vb = getEffectiveTier(b);
+                } else if (sortCol === 'subscription_status') {
+                    va = getEffectiveStatus(a);
+                    vb = getEffectiveStatus(b);
+                }
+                if (typeof va === 'string') va = va.toLowerCase();
+                if (typeof vb === 'string') vb = vb.toLowerCase();
+                if (va < vb) return sortAsc ? -1 : 1;
+                if (va > vb) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            return filtered;
+        }
+
+        function renderTable() {
+            const filtered = getFilteredUsers();
+            const tbody = document.getElementById('usersTableBody');
+            document.getElementById('resultCount').textContent = `${filtered.length} of ${allUsers.length} users`;
+
+            // Update sort icons
+            document.querySelectorAll('.sort-icon').forEach(icon => {
+                const col = icon.dataset.col;
+                if (col === sortCol) {
+                    icon.textContent = sortAsc ? '\u25B2' : '\u25BC';
+                    icon.classList.add('active');
+                } else {
+                    icon.textContent = '\u25BC';
+                    icon.classList.remove('active');
+                }
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No users match your filters.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(u => {
+                const tier = getEffectiveTier(u);
+                const displayTier = u.is_admin ? 'admin' : (u.subscription_tier || 'free');
+                const status = getEffectiveStatus(u);
+                const signupDate = u.created_at ? new Date(u.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+                const expiresDate = u.subscription_expires_at ? new Date(u.subscription_expires_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '-';
+                const name = u.full_name || u.email?.split('@')[0] || '-';
+
+                return `<tr>
+                    <td>${escapeHtml(name)}</td>
+                    <td>${escapeHtml(u.email || '-')}</td>
+                    <td><span class="tier-badge tier-${displayTier}">${displayTier}</span></td>
+                    <td><span class="status-indicator"><span class="status-dot ${status}"></span>${status}</span></td>
+                    <td>${expiresDate}</td>
+                    <td>${signupDate}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function setupListeners() {
+            // Debounced search
+            let searchTimer;
+            document.getElementById('searchInput').addEventListener('input', () => {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(renderTable, 300);
+            });
+
+            // Tier & status filters
+            document.getElementById('tierFilter').addEventListener('change', renderTable);
+            document.getElementById('statusFilter').addEventListener('change', renderTable);
+
+            // Sortable column headers
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', () => {
+                    const col = th.dataset.sort;
+                    if (sortCol === col) {
+                        sortAsc = !sortAsc;
+                    } else {
+                        sortCol = col;
+                        sortAsc = true;
+                    }
+                    renderTable();
+                });
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
