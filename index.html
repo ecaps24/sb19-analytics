@@ -547,17 +547,26 @@
             position: relative; z-index: 1;
             height: 100%;
             display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
+            justify-content: space-between;
+            padding: 14px 16px; text-align: center;
         }
-        .yt-badge {
-            background: rgba(239,68,68,0.85);
-            color: #fff; font-size: 0.65rem; font-weight: 700;
-            padding: 3px 10px; border-radius: 999px;
-            letter-spacing: 1.5px; margin-bottom: 10px;
+        .yt-top-bar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .yt-top-left {
+            display: flex; align-items: center; gap: 6px;
+        }
+        .yt-top-center {
+            text-align: center;
+        }
+        .yt-top-right {
+            display: flex; align-items: center;
         }
         .yt-title {
-            font-size: 2.5rem; font-weight: 800; color: #fff;
+            font-size: 2rem; font-weight: 800; color: #fff;
             letter-spacing: 2px; line-height: 1;
         }
         .yt-artist {
@@ -568,9 +577,10 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-top: 14px;
+            margin: auto 0;
             width: 100%;
-            max-width: 320px;
+            max-width: 340px;
+            align-self: center;
         }
         .yt-stat {
             text-align: center;
@@ -591,10 +601,10 @@
         .yt-stat-change.positive { color: #34d399; }
         .yt-stat-change.negative { color: #f87171; }
         .yt-watch-link {
-            display: inline-block; margin-top: 12px;
+            display: inline-block;
             background: rgba(239,68,68,0.85); color: #fff;
-            font-size: 0.8rem; font-weight: 600;
-            padding: 6px 16px; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 999px;
             text-decoration: none;
             transition: background 0.2s;
         }
@@ -603,7 +613,7 @@
             background: rgba(239,68,68,0.9);
             color: #fff; font-size: 0.6rem; font-weight: 700;
             padding: 3px 10px; border-radius: 999px;
-            letter-spacing: 1.5px; margin-bottom: 10px;
+            letter-spacing: 1.5px;
         }
         .yt-live-dot {
             width: 8px; height: 8px;
@@ -614,10 +624,6 @@
         @keyframes ytLivePulse {
             0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,255,255,0.6); }
             50% { opacity: 0.4; box-shadow: 0 0 0 4px rgba(255,255,255,0); }
-        }
-        .yt-bottom-row {
-            display: flex; align-items: center; gap: 8px;
-            margin-top: 12px;
         }
         .yt-refresh-btn {
             background: rgba(255,255,255,0.12);
@@ -649,6 +655,14 @@
         .yt-error-msg {
             font-size: 0.8rem; color: rgba(255,255,255,0.5);
             margin-top: 10px;
+        }
+        .yt-hourly-chart {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 55%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         .chart-title {
@@ -2804,11 +2818,26 @@
                     <div class="yt-hero-card">
                         <img src="photos/visa.png" class="yt-hero-bg" alt="VISA artwork" />
                         <div class="yt-hero-overlay"></div>
+                        <canvas id="ytHourlyChart" class="yt-hourly-chart"></canvas>
                         <div class="yt-hero-content">
-                            <span class="yt-badge">MUSIC VIDEO</span>
-                            <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
-                            <div class="yt-title">VISA</div>
-                            <div class="yt-artist">SB19</div>
+                            <div class="yt-top-bar">
+                                <div class="yt-top-left">
+                                    <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
+                                       onclick="event.stopPropagation();">
+                                        Watch on YouTube
+                                    </a>
+                                    <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
+                                        <span class="yt-refresh-icon">&#8635;</span>
+                                    </button>
+                                </div>
+                                <div class="yt-top-center">
+                                    <div class="yt-title">VISA</div>
+                                    <div class="yt-artist">SB19</div>
+                                </div>
+                                <div class="yt-top-right">
+                                    <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
+                                </div>
+                            </div>
                             <div class="yt-stats-grid">
                                 <div class="yt-stat">
                                     <div class="yt-stat-value" id="ytViewCount">--</div>
@@ -2825,15 +2854,6 @@
                                     <div class="yt-stat-label">Comments</div>
                                     <div class="yt-stat-change" id="ytCommentChange"></div>
                                 </div>
-                            </div>
-                            <div class="yt-bottom-row">
-                                <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
-                                   onclick="event.stopPropagation();">
-                                    Watch on YouTube
-                                </a>
-                                <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
-                                    <span class="yt-refresh-icon">&#8635;</span>
-                                </button>
                             </div>
                             <div class="yt-last-refresh" id="ytLastRefresh"></div>
                         </div>
@@ -3887,9 +3907,11 @@
                     videoId: '0t6GNcINKeU',
                     refreshInterval: 60 * 1000,
                     storageKey: 'sb19_yt_visa_history',
-                    cacheKey: 'sb19_yt_visa_cache'
+                    cacheKey: 'sb19_yt_visa_cache',
+                    hourlyKey: 'sb19_yt_visa_hourly'
                 };
                 this.ytRefreshTimer = null;
+                this.ytHourlyChart = null;
                 this.artistConfig = {
                     'SB19': {
                         ath: 2828289,
@@ -6276,6 +6298,8 @@
                     if (cached) {
                         this.displayYouTubeStats(cached);
                         this.trackYouTubeDailyChange(cached);
+                        const hourly = this.updateYtHourlyData(cached.views);
+                        this.renderYtHourlyChart(hourly);
                     } else {
                         viewEl.textContent = '--';
                         likeEl.textContent = '--';
@@ -6301,6 +6325,8 @@
                         if (cached) {
                             this.displayYouTubeStats(cached, true);
                             this.trackYouTubeDailyChange(cached);
+                            const hourly = this.updateYtHourlyData(cached.views);
+                            this.renderYtHourlyChart(hourly);
                         } else {
                             viewEl.textContent = 'Error';
                             likeEl.textContent = '--';
@@ -6329,6 +6355,8 @@
 
                     this.displayYouTubeStats(parsed);
                     this.trackYouTubeDailyChange(parsed);
+                    const hourly = this.updateYtHourlyData(parsed.views);
+                    this.renderYtHourlyChart(hourly);
 
                 } catch (err) {
                     console.warn('YouTube API fetch failed:', err);
@@ -6336,6 +6364,8 @@
                     if (cached) {
                         this.displayYouTubeStats(cached, true);
                         this.trackYouTubeDailyChange(cached);
+                        const hourly = this.updateYtHourlyData(cached.views);
+                        this.renderYtHourlyChart(hourly);
                     }
                 }
             }
@@ -6433,8 +6463,173 @@
                 return null;
             }
 
-            startYouTubeRefresh() {
+            async loadYtHourlyCSV() {
+                try {
+                    const resp = await fetch('./yt_visa_streams.csv');
+                    if (!resp.ok) return [];
+                    const text = await resp.text();
+                    const lines = text.trim().split('\n').slice(1);
+                    return lines.map(line => {
+                        const [ts, views] = line.split(',');
+                        return { ts: ts.trim(), views: parseInt(views) || 0 };
+                    }).filter(r => r.views > 0);
+                } catch (e) {
+                    console.warn('Failed to load yt_visa_streams.csv:', e);
+                    return [];
+                }
+            }
+
+            async seedYtHourlyFromCSV() {
+                const rows = await this.loadYtHourlyCSV();
+                if (!rows.length) return;
+                const key = this.youtubeConfig.hourlyKey;
+                let hourly = {};
+                try { hourly = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { hourly = {}; }
+
+                rows.forEach(({ ts, views }) => {
+                    const d = new Date(ts);
+                    if (isNaN(d.getTime())) return;
+                    const hour = d.getHours();
+                    const dateStr = d.toISOString().slice(0, 10);
+                    const slotKey = `${dateStr}_${hour}`;
+                    // Keep latest snapshot per hour
+                    if (!hourly[slotKey] || views > hourly[slotKey].views) {
+                        hourly[slotKey] = { views, hour, date: dateStr };
+                    }
+                });
+
+                localStorage.setItem(key, JSON.stringify(hourly));
+            }
+
+            updateYtHourlyData(views) {
+                if (!views || views <= 0) return;
+                const key = this.youtubeConfig.hourlyKey;
+                let hourly = {};
+                try { hourly = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { hourly = {}; }
+
+                const now = new Date();
+                const hour = now.getHours();
+                const dateStr = now.toISOString().slice(0, 10);
+                const slotKey = `${dateStr}_${hour}`;
+
+                if (!hourly[slotKey] || views > hourly[slotKey].views) {
+                    hourly[slotKey] = { views, hour, date: dateStr };
+                }
+
+                localStorage.setItem(key, JSON.stringify(hourly));
+                return hourly;
+            }
+
+            computeHourlyDeltas(hourly) {
+                if (!hourly || Object.keys(hourly).length === 0) return { labels: [], data: [] };
+
+                const today = new Date().toISOString().slice(0, 10);
+                const labels = [];
+                const data = [];
+
+                // Build sorted list of today's snapshots
+                const todaySlots = [];
+                for (const [key, val] of Object.entries(hourly)) {
+                    if (key.startsWith(today + '_')) {
+                        todaySlots.push({ hour: val.hour, views: val.views });
+                    }
+                }
+                todaySlots.sort((a, b) => a.hour - b.hour);
+
+                if (todaySlots.length < 2) return { labels: [], data: [] };
+
+                // Show bars starting from hour 18 (6PM), use hour before as baseline
+                const startHour = 18;
+                for (let i = 1; i < todaySlots.length; i++) {
+                    const curr = todaySlots[i];
+                    const prev = todaySlots[i - 1];
+                    if (curr.hour < startHour) continue;
+                    const delta = Math.max(0, curr.views - prev.views);
+                    const h = curr.hour % 12 || 12;
+                    const ampm = curr.hour >= 12 ? 'PM' : 'AM';
+                    labels.push(`${h}${ampm}`);
+                    data.push(delta);
+                }
+
+                return { labels, data };
+            }
+
+            renderYtHourlyChart(hourly) {
+                const { labels, data } = this.computeHourlyDeltas(hourly);
+                const canvas = document.getElementById('ytHourlyChart');
+                if (!canvas) return;
+
+                if (this.ytHourlyChart) {
+                    this.ytHourlyChart.data.labels = labels;
+                    this.ytHourlyChart.data.datasets[0].data = data;
+                    this.ytHourlyChart.update('none');
+                    return;
+                }
+
+                if (labels.length === 0) return;
+
+                const formatK = (v) => {
+                    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+                    if (v >= 1000) return (v / 1000).toFixed(1) + 'K';
+                    return v.toString();
+                };
+
+                this.ytHourlyChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data,
+                            backgroundColor: 'rgba(248,113,113,0.7)',
+                            borderColor: 'rgba(248,113,113,0.9)',
+                            borderWidth: 2,
+                            borderRadius: 4,
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                color: 'rgba(255,255,255,0.85)',
+                                font: { size: 11, weight: '600' },
+                                formatter: (v) => v > 0 ? formatK(v) : ''
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: 'rgba(255,255,255,0.4)',
+                                    font: { size: 9 }
+                                },
+                                border: { display: false }
+                            },
+                            y: {
+                                display: false,
+                                beginAtZero: true,
+                                grace: '20%'
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            async startYouTubeRefresh() {
                 this.stopYouTubeRefresh();
+                await this.seedYtHourlyFromCSV();
+                // Render chart from seeded data immediately
+                let hourly = {};
+                try { hourly = JSON.parse(localStorage.getItem(this.youtubeConfig.hourlyKey)) || {}; } catch (e) {}
+                this.renderYtHourlyChart(hourly);
                 this.fetchYouTubeStats();
                 this.ytRefreshTimer = setInterval(() => this.fetchYouTubeStats(), this.youtubeConfig.refreshInterval);
             }
@@ -6443,6 +6638,10 @@
                 if (this.ytRefreshTimer) {
                     clearInterval(this.ytRefreshTimer);
                     this.ytRefreshTimer = null;
+                }
+                if (this.ytHourlyChart) {
+                    this.ytHourlyChart.destroy();
+                    this.ytHourlyChart = null;
                 }
             }
 
