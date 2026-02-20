@@ -371,9 +371,17 @@
         }
 
         async function loadUsers() {
-            const { data, error } = await sb.from('profiles')
-                .select('id, email, full_name, subscription_tier, subscription_status, subscription_expires_at, is_admin, created_at')
-                .order('created_at', { ascending: false });
+            // Use RPC function (SECURITY DEFINER, bypasses RLS)
+            let data, error;
+            ({ data, error } = await sb.rpc('get_all_profiles'));
+
+            // Fallback to direct query if RPC not available
+            if (error) {
+                console.warn('RPC fallback:', error.message);
+                ({ data, error } = await sb.from('profiles')
+                    .select('id, email, full_name, subscription_tier, subscription_status, subscription_expires_at, is_admin, created_at')
+                    .order('created_at', { ascending: false }));
+            }
 
             if (error) {
                 console.error('Failed to load users:', error);
