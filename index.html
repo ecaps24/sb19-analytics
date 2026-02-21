@@ -6633,30 +6633,27 @@
             computeHourlyDeltas(hourly) {
                 if (!hourly || Object.keys(hourly).length === 0) return { labels: [], data: [] };
 
-                const today = new Date().toISOString().slice(0, 10);
                 const labels = [];
                 const data = [];
 
-                // Build sorted list of today's snapshots
-                const todaySlots = [];
+                // Build sorted list of ALL snapshots across all days
+                const allSlots = [];
                 for (const [key, val] of Object.entries(hourly)) {
-                    if (key.startsWith(today + '_')) {
-                        todaySlots.push({ hour: val.hour, views: val.views });
-                    }
+                    allSlots.push({ hour: val.hour, views: val.views, date: val.date });
                 }
-                todaySlots.sort((a, b) => a.hour - b.hour);
+                allSlots.sort((a, b) => {
+                    if (a.date !== b.date) return a.date.localeCompare(b.date);
+                    return a.hour - b.hour;
+                });
 
-                if (todaySlots.length < 2) return { labels: [], data: [] };
+                if (allSlots.length < 2) return { labels: [], data: [] };
 
-                // Show bars starting from hour 18 (6PM), use hour before as baseline
-                const startHour = 18;
-                for (let i = 1; i < todaySlots.length; i++) {
-                    const curr = todaySlots[i];
-                    const prev = todaySlots[i - 1];
-                    if (curr.hour < startHour) continue;
+                for (let i = 1; i < allSlots.length; i++) {
+                    const curr = allSlots[i];
+                    const prev = allSlots[i - 1];
                     const delta = Math.max(0, curr.views - prev.views);
                     const h = curr.hour % 12 || 12;
-                    const ampm = curr.hour >= 12 ? 'PM' : 'AM';
+                    const ampm = curr.hour >= 12 ? 'p' : 'a';
                     labels.push(`${h}${ampm}`);
                     data.push(delta);
                 }
@@ -6785,10 +6782,32 @@
                 });
             }
 
+            async seedYtCacheFromCSV() {
+                try {
+                    const resp = await fetch('./yt_visa_streams.csv');
+                    if (!resp.ok) return;
+                    const text = await resp.text();
+                    const lines = text.trim().split('\n').slice(1);
+                    if (!lines.length) return;
+                    const lastLine = lines[lines.length - 1];
+                    const [ts, views, likes, comments] = lastLine.split(',');
+                    const v = parseInt(views) || 0;
+                    const l = parseInt(likes) || 0;
+                    const c = parseInt(comments) || 0;
+                    if (v > 0) {
+                        const cached = { views: v, likes: l, comments: c, fetchedAt: ts.trim() };
+                        localStorage.setItem(this.youtubeConfig.cacheKey, JSON.stringify(cached));
+                    }
+                } catch (e) {
+                    console.warn('Failed to seed YT cache from CSV:', e);
+                }
+            }
+
             async startYouTubeRefresh() {
                 this.stopYouTubeRefresh();
                 await this.seedYtDailyFromCSV();
                 await this.seedYtHourlyFromCSV();
+                await this.seedYtCacheFromCSV();
                 // Render chart from seeded data immediately
                 let hourly = {};
                 try { hourly = JSON.parse(localStorage.getItem(this.youtubeConfig.hourlyKey)) || {}; } catch (e) {}
