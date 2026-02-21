@@ -6490,11 +6490,9 @@
                     history = JSON.parse(localStorage.getItem(cfg.storageKey)) || {};
                 } catch (e) { history = {}; }
 
-                // Store today's snapshot if not yet stored
-                if (!history[today]) {
-                    history[today] = { views: current.views, likes: current.likes, comments: current.comments };
-                    localStorage.setItem(cfg.storageKey, JSON.stringify(history));
-                }
+                // Always update today's snapshot so end-of-day value is accurate for next day's change
+                history[today] = { views: current.views, likes: current.likes, comments: current.comments };
+                localStorage.setItem(cfg.storageKey, JSON.stringify(history));
 
                 // Find previous day's data
                 const dates = Object.keys(history).sort();
@@ -6569,6 +6567,48 @@
                 });
 
                 localStorage.setItem(key, JSON.stringify(hourly));
+            }
+
+            async seedYtDailyFromCSV() {
+                try {
+                    const resp = await fetch('./yt_visa_streams.csv');
+                    if (!resp.ok) return;
+                    const text = await resp.text();
+                    const lines = text.trim().split('\n').slice(1);
+                    if (!lines.length) return;
+
+                    const key = this.youtubeConfig.storageKey;
+                    let history = {};
+                    try { history = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { history = {}; }
+
+                    // Use the LAST entry per day from CSV as the daily snapshot
+                    const dailyLatest = {};
+                    lines.forEach(line => {
+                        const [ts, views, likes, comments] = line.split(',');
+                        const d = new Date(ts.trim());
+                        if (isNaN(d.getTime())) return;
+                        const dateStr = d.toISOString().slice(0, 10);
+                        const v = parseInt(views) || 0;
+                        const l = parseInt(likes) || 0;
+                        const c = parseInt(comments) || 0;
+                        if (v > 0) {
+                            dailyLatest[dateStr] = { views: v, likes: l, comments: c };
+                        }
+                    });
+
+                    // Seed history with CSV data (don't overwrite today's live data)
+                    const today = new Date().toISOString().slice(0, 10);
+                    for (const [date, stats] of Object.entries(dailyLatest)) {
+                        if (date === today) continue; // let live data handle today
+                        if (!history[date] || stats.views > history[date].views) {
+                            history[date] = stats;
+                        }
+                    }
+
+                    localStorage.setItem(key, JSON.stringify(history));
+                } catch (e) {
+                    console.warn('Failed to seed YT daily history from CSV:', e);
+                }
             }
 
             updateYtHourlyData(views) {
@@ -6747,6 +6787,7 @@
 
             async startYouTubeRefresh() {
                 this.stopYouTubeRefresh();
+                await this.seedYtDailyFromCSV();
                 await this.seedYtHourlyFromCSV();
                 // Render chart from seeded data immediately
                 let hourly = {};
