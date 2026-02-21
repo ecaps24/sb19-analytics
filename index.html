@@ -455,7 +455,7 @@
             backdrop-filter: blur(10px);
         }
 
-        /* VISA Single Hero Card */
+        /* VISA Single Hero Card — matches YouTube card layout */
         .visa-hero-card {
             position: relative;
             border-radius: 12px;
@@ -476,49 +476,100 @@
         }
         .visa-hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.85) 100%);
+            background: linear-gradient(180deg, rgba(15,23,42,0.7) 0%, rgba(15,23,42,0.4) 40%, rgba(15,23,42,0.75) 100%);
         }
         .visa-hero-content {
             position: relative; z-index: 1;
             height: 100%;
             display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
+            padding: 0;
         }
-        .visa-badge {
-            background: rgba(59,130,246,0.85);
-            color: #fff; font-size: 0.65rem; font-weight: 700;
-            padding: 3px 10px; border-radius: 999px;
-            letter-spacing: 1.5px; margin-bottom: 10px;
+        .visa-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px 0 16px;
+        }
+        .visa-identity {
+            display: flex; align-items: center; gap: 10px;
         }
         .visa-title {
-            font-size: 2.5rem; font-weight: 800; color: #fff;
+            font-size: 1.8rem; font-weight: 800; color: #fff;
             letter-spacing: 2px; line-height: 1;
         }
         .visa-artist {
-            font-size: 0.95rem; color: rgba(255,255,255,0.7);
-            font-weight: 500; margin-top: 4px;
+            font-size: 0.8rem; color: rgba(255,255,255,0.55);
+            font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .visa-streams {
-            font-size: 2rem; font-weight: 700; color: #60a5fa;
-            margin-top: 14px;
+        .visa-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(30,215,96,0.9);
+            color: #fff; font-size: 0.55rem; font-weight: 700;
+            padding: 3px 8px; border-radius: 999px;
+            letter-spacing: 1.5px;
         }
-        .visa-streams.coming-soon {
-            font-size: 1rem; color: rgba(255,255,255,0.5);
-        }
-        .visa-change {
-            font-size: 0.85rem; color: #34d399; font-weight: 600;
-            margin-top: 2px;
+        .visa-controls {
+            display: flex; align-items: center; gap: 6px;
         }
         .visa-spotify-link {
-            display: inline-block; margin-top: 12px;
-            background: rgba(30,215,96,0.85); color: #fff;
-            font-size: 0.8rem; font-weight: 600;
-            padding: 6px 16px; border-radius: 999px;
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+            font-size: 0.65rem; font-weight: 600;
+            padding: 4px 10px; border-radius: 999px;
             text-decoration: none;
-            transition: background 0.2s;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.2s;
         }
-        .visa-spotify-link:hover { background: rgba(30,215,96,1); }
+        .visa-spotify-link:hover {
+            background: rgba(30,215,96,0.85); color: #fff;
+            border-color: transparent;
+        }
+        /* Stats strip — mirrors YouTube card */
+        .visa-stats-strip {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 16px 6px;
+        }
+        .visa-stat {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            min-width: 0;
+        }
+        .visa-stat-row {
+            display: flex; align-items: baseline; gap: 4px;
+        }
+        .visa-stat-value {
+            font-size: 1.35rem; font-weight: 700; color: #fff;
+            line-height: 1; white-space: nowrap;
+        }
+        .visa-stat-label {
+            font-size: 0.6rem; color: rgba(255,255,255,0.4);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        .visa-stat-change {
+            font-size: 0.65rem; font-weight: 600;
+        }
+        .visa-stat-change.positive { color: #34d399; }
+        .visa-stat-change.negative { color: #f87171; }
+        /* Chart area */
+        .visa-daily-chart {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 65%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        /* Footer */
+        .visa-footer {
+            position: absolute; bottom: 6px; left: 0; right: 0;
+            text-align: center; z-index: 1;
+        }
+        .visa-last-refresh {
+            font-size: 0.55rem; color: rgba(255,255,255,0.25);
+        }
 
         /* YouTube VISA Card */
         .yt-hero-card {
@@ -596,11 +647,15 @@
             padding: 10px 16px 6px;
         }
         .yt-stat {
-            display: flex; align-items: baseline; gap: 5px;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            min-width: 0;
+        }
+        .yt-stat-row {
+            display: flex; align-items: baseline; gap: 4px;
         }
         .yt-stat-value {
             font-size: 1.35rem; font-weight: 700; color: #fff;
-            line-height: 1;
+            line-height: 1; white-space: nowrap;
         }
         .yt-stat-label {
             font-size: 0.6rem; color: rgba(255,255,255,0.4);
@@ -609,7 +664,6 @@
         }
         .yt-stat-change {
             font-size: 0.65rem; font-weight: 600;
-            margin-left: 2px;
         }
         .yt-stat-change.positive { color: #34d399; }
         .yt-stat-change.negative { color: #f87171; }
@@ -1560,8 +1614,9 @@
             }
 
             .visa-hero-card { height: 260px; }
-            .visa-title { font-size: 2rem; }
-            .visa-streams { font-size: 1.6rem; }
+            .visa-title { font-size: 1.6rem; }
+            .visa-stat-value { font-size: 1.15rem; }
+            .visa-stats-strip { gap: 14px; }
 
             .yt-hero-card { height: 260px; }
             .yt-title { font-size: 1.6rem; }
@@ -1742,9 +1797,11 @@
             }
 
             .visa-hero-card { height: 230px; }
-            .visa-title { font-size: 1.6rem; }
-            .visa-streams { font-size: 1.3rem; }
-            .visa-badge { font-size: 0.6rem; }
+            .visa-title { font-size: 1.4rem; }
+            .visa-stat-value { font-size: 1rem; }
+            .visa-stats-strip { gap: 10px; padding: 8px 12px 4px; }
+            .visa-stat-label { font-size: 0.55rem; }
+            .visa-spotify-link { font-size: 0.6rem; padding: 3px 8px; }
 
             .yt-hero-card { height: 230px; }
             .yt-title { font-size: 1.4rem; }
@@ -2821,22 +2878,44 @@
                     </div>
                 </div>
 
-                <!-- VISA Single Hero Card -->
+                <!-- VISA Single Hero Card (Spotify) -->
                 <div class="chart-half" id="visaCardSection" style="flex: 1;">
                     <div class="visa-hero-card" onclick="window.dashboard.filterToVisa()">
                         <img src="photos/visa.png" class="visa-hero-bg" alt="VISA artwork" />
                         <div class="visa-hero-overlay"></div>
+                        <canvas id="visaDailyChart" class="visa-daily-chart"></canvas>
                         <div class="visa-hero-content">
-                            <span class="visa-badge">NEW SINGLE</span>
-                            <div class="visa-title">VISA</div>
-                            <div class="visa-artist">SB19</div>
-                            <div class="visa-streams" id="visaStreamCount">Streams Coming Soon</div>
-                            <div class="visa-change" id="visaStreamChange"></div>
-                            <a href="https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7"
-                               target="_blank" rel="noopener" class="visa-spotify-link"
-                               onclick="event.stopPropagation();">
-                                Play on Spotify
-                            </a>
+                            <div class="visa-header">
+                                <div class="visa-identity">
+                                    <span class="visa-title">VISA</span>
+                                    <span class="visa-artist">SB19</span>
+                                    <span class="visa-badge">SPOTIFY</span>
+                                </div>
+                                <div class="visa-controls">
+                                    <a href="https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7"
+                                       target="_blank" rel="noopener" class="visa-spotify-link"
+                                       onclick="event.stopPropagation();">&#9654; Spotify</a>
+                                </div>
+                            </div>
+                            <div class="visa-stats-strip">
+                                <div class="visa-stat">
+                                    <div class="visa-stat-row">
+                                        <span class="visa-stat-value" id="visaStreamCount">--</span>
+                                        <span class="visa-stat-label">streams</span>
+                                    </div>
+                                    <span class="visa-stat-change" id="visaStreamChange"></span>
+                                </div>
+                                <div class="visa-stat">
+                                    <div class="visa-stat-row">
+                                        <span class="visa-stat-value" id="visaDailyStreams">--</span>
+                                        <span class="visa-stat-label">daily</span>
+                                    </div>
+                                    <span class="visa-stat-change" id="visaDailyChange"></span>
+                                </div>
+                            </div>
+                            <div class="visa-footer">
+                                <div class="visa-last-refresh" id="visaLastRefresh"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2864,18 +2943,24 @@
                             </div>
                             <div class="yt-stats-strip">
                                 <div class="yt-stat">
-                                    <span class="yt-stat-value" id="ytViewCount">--</span>
-                                    <span class="yt-stat-label">views</span>
+                                    <div class="yt-stat-row">
+                                        <span class="yt-stat-value" id="ytViewCount">--</span>
+                                        <span class="yt-stat-label">views</span>
+                                    </div>
                                     <span class="yt-stat-change" id="ytViewChange"></span>
                                 </div>
                                 <div class="yt-stat">
-                                    <span class="yt-stat-value" id="ytLikeCount">--</span>
-                                    <span class="yt-stat-label">likes</span>
+                                    <div class="yt-stat-row">
+                                        <span class="yt-stat-value" id="ytLikeCount">--</span>
+                                        <span class="yt-stat-label">likes</span>
+                                    </div>
                                     <span class="yt-stat-change" id="ytLikeChange"></span>
                                 </div>
                                 <div class="yt-stat">
-                                    <span class="yt-stat-value" id="ytCommentCount">--</span>
-                                    <span class="yt-stat-label">comments</span>
+                                    <div class="yt-stat-row">
+                                        <span class="yt-stat-value" id="ytCommentCount">--</span>
+                                        <span class="yt-stat-label">comments</span>
+                                    </div>
                                     <span class="yt-stat-change" id="ytCommentChange"></span>
                                 </div>
                             </div>
@@ -3982,6 +4067,7 @@
                 };
                 this.ytRefreshTimer = null;
                 this.ytHourlyChart = null;
+                this.visaDailyChart = null;
                 this.artistConfig = {
                     'SB19': {
                         ath: 2828289,
@@ -6333,25 +6419,162 @@
                 const visaTrack = latestStreams.find(t => t.song_title === 'VISA');
                 const streamEl = document.getElementById('visaStreamCount');
                 const changeEl = document.getElementById('visaStreamChange');
+                const dailyEl = document.getElementById('visaDailyStreams');
+                const dailyChangeEl = document.getElementById('visaDailyChange');
+                const refreshEl = document.getElementById('visaLastRefresh');
 
                 if (visaTrack && visaTrack.total_streams > 0) {
                     streamEl.textContent = visaTrack.total_streams.toLocaleString();
-                    streamEl.classList.remove('coming-soon');
                     const change = periodChanges['VISA'] || 0;
                     if (change > 0) {
                         changeEl.textContent = '+' + change.toLocaleString();
-                        changeEl.style.color = '#34d399';
+                        changeEl.className = 'visa-stat-change positive';
                     } else if (change < 0) {
                         changeEl.textContent = change.toLocaleString();
-                        changeEl.style.color = '#f87171';
+                        changeEl.className = 'visa-stat-change negative';
                     } else {
                         changeEl.textContent = '';
+                        changeEl.className = 'visa-stat-change';
+                    }
+
+                    // Show daily streams if available
+                    if (dailyEl) {
+                        const daily = visaTrack.daily_streams || 0;
+                        dailyEl.textContent = daily > 0 ? daily.toLocaleString() : '--';
+                    }
+
+                    // Show last data date
+                    if (refreshEl && visaTrack.data_date) {
+                        const d = new Date(visaTrack.data_date);
+                        if (!isNaN(d.getTime())) {
+                            refreshEl.textContent = 'Last updated · ' + d.toLocaleString('en-US', {
+                                month: 'short', day: 'numeric', year: 'numeric'
+                            });
+                        }
                     }
                 } else {
-                    streamEl.textContent = 'Streams Coming Soon';
-                    streamEl.classList.add('coming-soon');
+                    streamEl.textContent = '--';
                     changeEl.textContent = '';
+                    if (dailyEl) dailyEl.textContent = '--';
                 }
+
+                // Build daily streams bar chart from historical data
+                this.renderVisaDailyChart();
+            }
+
+            renderVisaDailyChart() {
+                const streamsByDate = this.getStreamsByDate();
+                const canvas = document.getElementById('visaDailyChart');
+                if (!canvas) return;
+
+                // Extract VISA daily totals across all dates
+                const dates = Object.keys(streamsByDate).sort();
+                const dailySnapshots = [];
+                dates.forEach(date => {
+                    const tracks = streamsByDate[date];
+                    const visa = Object.values(tracks).find(t => t.song_title === 'VISA');
+                    if (visa && visa.total_streams > 0) {
+                        dailySnapshots.push({ date, streams: visa.total_streams });
+                    }
+                });
+
+                if (dailySnapshots.length < 2) {
+                    // Not enough data for a chart yet
+                    if (this.visaDailyChart) {
+                        this.visaDailyChart.destroy();
+                        this.visaDailyChart = null;
+                    }
+                    return;
+                }
+
+                // Compute daily gains (delta between consecutive days)
+                const labels = [];
+                const data = [];
+                for (let i = 1; i < dailySnapshots.length; i++) {
+                    const curr = dailySnapshots[i];
+                    const prev = dailySnapshots[i - 1];
+                    const delta = Math.max(0, curr.streams - prev.streams);
+                    // Format date as "M/D"
+                    const d = curr.date;
+                    const month = parseInt(d.substring(4, 6));
+                    const day = parseInt(d.substring(6, 8));
+                    labels.push(`${month}/${day}`);
+                    data.push(delta);
+                }
+
+                const formatK = (v) => {
+                    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+                    if (v >= 1000) return (v / 1000).toFixed(1) + 'K';
+                    return v.toString();
+                };
+
+                if (this.visaDailyChart) {
+                    this.visaDailyChart.data.labels = labels;
+                    this.visaDailyChart.data.datasets[0].data = data;
+                    this.visaDailyChart.update('none');
+                    return;
+                }
+
+                if (labels.length === 0) return;
+
+                const ctx = canvas.getContext('2d');
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, 'rgba(30,215,96,0.9)');
+                gradient.addColorStop(1, 'rgba(30,215,96,0.4)');
+
+                this.visaDailyChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data,
+                            backgroundColor: gradient,
+                            borderColor: 'rgba(30,215,96,0.6)',
+                            borderWidth: 1,
+                            borderRadius: 20,
+                            borderSkipped: false,
+                            barPercentage: 0.5,
+                            categoryPercentage: 0.8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: false,
+                        layout: {
+                            padding: { top: 18, left: 4, right: 4 }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#fff',
+                                font: { size: 9, weight: '700' },
+                                textShadowColor: 'rgba(0,0,0,0.6)',
+                                textShadowBlur: 3,
+                                formatter: (v) => v > 0 ? formatK(v) : ''
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: {
+                                    color: 'rgba(255,255,255,0.45)',
+                                    font: { size: 8, weight: '500' }
+                                },
+                                border: { display: false }
+                            },
+                            y: {
+                                display: false,
+                                beginAtZero: true,
+                                grace: '25%'
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
             }
 
             async fetchYouTubeStats() {
@@ -6551,18 +6774,19 @@
                 const rows = await this.loadYtHourlyCSV();
                 if (!rows.length) return;
                 const key = this.youtubeConfig.hourlyKey;
+                // Start fresh from CSV (avoids stale 1-hour keys mixing with 4-hour slots)
                 let hourly = {};
-                try { hourly = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { hourly = {}; }
 
                 rows.forEach(({ ts, views }) => {
                     const d = new Date(ts);
                     if (isNaN(d.getTime())) return;
                     const hour = d.getHours();
+                    const slot = Math.floor(hour / 4) * 4;
                     const dateStr = d.toISOString().slice(0, 10);
-                    const slotKey = `${dateStr}_${hour}`;
-                    // Keep latest snapshot per hour
+                    const slotKey = `${dateStr}_${String(slot).padStart(2, '0')}`;
+                    // Keep latest snapshot per 4-hour slot
                     if (!hourly[slotKey] || views > hourly[slotKey].views) {
-                        hourly[slotKey] = { views, hour, date: dateStr };
+                        hourly[slotKey] = { views, hour: slot, date: dateStr };
                     }
                 });
 
@@ -6619,11 +6843,12 @@
 
                 const now = new Date();
                 const hour = now.getHours();
+                const slot = Math.floor(hour / 4) * 4;
                 const dateStr = now.toISOString().slice(0, 10);
-                const slotKey = `${dateStr}_${hour}`;
+                const slotKey = `${dateStr}_${String(slot).padStart(2, '0')}`;
 
                 if (!hourly[slotKey] || views > hourly[slotKey].views) {
-                    hourly[slotKey] = { views, hour, date: dateStr };
+                    hourly[slotKey] = { views, hour: slot, date: dateStr };
                 }
 
                 localStorage.setItem(key, JSON.stringify(hourly));
@@ -6648,14 +6873,20 @@
 
                 if (allSlots.length < 2) return { labels: [], data: [] };
 
+                const fmtH = (h) => { const h12 = h % 12 || 12; const ap = h >= 12 ? 'p' : 'a'; return `${h12}${ap}`; };
                 for (let i = 1; i < allSlots.length; i++) {
                     const curr = allSlots[i];
                     const prev = allSlots[i - 1];
                     const delta = Math.max(0, curr.views - prev.views);
-                    const h = curr.hour % 12 || 12;
-                    const ampm = curr.hour >= 12 ? 'p' : 'a';
-                    labels.push(`${h}${ampm}`);
+                    labels.push(`${fmtH(prev.hour)}-${fmtH(curr.hour)}`);
                     data.push(delta);
+                }
+
+                // Keep only the last 6 bars
+                const maxBars = 6;
+                if (labels.length > maxBars) {
+                    labels.splice(0, labels.length - maxBars);
+                    data.splice(0, data.length - maxBars);
                 }
 
                 return { labels, data };
@@ -6666,7 +6897,7 @@
                 const canvas = document.getElementById('ytHourlyChart');
                 if (!canvas) return;
 
-                // Compute projection from avg of last 3 hours
+                // Compute projection from avg of last 3 slots (4h each)
                 let projValue = 0;
                 if (data.length >= 1) {
                     const recent = data.slice(-3);
@@ -6678,20 +6909,36 @@
                 const allData = [...data];
                 if (projValue > 0 && labels.length > 0) {
                     const lastLabel = labels[labels.length - 1];
-                    const lastMatch = lastLabel.match(/^(\d+)(AM|PM)$/);
-                    if (lastMatch) {
-                        let h = parseInt(lastMatch[1]);
-                        let ampm = lastMatch[2];
-                        h++;
-                        if (h === 12) ampm = ampm === 'AM' ? 'PM' : 'AM';
-                        if (h > 12) h -= 12;
-                        allLabels.push(`~${h}${ampm}`);
+                    // Parse range label like "4p-8p" to compute next 4h window
+                    const rangeMatch = lastLabel.match(/(\d+)([ap])-(\d+)([ap])$/);
+                    if (rangeMatch) {
+                        let endH = parseInt(rangeMatch[3]);
+                        const endAp = rangeMatch[4];
+                        const end24 = endAp === 'p' && endH !== 12 ? endH + 12 : (endAp === 'a' && endH === 12 ? 0 : endH);
+                        const nextEnd = (end24 + 4) % 24;
+                        const fmtH = (h) => { const h12 = h % 12 || 12; const ap = h >= 12 ? 'p' : 'a'; return `${h12}${ap}`; };
+                        allLabels.push(`~${fmtH(end24)}-${fmtH(nextEnd)}`);
                     } else {
-                        allLabels.push('next');
+                        allLabels.push('~next');
                     }
                     allData.push(projValue);
                 }
                 const projIndex = projValue > 0 ? allData.length - 1 : -1;
+
+                // Linear regression trendline (exclude projection bar)
+                const trendData = allData.map((v, i) => i === projIndex ? null : v);
+                const realPoints = trendData.filter(v => v !== null);
+                const trendLine = allData.map(() => null);
+                if (realPoints.length >= 2) {
+                    const n = realPoints.length;
+                    const sumX = realPoints.reduce((s, _, i) => s + i, 0);
+                    const sumY = realPoints.reduce((s, v) => s + v, 0);
+                    const sumXY = realPoints.reduce((s, v, i) => s + i * v, 0);
+                    const sumX2 = realPoints.reduce((s, _, i) => s + i * i, 0);
+                    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                    const intercept = (sumY - slope * sumX) / n;
+                    for (let i = 0; i < n; i++) trendLine[i] = Math.max(0, Math.round(slope * i + intercept));
+                }
 
                 if (this.ytHourlyChart) {
                     this.ytHourlyChart.data.labels = allLabels;
@@ -6702,6 +6949,7 @@
                         i === projIndex ? 'rgba(56,189,248,0.5)' : 'rgba(125,211,252,0.6)');
                     this.ytHourlyChart.data.datasets[0].borderWidth = allData.map((_, i) =>
                         i === projIndex ? 2 : 1);
+                    this.ytHourlyChart.data.datasets[1].data = trendLine;
                     this.ytHourlyChart.update('none');
                     return;
                 }
@@ -6734,8 +6982,18 @@
                                 i === projIndex ? 2 : 1),
                             borderRadius: 20,
                             borderSkipped: false,
-                            barPercentage: 0.4,
+                            barPercentage: 0.6,
                             categoryPercentage: 0.8
+                        }, {
+                            type: 'line',
+                            data: trendLine,
+                            borderColor: 'rgba(251,191,36,0.5)',
+                            borderWidth: 2,
+                            borderDash: [6, 3],
+                            pointRadius: 0,
+                            tension: 0,
+                            fill: false,
+                            spanGaps: true
                         }]
                     },
                     options: {
@@ -6749,6 +7007,7 @@
                             legend: { display: false },
                             tooltip: { enabled: false },
                             datalabels: {
+                                display: (ctx) => ctx.datasetIndex === 0,
                                 anchor: 'end',
                                 align: 'top',
                                 color: (ctx) => ctx.dataIndex === projIndex ? 'rgba(56,189,248,0.6)' : '#fff',

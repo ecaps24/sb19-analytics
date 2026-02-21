@@ -2951,11 +2951,16 @@ body {{
         if len(rows) < 2:
             return [], []
 
-        # Bucket by hour, take max views per hour
+        # Bucket by 4-hour slot, take max views per slot
         hourly = {}
         for row in rows:
-            ts = row.get("timestamp", "")
-            hour_key = ts[:13]  # "YYYY-MM-DD HH"
+            ts = row.get("timestamp", "").strip()
+            try:
+                dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+                slot = (dt.hour // 4) * 4
+                hour_key = f"{dt.strftime('%Y-%m-%d')} {slot:02d}"
+            except ValueError:
+                continue
             v = int(row.get("views", 0))
             if hour_key not in hourly or v > hourly[hour_key]:
                 hourly[hour_key] = v
@@ -2963,13 +2968,23 @@ body {{
         sorted_hours = sorted(hourly.keys())
         labels = []
         deltas = []
+        def _fmt_h(h):
+            h12 = h % 12 or 12
+            ap = 'p' if h >= 12 else 'a'
+            return f"{h12}{ap}"
         for i in range(1, len(sorted_hours)):
             delta = hourly[sorted_hours[i]] - hourly[sorted_hours[i - 1]]
             if delta < 0:
                 delta = 0
-            hour_label = sorted_hours[i][-2:] + ":00"
-            labels.append(hour_label)
+            prev_hour = int(sorted_hours[i - 1][-2:])
+            curr_hour = int(sorted_hours[i][-2:])
+            labels.append(f"{_fmt_h(prev_hour)}-{_fmt_h(curr_hour)}")
             deltas.append(delta)
+
+        # Keep only the last 6 bars
+        if len(labels) > 6:
+            labels = labels[-6:]
+            deltas = deltas[-6:]
 
         return labels, deltas
 
@@ -3039,11 +3054,21 @@ body {{
                     f'<div class="bar-label">{label}</div>'
                     f'</div>'
                 )
-            # Add projection bar
+            # Add projection bar (next 4h window)
             if projection > 0:
-                last_hour = int(chart_labels[-1][:2]) if chart_labels else 0
-                next_hour = (last_hour + 1) % 24
-                next_label = f"{next_hour:02d}:00"
+                # Parse end hour from last label like "4p-8p"
+                last_lbl = chart_labels[-1] if chart_labels else ""
+                _parts = last_lbl.split("-")
+                if len(_parts) == 2:
+                    _end_part = _parts[1]  # e.g. "8p"
+                    _eh = int(_end_part[:-1])
+                    _eap = _end_part[-1]
+                    _end24 = (_eh + 12) if _eap == 'p' and _eh != 12 else (0 if _eap == 'a' and _eh == 12 else _eh)
+                    _next_end = (_end24 + 4) % 24
+                    _fh = lambda h: f"{h % 12 or 12}{'p' if h >= 12 else 'a'}"
+                    next_label = f"~{_fh(_end24)}-{_fh(_next_end)}"
+                else:
+                    next_label = "~next"
                 proj_pct = max(int((projection / max_delta) * 100), 4)
                 proj_val = f"~{format_k(projection)}"
                 bars.append(
@@ -3053,10 +3078,40 @@ body {{
                     f'<div class="bar-label">{next_label}</div>'
                     f'</div>'
                 )
+            # Compute SVG trendline over the real bars (exclude projection)
+            trend_svg = ""
+            n_real = len(chart_deltas)
+            if n_real >= 2 and max_delta > 0:
+                n_total = n_real + (1 if projection > 0 else 0)
+                sum_x = sum(range(n_real))
+                sum_y = sum(chart_deltas)
+                sum_xy = sum(i * v for i, v in enumerate(chart_deltas))
+                sum_x2 = sum(i * i for i in range(n_real))
+                slope = (n_real * sum_xy - sum_x * sum_y) / (n_real * sum_x2 - sum_x * sum_x)
+                intercept = (sum_y - slope * sum_x) / n_real
+                # Linear regression: just need start and end points
+                y_start = max(0, intercept)
+                y_end = max(0, slope * (n_real - 1) + intercept)
+                # X: center of first and last real bar columns
+                x1_pct = 0.5 / n_total * 100
+                x2_pct = (n_real - 0.5) / n_total * 100
+                # Y: percentage of max_delta, inverted for SVG (top=0)
+                y1_pct = max(4, min(100, y_start / max_delta * 100))
+                y2_pct = max(4, min(100, y_end / max_delta * 100))
+                y1_px = 200 - (y1_pct / 100 * 200)
+                y2_px = 200 - (y2_pct / 100 * 200)
+                trend_svg = (
+                    f'<svg class="trend-svg" xmlns="http://www.w3.org/2000/svg">'
+                    f'<line x1="{x1_pct:.1f}%" y1="{y1_px:.0f}" x2="{x2_pct:.1f}%" y2="{y2_px:.0f}" /></svg>'
+                )
+
             chart_bars_html = f"""
         <div class="chart-section">
-            <div class="chart-title">Hourly Views</div>
-            <div class="chart-row">{"".join(bars)}</div>
+            <div class="chart-title">Views per 4 Hours</div>
+            <div class="chart-row-wrap">
+                <div class="chart-row">{"".join(bars)}</div>
+                {trend_svg}
+            </div>
         </div>"""
 
         html = f"""<!DOCTYPE html>
@@ -3200,12 +3255,30 @@ body {{
     margin-bottom: 12px;
     text-align: left;
 }}
+.chart-row-wrap {{
+    position: relative;
+    height: 200px;
+    width: 100%;
+}}
 .chart-row {{
     display: flex;
     align-items: flex-end;
     gap: 10px;
     height: 200px;
     width: 100%;
+}}
+.trend-svg {{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+}}
+.trend-svg line {{
+    stroke: rgba(251,191,36,0.5);
+    stroke-width: 2px;
+    stroke-dasharray: 6 3;
 }}
 .bar-col {{
     flex: 1;
