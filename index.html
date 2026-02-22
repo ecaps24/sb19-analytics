@@ -3525,7 +3525,7 @@
         const SUPABASE_URL = 'https://xqsifpdsueqgjjzlggms.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_P-0gey3lufEAp82uSU4h8A_DhSFxtIp';
 
-        const TIER_LEVELS = { guest: 0, free: 1, daypass: 2, basic: 2, plus: 3, premium: 4 };
+        const TIER_LEVELS = { guest: 0, free: 1, daypass: 2, basic: 3, plus: 4, premium: 5 };
         const ADMIN_EMAIL = 'edwin.f.capidos@gmail.com';
 
         class AuthManager {
@@ -7880,24 +7880,28 @@
                 // If authManager isn't ready yet, gate everything by default
                 if (!am || !am.initialized) {
                     const defaultGating = [
-                        { selector: '#visaCardSection', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
-                        { selector: '#youtubeCardSection', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
-                        { selector: '#memberChartSection', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
-                        { selector: '#topTracksSection', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
-                        { selector: '#memberTracksSection', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
+                        { selector: '#visaCardSection', requiredTier: 'daypass', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                        { selector: '#youtubeCardSection', requiredTier: 'daypass', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
+                        { selector: '#topTracksSection', requiredTier: 'daypass', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
+                        { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
+                        { selector: '#memberTracksSection', requiredTier: 'basic', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
                     ];
-                    defaultGating.forEach(({ selector, label, desc }) => {
+                    defaultGating.forEach(({ selector, requiredTier, label, desc }) => {
                         const el = document.querySelector(selector);
                         if (!el || el.querySelector('.gated-overlay')) return;
                         el.classList.add('gated-content');
                         Array.from(el.children).forEach(child => child.classList.add('gated-blur'));
                         const overlay = document.createElement('div');
                         overlay.className = 'gated-overlay';
+                        const isDaypassGate = requiredTier === 'daypass';
                         overlay.innerHTML = `
                             <div class="gated-lock">🔒</div>
                             <div class="gated-title">${label}</div>
                             <div class="gated-desc">${desc}</div>
-                            <button class="gated-cta" onclick="window.authManager ? window.authManager.activateDayPass() : sessionStorage.setItem('pendingUpgrade','true')">Unlock for free</button>
+                            ${isDaypassGate
+                                ? `<button class="gated-cta" onclick="window.authManager ? window.authManager.activateDayPass() : sessionStorage.setItem('pendingUpgrade','true')">Unlock for free</button>`
+                                : `<button class="gated-cta premium-cta" onclick="window.authManager ? window.authManager.showUpgradeModal() : sessionStorage.setItem('pendingUpgrade','true')">Subscribe to Basic</button>`
+                            }
                         `;
                         el.appendChild(overlay);
                     });
@@ -7921,10 +7925,10 @@
                 }
 
                 const gatingMap = [
-                    { selector: '#visaCardSection', requiredTier: 'basic', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
-                    { selector: '#youtubeCardSection', requiredTier: 'basic', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
+                    { selector: '#visaCardSection', requiredTier: 'daypass', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                    { selector: '#youtubeCardSection', requiredTier: 'daypass', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
+                    { selector: '#topTracksSection', requiredTier: 'daypass', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
-                    { selector: '#topTracksSection', requiredTier: 'basic', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberTracksSection', requiredTier: 'basic', label: 'Solo Tracks', desc: 'Individual member track breakdowns' }
                 ];
 
@@ -7950,11 +7954,15 @@
 
                         const overlay = document.createElement('div');
                         overlay.className = 'gated-overlay';
+                        const isDaypassGate = requiredTier === 'daypass';
                         overlay.innerHTML = `
                             <div class="gated-lock">🔒</div>
                             <div class="gated-title">${label}</div>
                             <div class="gated-desc">${desc}</div>
-                            <button class="gated-cta" onclick="window.authManager.activateDayPass()">Unlock for free</button>
+                            ${isDaypassGate
+                                ? `<button class="gated-cta" onclick="window.authManager.activateDayPass()">Unlock for free</button>`
+                                : `<button class="gated-cta premium-cta" onclick="window.authManager.showUpgradeModal()">Subscribe to Basic</button>`
+                            }
                         `;
                         el.appendChild(overlay);
                     }
