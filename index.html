@@ -3292,6 +3292,7 @@
                                             <th style="padding:8px; text-align:left;">Artist</th>
                                             <th style="padding:8px; text-align:left;">Genre</th>
                                             <th style="padding:8px; text-align:right;">Listeners</th>
+                                            <th style="padding:8px; text-align:right;">1D</th>
                                             <th style="padding:8px; text-align:right;">7D</th>
                                             <th style="padding:8px; text-align:right;">30D</th>
                                         </tr>
@@ -3311,6 +3312,7 @@
                                             <th style="padding:8px; text-align:left;">Title</th>
                                             <th style="padding:8px; text-align:left;">Artist</th>
                                             <th style="padding:8px; text-align:right;">Streams</th>
+                                            <th style="padding:8px; text-align:right;">1D</th>
                                             <th style="padding:8px; text-align:right;">7D Growth</th>
                                         </tr>
                                     </thead>
@@ -5204,9 +5206,9 @@
                     // Otherwise change would equal total streams (misleading)
                     if (startData[track] && endData[track]) {
                         const rawChange = endStreams - startStreams;
-                        // Only apply OCR error filter to established tracks (>1M streams)
-                        // New tracks can have high % growth which is legitimate
-                        const isEstablishedTrack = endStreams > 1000000;
+                        // Only apply OCR error filter to well-established tracks (>10M streams)
+                        // Newer/trending tracks can legitimately have >10% daily growth
+                        const isEstablishedTrack = endStreams > 10000000;
                         if (isEstablishedTrack && endStreams > 0 && Math.abs(rawChange) / endStreams > 0.1) {
                             changes[track] = 0;
                         } else {
@@ -5890,7 +5892,16 @@
                             },
                             tooltip: {
                                 callbacks: {
-                                    label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`
+                                    label: (ctx) => {
+                                        const val = ctx.parsed.y;
+                                        const prev = ctx.dataIndex > 0 ? ctx.dataset.data[ctx.dataIndex - 1] : null;
+                                        const diff = (prev !== null && val !== null) ? val - prev : null;
+                                        let line = `${ctx.dataset.label}: ${val.toLocaleString()}`;
+                                        if (diff !== null) {
+                                            line += ` (${diff >= 0 ? '+' : ''}${diff.toLocaleString()})`;
+                                        }
+                                        return line;
+                                    }
                                 }
                             },
                             datalabels: { display: false }
@@ -7475,9 +7486,9 @@
                     // Otherwise change would equal total streams (misleading)
                     if (startData[track] && endData[track]) {
                         const rawChange = endStreams - startStreams;
-                        // Only apply OCR error filter to established tracks (>1M streams)
-                        // New tracks can have high % growth which is legitimate
-                        const isEstablishedTrack = endStreams > 1000000;
+                        // Only apply OCR error filter to well-established tracks (>10M streams)
+                        // Newer/trending tracks can legitimately have >10% daily growth
+                        const isEstablishedTrack = endStreams > 10000000;
                         if (isEstablishedTrack && endStreams > 0 && Math.abs(rawChange) / endStreams > 0.1) {
                             changes[track] = 0;
                         } else {
@@ -8576,7 +8587,13 @@
                                     label: (context) => {
                                         const value = context.raw;
                                         if (value === null) return `${context.dataset.label}: No data`;
-                                        return `${context.dataset.label}: ${value.toLocaleString()}`;
+                                        const prev = context.dataIndex > 0 ? context.dataset.data[context.dataIndex - 1] : null;
+                                        const diff = (prev !== null) ? value - prev : null;
+                                        let line = `${context.dataset.label}: ${value.toLocaleString()}`;
+                                        if (diff !== null) {
+                                            line += ` (${diff >= 0 ? '+' : ''}${diff.toLocaleString()})`;
+                                        }
+                                        return line;
                                     }
                                 }
                             }
@@ -8978,7 +8995,15 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(ctx) {
-                                        return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+                                        const val = ctx.parsed.y;
+                                        const prevData = ctx.dataIndex > 0 ? ctx.dataset.data[ctx.dataIndex - 1] : null;
+                                        const prevVal = prevData !== null ? (typeof prevData === 'object' ? prevData.y : prevData) : null;
+                                        const diff = (prevVal !== null && val !== null) ? val - prevVal : null;
+                                        let line = ctx.dataset.label + ': ' + val.toLocaleString();
+                                        if (diff !== null) {
+                                            line += ' (' + (diff >= 0 ? '+' : '') + diff.toLocaleString() + ')';
+                                        }
+                                        return line;
                                     }
                                 }
                             }
@@ -9226,7 +9251,15 @@
                             tooltip: {
                                 callbacks: {
                                     label: function(ctx) {
-                                        return ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+                                        const val = ctx.parsed.y;
+                                        const prevData = ctx.dataIndex > 0 ? ctx.dataset.data[ctx.dataIndex - 1] : null;
+                                        const prevVal = prevData !== null ? (typeof prevData === 'object' ? prevData.y : prevData) : null;
+                                        const diff = (prevVal !== null && val !== null) ? val - prevVal : null;
+                                        let line = ctx.dataset.label + ': ' + val.toLocaleString();
+                                        if (diff !== null) {
+                                            line += ' (' + (diff >= 0 ? '+' : '') + diff.toLocaleString() + ')';
+                                        }
+                                        return line;
                                     }
                                 }
                             }
@@ -9263,13 +9296,15 @@
                     const hist = this.getArtistHistoricalListeners(artist);
                     if (hist.length === 0) return;
                     const latest = hist[hist.length - 1].monthly_listeners;
-                    let change7 = null, change30 = null;
+                    let change1 = null, change7 = null, change30 = null;
+                    if (hist.length >= 2) change1 = latest - hist[hist.length - 2].monthly_listeners;
                     if (hist.length >= 7) change7 = latest - hist[hist.length - 7].monthly_listeners;
                     if (hist.length >= 30) change30 = latest - hist[hist.length - 30].monthly_listeners;
                     artistSummary.push({
                         name: artist,
                         genre: this.artistGenreMap[artist] || '-',
                         listeners: latest,
+                        change1,
                         change7,
                         change30
                     });
@@ -9280,12 +9315,14 @@
                 const trackSummary = [];
                 allTracks.slice(0, 50).forEach(track => {
                     const hist = this.getTrackHistoricalStreams(track.song_title, track.artist_name);
-                    let growth7 = null;
+                    let growth1 = null, growth7 = null;
+                    if (hist.length >= 2) growth1 = hist[hist.length - 1].total_streams - hist[hist.length - 2].total_streams;
                     if (hist.length >= 7) growth7 = hist[hist.length - 1].total_streams - hist[hist.length - 7].total_streams;
                     trackSummary.push({
                         title: track.song_title,
                         artist: track.artist_name,
                         streams: track.total_streams,
+                        growth1,
                         growth7
                     });
                 });
@@ -9321,8 +9358,10 @@
                 const artistsBody = document.getElementById('summaryArtistsBody');
                 if (artistsBody) {
                     artistsBody.innerHTML = artistSummary.slice(0, 20).map((a, i) => {
+                        const c1 = a.change1 !== null ? ((a.change1 >= 0 ? '+' : '') + a.change1.toLocaleString()) : '-';
                         const c7 = a.change7 !== null ? ((a.change7 >= 0 ? '+' : '') + a.change7.toLocaleString()) : '-';
                         const c30 = a.change30 !== null ? ((a.change30 >= 0 ? '+' : '') + a.change30.toLocaleString()) : '-';
+                        const c1color = a.change1 > 0 ? '#34d399' : a.change1 < 0 ? '#f87171' : '#9ca3af';
                         const c7color = a.change7 > 0 ? '#34d399' : a.change7 < 0 ? '#f87171' : '#9ca3af';
                         const c30color = a.change30 > 0 ? '#34d399' : a.change30 < 0 ? '#f87171' : '#9ca3af';
                         return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
@@ -9330,6 +9369,7 @@
                             <td style="padding:6px 8px; color:#e5e7eb;">${a.name}</td>
                             <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${a.genre}</td>
                             <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${a.listeners.toLocaleString()}</td>
+                            <td style="padding:6px 8px; text-align:right; color:${c1color};">${c1}</td>
                             <td style="padding:6px 8px; text-align:right; color:${c7color};">${c7}</td>
                             <td style="padding:6px 8px; text-align:right; color:${c30color};">${c30}</td>
                         </tr>`;
@@ -9340,13 +9380,16 @@
                 const tracksBody = document.getElementById('summaryTracksBody');
                 if (tracksBody) {
                     tracksBody.innerHTML = trackSummary.slice(0, 20).map((t, i) => {
+                        const g1 = t.growth1 !== null ? ((t.growth1 >= 0 ? '+' : '') + t.growth1.toLocaleString()) : '-';
                         const g7 = t.growth7 !== null ? ((t.growth7 >= 0 ? '+' : '') + t.growth7.toLocaleString()) : '-';
+                        const g1color = t.growth1 > 0 ? '#34d399' : t.growth1 < 0 ? '#f87171' : '#9ca3af';
                         const g7color = t.growth7 > 0 ? '#34d399' : t.growth7 < 0 ? '#f87171' : '#9ca3af';
                         return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
                             <td style="padding:6px 8px; color:#6b7280;">${i + 1}</td>
                             <td style="padding:6px 8px; color:#e5e7eb;">${t.title}</td>
                             <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${t.artist}</td>
                             <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${t.streams.toLocaleString()}</td>
+                            <td style="padding:6px 8px; text-align:right; color:${g1color};">${g1}</td>
                             <td style="padding:6px 8px; text-align:right; color:${g7color};">${g7}</td>
                         </tr>`;
                     }).join('');
