@@ -4497,11 +4497,33 @@
                 // Set active tracksMetadata to selected artist
                 this.tracksMetadata = this.allTracksMetadata[this.selectedArtist] || [];
 
-                // Load streams data from selenium_results.csv
+                // Load streams data from selenium_results.csv (SB19 + select OPM)
                 const streamsResponse = await fetch('./selenium_results.csv?t=' + Date.now());
                 if (streamsResponse.ok) {
                     const csv = await streamsResponse.text();
                     this.streamsData = this.parseStreamsCSV(csv);
+                }
+
+                // Also load opm_tracks_results.csv (all P-Pop + OPM artist tracks)
+                try {
+                    const oemResponse = await fetch('./opm_tracks_results.csv?t=' + Date.now());
+                    if (oemResponse.ok) {
+                        const oemCsv = await oemResponse.text();
+                        const oemData = this.parseStreamsCSV(oemCsv);
+                        // Merge, deduplicating by (song_title, artist_name, date)
+                        const existingKeys = new Set(
+                            this.streamsData.map(d => `${d.song_title}|||${d.artist_name}|||${(d.data_date || '').substring(0, 10)}`)
+                        );
+                        for (const d of oemData) {
+                            const key = `${d.song_title}|||${d.artist_name}|||${(d.data_date || '').substring(0, 10)}`;
+                            if (!existingKeys.has(key)) {
+                                this.streamsData.push(d);
+                                existingKeys.add(key);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Could not load opm_tracks_results.csv:', e.message);
                 }
 
                 // Build set of artists that have track stream data
@@ -5470,12 +5492,10 @@
 
                 if (latest) {
                     document.getElementById('current-listeners').textContent = latest.monthly_listeners.toLocaleString();
-                    if (previous) {
-                        const change = latest.monthly_listeners - previous.monthly_listeners;
-                        const changeEl = document.getElementById('listeners-change');
-                        changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toLocaleString()} from previous`;
-                        changeEl.className = change >= 0 ? 'growth' : 'growth negative';
-                    }
+                    const { change } = this.getListenersDailyChange(this.selectedArtist);
+                    const changeEl = document.getElementById('listeners-change');
+                    changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toLocaleString()} vs yesterday`;
+                    changeEl.className = change >= 0 ? 'growth' : 'growth negative';
                 }
 
                 // Update Last updated based on latest stream data (find actual max timestamp)
@@ -5546,6 +5566,20 @@
                 if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
                 if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
                 return num.toString();
+            }
+
+            getListenersDailyChange(artistName) {
+                const hist = this.getArtistHistoricalListeners(artistName || this.selectedArtist);
+                if (hist.length < 2) return { today: hist[0]?.monthly_listeners || 0, yesterday: 0, change: 0 };
+                const today = hist[hist.length - 1];
+                const yesterday = hist[hist.length - 2];
+                return {
+                    today: today.monthly_listeners,
+                    yesterday: yesterday.monthly_listeners,
+                    change: today.monthly_listeners - yesterday.monthly_listeners,
+                    todayDate: today.data_date,
+                    yesterdayDate: yesterday.data_date
+                };
             }
 
             getArtistATH() {
@@ -5879,6 +5913,7 @@
                             intersect: false,
                             mode: 'index'
                         },
+                        layout: { padding: { right: 60 } },
                         scales: {
                             x: {
                                 grid: { display: false },
@@ -5911,7 +5946,27 @@
                                     }
                                 }
                             },
-                            datalabels: { display: false }
+                            datalabels: {
+                                display: (ctx) => ctx.dataIndex === ctx.dataset.data.length - 1 && ctx.parsed.y !== null,
+                                anchor: 'end',
+                                align: 'right',
+                                color: (ctx) => {
+                                    const data = ctx.dataset.data;
+                                    const curr = data[ctx.dataIndex];
+                                    const prev = ctx.dataIndex > 0 ? data[ctx.dataIndex - 1] : null;
+                                    const diff = (prev !== null && curr !== null) ? curr - prev : null;
+                                    return diff === null ? '#9ca3af' : diff >= 0 ? '#34d399' : '#f87171';
+                                },
+                                font: { size: 9, weight: '700' },
+                                formatter: (value, ctx) => {
+                                    const data = ctx.dataset.data;
+                                    const prev = ctx.dataIndex > 0 ? data[ctx.dataIndex - 1] : null;
+                                    const diff = (prev !== null && value !== null) ? value - prev : null;
+                                    if (diff === null || diff === 0) return '';
+                                    return `${diff >= 0 ? '+' : ''}${this.formatNumber(diff)}`;
+                                },
+                                offset: 4
+                            }
                         }
                     }
                 });
@@ -5919,12 +5974,12 @@
 
             populateDailyTable() {
                 const tbody = document.getElementById('daily-table');
-                const artistData = this.getFilteredListeners();
-                const sortedData = artistData.sort((a, b) => new Date(b.data_date) - new Date(a.data_date));
+                const hist = this.getArtistHistoricalListeners(this.selectedArtist);
+                const entries = hist.slice(-15).reverse(); // Last 15 days, most recent first
 
-                tbody.innerHTML = sortedData.slice(0, 15).map((d, i) => {
-                    const prev = sortedData[i + 1];
-                    const change = prev ? d.monthly_listeners - prev.monthly_listeners : 0;
+                tbody.innerHTML = entries.map((d, i) => {
+                    const prevEntry = i < entries.length - 1 ? entries[i + 1] : null;
+                    const change = prevEntry ? d.monthly_listeners - prevEntry.monthly_listeners : 0;
                     const changeClass = change >= 0 ? 'growth' : 'growth negative';
                     const date = new Date(d.data_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -6100,6 +6155,7 @@
             renderAlbumView() {
                 const container = document.getElementById('album-view');
                 const latestStreams = this.getLatestStreams();
+                const { changes: periodChanges } = this.getPeriodChange();
 
                 // Group by album - use album from streams data directly
                 const albumGroups = {};
@@ -6153,15 +6209,20 @@
                                     <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
                                 </div>
                                 <div class="track-list">
-                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => `
+                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => {
+                                        const change = periodChanges[t.song_title] || 0;
+                                        const changeStr = change !== 0
+                                            ? `<span style="color:${change > 0 ? '#34d399' : '#f87171'}; font-size:0.7rem; margin-left:4px;">${change > 0 ? '+' : ''}${this.formatNumber(change)}</span>`
+                                            : '';
+                                        return `
                                         <div class="track-item">
                                             <div class="track-info">
                                                 <div class="track-title">${t.song_title}</div>
                                                 ${t.collaborators ? `<div class="track-collab">feat. ${t.collaborators}</div>` : ''}
                                             </div>
-                                            <div class="track-streams">${t.total_streams.toLocaleString()}</div>
+                                            <div class="track-streams">${t.total_streams.toLocaleString()}${changeStr}</div>
                                         </div>
-                                    `).join('')}
+                                    `;}).join('')}
                                 </div>
                             </div>
                         `).join('')}
@@ -6172,6 +6233,7 @@
             renderYearView() {
                 const container = document.getElementById('year-view');
                 const latestStreams = this.getLatestStreams();
+                const { changes: periodChanges } = this.getPeriodChange();
 
                 // Group by year - use year from streams data directly
                 const yearGroups = {};
@@ -6206,15 +6268,20 @@
                                     <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
                                 </div>
                                 <div class="track-list">
-                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => `
+                                    ${data.tracks.sort((a, b) => b.total_streams - a.total_streams).map(t => {
+                                        const change = periodChanges[t.song_title] || 0;
+                                        const changeStr = change !== 0
+                                            ? `<span style="color:${change > 0 ? '#34d399' : '#f87171'}; font-size:0.7rem; margin-left:4px;">${change > 0 ? '+' : ''}${this.formatNumber(change)}</span>`
+                                            : '';
+                                        return `
                                         <div class="track-item">
                                             <div class="track-info">
                                                 <div class="track-title">${t.song_title}</div>
                                                 <div class="track-collab">${t.album || ''}</div>
                                             </div>
-                                            <div class="track-streams">${t.total_streams.toLocaleString()}</div>
+                                            <div class="track-streams">${t.total_streams.toLocaleString()}${changeStr}</div>
                                         </div>
-                                    `).join('')}
+                                    `;}).join('')}
                                 </div>
                             </div>
                         `).join('')}
