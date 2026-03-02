@@ -5906,6 +5906,7 @@
                 this.charts.listeners = new Chart(ctx, {
                     type: 'line',
                     data: { labels, datasets },
+                    plugins: [ChartDataLabels],
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -5947,7 +5948,15 @@
                                 }
                             },
                             datalabels: {
-                                display: (ctx) => ctx.dataIndex === ctx.dataset.data.length - 1 && ctx.parsed.y !== null,
+                                display: (ctx) => {
+                                    const data = ctx.dataset.data;
+                                    const idx = ctx.dataIndex;
+                                    if (idx !== data.length - 1) return false;
+                                    const curr = data[idx];
+                                    if (curr === null || curr === undefined) return false;
+                                    const prev = idx > 0 ? data[idx - 1] : null;
+                                    return prev !== null && prev !== undefined && curr !== prev;
+                                },
                                 anchor: 'end',
                                 align: 'right',
                                 color: (ctx) => {
