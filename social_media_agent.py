@@ -21,6 +21,8 @@ Usage:
     python social_media_agent.py spikes                # Post significant jump alerts
     python social_media_agent.py weekly                # Post weekly summary
     python social_media_agent.py solo-top              # Post top tracks for each solo member
+    python social_media_agent.py opm-top-tracks        # Post OPM top 20 tracks by daily streams
+    python social_media_agent.py opm-top-streams       # Post OPM top artists by total streams
     python social_media_agent.py album                 # Post album update with screenshot
     python social_media_agent.py custom "Your message" # Post a custom message
     python social_media_agent.py preview               # Preview all pending posts
@@ -85,6 +87,9 @@ MEMBER_PHOTOS_DIR = os.path.join(SCRIPT_DIR, "profiles")
 LISTENERS_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "monthly_listeners.png")
 OPM_TOP_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "opm_top_listeners.png")
 PPOP_TOP_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "ppop_top_listeners.png")
+OPM_TRACKS_FILE = os.path.join(SCRIPT_DIR, "opm_tracks_results.csv")
+OPM_TOP_TRACKS_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "opm_top_tracks.png")
+OPM_TOP_STREAMS_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "opm_top_streams.png")
 MEMBER_PHOTO_FILES = {
     "SB19": "sb19.jpg",
     "PABLO": "pablo.jpg",
@@ -126,6 +131,10 @@ YOUTUBE_VIDEO_URL = "https://youtu.be/0t6GNcINKeU"
 YT_HISTORY_FILE = os.path.join(SCRIPT_DIR, "yt_visa_history.json")
 YT_STREAMS_CSV = os.path.join(SCRIPT_DIR, "yt_visa_streams.csv")
 YT_VISA_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "yt_visa_stats.png")
+
+# Spotify VISA daily
+SPOTIFY_VISA_URL = "https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7"
+SPOTIFY_VISA_IMAGE_PATH = os.path.join(ALBUM_IMAGE_DIR, "spotify_visa_stats.png")
 
 # Main artists with X handles
 MAIN_ARTISTS = ["SB19", "PABLO", "JOSH CULLEN", "Stell", "FELIP", "justin"]
@@ -421,6 +430,28 @@ class SocialMediaAgent:
                     latest_date = date
         return False, f"No data for today ({today}). Latest: {latest_date or 'unknown'}"
 
+    def check_opm_tracks_data(self):
+        """Check if OPM track stream data exists for today."""
+        if not os.path.exists(OPM_TRACKS_FILE):
+            return False, "OPM tracks file not found"
+
+        today = datetime.now().strftime("%Y-%m-%d")
+        with open(OPM_TRACKS_FILE, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f, delimiter=";")
+            for row in reader:
+                if row.get("timestamp", "")[:10] == today:
+                    return True, f"Found OPM track data for today ({today})"
+
+        # Find latest date
+        latest_date = None
+        with open(OPM_TRACKS_FILE, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f, delimiter=";")
+            for row in reader:
+                date = row.get("timestamp", "")[:10]
+                if date and (latest_date is None or date > latest_date):
+                    latest_date = date
+        return False, f"No OPM track data for today ({today}). Latest: {latest_date or 'unknown'}"
+
     # ======================================================================
     # Content generators — each returns a message string (or None)
     # ======================================================================
@@ -631,7 +662,7 @@ class SocialMediaAgent:
             daily_rank_maps[curr_d] = {s: r + 1 for r, (s, _) in enumerate(day_gains)}
 
         # Annotate top 10 with rank change info
-        top = gains[:10]
+        top = gains[:20]
         for i, g in enumerate(top):
             current_rank = i + 1
             prev_rank = prev_rank_map.get(g["song"])
@@ -673,17 +704,40 @@ class SocialMediaAgent:
         date_short = short_date(today)
         total_str_text = format_change(total_added, use_commas=False)
         message = (
-            f"SB19 Top 10 Tracks by Daily Streams | {date_short}\n\n"
+            f"SB19 Top Tracks by Daily Streams | {date_short}\n\n"
             f"Total added: {total_str_text}\n\n"
             f"{SITE_TAG}\n"
             f"#SB19 #OPM"
         )
         enforce_char_limit(message)
 
+        # Split into top 3 podium + table
+        top3_data = []
+        for i, g in enumerate(top[:3]):
+            top3_data.append({
+                "rank": i + 1,
+                "song": g["song"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+            })
+        table_data = []
+        for i, g in enumerate(top[3:], 4):
+            table_data.append({
+                "rank": i,
+                "song": g["song"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+            })
+
         # Capture screenshot
         image_path = None
         screenshot_ok = self._capture_top10_screenshot(
-            track_list=top,
+            top3_data=top3_data,
+            table_data=table_data,
             total_added=total_added,
             date_str=date_formatted,
         )
@@ -692,58 +746,81 @@ class SocialMediaAgent:
 
         return message, image_path
 
-    def _capture_top10_screenshot(self, track_list=None, total_added=0, date_str=""):
-        """Capture a social-media-friendly top 10 daily streams card."""
-        print("[INFO] Capturing top 10 streams screenshot...")
+    def _capture_top10_screenshot(self, top3_data=None, table_data=None,
+                                    total_added=0, date_str=""):
+        """Capture a social-media-friendly SB19 top tracks card.
+
+        Section A: Top 3 as equal-width podium bars.
+        Section B: Remaining tracks as compact table.
+        """
+        print("[INFO] Capturing top tracks screenshot...")
         os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
 
-        if not track_list:
-            print("[ERR] No track data for top 10 card")
+        if not top3_data:
+            print("[ERR] No track data for top tracks card")
             return False
 
-        max_change = max(t["change"] for t in track_list) if track_list else 1
-        if max_change <= 0:
-            max_change = 1
+        podium_colors = ["#fbbf24", "#94a3b8", "#cd7f32"]  # gold, silver, bronze
 
-        bar_colors = [
-            "#3b82f6", "#6366f1", "#ec4899", "#10b981", "#f59e0b",
-            "#a855f7", "#ef4444", "#14b8a6", "#f97316", "#8b5cf6",
-        ]
-
-        track_rows = ""
-        for i, t in enumerate(track_list):
-            pct = (t["change"] / max_change) * 100 if t["change"] > 0 else 0
-            color = bar_colors[i % len(bar_colors)]
-            change_str = f"+{t['change']:,}" if t["change"] > 0 else f"{t['change']:,}"
-            streams_str = f"{t['streams']:,}"
-
-            # Rank change indicator
-            rc = t.get("rank_change")
-            streak = t.get("streak", 1)
+        def _rank_change_html(rc, streak=1):
             if rc is not None and rc > 0:
-                rank_ind_html = f'<span class="rank-up">▲{rc}</span>'
+                return f'<span class="rank-up">▲{rc}</span>'
             elif rc is not None and rc < 0:
-                rank_ind_html = f'<span class="rank-down">▼{abs(rc)}</span>'
+                return f'<span class="rank-down">▼{abs(rc)}</span>'
             elif rc == 0 and streak > 1:
-                rank_ind_html = f'<span class="rank-same">{streak}d</span>'
+                return f'<span class="rank-same">{streak}d</span>'
             else:
-                rank_ind_html = '<span class="rank-same">―</span>'
+                return '<span class="rank-same">―</span>'
 
-            track_rows += f"""
-            <div class="track-row">
-                <div class="track-rank">{i + 1}</div>
-                <div class="rank-indicator">{rank_ind_html}</div>
-                <div class="track-info">
-                    <div class="track-name">{t['song']}</div>
-                    <div class="track-bar-container">
-                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+        def _change_html(change):
+            if change > 0:
+                return f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                return f'<span class="change-down">{change:,}</span>'
+            return '<span class="change-same">―</span>'
+
+        # --- Section A: Top 3 podium bars (equal width) ---
+        top3_rows = ""
+        for i, t in enumerate(top3_data):
+            color = podium_colors[i]
+            streams_str = f"{t['streams']:,}"
+            ch_html = _change_html(t["change"])
+            rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
+
+            top3_rows += f"""
+            <div class="podium-row podium-{i+1}">
+                <div class="podium-rank">{t['rank']}</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">{t['song']}</span>
+                        <span class="podium-rc">{rc_html}</span>
+                    </div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: {color};"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">{streams_str}</span>
+                        <span class="podium-change">{ch_html}</span>
                     </div>
                 </div>
-                <div class="track-stats">
-                    <div class="track-change">{change_str}</div>
-                    <div class="track-streams">{streams_str}</div>
-                </div>
             </div>"""
+
+        # --- Section B: Table for remaining tracks ---
+        table_rows = ""
+        if table_data:
+            for t in table_data:
+                streams_str = f"{t['streams']:,}"
+                ch_html = _change_html(t["change"])
+                rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
+
+                table_rows += f"""
+                <tr>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-track">{t['song']}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-streams">{streams_str}</td>
+                    <td class="col-rc">{rc_html}</td>
+                </tr>"""
 
         total_str = f"+{total_added:,}" if total_added > 0 else f"{total_added:,}"
 
@@ -792,9 +869,7 @@ body {{
     gap: 48px;
     margin-top: 18px;
 }}
-.stat-box {{
-    text-align: center;
-}}
+.stat-box {{ text-align: center; }}
 .stat-value {{
     font-size: 36px;
     font-weight: 800;
@@ -808,83 +883,166 @@ body {{
     letter-spacing: 1px;
     margin-top: 2px;
 }}
-.tracks {{
+/* --- Top 3 Podium --- */
+.podium-section {{
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
+    margin-bottom: 8px;
 }}
-.track-row {{
+.podium-row {{
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 10px 0;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
 }}
-.track-rank {{
-    font-size: 20px;
-    font-weight: 700;
-    color: #475569;
-    width: 32px;
-    text-align: right;
-    flex-shrink: 0;
+.podium-1 {{
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
 }}
-.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
-.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
-.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
-.rank-indicator {{
-    width: 42px;
+.podium-2 {{
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}}
+.podium-3 {{
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}}
+.podium-rank {{
+    font-size: 32px;
+    font-weight: 800;
+    width: 48px;
     text-align: center;
     flex-shrink: 0;
-    font-size: 14px;
-    font-weight: 600;
 }}
-.rank-up {{
-    color: #34d399;
-}}
-.rank-down {{
-    color: #f87171;
-}}
-.rank-same {{
-    color: #9ca3af;
-}}
-.track-info {{
+.podium-1 .podium-rank {{ color: #fbbf24; }}
+.podium-2 .podium-rank {{ color: #94a3b8; }}
+.podium-3 .podium-rank {{ color: #cd7f32; }}
+.podium-content {{
     flex: 1;
     min-width: 0;
 }}
-.track-name {{
-    font-size: 18px;
+.podium-header {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}}
+.podium-name {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.podium-rc {{
+    font-size: 14px;
+    font-weight: 600;
+}}
+.podium-bar-container {{
+    height: 38px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}}
+.podium-bar {{
+    height: 100%;
+    border-radius: 8px;
+}}
+.podium-stats {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}}
+.podium-streams {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.podium-change {{
+    font-size: 14px;
+    font-weight: 500;
+}}
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}}
+.section-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank, th.col-streams, th.col-change, th.col-rc {{
+    text-align: right;
+}}
+td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}}
+td.col-track {{
     font-weight: 600;
     color: #e2e8f0;
-    margin-bottom: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 380px;
 }}
-.track-bar-container {{
-    height: 30px;
-    background: rgba(51, 65, 85, 0.5);
-    border-radius: 6px;
-    overflow: hidden;
-}}
-.track-bar {{
-    height: 100%;
-    border-radius: 6px;
-}}
-.track-stats {{
+td.col-streams {{
+    font-weight: 600;
+    color: #e2e8f0;
     text-align: right;
-    flex-shrink: 0;
-    min-width: 140px;
+    white-space: nowrap;
 }}
-.track-change {{
-    font-size: 20px;
-    font-weight: 700;
-    color: #10b981;
+td.col-change {{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
 }}
-.track-streams {{
-    font-size: 14px;
-    color: #64748b;
-    font-weight: 500;
-    margin-top: 2px;
+td.col-rc {{
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
 }}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+/* --- Shared --- */
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
 .footer {{
     text-align: center;
     margin-top: 28px;
@@ -900,26 +1058,10 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
-.track-row:nth-child(even) {{
-    filter: blur(3px);
-    opacity: 0.7;
-}}
-.cta-footer {{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #94a3b8;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}}
-.cta-footer span {{
-    color: #3b82f6;
-    font-weight: 700;
-}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
-        <div class="card-title">SB19 Top 10 Tracks by Daily Streams</div>
+        <div class="card-title">SB19 Top Tracks by Daily Streams</div>
         <div class="card-subtitle">As of {date_str}</div>
         <div class="stats-row">
             <div class="stat-box">
@@ -928,9 +1070,25 @@ body {{
             </div>
         </div>
     </div>
-    <div class="tracks">{track_rows}
+    <div class="podium-section">{top3_rows}
     </div>
-    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Tracks</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Track</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-streams">Streams</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -954,7 +1112,7 @@ body {{
             driver = None
             try:
                 driver = webdriver.Edge(service=service, options=options)
-                driver.set_window_size(1200, 1600)
+                driver.set_window_size(1200, 3000)
 
                 driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
                 time.sleep(3)
@@ -963,21 +1121,21 @@ body {{
                 card.screenshot(TOP10_IMAGE_PATH)
 
                 img = Image.open(TOP10_IMAGE_PATH)
-                if img.width > 2400:
-                    ratio = 2400 / img.width
-                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
                     img.save(TOP10_IMAGE_PATH)
                 print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
-                print(f"[SUCCESS] Top 10 screenshot saved: {TOP10_IMAGE_PATH}")
+                print(f"[SUCCESS] Top tracks screenshot saved: {TOP10_IMAGE_PATH}")
                 return True
             except Exception as e:
-                print(f"[ERR] Top 10 screenshot failed: {e}")
+                print(f"[ERR] Top tracks screenshot failed: {e}")
                 return False
             finally:
                 if driver:
                     driver.quit()
         except Exception as e:
-            print(f"[ERR] Top 10 screenshot setup failed: {e}")
+            print(f"[ERR] Top tracks screenshot setup failed: {e}")
             return False
         finally:
             try:
@@ -985,62 +1143,89 @@ body {{
             except OSError:
                 pass
 
-    def _capture_solo_top10_screenshot(self, track_list=None, total_added=0, date_str=""):
-        """Capture a social-media-friendly solo top 10 daily streams card."""
-        print("[INFO] Capturing solo top 10 streams screenshot...")
+    def _capture_solo_top10_screenshot(self, top3_data=None, table_data=None,
+                                       total_added=0, date_str=""):
+        """Capture a social-media-friendly solo top tracks card.
+
+        Section A: Top 3 as equal-width podium bars with artist badge.
+        Section B: Remaining tracks as compact table with artist column.
+        """
+        print("[INFO] Capturing solo top tracks screenshot...")
         os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
 
-        if not track_list:
-            print("[ERR] No track data for solo top 10 card")
+        if not top3_data:
+            print("[ERR] No track data for solo top tracks card")
             return False
 
-        max_change = max(t["change"] for t in track_list) if track_list else 1
-        if max_change <= 0:
-            max_change = 1
+        podium_colors = ["#fbbf24", "#94a3b8", "#cd7f32"]  # gold, silver, bronze
 
-        track_rows = ""
-        for i, t in enumerate(track_list):
-            pct = (t["change"] / max_change) * 100 if t["change"] > 0 else 0
-            color = MEMBER_BAR_COLORS.get(t["artist"], "#3b82f6")
-            change_str = f"+{t['change']:,}" if t["change"] > 0 else f"{t['change']:,}"
-            streams_str = f"{t['streams']:,}"
-
-            # Rank change indicator
-            rc = t.get("rank_change")
-            streak = t.get("streak", 1)
+        def _rank_change_html(rc, streak=1):
             if rc is not None and rc > 0:
-                rank_ind_html = f'<span class="rank-up">&#9650;{rc}</span>'
+                return f'<span class="rank-up">▲{rc}</span>'
             elif rc is not None and rc < 0:
-                rank_ind_html = f'<span class="rank-down">&#9660;{abs(rc)}</span>'
+                return f'<span class="rank-down">▼{abs(rc)}</span>'
             elif rc == 0 and streak > 1:
-                rank_ind_html = f'<span class="rank-same">{streak}d</span>'
+                return f'<span class="rank-same">{streak}d</span>'
             else:
-                rank_ind_html = '<span class="rank-same">&#8213;</span>'
+                return '<span class="rank-same">―</span>'
 
-            # Artist badge (colored pill)
+        def _change_html(change):
+            if change > 0:
+                return f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                return f'<span class="change-down">{change:,}</span>'
+            return '<span class="change-same">―</span>'
+
+        # --- Section A: Top 3 podium bars with artist badge ---
+        top3_rows = ""
+        for i, t in enumerate(top3_data):
+            color = podium_colors[i]
+            artist_color = MEMBER_BAR_COLORS.get(t["artist"], "#3b82f6")
+            streams_str = f"{t['streams']:,}"
+            ch_html = _change_html(t["change"])
+            rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
             badge_html = (
-                f'<span class="artist-badge" style="background: {color};">'
+                f'<span class="artist-badge" style="background: {artist_color};">'
                 f'{t["artist"]}</span>'
             )
 
-            track_rows += f"""
-            <div class="track-row">
-                <div class="track-rank">{i + 1}</div>
-                <div class="rank-indicator">{rank_ind_html}</div>
-                <div class="track-info">
-                    <div class="track-name-row">
-                        <span class="track-name">{t['song']}</span>
+            top3_rows += f"""
+            <div class="podium-row podium-{i+1}">
+                <div class="podium-rank">{t['rank']}</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">{t['song']}</span>
                         {badge_html}
+                        <span class="podium-rc">{rc_html}</span>
                     </div>
-                    <div class="track-bar-container">
-                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: {artist_color};"></div>
                     </div>
-                </div>
-                <div class="track-stats">
-                    <div class="track-change">{change_str}</div>
-                    <div class="track-streams">{streams_str}</div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">{streams_str}</span>
+                        <span class="podium-change">{ch_html}</span>
+                    </div>
                 </div>
             </div>"""
+
+        # --- Section B: Table for remaining tracks ---
+        table_rows = ""
+        if table_data:
+            for t in table_data:
+                artist_color = MEMBER_BAR_COLORS.get(t["artist"], "#3b82f6")
+                streams_str = f"{t['streams']:,}"
+                ch_html = _change_html(t["change"])
+                rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
+
+                table_rows += f"""
+                <tr>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-track">{t['song']}</td>
+                    <td class="col-artist" style="color: {artist_color};">{t['artist']}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-streams">{streams_str}</td>
+                    <td class="col-rc">{rc_html}</td>
+                </tr>"""
 
         total_str = f"+{total_added:,}" if total_added > 0 else f"{total_added:,}"
 
@@ -1089,9 +1274,7 @@ body {{
     gap: 48px;
     margin-top: 18px;
 }}
-.stat-box {{
-    text-align: center;
-}}
+.stat-box {{ text-align: center; }}
 .stat-value {{
     font-size: 36px;
     font-weight: 800;
@@ -1105,61 +1288,56 @@ body {{
     letter-spacing: 1px;
     margin-top: 2px;
 }}
-.tracks {{
+/* --- Top 3 Podium --- */
+.podium-section {{
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
+    margin-bottom: 8px;
 }}
-.track-row {{
+.podium-row {{
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 10px 0;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
 }}
-.track-rank {{
-    font-size: 20px;
-    font-weight: 700;
-    color: #475569;
-    width: 32px;
-    text-align: right;
-    flex-shrink: 0;
+.podium-1 {{
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
 }}
-.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
-.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
-.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
-.rank-indicator {{
-    width: 42px;
+.podium-2 {{
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}}
+.podium-3 {{
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}}
+.podium-rank {{
+    font-size: 32px;
+    font-weight: 800;
+    width: 48px;
     text-align: center;
     flex-shrink: 0;
-    font-size: 14px;
-    font-weight: 600;
 }}
-.rank-up {{
-    color: #34d399;
-}}
-.rank-down {{
-    color: #f87171;
-}}
-.rank-same {{
-    color: #9ca3af;
-}}
-.track-info {{
+.podium-1 .podium-rank {{ color: #fbbf24; }}
+.podium-2 .podium-rank {{ color: #94a3b8; }}
+.podium-3 .podium-rank {{ color: #cd7f32; }}
+.podium-content {{
     flex: 1;
     min-width: 0;
 }}
-.track-name-row {{
+.podium-header {{
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }}
-.track-name {{
-    font-size: 18px;
-    font-weight: 600;
-    color: #e2e8f0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.podium-name {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
 }}
 .artist-badge {{
     display: inline-block;
@@ -1172,32 +1350,120 @@ body {{
     flex-shrink: 0;
     opacity: 0.9;
 }}
-.track-bar-container {{
-    height: 30px;
-    background: rgba(51, 65, 85, 0.5);
-    border-radius: 6px;
-    overflow: hidden;
-}}
-.track-bar {{
-    height: 100%;
-    border-radius: 6px;
-}}
-.track-stats {{
-    text-align: right;
-    flex-shrink: 0;
-    min-width: 140px;
-}}
-.track-change {{
-    font-size: 20px;
-    font-weight: 700;
-    color: #10b981;
-}}
-.track-streams {{
+.podium-rc {{
     font-size: 14px;
-    color: #64748b;
-    font-weight: 500;
-    margin-top: 2px;
+    font-weight: 600;
 }}
+.podium-bar-container {{
+    height: 38px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}}
+.podium-bar {{
+    height: 100%;
+    border-radius: 8px;
+}}
+.podium-stats {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}}
+.podium-streams {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.podium-change {{
+    font-size: 14px;
+    font-weight: 500;
+}}
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}}
+.section-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank, th.col-streams, th.col-change, th.col-rc {{
+    text-align: right;
+}}
+td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}}
+td.col-track {{
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}}
+td.col-artist {{
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+}}
+td.col-streams {{
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-change {{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+}}
+td.col-rc {{
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
+}}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+/* --- Shared --- */
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
 .footer {{
     text-align: center;
     margin-top: 28px;
@@ -1213,26 +1479,10 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
-.track-row:nth-child(even) {{
-    filter: blur(3px);
-    opacity: 0.7;
-}}
-.cta-footer {{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #94a3b8;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}}
-.cta-footer span {{
-    color: #3b82f6;
-    font-weight: 700;
-}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
-        <div class="card-title">SB19 Solo Top 10 Tracks by Daily Streams</div>
+        <div class="card-title">SB19 Solo Top Tracks by Daily Streams</div>
         <div class="card-subtitle">As of {date_str}</div>
         <div class="stats-row">
             <div class="stat-box">
@@ -1241,9 +1491,26 @@ body {{
             </div>
         </div>
     </div>
-    <div class="tracks">{track_rows}
+    <div class="podium-section">{top3_rows}
     </div>
-    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Tracks</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Track</th>
+                    <th>Artist</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-streams">Streams</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -1267,7 +1534,7 @@ body {{
             driver = None
             try:
                 driver = webdriver.Edge(service=service, options=options)
-                driver.set_window_size(1200, 1600)
+                driver.set_window_size(1200, 3000)
 
                 driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
                 time.sleep(3)
@@ -1276,21 +1543,21 @@ body {{
                 card.screenshot(SOLO_TOP10_IMAGE_PATH)
 
                 img = Image.open(SOLO_TOP10_IMAGE_PATH)
-                if img.width > 2400:
-                    ratio = 2400 / img.width
-                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
                     img.save(SOLO_TOP10_IMAGE_PATH)
                 print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
-                print(f"[SUCCESS] Solo top 10 screenshot saved: {SOLO_TOP10_IMAGE_PATH}")
+                print(f"[SUCCESS] Solo top tracks screenshot saved: {SOLO_TOP10_IMAGE_PATH}")
                 return True
             except Exception as e:
-                print(f"[ERR] Solo top 10 screenshot failed: {e}")
+                print(f"[ERR] Solo top tracks screenshot failed: {e}")
                 return False
             finally:
                 if driver:
                     driver.quit()
         except Exception as e:
-            print(f"[ERR] Solo top 10 screenshot setup failed: {e}")
+            print(f"[ERR] Solo top tracks screenshot setup failed: {e}")
             return False
         finally:
             try:
@@ -1385,8 +1652,8 @@ body {{
             day_gains.sort(key=lambda x: x[1], reverse=True)
             daily_rank_maps[curr_d] = {s: r + 1 for r, (s, _) in enumerate(day_gains)}
 
-        # Annotate top 10 with rank change and streak info
-        top = gains[:10]
+        # Annotate top 20 with rank change and streak info
+        top = gains[:20]
         for i, g in enumerate(top):
             current_rank = i + 1
             key = (g["song"], g["artist"])
@@ -1427,17 +1694,42 @@ body {{
         date_short = short_date(today)
         total_str_text = format_change(total_added, use_commas=False)
         message = (
-            f"SB19 Solo Top 10 by Daily Streams | {date_short}\n\n"
+            f"SB19 Solo Top Tracks by Daily Streams | {date_short}\n\n"
             f"Total added: {total_str_text}\n\n"
             f"{SITE_TAG}\n"
             f"#SB19 #OPM"
         )
         enforce_char_limit(message)
 
+        # Split into top 3 podium + table
+        top3_data = []
+        for i, g in enumerate(top[:3]):
+            top3_data.append({
+                "rank": i + 1,
+                "song": g["song"],
+                "artist": g["artist"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+            })
+        table_data = []
+        for i, g in enumerate(top[3:], 4):
+            table_data.append({
+                "rank": i,
+                "song": g["song"],
+                "artist": g["artist"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+            })
+
         # Capture screenshot
         image_path = None
         screenshot_ok = self._capture_solo_top10_screenshot(
-            track_list=top,
+            top3_data=top3_data,
+            table_data=table_data,
             total_added=total_added,
             date_str=date_formatted,
         )
@@ -1559,9 +1851,9 @@ body {{
                 sb19_rank = i
                 break
 
-        top10 = ranked[:10]
+        top20 = ranked[:20]
 
-        if not top10:
+        if not top20:
             print("[INFO] No OPM artist data found")
             return None, None
 
@@ -1595,7 +1887,7 @@ body {{
         except ValueError:
             date_formatted = latest_date
 
-        # Compute rank changes for top 10 and SB19
+        # Compute rank changes
         def _rank_indicator(artist_key, current_rank):
             prev_r = prev_rank_map.get(artist_key)
             if prev_r is None:
@@ -1613,82 +1905,13 @@ body {{
         if sb19_rank:
             sb19_line = f"\n\nSB19 ranked #{sb19_rank} out of {len(ranked)} artists"
         message = (
-            f"OPM Top 10 Artists by Monthly Listeners | Spotify | {date_short}"
+            f"OPM Top Artists by Monthly Listeners | Spotify | {date_short}"
             f"{sb19_line}\n\n"
             f"{SITE_TAG}\n"
             f"#OPM #SB19"
         )
         enforce_char_limit(message)
 
-        # Build data for screenshot
-        card_data = []
-        for i, e in enumerate(top10, 1):
-            prev_val = prev_map.get(e["artist"].lower())
-            change = (e["listeners"] - prev_val) if prev_val is not None else 0
-            _, rank_change = _rank_indicator(e["artist"].lower(), i)
-            card_data.append({
-                "rank": i,
-                "artist": e["artist"],
-                "listeners": e["listeners"],
-                "change": change,
-                "rank_change": rank_change,
-            })
-
-        sb19_card = None
-        if sb19_entry and sb19_rank:
-            prev_val = prev_map.get("sb19")
-            sb19_change = (sb19_entry["listeners"] - prev_val) if prev_val is not None else 0
-            _, sb19_rc = _rank_indicator("sb19", sb19_rank)
-            sb19_card = {
-                "rank": sb19_rank,
-                "artist": "SB19",
-                "listeners": sb19_entry["listeners"],
-                "change": sb19_change,
-                "rank_change": sb19_rc,
-            }
-
-        image_path = None
-        screenshot_ok = self._capture_opm_top_screenshot(
-            top10_data=card_data,
-            sb19_data=sb19_card,
-            total_artists=len(ranked),
-            date_str=date_formatted,
-        )
-        if screenshot_ok and os.path.exists(OPM_TOP_IMAGE_PATH):
-            image_path = OPM_TOP_IMAGE_PATH
-
-        return message, image_path
-
-    def _capture_opm_top_screenshot(self, top10_data=None, sb19_data=None,
-                                     total_artists=0, date_str=""):
-        """Capture a social-media-friendly OPM top 10 monthly listeners card."""
-        print("[INFO] Capturing OPM top listeners screenshot...")
-        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
-
-        if not top10_data:
-            print("[ERR] No data for OPM top card")
-            return False
-
-        max_listeners = top10_data[0]["listeners"] if top10_data else 1
-
-        genre_colors = {
-            "opm ballad": "#ec4899",
-            "opm pop": "#3b82f6",
-            "opm rock": "#ef4444",
-            "opm indie": "#a855f7",
-            "opm classic": "#f59e0b",
-            "opm hip-hop": "#10b981",
-            "p-pop": "#06b6d4",
-        }
-        default_color = "#6366f1"
-
-        # Reload latest data to get genres
-        data = load_listeners_data()
-        latest_date = max(e["date"] for e in data)
-        genre_map = {}
-        for e in data:
-            if e["date"] == latest_date:
-                genre_map[e["artist"].lower()] = "p-pop"  # default
         # Re-read CSV for genre field
         genre_lookup = {}
         if os.path.exists(LISTENERS_FILE):
@@ -1699,6 +1922,71 @@ body {{
                     if ts[:8] == latest_date:
                         genre_lookup[row["artist_name"].lower()] = row.get("genre", "")
 
+        # Build data for all top 20
+        card_data = []
+        for i, e in enumerate(top20, 1):
+            prev_val = prev_map.get(e["artist"].lower())
+            change = (e["listeners"] - prev_val) if prev_val is not None else 0
+            _, rank_change = _rank_indicator(e["artist"].lower(), i)
+            genre = genre_lookup.get(e["artist"].lower(), "")
+            card_data.append({
+                "rank": i,
+                "artist": e["artist"],
+                "listeners": e["listeners"],
+                "change": change,
+                "rank_change": rank_change,
+                "genre": genre,
+            })
+
+        # Split into top 3 podium + table
+        top3_data = card_data[:3]
+        table_data = card_data[3:]
+
+        # SB19 separate section only if rank > 20
+        sb19_card = None
+        if sb19_entry and sb19_rank and sb19_rank > 20:
+            prev_val = prev_map.get("sb19")
+            sb19_change = (sb19_entry["listeners"] - prev_val) if prev_val is not None else 0
+            _, sb19_rc = _rank_indicator("sb19", sb19_rank)
+            sb19_card = {
+                "rank": sb19_rank,
+                "artist": "SB19",
+                "listeners": sb19_entry["listeners"],
+                "change": sb19_change,
+                "rank_change": sb19_rc,
+                "genre": "P-Pop",
+            }
+
+        image_path = None
+        screenshot_ok = self._capture_opm_top_screenshot(
+            top3_data=top3_data,
+            table_data=table_data,
+            sb19_data=sb19_card,
+            total_artists=len(ranked),
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(OPM_TOP_IMAGE_PATH):
+            image_path = OPM_TOP_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_opm_top_screenshot(self, top3_data=None, table_data=None,
+                                     sb19_data=None, total_artists=0, date_str=""):
+        """Capture a social-media-friendly OPM top artists card.
+
+        Section A: Top 3 as equal-width podium bars with genre label.
+        Section B: Remaining artists as compact table.
+        Section C: SB19 separate row (only if rank > 20).
+        """
+        print("[INFO] Capturing OPM top listeners screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not top3_data:
+            print("[ERR] No data for OPM top card")
+            return False
+
+        podium_colors = ["#fbbf24", "#94a3b8", "#cd7f32"]  # gold, silver, bronze
+
         def _rank_change_html(rc):
             if rc is not None and rc > 0:
                 return f'<span class="rank-up">▲{rc}</span>'
@@ -1707,72 +1995,83 @@ body {{
             else:
                 return '<span class="rank-same">―</span>'
 
-        track_rows = ""
-        for t in top10_data:
-            pct = (t["listeners"] / max_listeners) * 100
-            genre = genre_lookup.get(t["artist"].lower(), "")
-            color = genre_colors.get(genre.lower(), default_color)
-            listeners_str = f"{t['listeners']:,}"
-            change = t["change"]
+        def _change_html(change):
             if change > 0:
-                change_html = f'<span class="change-up">+{change:,}</span>'
+                return f'<span class="change-up">+{change:,}</span>'
             elif change < 0:
-                change_html = f'<span class="change-down">{change:,}</span>'
-            else:
-                change_html = '<span class="change-same">―</span>'
-            genre_label = genre if genre else ""
+                return f'<span class="change-down">{change:,}</span>'
+            return '<span class="change-same">―</span>'
+
+        # --- Section A: Top 3 podium bars ---
+        top3_rows = ""
+        for i, t in enumerate(top3_data):
+            color = podium_colors[i]
+            listeners_str = f"{t['listeners']:,}"
+            ch_html = _change_html(t["change"])
             rc_html = _rank_change_html(t.get("rank_change"))
+            genre_label = t.get("genre", "")
 
-            track_rows += f"""
-            <div class="track-row">
-                <div class="track-rank">{t['rank']}</div>
-                <div class="rank-indicator">{rc_html}</div>
-                <div class="track-info">
-                    <div class="track-name">{t['artist']}</div>
-                    <div class="track-genre">{genre_label}</div>
-                    <div class="track-bar-container">
-                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
+            top3_rows += f"""
+            <div class="podium-row podium-{i+1}">
+                <div class="podium-rank">{t['rank']}</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">{t['artist']}</span>
+                        <span class="podium-rc">{rc_html}</span>
                     </div>
-                </div>
-                <div class="track-stats">
-                    <div class="track-listeners">{listeners_str}</div>
-                    <div class="track-change">{change_html}</div>
+                    <div class="podium-genre">{genre_label}</div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: {color};"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-listeners">{listeners_str}</span>
+                        <span class="podium-change">{ch_html}</span>
+                    </div>
                 </div>
             </div>"""
 
-        # SB19 row
-        sb19_row = ""
+        # --- Section B: Table for remaining artists ---
+        table_rows = ""
+        if table_data:
+            for t in table_data:
+                listeners_str = f"{t['listeners']:,}"
+                ch_html = _change_html(t["change"])
+                rc_html = _rank_change_html(t.get("rank_change"))
+                genre_label = t.get("genre", "")
+                is_sb19 = t["artist"].upper() == "SB19"
+                row_class = ' class="sb19-row"' if is_sb19 else ""
+
+                table_rows += f"""
+                <tr{row_class}>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-artist">{t['artist']}</td>
+                    <td class="col-genre">{genre_label}</td>
+                    <td class="col-listeners">{listeners_str}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-rc">{rc_html}</td>
+                </tr>"""
+
+        # --- Section C: SB19 separate row (only if rank > 20) ---
+        sb19_section = ""
         if sb19_data:
-            sb19_pct = (sb19_data["listeners"] / max_listeners) * 100
             sb19_listeners_str = f"{sb19_data['listeners']:,}"
-            sb19_change = sb19_data["change"]
-            if sb19_change > 0:
-                sb19_change_html = f'<span class="change-up">+{sb19_change:,}</span>'
-            elif sb19_change < 0:
-                sb19_change_html = f'<span class="change-down">{sb19_change:,}</span>'
-            else:
-                sb19_change_html = '<span class="change-same">―</span>'
+            sb19_ch_html = _change_html(sb19_data["change"])
             sb19_rc_html = _rank_change_html(sb19_data.get("rank_change"))
-
-            sb19_row = f"""
-            <div class="sb19-section">
-                <div class="sb19-divider"></div>
-                <div class="track-row sb19-row">
-                    <div class="track-rank sb19-rank">{sb19_data['rank']}</div>
-                    <div class="rank-indicator">{sb19_rc_html}</div>
-                    <div class="track-info">
-                        <div class="track-name sb19-name">SB19</div>
-                        <div class="track-genre">P-Pop</div>
-                        <div class="track-bar-container">
-                            <div class="track-bar" style="width: {sb19_pct}%; background: #06b6d4;"></div>
-                        </div>
-                    </div>
-                    <div class="track-stats">
-                        <div class="track-listeners sb19-listeners">{sb19_listeners_str}</div>
-                        <div class="track-change">{sb19_change_html}</div>
-                    </div>
-                </div>
-            </div>"""
+            sb19_section = f"""
+    <div class="sb19-extra-section">
+        <div class="sb19-divider"></div>
+        <div class="sb19-extra-label">SB19</div>
+        <table class="sb19-extra-table">
+            <tr class="sb19-row">
+                <td class="col-rank">{sb19_data['rank']}</td>
+                <td class="col-artist">SB19</td>
+                <td class="col-genre">P-Pop</td>
+                <td class="col-listeners">{sb19_listeners_str}</td>
+                <td class="col-change">{sb19_ch_html}</td>
+                <td class="col-rc">{sb19_rc_html}</td>
+            </tr>
+        </table>
+    </div>"""
 
         html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8">
@@ -1833,111 +2132,213 @@ body {{
     letter-spacing: 1px;
     margin-top: 2px;
 }}
-.tracks {{
+/* --- Top 3 Podium --- */
+.podium-section {{
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
+    margin-bottom: 8px;
 }}
-.track-row {{
+.podium-row {{
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 0;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
 }}
-.track-rank {{
-    font-size: 22px;
-    font-weight: 700;
-    color: #475569;
+.podium-1 {{
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+}}
+.podium-2 {{
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}}
+.podium-3 {{
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}}
+.podium-rank {{
+    font-size: 32px;
+    font-weight: 800;
     width: 48px;
-    text-align: right;
-    flex-shrink: 0;
-}}
-.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
-.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
-.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
-.rank-indicator {{
-    width: 42px;
     text-align: center;
     flex-shrink: 0;
-    font-size: 14px;
-    font-weight: 600;
 }}
-.rank-up {{ color: #34d399; }}
-.rank-down {{ color: #f87171; }}
-.rank-same {{ color: #9ca3af; }}
-.track-info {{
+.podium-1 .podium-rank {{ color: #fbbf24; }}
+.podium-2 .podium-rank {{ color: #94a3b8; }}
+.podium-3 .podium-rank {{ color: #cd7f32; }}
+.podium-content {{
     flex: 1;
     min-width: 0;
 }}
-.track-name {{
-    font-size: 18px;
-    font-weight: 600;
-    color: #e2e8f0;
+.podium-header {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }}
-.track-genre {{
+.podium-name {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.podium-rc {{
+    font-size: 14px;
+    font-weight: 600;
+}}
+.podium-genre {{
     font-size: 12px;
     color: #64748b;
-    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-bottom: 6px;
 }}
-.track-bar-container {{
-    height: 42px;
+.podium-bar-container {{
+    height: 38px;
     background: rgba(51, 65, 85, 0.5);
-    border-radius: 6px;
+    border-radius: 8px;
     overflow: hidden;
+    margin-bottom: 6px;
 }}
-.track-bar {{
+.podium-bar {{
     height: 100%;
-    border-radius: 6px;
-    min-width: 4px;
+    border-radius: 8px;
 }}
-.track-stats {{
-    text-align: right;
-    flex-shrink: 0;
-    min-width: 160px;
+.podium-stats {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }}
-.track-listeners {{
-    font-size: 20px;
+.podium-listeners {{
+    font-size: 22px;
     font-weight: 700;
     color: #e2e8f0;
 }}
-.track-change {{
+.podium-change {{
     font-size: 14px;
     font-weight: 500;
-    margin-top: 2px;
 }}
-.change-up {{ color: #34d399; }}
-.change-down {{ color: #f87171; }}
-.change-same {{ color: #9ca3af; }}
-.sb19-section {{
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}}
+.section-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank, th.col-listeners, th.col-change, th.col-rc {{
+    text-align: right;
+}}
+td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}}
+td.col-artist {{
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}}
+td.col-genre {{
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}}
+td.col-listeners {{
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-change {{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+}}
+td.col-rc {{
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
+}}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+tr.sb19-row {{
+    background: rgba(6, 182, 212, 0.10);
+}}
+tr.sb19-row td.col-artist {{
+    color: #22d3ee;
+}}
+tr.sb19-row td.col-listeners {{
+    color: #22d3ee;
+}}
+/* --- SB19 Extra Section (rank > 20) --- */
+.sb19-extra-section {{
     margin-top: 8px;
 }}
 .sb19-divider {{
     border-top: 2px dashed rgba(6, 182, 212, 0.3);
-    margin: 12px 0;
+    margin: 16px 0 12px;
 }}
-.sb19-row {{
-    background: rgba(6, 182, 212, 0.08);
-    border-radius: 12px;
-    padding: 14px 16px !important;
-    border: 1px solid rgba(6, 182, 212, 0.2);
+.sb19-extra-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #22d3ee;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
 }}
-.sb19-rank {{
-    color: #06b6d4 !important;
-    font-size: 24px !important;
+.sb19-extra-table {{
+    width: 100%;
+    border-collapse: collapse;
 }}
-.sb19-name {{
-    color: #22d3ee !important;
-    font-size: 20px !important;
+.sb19-extra-table td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    border-bottom: none;
 }}
-.sb19-listeners {{
-    color: #22d3ee !important;
-}}
+/* --- Shared --- */
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
 .footer {{
     text-align: center;
     margin-top: 28px;
@@ -1953,26 +2354,10 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
-.track-row:nth-child(even) {{
-    filter: blur(3px);
-    opacity: 0.7;
-}}
-.cta-footer {{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #94a3b8;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}}
-.cta-footer span {{
-    color: #3b82f6;
-    font-weight: 700;
-}}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
-        <div class="card-title">OPM Top 10 Artists by Monthly Listeners</div>
+        <div class="card-title">OPM Top Artists by Monthly Listeners</div>
         <div class="card-subtitle">Spotify | {date_str}</div>
         <div class="stats-row">
             <div class="stat-box">
@@ -1981,10 +2366,27 @@ body {{
             </div>
         </div>
     </div>
-    <div class="tracks">{track_rows}
+    <div class="podium-section">{top3_rows}
     </div>
-    {sb19_row}
-    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Artists</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th class="col-listeners">Listeners</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
+    {sb19_section}
     <div class="footer">
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
@@ -2008,7 +2410,7 @@ body {{
             driver = None
             try:
                 driver = webdriver.Edge(service=service, options=options)
-                driver.set_window_size(1200, 1800)
+                driver.set_window_size(1200, 3000)
 
                 driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
                 time.sleep(3)
@@ -2017,9 +2419,9 @@ body {{
                 card.screenshot(OPM_TOP_IMAGE_PATH)
 
                 img = Image.open(OPM_TOP_IMAGE_PATH)
-                if img.width > 2400:
-                    ratio = 2400 / img.width
-                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
                     img.save(OPM_TOP_IMAGE_PATH)
                 print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
                 print(f"[SUCCESS] OPM top screenshot saved: {OPM_TOP_IMAGE_PATH}")
@@ -2039,8 +2441,1464 @@ body {{
             except OSError:
                 pass
 
+    def generate_opm_top_tracks_post(self):
+        """Top 20 OPM tracks by daily stream gains, including SB19's best track.
+
+        Returns (message, image_path_or_None).
+        """
+        # Load OPM track data
+        opm_data = load_streams_data(file_path=OPM_TRACKS_FILE)
+        if not opm_data:
+            print("[WARN] No OPM track data available!")
+            return None, None
+
+        opm_dates = sorted(set(e["date"] for e in opm_data))
+        if len(opm_dates) < 2:
+            print("[WARN] Need at least 2 days of OPM track data for daily comparison")
+            return None, None
+
+        opm_today, opm_yesterday = opm_dates[-1], opm_dates[-2]
+
+        # Build OPM today/yesterday maps keyed by (song_title, artist)
+        opm_today_map = {}
+        for e in opm_data:
+            if e["date"] == opm_today:
+                key = (e["song_title"], e["artist"])
+                if key not in opm_today_map or e["streams"] > opm_today_map[key]["streams"]:
+                    opm_today_map[key] = e
+        opm_yest_map = {}
+        for e in opm_data:
+            if e["date"] == opm_yesterday:
+                key = (e["song_title"], e["artist"])
+                if key not in opm_yest_map or e["streams"] > opm_yest_map[key]["streams"]:
+                    opm_yest_map[key] = e
+
+        # Compute OPM track gains
+        opm_gains = []
+        for key, entry in opm_today_map.items():
+            if key in opm_yest_map:
+                change = entry["streams"] - opm_yest_map[key]["streams"]
+                opm_gains.append({
+                    "song": entry["song_title"],
+                    "artist": entry["artist"],
+                    "streams": entry["streams"],
+                    "change": change,
+                    "key": key,
+                    "is_sb19": False,
+                })
+
+        # Load SB19 track data and find best daily gainer
+        sb19_data = load_streams_data()
+        sb19_best = None
+        if sb19_data:
+            sb19_dates = sorted(set(e["date"] for e in sb19_data))
+            if len(sb19_dates) >= 2:
+                sb19_today = sb19_dates[-1]
+                sb19_yesterday = sb19_dates[-2]
+                sb19_today_map = {
+                    e["song_title"]: e for e in sb19_data
+                    if e["date"] == sb19_today and e["artist"].upper() == "SB19"
+                }
+                sb19_yest_map = {
+                    e["song_title"]: e for e in sb19_data
+                    if e["date"] == sb19_yesterday and e["artist"].upper() == "SB19"
+                }
+                best_change = 0
+                for song, entry in sb19_today_map.items():
+                    if song in sb19_yest_map:
+                        change = entry["streams"] - sb19_yest_map[song]["streams"]
+                        if change > best_change:
+                            best_change = change
+                            sb19_best = {
+                                "song": song,
+                                "artist": "SB19",
+                                "streams": entry["streams"],
+                                "change": change,
+                                "key": (song, "SB19"),
+                                "is_sb19": True,
+                            }
+
+        # Combine OPM + SB19 best track
+        combined = opm_gains[:]
+        if sb19_best:
+            combined.append(sb19_best)
+
+        combined.sort(key=lambda x: x["change"], reverse=True)
+
+        # Build previous day's ranking for rank comparison
+        prev_gains = []
+        if len(opm_dates) >= 3:
+            opm_day_before = opm_dates[-3]
+            opm_db_map = {}
+            for e in opm_data:
+                if e["date"] == opm_day_before:
+                    key = (e["song_title"], e["artist"])
+                    if key not in opm_db_map or e["streams"] > opm_db_map[key]["streams"]:
+                        opm_db_map[key] = e
+            for key, entry in opm_yest_map.items():
+                if key in opm_db_map:
+                    prev_gains.append({
+                        "key": key,
+                        "change": entry["streams"] - opm_db_map[key]["streams"],
+                    })
+            # Add SB19 best from previous day
+            if sb19_data and len(sb19_dates) >= 3:
+                sb19_db = sb19_dates[-3]
+                sb19_db_map = {
+                    e["song_title"]: e for e in sb19_data
+                    if e["date"] == sb19_db and e["artist"].upper() == "SB19"
+                }
+                best_prev_change = 0
+                best_prev_key = None
+                for song, entry in sb19_yest_map.items():
+                    if entry.get("artist", "").upper() == "SB19" and song in sb19_db_map:
+                        pc = entry["streams"] - sb19_db_map[song]["streams"]
+                        if pc > best_prev_change:
+                            best_prev_change = pc
+                            best_prev_key = (song, "SB19")
+                if best_prev_key:
+                    prev_gains.append({"key": best_prev_key, "change": best_prev_change})
+
+            prev_gains.sort(key=lambda x: x["change"], reverse=True)
+
+        prev_rank_map = {g["key"]: i + 1 for i, g in enumerate(prev_gains)}
+
+        # Compute rank streaks using all available dates
+        all_opm_dates = sorted(set(e["date"] for e in opm_data))
+        daily_rank_maps = {}
+        for di in range(1, len(all_opm_dates)):
+            curr_d = all_opm_dates[di]
+            prev_d = all_opm_dates[di - 1]
+            curr_map = {}
+            for e in opm_data:
+                if e["date"] == curr_d:
+                    k = (e["song_title"], e["artist"])
+                    if k not in curr_map or e["streams"] > curr_map[k]:
+                        curr_map[k] = e["streams"]
+            prev_map_d = {}
+            for e in opm_data:
+                if e["date"] == prev_d:
+                    k = (e["song_title"], e["artist"])
+                    if k not in prev_map_d or e["streams"] > prev_map_d[k]:
+                        prev_map_d[k] = e["streams"]
+            day_gains = []
+            for k in curr_map:
+                if k in prev_map_d:
+                    day_gains.append((k, curr_map[k] - prev_map_d[k]))
+            day_gains.sort(key=lambda x: x[1], reverse=True)
+            daily_rank_maps[curr_d] = {k: r + 1 for r, (k, _) in enumerate(day_gains)}
+
+        # Take top 20 and annotate with rank changes and streaks
+        top = combined[:20]
+        for i, g in enumerate(top):
+            current_rank = i + 1
+            prev_rank = prev_rank_map.get(g["key"])
+            if prev_rank is not None:
+                g["rank_change"] = prev_rank - current_rank
+                g["prev_rank"] = prev_rank
+            else:
+                g["rank_change"] = None
+                g["prev_rank"] = None
+
+            # Compute streak (consecutive days at this rank, walking backwards)
+            streak = 1
+            for di in range(len(all_opm_dates) - 2, 0, -1):
+                d = all_opm_dates[di]
+                rm = daily_rank_maps.get(d, {})
+                if rm.get(g["key"]) == current_rank:
+                    streak += 1
+                else:
+                    break
+            g["streak"] = streak
+
+        if not top:
+            print("[INFO] No OPM track stream gains detected")
+            return None, None
+
+        # Parse date for display
+        try:
+            date_formatted = datetime.strptime(
+                opm_today.replace("-", "")[:8], "%Y%m%d"
+            ).strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = opm_today
+
+        total_added = sum(g["change"] for g in combined)
+        total_tracks = len(opm_today_map) + (1 if sb19_best else 0)
+
+        # Compact caption (image carries the data)
+        date_short = short_date(opm_today)
+        message = (
+            f"OPM Top Tracks by Daily Streams | Spotify | {date_short}\n\n"
+            f"{SITE_TAG}\n"
+            f"#OPM #SB19"
+        )
+        enforce_char_limit(message)
+
+        # Split into top 3 podium + table
+        top3_data = []
+        for i, g in enumerate(top[:3]):
+            top3_data.append({
+                "rank": i + 1,
+                "song": g["song"],
+                "artist": g["artist"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+                "is_sb19": g.get("is_sb19", False),
+            })
+        table_data = []
+        for i, g in enumerate(top[3:], 4):
+            table_data.append({
+                "rank": i,
+                "song": g["song"],
+                "artist": g["artist"],
+                "change": g["change"],
+                "streams": g["streams"],
+                "rank_change": g.get("rank_change"),
+                "streak": g.get("streak", 1),
+                "is_sb19": g.get("is_sb19", False),
+            })
+
+        # Capture screenshot
+        image_path = None
+        screenshot_ok = self._capture_opm_top_tracks_screenshot(
+            top3_data=top3_data,
+            table_data=table_data,
+            total_added=total_added,
+            total_tracks=total_tracks,
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(OPM_TOP_TRACKS_IMAGE_PATH):
+            image_path = OPM_TOP_TRACKS_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_opm_top_tracks_screenshot(self, top3_data=None, table_data=None,
+                                            total_added=0, total_tracks=0, date_str=""):
+        """Capture a social-media-friendly OPM top tracks by daily streams card.
+
+        Section A: Top 3 as equal-width podium bars. SB19 tracks get cyan styling.
+        Section B: Remaining tracks as compact table. SB19 rows highlighted.
+        """
+        print("[INFO] Capturing OPM top tracks screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not top3_data:
+            print("[ERR] No track data for OPM top tracks card")
+            return False
+
+        podium_colors = ["#fbbf24", "#94a3b8", "#cd7f32"]  # gold, silver, bronze
+        sb19_color = "#06b6d4"  # cyan for SB19 tracks
+
+        def _rank_change_html(rc, streak=1):
+            if rc is not None and rc > 0:
+                return f'<span class="rank-up">▲{rc}</span>'
+            elif rc is not None and rc < 0:
+                return f'<span class="rank-down">▼{abs(rc)}</span>'
+            elif rc == 0 and streak > 1:
+                return f'<span class="rank-same">{streak}d</span>'
+            else:
+                return '<span class="rank-same">―</span>'
+
+        def _change_html(change):
+            if change > 0:
+                return f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                return f'<span class="change-down">{change:,}</span>'
+            return '<span class="change-same">―</span>'
+
+        # --- Section A: Top 3 podium bars ---
+        top3_rows = ""
+        for i, t in enumerate(top3_data):
+            is_sb19 = t.get("is_sb19", False)
+            color = sb19_color if is_sb19 else podium_colors[i]
+            streams_str = f"{t['streams']:,}"
+            ch_html = _change_html(t["change"])
+            rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
+
+            podium_class = f"podium-row podium-{i+1}"
+            if is_sb19:
+                podium_class += " podium-sb19"
+            name_style = ' style="color: #22d3ee;"' if is_sb19 else ""
+            artist_style = ' style="color: #67e8f9;"' if is_sb19 else ""
+
+            top3_rows += f"""
+            <div class="{podium_class}">
+                <div class="podium-rank">{t['rank']}</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name"{name_style}>{t['song']}</span>
+                        <span class="podium-rc">{rc_html}</span>
+                    </div>
+                    <div class="podium-artist"{artist_style}>{t['artist']}</div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: {color};"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">{streams_str}</span>
+                        <span class="podium-change">{ch_html}</span>
+                    </div>
+                </div>
+            </div>"""
+
+        # --- Section B: Table for remaining tracks ---
+        table_rows = ""
+        if table_data:
+            for t in table_data:
+                is_sb19 = t.get("is_sb19", False)
+                streams_str = f"{t['streams']:,}"
+                ch_html = _change_html(t["change"])
+                rc_html = _rank_change_html(t.get("rank_change"), t.get("streak", 1))
+                row_class = ' class="sb19-row"' if is_sb19 else ""
+
+                table_rows += f"""
+                <tr{row_class}>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-track">{t['song']}</td>
+                    <td class="col-artist">{t['artist']}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-streams">{streams_str}</td>
+                    <td class="col-rc">{rc_html}</td>
+                </tr>"""
+
+        total_str = f"+{total_added:,}" if total_added > 0 else f"{total_added:,}"
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{ text-align: center; }}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}}
+.stat-value-blue {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+/* --- Top 3 Podium --- */
+.podium-section {{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}}
+.podium-row {{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
+}}
+.podium-1 {{
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+}}
+.podium-2 {{
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}}
+.podium-3 {{
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}}
+.podium-sb19 {{
+    background: rgba(6, 182, 212, 0.10) !important;
+    border: 1px solid rgba(6, 182, 212, 0.25) !important;
+}}
+.podium-rank {{
+    font-size: 32px;
+    font-weight: 800;
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+}}
+.podium-1 .podium-rank {{ color: #fbbf24; }}
+.podium-2 .podium-rank {{ color: #94a3b8; }}
+.podium-3 .podium-rank {{ color: #cd7f32; }}
+.podium-sb19 .podium-rank {{ color: #06b6d4 !important; }}
+.podium-content {{
+    flex: 1;
+    min-width: 0;
+}}
+.podium-header {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+}}
+.podium-name {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.podium-rc {{
+    font-size: 14px;
+    font-weight: 600;
+}}
+.podium-artist {{
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}}
+.podium-bar-container {{
+    height: 38px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}}
+.podium-bar {{
+    height: 100%;
+    border-radius: 8px;
+}}
+.podium-stats {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}}
+.podium-streams {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.podium-change {{
+    font-size: 14px;
+    font-weight: 500;
+}}
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}}
+.section-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank, th.col-streams, th.col-change, th.col-rc {{
+    text-align: right;
+}}
+td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}}
+td.col-track {{
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
+}}
+td.col-artist {{
+    font-size: 13px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}}
+td.col-streams {{
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-change {{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+}}
+td.col-rc {{
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
+}}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+tr.sb19-row {{
+    background: rgba(6, 182, 212, 0.10);
+}}
+tr.sb19-row td.col-track {{
+    color: #22d3ee;
+}}
+tr.sb19-row td.col-artist {{
+    color: #67e8f9;
+}}
+tr.sb19-row td.col-streams {{
+    color: #22d3ee;
+}}
+/* --- Shared --- */
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #3b82f6;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">OPM Top Tracks by Daily Streams</div>
+        <div class="card-subtitle">Spotify | {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{total_str}</div>
+                <div class="stat-label">Total Daily Streams</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value-blue">{total_tracks:,}</div>
+                <div class="stat-label">Tracks Tracked</div>
+            </div>
+        </div>
+    </div>
+    <div class="podium-section">{top3_rows}
+    </div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Tracks</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Track</th>
+                    <th>Artist</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-streams">Streams</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_opm_top_tracks_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 3000)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(OPM_TOP_TRACKS_IMAGE_PATH)
+
+                img = Image.open(OPM_TOP_TRACKS_IMAGE_PATH)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(OPM_TOP_TRACKS_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] OPM top tracks screenshot saved: {OPM_TOP_TRACKS_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] OPM top tracks screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] OPM top tracks screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
+    def generate_opm_top_streams_post(self):
+        """Top 20 OPM artists by total daily streams (sum of daily gains per artist).
+
+        For each track, computes today - yesterday streams, then sums those daily
+        gains per artist. Ranks artists by that total daily streams number.
+        Adds SB19 as a single entry from selenium_results.csv.
+
+        Returns (message, image_path_or_None).
+        """
+        # Load OPM track data
+        opm_data = load_streams_data(file_path=OPM_TRACKS_FILE)
+        if not opm_data:
+            print("[WARN] No OPM track data available!")
+            return None, None
+
+        opm_dates = sorted(set(e["date"] for e in opm_data))
+        if len(opm_dates) < 2:
+            print("[WARN] Need at least 2 days of OPM track data for daily comparison")
+            return None, None
+
+        opm_today, opm_yesterday = opm_dates[-1], opm_dates[-2]
+
+        # Build per-track maps, dedup by (song_title, artist) keeping highest streams
+        opm_today_map = {}
+        for e in opm_data:
+            if e["date"] == opm_today:
+                key = (e["song_title"], e["artist"])
+                if key not in opm_today_map or e["streams"] > opm_today_map[key]["streams"]:
+                    opm_today_map[key] = e
+        opm_yest_map = {}
+        for e in opm_data:
+            if e["date"] == opm_yesterday:
+                key = (e["song_title"], e["artist"])
+                if key not in opm_yest_map or e["streams"] > opm_yest_map[key]["streams"]:
+                    opm_yest_map[key] = e
+
+        # Compute per-track daily gains, then aggregate by artist
+        sb19_solo = {a.lower() for a in SOLO_ARTISTS}
+        artist_daily = {}  # artist_lower -> {daily_total, count, display_name}
+        for key, entry in opm_today_map.items():
+            if key not in opm_yest_map:
+                continue
+            akey = entry["artist"].lower()
+            if akey in sb19_solo:
+                continue
+            track_gain = entry["streams"] - opm_yest_map[key]["streams"]
+            if akey not in artist_daily:
+                artist_daily[akey] = {"daily_total": 0, "count": 0, "display_name": entry["artist"]}
+            artist_daily[akey]["daily_total"] += track_gain
+            artist_daily[akey]["count"] += 1
+
+        # Build previous day's per-artist daily totals (yesterday vs day-before)
+        prev_artist_daily = {}
+        if len(opm_dates) >= 3:
+            opm_day_before = opm_dates[-3]
+            opm_db_map = {}
+            for e in opm_data:
+                if e["date"] == opm_day_before:
+                    key = (e["song_title"], e["artist"])
+                    if key not in opm_db_map or e["streams"] > opm_db_map[key]["streams"]:
+                        opm_db_map[key] = e
+            for key, entry in opm_yest_map.items():
+                if key not in opm_db_map:
+                    continue
+                akey = entry["artist"].lower()
+                if akey in sb19_solo:
+                    continue
+                track_gain = entry["streams"] - opm_db_map[key]["streams"]
+                prev_artist_daily[akey] = prev_artist_daily.get(akey, 0) + track_gain
+
+        # Load SB19 track data and compute daily totals
+        sb19_data_raw = load_streams_data()
+        sb19_daily_total = 0
+        sb19_prev_daily_total = 0
+        sb19_track_count = 0
+        if sb19_data_raw:
+            sb19_dates = sorted(set(e["date"] for e in sb19_data_raw))
+            if len(sb19_dates) >= 2:
+                sb19_today_d = sb19_dates[-1]
+                sb19_yesterday_d = sb19_dates[-2]
+                sb19_today_tracks = {}
+                for e in sb19_data_raw:
+                    if e["date"] == sb19_today_d and e["artist"].upper() == "SB19":
+                        sb19_today_tracks[e["song_title"]] = e["streams"]
+                sb19_yest_tracks = {}
+                for e in sb19_data_raw:
+                    if e["date"] == sb19_yesterday_d and e["artist"].upper() == "SB19":
+                        sb19_yest_tracks[e["song_title"]] = e["streams"]
+                for song, streams in sb19_today_tracks.items():
+                    if song in sb19_yest_tracks:
+                        sb19_daily_total += streams - sb19_yest_tracks[song]
+                        sb19_track_count += 1
+                # Previous day daily total for rank comparison
+                if len(sb19_dates) >= 3:
+                    sb19_db_d = sb19_dates[-3]
+                    sb19_db_tracks = {}
+                    for e in sb19_data_raw:
+                        if e["date"] == sb19_db_d and e["artist"].upper() == "SB19":
+                            sb19_db_tracks[e["song_title"]] = e["streams"]
+                    for song, streams in sb19_yest_tracks.items():
+                        if song in sb19_db_tracks:
+                            sb19_prev_daily_total += streams - sb19_db_tracks[song]
+
+        # Build combined artist list
+        combined = []
+        for akey, info in artist_daily.items():
+            prev_daily = prev_artist_daily.get(akey, 0)
+            change = info["daily_total"] - prev_daily
+            combined.append({
+                "artist": info["display_name"],
+                "total_streams": info["daily_total"],
+                "change": change,
+                "track_count": info["count"],
+                "is_sb19": False,
+                "key": akey,
+            })
+
+        # Add SB19 entry
+        if sb19_track_count > 0:
+            combined.append({
+                "artist": "SB19",
+                "total_streams": sb19_daily_total,
+                "change": sb19_daily_total - sb19_prev_daily_total if sb19_prev_daily_total else 0,
+                "track_count": sb19_track_count,
+                "is_sb19": True,
+                "key": "sb19",
+            })
+
+        combined.sort(key=lambda x: x["total_streams"], reverse=True)
+
+        # Build previous day ranking for rank changes
+        prev_ranked_keys = []
+        if prev_artist_daily:
+            prev_totals = dict(prev_artist_daily)
+            if sb19_prev_daily_total > 0:
+                prev_totals["sb19"] = sb19_prev_daily_total
+            prev_ranked_keys = sorted(prev_totals.keys(),
+                                      key=lambda k: prev_totals[k], reverse=True)
+
+        prev_rank_map = {k: i + 1 for i, k in enumerate(prev_ranked_keys)}
+
+        # Take top 20
+        top = combined[:20]
+        sb19_entry_in_top = any(g["is_sb19"] for g in top)
+
+        for i, g in enumerate(top):
+            current_rank = i + 1
+            prev_rank = prev_rank_map.get(g["key"])
+            if prev_rank is not None:
+                g["rank_change"] = prev_rank - current_rank
+            else:
+                g["rank_change"] = None
+
+        # Find SB19 if not in top 20
+        sb19_extra = None
+        if not sb19_entry_in_top:
+            for i, g in enumerate(combined):
+                if g["is_sb19"]:
+                    prev_rank = prev_rank_map.get("sb19")
+                    g["rank_change"] = (prev_rank - (i + 1)) if prev_rank is not None else None
+                    sb19_extra = {**g, "rank": i + 1}
+                    break
+
+        if not top:
+            print("[INFO] No OPM artist stream data found")
+            return None, None
+
+        # Parse date for display
+        try:
+            date_formatted = datetime.strptime(
+                opm_today.replace("-", "")[:8], "%Y%m%d"
+            ).strftime("%B %d, %Y")
+        except ValueError:
+            date_formatted = opm_today
+
+        grand_total = sum(g["total_streams"] for g in combined)
+        total_artists = len(combined)
+
+        # Genre lookup from monthly_listeners.csv
+        genre_lookup = {}
+        if os.path.exists(LISTENERS_FILE):
+            with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    genre_lookup.setdefault(row["artist_name"].lower(), row.get("genre", ""))
+        genre_lookup.setdefault("sb19", "P-Pop")
+
+        # Compact caption
+        date_short = short_date(opm_today)
+        message = (
+            f"OPM Top Artists by Daily Streams | Spotify | {date_short}\n\n"
+            f"{SITE_TAG}\n"
+            f"#OPM #SB19 #Spotify"
+        )
+        enforce_char_limit(message)
+
+        # Split into top 3 podium + table
+        top3_data = []
+        for i, g in enumerate(top[:3]):
+            top3_data.append({
+                "rank": i + 1,
+                "artist": g["artist"],
+                "total_streams": g["total_streams"],
+                "change": g["change"],
+                "track_count": g["track_count"],
+                "rank_change": g.get("rank_change"),
+                "genre": genre_lookup.get(g["key"], ""),
+                "is_sb19": g.get("is_sb19", False),
+            })
+        table_data = []
+        for i, g in enumerate(top[3:], 4):
+            table_data.append({
+                "rank": i,
+                "artist": g["artist"],
+                "total_streams": g["total_streams"],
+                "change": g["change"],
+                "track_count": g["track_count"],
+                "rank_change": g.get("rank_change"),
+                "genre": genre_lookup.get(g["key"], ""),
+                "is_sb19": g.get("is_sb19", False),
+            })
+
+        # SB19 extra section (only if rank > 20)
+        sb19_card = None
+        if sb19_extra:
+            sb19_card = {
+                "rank": sb19_extra["rank"],
+                "artist": "SB19",
+                "total_streams": sb19_extra["total_streams"],
+                "change": sb19_extra["change"],
+                "track_count": sb19_extra["track_count"],
+                "rank_change": sb19_extra.get("rank_change"),
+                "genre": "P-Pop",
+                "is_sb19": True,
+            }
+
+        # Capture screenshot
+        image_path = None
+        screenshot_ok = self._capture_opm_top_streams_screenshot(
+            top3_data=top3_data,
+            table_data=table_data,
+            sb19_data=sb19_card,
+            grand_total=grand_total,
+            total_artists=total_artists,
+            date_str=date_formatted,
+        )
+        if screenshot_ok and os.path.exists(OPM_TOP_STREAMS_IMAGE_PATH):
+            image_path = OPM_TOP_STREAMS_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_opm_top_streams_screenshot(self, top3_data=None, table_data=None,
+                                             sb19_data=None, grand_total=0,
+                                             total_artists=0, date_str=""):
+        """Capture OPM top artists by daily streams card.
+
+        Section A: Top 3 podium bars with genre label, daily streams, vs-prev-day change, track count.
+        Section B: Remaining artists as compact table.
+        Section C: SB19 separate row (only if rank > 20).
+        """
+        print("[INFO] Capturing OPM top streams screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        if not top3_data:
+            print("[ERR] No data for OPM top streams card")
+            return False
+
+        podium_colors = ["#fbbf24", "#94a3b8", "#cd7f32"]  # gold, silver, bronze
+        sb19_color = "#06b6d4"  # cyan for SB19
+
+        def _rank_change_html(rc):
+            if rc is not None and rc > 0:
+                return f'<span class="rank-up">&#9650;{rc}</span>'
+            elif rc is not None and rc < 0:
+                return f'<span class="rank-down">&#9660;{abs(rc)}</span>'
+            else:
+                return '<span class="rank-same">―</span>'
+
+        def _change_html(change):
+            if change > 0:
+                return f'<span class="change-up">+{change:,}</span>'
+            elif change < 0:
+                return f'<span class="change-down">{change:,}</span>'
+            return '<span class="change-same">―</span>'
+
+        # --- Section A: Top 3 podium bars ---
+        top3_rows = ""
+        for i, t in enumerate(top3_data):
+            is_sb19 = t.get("is_sb19", False)
+            color = sb19_color if is_sb19 else podium_colors[i]
+            streams_str = f"{t['total_streams']:,}"
+            ch_html = _change_html(t["change"])
+            rc_html = _rank_change_html(t.get("rank_change"))
+            genre_label = t.get("genre", "")
+            track_badge = f'<span class="track-badge">{t["track_count"]} tracks</span>'
+
+            podium_class = f"podium-row podium-{i+1}"
+            if is_sb19:
+                podium_class += " podium-sb19"
+            name_style = ' style="color: #22d3ee;"' if is_sb19 else ""
+
+            top3_rows += f"""
+            <div class="{podium_class}">
+                <div class="podium-rank">{t['rank']}</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name"{name_style}>{t['artist']}</span>
+                        <span class="podium-rc">{rc_html}</span>
+                    </div>
+                    <div class="podium-meta">
+                        <span class="podium-genre">{genre_label}</span>
+                        {track_badge}
+                    </div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: {color};"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">{streams_str}</span>
+                        <span class="podium-change">{ch_html}</span>
+                    </div>
+                </div>
+            </div>"""
+
+        # --- Section B: Table for remaining artists ---
+        table_rows = ""
+        if table_data:
+            for t in table_data:
+                is_sb19 = t.get("is_sb19", False)
+                streams_str = f"{t['total_streams']:,}"
+                ch_html = _change_html(t["change"])
+                rc_html = _rank_change_html(t.get("rank_change"))
+                genre_label = t.get("genre", "")
+                row_class = ' class="sb19-row"' if is_sb19 else ""
+
+                table_rows += f"""
+                <tr{row_class}>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-artist">{t['artist']}</td>
+                    <td class="col-genre">{genre_label}</td>
+                    <td class="col-streams">{streams_str}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-tracks">{t['track_count']}</td>
+                    <td class="col-rc">{rc_html}</td>
+                </tr>"""
+
+        # --- Section C: SB19 separate row (only if rank > 20) ---
+        sb19_section = ""
+        if sb19_data:
+            sb19_streams_str = f"{sb19_data['total_streams']:,}"
+            sb19_ch_html = _change_html(sb19_data["change"])
+            sb19_rc_html = _rank_change_html(sb19_data.get("rank_change"))
+            sb19_section = f"""
+    <div class="sb19-extra-section">
+        <div class="sb19-divider"></div>
+        <div class="sb19-extra-label">SB19</div>
+        <table class="sb19-extra-table">
+            <tr class="sb19-row">
+                <td class="col-rank">{sb19_data['rank']}</td>
+                <td class="col-artist">SB19</td>
+                <td class="col-genre">P-Pop</td>
+                <td class="col-streams">{sb19_streams_str}</td>
+                <td class="col-change">{sb19_ch_html}</td>
+                <td class="col-tracks">{sb19_data['track_count']}</td>
+                <td class="col-rc">{sb19_rc_html}</td>
+            </tr>
+        </table>
+    </div>"""
+
+        grand_total_str = f"{grand_total:,}"
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(16, 185, 129, 0.08);
+}}
+.header {{
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.card-title {{
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}}
+.card-subtitle {{
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}}
+.stats-row {{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}}
+.stat-box {{ text-align: center; }}
+.stat-value {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}}
+.stat-value-blue {{
+    font-size: 36px;
+    font-weight: 800;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+}}
+.stat-label {{
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}}
+/* --- Top 3 Podium --- */
+.podium-section {{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}}
+.podium-row {{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
+}}
+.podium-1 {{
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+}}
+.podium-2 {{
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}}
+.podium-3 {{
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}}
+.podium-sb19 {{
+    background: rgba(6, 182, 212, 0.10) !important;
+    border: 1px solid rgba(6, 182, 212, 0.25) !important;
+}}
+.podium-rank {{
+    font-size: 32px;
+    font-weight: 800;
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+}}
+.podium-1 .podium-rank {{ color: #fbbf24; }}
+.podium-2 .podium-rank {{ color: #94a3b8; }}
+.podium-3 .podium-rank {{ color: #cd7f32; }}
+.podium-sb19 .podium-rank {{ color: #06b6d4 !important; }}
+.podium-content {{
+    flex: 1;
+    min-width: 0;
+}}
+.podium-header {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+}}
+.podium-name {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+}}
+.podium-rc {{
+    font-size: 14px;
+    font-weight: 600;
+}}
+.podium-meta {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}}
+.podium-genre {{
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}}
+.track-badge {{
+    font-size: 11px;
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.12);
+    padding: 2px 8px;
+    border-radius: 10px;
+}}
+.podium-bar-container {{
+    height: 38px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}}
+.podium-bar {{
+    height: 100%;
+    border-radius: 8px;
+}}
+.podium-stats {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}}
+.podium-streams {{
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+}}
+.podium-change {{
+    font-size: 14px;
+    font-weight: 500;
+}}
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}}
+.section-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank, th.col-streams, th.col-change, th.col-tracks, th.col-rc {{
+    text-align: right;
+}}
+td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}}
+td.col-artist {{
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
+}}
+td.col-genre {{
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}}
+td.col-streams {{
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-change {{
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+}}
+td.col-tracks {{
+    text-align: right;
+    font-size: 13px;
+    color: #94a3b8;
+    width: 60px;
+}}
+td.col-rc {{
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
+}}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+tr.sb19-row {{
+    background: rgba(6, 182, 212, 0.10);
+}}
+tr.sb19-row td.col-artist {{
+    color: #22d3ee;
+}}
+tr.sb19-row td.col-streams {{
+    color: #22d3ee;
+}}
+/* --- SB19 Extra Section (rank > 20) --- */
+.sb19-extra-section {{
+    margin-top: 8px;
+}}
+.sb19-divider {{
+    border-top: 2px dashed rgba(6, 182, 212, 0.3);
+    margin: 16px 0 12px;
+}}
+.sb19-extra-label {{
+    font-size: 16px;
+    font-weight: 600;
+    color: #22d3ee;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+}}
+.sb19-extra-table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+.sb19-extra-table td {{
+    font-size: 14px;
+    padding: 7px 10px;
+    border-bottom: none;
+}}
+/* --- Shared --- */
+.rank-up {{ color: #34d399; }}
+.rank-down {{ color: #f87171; }}
+.rank-same {{ color: #9ca3af; }}
+.change-up {{ color: #34d399; }}
+.change-down {{ color: #f87171; }}
+.change-same {{ color: #9ca3af; }}
+.footer {{
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #10b981;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">OPM Top Artists by Daily Streams</div>
+        <div class="card-subtitle">Spotify | {date_str}</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">{grand_total_str}</div>
+                <div class="stat-label">Total Daily Streams</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value-blue">{total_artists}</div>
+                <div class="stat-label">Artists Tracked</div>
+            </div>
+        </div>
+    </div>
+    <div class="podium-section">{top3_rows}
+    </div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Artists</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th class="col-streams">Daily Streams</th>
+                    <th class="col-change">vs Prev Day</th>
+                    <th class="col-tracks">Tracks</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
+    {sb19_section}
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_opm_top_streams_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 3000)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(OPM_TOP_STREAMS_IMAGE_PATH)
+
+                img = Image.open(OPM_TOP_STREAMS_IMAGE_PATH)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(OPM_TOP_STREAMS_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] OPM top streams screenshot saved: {OPM_TOP_STREAMS_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] OPM top streams screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] OPM top streams screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
     def generate_ppop_top_post(self):
-        """Top P-Pop groups by monthly listeners with SB19 solo section.
+        """P-Pop Leaderboard with streams, daily streams, monthly listeners.
 
         Returns (message, image_path_or_None).
         """
@@ -2055,15 +3913,23 @@ body {{
             print("[WARN] No data for latest date")
             return None, None
 
-        # Re-read CSV for genre field
+        # Re-read CSV for genre field and followers
         genre_lookup = {}
+        followers_lookup = {}
         if os.path.exists(LISTENERS_FILE):
             with open(LISTENERS_FILE, "r", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
                 for row in reader:
                     ts = row.get("timestamp", "")
                     if ts[:8] == latest_date:
-                        genre_lookup[row["artist_name"].lower()] = row.get("genre", "")
+                        name_key = row["artist_name"].lower()
+                        genre_lookup[name_key] = row.get("genre", "")
+                        fol = row.get("followers", "")
+                        if fol and fol != "N/A":
+                            try:
+                                followers_lookup[name_key] = int(fol)
+                            except ValueError:
+                                pass
 
         # Separate P-Pop groups and SB19 Solo
         ppop_artists = {}
@@ -2081,10 +3947,56 @@ body {{
         ppop_ranked = sorted(ppop_artists.values(), key=lambda x: x["listeners"], reverse=True)
         solo_ranked = sorted(solo_artists.values(), key=lambda x: x["listeners"], reverse=True)
 
-        top10 = ppop_ranked[:10]
-        if not top10:
+        if not ppop_ranked:
             print("[INFO] No P-Pop artist data found")
             return None, None
+
+        # --- Load streams data for Total Streams and Daily Streams ---
+        sb19_streams = load_streams_data(STREAMS_FILE)
+        opm_streams = load_streams_data(OPM_TRACKS_FILE)
+        all_streams = sb19_streams + opm_streams
+
+        stream_dates = sorted(set(s["date"] for s in all_streams))
+        s_today = stream_dates[-1] if stream_dates else ""
+        s_yesterday = stream_dates[-2] if len(stream_dates) >= 2 else ""
+        s_day_before = stream_dates[-3] if len(stream_dates) >= 3 else ""
+
+        # Build per-track maps (dedup by title+artist, keep highest streams)
+        today_map, yesterday_map, daybefore_map = {}, {}, {}
+        for s in all_streams:
+            key = (s["song_title"].lower(), s["artist"].lower())
+            if s["date"] == s_today:
+                if key not in today_map or s["streams"] > today_map[key]["streams"]:
+                    today_map[key] = s
+            elif s["date"] == s_yesterday:
+                if key not in yesterday_map or s["streams"] > yesterday_map[key]["streams"]:
+                    yesterday_map[key] = s
+            elif s_day_before and s["date"] == s_day_before:
+                if key not in daybefore_map or s["streams"] > daybefore_map[key]["streams"]:
+                    daybefore_map[key] = s
+
+        # Aggregate per artist: total streams, daily gain, previous daily gain
+        artist_total = {}
+        artist_daily = {}
+        artist_prev_daily = {}
+
+        for key, s in today_map.items():
+            akey = s["artist"].lower()
+            artist_total[akey] = artist_total.get(akey, 0) + s["streams"]
+
+        if s_today and s_yesterday:
+            for key, s in today_map.items():
+                y = yesterday_map.get(key)
+                if y:
+                    akey = s["artist"].lower()
+                    artist_daily[akey] = artist_daily.get(akey, 0) + (s["streams"] - y["streams"])
+
+        if s_yesterday and s_day_before:
+            for key, s in yesterday_map.items():
+                db = daybefore_map.get(key)
+                if db:
+                    akey = s["artist"].lower()
+                    artist_prev_daily[akey] = artist_prev_daily.get(akey, 0) + (s["streams"] - db["streams"])
 
         # Previous day data for changes and rank comparison
         all_dates = sorted(set(e["date"] for e in data))
@@ -2138,36 +4050,49 @@ body {{
                 return f" ({diff})", diff
             return "", 0
 
+        # Count total unique artists (all genres) for "X of Y" display
+        total_artists = len(set(e["artist"].lower() for e in latest))
+
         # Compact caption for 280-char limit (image carries the data)
         date_short = short_date(latest_date)
         message = (
-            f"P-Pop Top 10 Groups by Monthly Listeners | Spotify | {date_short}\n\n"
-            f"Out of {len(ppop_ranked)} P-Pop groups tracked\n\n"
+            f"P-Pop Leaderboard | Spotify | {date_short}\n\n"
+            f"Showing {len(ppop_ranked)} of {total_artists} artists\n\n"
             f"{SITE_TAG}\n"
             f"#PPop #SB19"
         )
         enforce_char_limit(message)
 
-        # Build data for screenshot
-        card_data = []
-        for i, e in enumerate(top10, 1):
+        # Build data for ALL groups, sorted by daily streams desc
+        unsorted_data = []
+        for e in ppop_ranked:
             key = e["artist"].lower()
             prev_val = prev_ppop_map.get(key)
             change = (e["listeners"] - prev_val) if prev_val is not None else 0
-            _, rank_change = _rank_ind(prev_ppop_rank_map, key, i)
-            card_data.append({
-                "rank": i,
+            daily = artist_daily.get(key, 0)
+            prev_daily = artist_prev_daily.get(key, 0)
+            daily_change = (daily - prev_daily) if daily and prev_daily else 0
+            unsorted_data.append({
                 "artist": e["artist"],
+                "genre": "P-Pop",
                 "listeners": e["listeners"],
                 "change": change,
-                "rank_change": rank_change,
+                "followers": followers_lookup.get(key, 0),
+                "total_streams": artist_total.get(key, 0),
+                "daily_streams": daily,
+                "daily_change": daily_change,
             })
+
+        # Sort by daily streams descending (artists with no data at bottom)
+        card_data = sorted(unsorted_data, key=lambda x: x["daily_streams"], reverse=True)
+        for i, d in enumerate(card_data, 1):
+            d["rank"] = i
 
         image_path = None
         screenshot_ok = self._capture_ppop_top_screenshot(
-            top10_data=card_data,
-            solo_data=None,
-            total_groups=len(ppop_ranked),
+            table_data=card_data,
+            ppop_count=len(ppop_ranked),
+            total_artists=total_artists,
             date_str=date_formatted,
         )
         if screenshot_ok and os.path.exists(PPOP_TOP_IMAGE_PATH):
@@ -2175,114 +4100,114 @@ body {{
 
         return message, image_path
 
-    def _capture_ppop_top_screenshot(self, top10_data=None, solo_data=None,
-                                      total_groups=0, date_str=""):
-        """Capture a social-media-friendly P-Pop top listeners card."""
-        print("[INFO] Capturing P-Pop top listeners screenshot...")
+    def _capture_ppop_top_screenshot(self, table_data=None,
+                                      ppop_count=0, total_artists=0, date_str=""):
+        """Capture P-Pop leaderboard as a flat table sorted by daily streams."""
+        print("[INFO] Capturing P-Pop leaderboard screenshot...")
         os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
 
-        if not top10_data:
-            print("[ERR] No data for P-Pop top card")
+        if not table_data:
+            print("[ERR] No data for P-Pop leaderboard")
             return False
 
-        max_listeners = top10_data[0]["listeners"] if top10_data else 1
+        def _fmt_num(n):
+            absn = abs(n)
+            if absn >= 1e9:
+                return f"{absn/1e9:.1f}B"
+            if absn >= 1e6:
+                return f"{absn/1e6:.1f}M"
+            if absn >= 1e3:
+                return f"{absn/1e3:.1f}K"
+            return f"{absn:,}"
 
-        # Assign distinct colors per group
-        group_colors = [
-            "#ec4899", "#3b82f6", "#10b981", "#f59e0b", "#a855f7",
-            "#ef4444", "#06b6d4", "#6366f1", "#14b8a6", "#f97316",
-        ]
-
-        def _rank_change_html(rc):
-            if rc is not None and rc > 0:
-                return f'<span class="rank-up">▲{rc}</span>'
-            elif rc is not None and rc < 0:
-                return f'<span class="rank-down">▼{abs(rc)}</span>'
-            else:
-                return '<span class="rank-same">―</span>'
-
-        track_rows = ""
-        for i, t in enumerate(top10_data):
-            pct = (t["listeners"] / max_listeners) * 100
-            color = group_colors[i % len(group_colors)]
-            listeners_str = f"{t['listeners']:,}"
-            change = t["change"]
+        def _change_html(change):
             if change > 0:
-                change_html = f'<span class="change-up">+{change:,}</span>'
+                absn = abs(change)
+                s = _fmt_num(change) if absn >= 10000 else f"{change:,}"
+                return f'<span class="change-up">+{s}</span>'
             elif change < 0:
-                change_html = f'<span class="change-down">{change:,}</span>'
-            else:
-                change_html = '<span class="change-same">―</span>'
-            rc_html = _rank_change_html(t.get("rank_change"))
+                absn = abs(change)
+                s = _fmt_num(change) if absn >= 10000 else f"{absn:,}"
+                return f'<span class="change-down">-{s}</span>'
+            return '<span class="change-same">―</span>'
 
-            # Highlight SB19 row
-            is_sb19 = t["artist"].upper() == "SB19"
-            row_class = "track-row sb19-highlight" if is_sb19 else "track-row"
+        def _daily_html(daily, daily_change):
+            if not daily:
+                return '<span class="change-same">―</span>'
+            prefix = "+" if daily > 0 else ""
+            cls = "change-up" if daily > 0 else "change-down" if daily < 0 else "change-same"
+            html = f'<span class="{cls}">{prefix}{daily:,}</span>'
+            if daily_change:
+                dc_prefix = "+" if daily_change > 0 else ""
+                dc_cls = "change-up" if daily_change > 0 else "change-down"
+                html += f' <span class="{dc_cls}" style="font-size:11px">({dc_prefix}{_fmt_num(daily_change)})</span>'
+            return html
 
-            track_rows += f"""
-            <div class="{row_class}">
-                <div class="track-rank">{t['rank']}</div>
-                <div class="rank-indicator">{rc_html}</div>
-                <div class="track-info">
-                    <div class="track-name">{t['artist']}</div>
-                    <div class="track-bar-container">
-                        <div class="track-bar" style="width: {pct}%; background: {color};"></div>
-                    </div>
+        # --- Top 3 medallion section ---
+        medal_colors = [
+            ("#fbbf24", "rgba(251, 191, 36, 0.12)", "rgba(251, 191, 36, 0.35)"),  # gold
+            ("#94a3b8", "rgba(148, 163, 184, 0.10)", "rgba(148, 163, 184, 0.30)"),  # silver
+            ("#cd7f32", "rgba(205, 127, 50, 0.10)", "rgba(205, 127, 50, 0.30)"),  # bronze
+        ]
+        top3_html = ""
+        top3_data = table_data[:3]
+        remaining_data = table_data[3:]
+
+        for i, t in enumerate(top3_data):
+            color, bg, border = medal_colors[i]
+            listeners_str = f"{t['listeners']:,}"
+            ch_html = _change_html(t["change"])
+            total_str = f"{t['total_streams']:,}" if t.get("total_streams") else "―"
+            daily_str = _daily_html(t.get("daily_streams", 0), t.get("daily_change", 0))
+            followers_str = f"{t['followers']:,}" if t.get("followers") else "―"
+
+            top3_html += f"""
+            <div class="medal-card" style="background: {bg}; border-color: {border};">
+                <div class="medal-circle" style="background: {color}; box-shadow: 0 0 20px {color}40;">
+                    <span class="medal-rank">{t['rank']}</span>
                 </div>
-                <div class="track-stats">
-                    <div class="track-listeners">{listeners_str}</div>
-                    <div class="track-change">{change_html}</div>
+                <div class="medal-name">{t['artist']}</div>
+                <div class="medal-row">
+                    <span class="medal-label">Daily Streams</span>
+                    <span class="medal-daily">{daily_str}</span>
                 </div>
-            </div>"""
-
-        # SB19 Solo section
-        solo_section = ""
-        if solo_data:
-            solo_max = solo_data[0]["listeners"] if solo_data else 1
-            solo_rows = ""
-            solo_colors = {
-                "pablo": "#ef4444",
-                "josh cullen": "#f59e0b",
-                "stell": "#a855f7",
-                "felip": "#10b981",
-                "justin": "#3b82f6",
-            }
-            for t in solo_data:
-                pct = (t["listeners"] / solo_max) * 100
-                color = solo_colors.get(t["artist"].lower(), "#6366f1")
-                listeners_str = f"{t['listeners']:,}"
-                change = t["change"]
-                if change > 0:
-                    change_html = f'<span class="change-up">+{change:,}</span>'
-                elif change < 0:
-                    change_html = f'<span class="change-down">{change:,}</span>'
-                else:
-                    change_html = '<span class="change-same">―</span>'
-                rc_html = _rank_change_html(t.get("rank_change"))
-
-                solo_rows += f"""
-                <div class="track-row">
-                    <div class="track-rank solo-rank">{t['rank']}</div>
-                    <div class="rank-indicator">{rc_html}</div>
-                    <div class="track-info">
-                        <div class="track-name">{t['artist']}</div>
-                        <div class="track-bar-container">
-                            <div class="track-bar" style="width: {pct}%; background: {color};"></div>
-                        </div>
-                    </div>
-                    <div class="track-stats">
-                        <div class="track-listeners">{listeners_str}</div>
-                        <div class="track-change">{change_html}</div>
-                    </div>
-                </div>"""
-
-            solo_section = f"""
-            <div class="solo-section">
-                <div class="solo-divider"></div>
-                <div class="solo-header">SB19 Solo</div>
-                <div class="tracks">{solo_rows}
+                <div class="medal-row">
+                    <span class="medal-label">Monthly Listeners</span>
+                    <span class="medal-value">{listeners_str}</span>
+                    <span class="medal-change">{ch_html}</span>
+                </div>
+                <div class="medal-row">
+                    <span class="medal-label">Total Streams</span>
+                    <span class="medal-value">{total_str}</span>
+                </div>
+                <div class="medal-row">
+                    <span class="medal-label">Followers</span>
+                    <span class="medal-value-sm">{followers_str}</span>
                 </div>
             </div>"""
+
+        # Build table rows (rank 4+)
+        table_rows = ""
+        for t in remaining_data:
+            listeners_str = f"{t['listeners']:,}"
+            ch_html = _change_html(t["change"])
+            followers_str = f"{t['followers']:,}" if t.get("followers") else "―"
+            total_str = f"{t['total_streams']:,}" if t.get("total_streams") else "―"
+            daily_str = _daily_html(t.get("daily_streams", 0), t.get("daily_change", 0))
+            is_sb19 = t["artist"].lower() == "sb19"
+            row_class = ' class="sb19-row"' if is_sb19 else ""
+
+            table_rows += f"""
+                <tr{row_class}>
+                    <td class="col-rank">{t['rank']}</td>
+                    <td class="col-artist">{t['artist']}</td>
+                    <td class="col-genre">{t.get('genre', 'P-Pop')}</td>
+                    <td class="col-listeners">{listeners_str}</td>
+                    <td class="col-change">{ch_html}</td>
+                    <td class="col-followers">{followers_str}</td>
+                    <td class="col-total-streams">{total_str}</td>
+                    <td class="col-daily">{daily_str}</td>
+                </tr>"""
 
         html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8">
@@ -2298,28 +4223,28 @@ body {{
     padding: 0;
 }}
 .card {{
-    width: 1080px;
+    width: 1200px;
     background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
     border: 1px solid rgba(6, 182, 212, 0.2);
     border-radius: 20px;
-    padding: 48px 56px 40px;
+    padding: 40px 44px 36px;
     box-shadow: 0 0 60px rgba(6, 182, 212, 0.08);
 }}
 .header {{
     text-align: center;
-    margin-bottom: 36px;
-    padding-bottom: 28px;
+    margin-bottom: 28px;
+    padding-bottom: 22px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.15);
 }}
 .card-title {{
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
     color: #f8fafc;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: -0.3px;
 }}
 .card-subtitle {{
-    font-size: 18px;
+    font-size: 16px;
     color: #94a3b8;
     font-weight: 400;
 }}
@@ -2327,133 +4252,204 @@ body {{
     display: flex;
     justify-content: center;
     gap: 48px;
-    margin-top: 18px;
+    margin-top: 14px;
 }}
 .stat-box {{ text-align: center; }}
 .stat-value {{
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 800;
     color: #06b6d4;
     letter-spacing: -0.5px;
 }}
 .stat-label {{
-    font-size: 14px;
+    font-size: 13px;
     color: #64748b;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 2px;
 }}
-.tracks {{
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.stat-detail {{
+    font-size: 12px;
+    color: #475569;
+    margin-top: 1px;
 }}
-.track-row {{
+/* --- Top 3 Medallions --- */
+.medal-section {{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 28px;
+}}
+.medal-card {{
+    flex: 1;
+    border: 1px solid;
+    border-radius: 16px;
+    padding: 20px 18px 16px;
+    text-align: center;
+    position: relative;
+}}
+.medal-circle {{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 0;
+    justify-content: center;
+    margin: 0 auto 12px;
 }}
-.track-rank {{
-    font-size: 22px;
+.medal-rank {{
+    font-size: 24px;
+    font-weight: 800;
+    color: #0f172a;
+}}
+.medal-name {{
+    font-size: 20px;
     font-weight: 700;
-    color: #475569;
-    width: 48px;
-    text-align: right;
-    flex-shrink: 0;
-}}
-.track-row:nth-child(1) .track-rank {{ color: #fbbf24; }}
-.track-row:nth-child(2) .track-rank {{ color: #94a3b8; }}
-.track-row:nth-child(3) .track-rank {{ color: #cd7f32; }}
-.rank-indicator {{
-    width: 42px;
-    text-align: center;
-    flex-shrink: 0;
-    font-size: 14px;
-    font-weight: 600;
-}}
-.rank-up {{ color: #34d399; }}
-.rank-down {{ color: #f87171; }}
-.rank-same {{ color: #9ca3af; }}
-.track-info {{
-    flex: 1;
-    min-width: 0;
-}}
-.track-name {{
-    font-size: 18px;
-    font-weight: 600;
-    color: #e2e8f0;
-    margin-bottom: 5px;
+    color: #f1f5f9;
+    margin-bottom: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }}
-.track-bar-container {{
-    height: 42px;
-    background: rgba(51, 65, 85, 0.5);
-    border-radius: 6px;
-    overflow: hidden;
+.medal-row {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    gap: 6px;
 }}
-.track-bar {{
-    height: 100%;
-    border-radius: 6px;
-    min-width: 4px;
-}}
-.track-stats {{
-    text-align: right;
+.medal-label {{
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     flex-shrink: 0;
-    min-width: 160px;
 }}
-.track-listeners {{
-    font-size: 20px;
+.medal-value {{
+    font-size: 15px;
     font-weight: 700;
     color: #e2e8f0;
 }}
-.track-change {{
-    font-size: 14px;
-    font-weight: 500;
-    margin-top: 2px;
+.medal-value-sm {{
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
 }}
+.medal-change {{
+    font-size: 12px;
+    font-weight: 500;
+}}
+.medal-daily {{
+    font-size: 13px;
+    font-weight: 600;
+}}
+/* --- Divider --- */
+.section-divider {{
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 0 0 20px;
+}}
+.section-label {{
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}}
+/* --- Table Section --- */
+.table-section {{
+    width: 100%;
+}}
+table {{
+    width: 100%;
+    border-collapse: collapse;
+}}
+th {{
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 8px 8px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}}
+th.col-rank {{ text-align: right; width: 36px; }}
+th.col-listeners, th.col-change, th.col-followers, th.col-total-streams, th.col-daily {{
+    text-align: right;
+}}
+td {{
+    font-size: 13px;
+    padding: 6px 8px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}}
+td.col-rank {{
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 36px;
+}}
+td.col-artist {{
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+}}
+td.col-genre {{
+    font-size: 11px;
+    color: #64748b;
+    white-space: nowrap;
+}}
+td.col-listeners {{
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-change {{
+    text-align: right;
+    font-size: 12px;
+    white-space: nowrap;
+}}
+td.col-followers {{
+    color: #94a3b8;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-total-streams {{
+    font-weight: 600;
+    color: #94a3b8;
+    text-align: right;
+    white-space: nowrap;
+}}
+td.col-daily {{
+    text-align: right;
+    font-size: 12px;
+    white-space: nowrap;
+}}
+tr:nth-child(even) {{
+    background: rgba(51, 65, 85, 0.15);
+}}
+tr.sb19-row {{
+    background: rgba(6, 182, 212, 0.10);
+}}
+tr.sb19-row td.col-artist {{
+    color: #22d3ee;
+}}
+tr.sb19-row td.col-listeners {{
+    color: #22d3ee;
+}}
+/* --- Shared --- */
 .change-up {{ color: #34d399; }}
 .change-down {{ color: #f87171; }}
 .change-same {{ color: #9ca3af; }}
-.sb19-highlight {{
-    background: rgba(6, 182, 212, 0.08);
-    border-radius: 12px;
-    padding: 14px 16px !important;
-    border: 1px solid rgba(6, 182, 212, 0.2);
-}}
-.sb19-highlight .track-name {{
-    color: #22d3ee;
-}}
-.sb19-highlight .track-listeners {{
-    color: #22d3ee;
-}}
-.solo-section {{
-    margin-top: 8px;
-}}
-.solo-divider {{
-    border-top: 2px dashed rgba(6, 182, 212, 0.3);
-    margin: 16px 0;
-}}
-.solo-header {{
-    font-size: 20px;
-    font-weight: 700;
-    color: #22d3ee;
-    margin-bottom: 12px;
-    letter-spacing: -0.3px;
-}}
-.solo-rank {{
-    color: #06b6d4 !important;
-}}
 .footer {{
     text-align: center;
-    margin-top: 28px;
-    padding-top: 20px;
+    margin-top: 22px;
+    padding-top: 16px;
     border-top: 1px solid rgba(148, 163, 184, 0.15);
 }}
 .footer-text {{
-    font-size: 14px;
+    font-size: 13px;
     color: #475569;
     letter-spacing: 0.5px;
 }}
@@ -2462,45 +4458,48 @@ body {{
     font-weight: 600;
 }}
 .footer-note {{
-    font-size: 13px;
+    font-size: 12px;
     color: #64748b;
     font-style: italic;
-    margin-bottom: 8px;
-}}
-.track-row:nth-child(even) {{
-    filter: blur(3px);
-    opacity: 0.7;
-}}
-.cta-footer {{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 16px;
-    color: #94a3b8;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}}
-.cta-footer span {{
-    color: #06b6d4;
-    font-weight: 700;
+    margin-bottom: 6px;
 }}
 </style></head><body>
 <div class="card" id="card">
     <div class="header">
-        <div class="card-title">P-Pop Top 10 Groups by Monthly Listeners</div>
+        <div class="card-title">P-Pop Leaderboard</div>
         <div class="card-subtitle">Spotify | {date_str}</div>
         <div class="stats-row">
             <div class="stat-box">
-                <div class="stat-value">{total_groups}</div>
-                <div class="stat-label">Groups Tracked</div>
+                <div class="stat-value">{ppop_count}</div>
+                <div class="stat-label">P-Pop Groups</div>
+                <div class="stat-detail">of {total_artists} artists tracked</div>
             </div>
         </div>
     </div>
-    <div class="tracks">{track_rows}
+    <div class="medal-section">{top3_html}
     </div>
-    {solo_section}
-    <div class="cta-footer">Full details at <span>opminsights.com</span></div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Groups</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th class="col-listeners">Monthly Listeners</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-followers">Followers</th>
+                    <th class="col-total-streams">Total Streams</th>
+                    <th class="col-daily">Daily Streams</th>
+                </tr>
+            </thead>
+            <tbody>{table_rows}
+            </tbody>
+        </table>
+    </div>
     <div class="footer">
-        <div class="footer-note">*SB19 solo artists excluded (see separate post)</div>
+        <div class="footer-note">*Ranked by daily streams</div>
         <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
     </div>
 </div>
@@ -2523,7 +4522,7 @@ body {{
             driver = None
             try:
                 driver = webdriver.Edge(service=service, options=options)
-                driver.set_window_size(1200, 2000)
+                driver.set_window_size(1200, 3000)
 
                 driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
                 time.sleep(3)
@@ -2532,9 +4531,9 @@ body {{
                 card.screenshot(PPOP_TOP_IMAGE_PATH)
 
                 img = Image.open(PPOP_TOP_IMAGE_PATH)
-                if img.width > 2400:
-                    ratio = 2400 / img.width
-                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                if img.width > 3200:
+                    ratio = 3200 / img.width
+                    img = img.resize((3200, int(img.height * ratio)), Image.LANCZOS)
                     img.save(PPOP_TOP_IMAGE_PATH)
                 print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
                 print(f"[SUCCESS] P-Pop top screenshot saved: {PPOP_TOP_IMAGE_PATH}")
@@ -3415,6 +5414,468 @@ body {{
             except OSError:
                 pass
 
+    # -- Spotify VISA daily ---------------------------------------------------
+
+    def _load_visa_daily_data(self):
+        """Load VISA entries from selenium_results.csv grouped by date.
+
+        Returns list of dicts sorted by date:
+            [{"date": "20260221", "streams": 187650, "timestamp": "..."}, ...]
+        """
+        data = load_streams_data()
+        if not data:
+            return []
+
+        visa_entries = [e for e in data if e["song_title"].upper() == "VISA"
+                        and e["artist"].upper() == "SB19"]
+        if not visa_entries:
+            return []
+
+        # Group by date, keep the latest entry per date
+        by_date = {}
+        for e in visa_entries:
+            d = e["date"]
+            if d not in by_date or e["timestamp"] > by_date[d]["timestamp"]:
+                by_date[d] = e
+
+        return sorted(by_date.values(), key=lambda x: x["date"])
+
+    def generate_spotify_visa_post(self):
+        """Generate Spotify VISA daily chart post with screenshot.
+
+        Returns (message, image_path) or (None, None) on failure.
+        """
+        entries = self._load_visa_daily_data()
+        if len(entries) < 2:
+            print("[WARN] Not enough VISA data for daily comparison (need at least 2 days)")
+            return None, None
+
+        latest = entries[-1]
+        prev = entries[-2]
+        total_streams = latest["streams"]
+        prev_streams = prev["streams"]
+        daily_gain = total_streams - prev_streams
+
+        # Build daily deltas for chart
+        daily_deltas = []
+        daily_labels = []
+        for i in range(1, len(entries)):
+            delta = entries[i]["streams"] - entries[i - 1]["streams"]
+            d = entries[i]["date"]
+            try:
+                label = datetime.strptime(d[:8], "%Y%m%d").strftime("%m/%d")
+            except ValueError:
+                label = d
+            daily_deltas.append(max(0, delta))
+            daily_labels.append(label)
+
+        now = datetime.now()
+        now_str = now.strftime("%b %d, %Y %I:%M %p")
+        date_short = short_date(latest["date"])
+
+        # Build post text
+        total_change = total_streams - prev_streams
+        change_str = f"+{format_with_commas(total_change)}" if total_change >= 0 else format_with_commas(total_change)
+
+        lines = [
+            f"SB19 VISA Spotify Daily Update as of {now_str}",
+            "",
+            SITE_TAG,
+            SPOTIFY_VISA_URL,
+            "",
+            f"Total Streams: {format_with_commas(total_streams)} ({change_str})",
+            f"Daily Gain: {format_with_commas(daily_gain)}",
+            "",
+            "#SB19 #VISA #Spotify #OPM",
+        ]
+
+        message = "\n".join(lines)
+        enforce_char_limit(message)
+
+        # Capture social card screenshot
+        image_path = None
+        ok = self._capture_spotify_visa_screenshot(
+            total_streams=total_streams,
+            daily_gain=daily_gain,
+            stream_change=total_change,
+            daily_labels=daily_labels,
+            daily_deltas=daily_deltas,
+            now_str=now_str,
+        )
+        if ok and os.path.exists(SPOTIFY_VISA_IMAGE_PATH):
+            image_path = SPOTIFY_VISA_IMAGE_PATH
+
+        return message, image_path
+
+    def _capture_spotify_visa_screenshot(self, total_streams, daily_gain,
+                                         stream_change, daily_labels,
+                                         daily_deltas, now_str):
+        """Capture a Spotify VISA daily stats card (similar to YouTube VISA card)."""
+        print("[INFO] Capturing Spotify VISA screenshot...")
+        os.makedirs(ALBUM_IMAGE_DIR, exist_ok=True)
+
+        # Encode VISA artwork as base64 for the card background
+        visa_img_path = os.path.join(SCRIPT_DIR, "photos", "visa.png")
+        bg_data_uri = ""
+        if os.path.exists(visa_img_path):
+            with open(visa_img_path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode("utf-8")
+                bg_data_uri = f"data:image/png;base64,{b64}"
+
+        def format_k(v):
+            if v >= 1_000_000:
+                return f"{v / 1_000_000:.1f}M"
+            if v >= 1_000:
+                return f"{v / 1_000:.1f}K"
+            return str(v)
+
+        total_str = f"{total_streams:,}"
+        daily_str = f"{daily_gain:,}"
+
+        if stream_change > 0:
+            chg_str = f"+{stream_change:,}"
+            chg_color = "#1db954"
+        elif stream_change < 0:
+            chg_str = f"{stream_change:,}"
+            chg_color = "#f87171"
+        else:
+            chg_str = ""
+            chg_color = "#1db954"
+
+        chg_html = f'<div class="stat-change" style="color:{chg_color}">{chg_str}</div>' if chg_str else ""
+
+        # Build daily chart bars
+        max_delta = max(daily_deltas) if daily_deltas else 1
+        chart_bars_html = ""
+        if daily_deltas:
+            bars = []
+            for label, delta in zip(daily_labels, daily_deltas):
+                pct = max(int((delta / max_delta) * 100), 4) if max_delta > 0 else 4
+                val_label = format_k(delta) if delta > 0 else ""
+                bars.append(
+                    f'<div class="bar-col">'
+                    f'<div class="bar-val">{val_label}</div>'
+                    f'<div class="bar" style="height:{pct}%"></div>'
+                    f'<div class="bar-label">{label}</div>'
+                    f'</div>'
+                )
+
+            # Trendline SVG
+            trend_svg = ""
+            n_real = len(daily_deltas)
+            if n_real >= 2 and max_delta > 0:
+                sum_x = sum(range(n_real))
+                sum_y = sum(daily_deltas)
+                sum_xy = sum(i * v for i, v in enumerate(daily_deltas))
+                sum_x2 = sum(i * i for i in range(n_real))
+                denom = n_real * sum_x2 - sum_x * sum_x
+                if denom != 0:
+                    slope = (n_real * sum_xy - sum_x * sum_y) / denom
+                    intercept = (sum_y - slope * sum_x) / n_real
+                    y_start = max(0, intercept)
+                    y_end = max(0, slope * (n_real - 1) + intercept)
+                    x1_pct = 0.5 / n_real * 100
+                    x2_pct = (n_real - 0.5) / n_real * 100
+                    y1_pct = max(4, min(100, y_start / max_delta * 100))
+                    y2_pct = max(4, min(100, y_end / max_delta * 100))
+                    y1_px = 200 - (y1_pct / 100 * 200)
+                    y2_px = 200 - (y2_pct / 100 * 200)
+                    trend_svg = (
+                        f'<svg class="trend-svg" xmlns="http://www.w3.org/2000/svg">'
+                        f'<line x1="{x1_pct:.1f}%" y1="{y1_px:.0f}" x2="{x2_pct:.1f}%" y2="{y2_px:.0f}" /></svg>'
+                    )
+
+            chart_bars_html = f"""
+        <div class="chart-section">
+            <div class="chart-title">Daily Streams</div>
+            <div class="chart-row-wrap">
+                <div class="chart-row">{"".join(bars)}</div>
+                {trend_svg}
+            </div>
+        </div>"""
+
+        html = f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}}
+.card {{
+    width: 1080px;
+    height: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}}
+.bg-image {{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.3) blur(2px);
+    transform: scale(1.1);
+}}
+.bg-overlay {{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(15,23,42,0.6) 0%,
+        rgba(15,23,42,0.4) 25%,
+        rgba(15,23,42,0.7) 55%,
+        rgba(15,23,42,0.95) 100%);
+}}
+.content {{
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 60px 24px;
+    text-align: center;
+}}
+.header-row {{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+}}
+.sp-icon {{
+    width: 48px;
+    height: 48px;
+    background: #1db954;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}}
+.sp-icon svg {{
+    width: 28px;
+    height: 28px;
+    fill: white;
+}}
+.title {{
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 6px;
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}}
+.artist {{
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}}
+.stats-grid {{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 580px;
+    margin-bottom: 0;
+}}
+.stat-box {{
+    text-align: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px 16px;
+}}
+.stat-value {{
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.1;
+}}
+.stat-label {{
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 6px;
+}}
+.stat-change {{
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 4px;
+}}
+/* ── Daily chart ── */
+.chart-section {{
+    width: 100%;
+    max-width: 780px;
+    margin-top: 28px;
+}}
+.chart-title {{
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: left;
+}}
+.chart-row-wrap {{
+    position: relative;
+    height: 200px;
+    width: 100%;
+}}
+.chart-row {{
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 200px;
+    width: 100%;
+}}
+.trend-svg {{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+}}
+.trend-svg line {{
+    stroke: rgba(251,191,36,0.5);
+    stroke-width: 2px;
+    stroke-dasharray: 6 3;
+}}
+.bar-col {{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    min-width: 0;
+}}
+.bar {{
+    width: 60%;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(29,185,84,0.9) 0%, rgba(29,185,84,0.4) 100%);
+    min-height: 4px;
+}}
+.bar-val {{
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 4px;
+    white-space: nowrap;
+}}
+.bar-label {{
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 5px;
+    font-weight: 500;
+}}
+.footer {{
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px 60px 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}}
+.footer-text {{
+    font-size: 14px;
+    color: #64748b;
+    letter-spacing: 0.5px;
+}}
+.footer-site {{
+    color: #1db954;
+    font-weight: 600;
+}}
+</style></head><body>
+<div class="card" id="card">
+    {"<img src='" + bg_data_uri + "' class='bg-image' />" if bg_data_uri else ""}
+    <div class="bg-overlay"></div>
+    <div class="content">
+        <div class="header-row">
+            <div class="sp-icon"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></div>
+            <div class="title">VISA</div>
+            <div class="artist">&nbsp;&middot;&nbsp;SB19</div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value">{total_str}</div>
+                <div class="stat-label">Total Streams</div>
+                {chg_html}
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">{daily_str}</div>
+                <div class="stat-label">Daily Gain</div>
+            </div>
+        </div>{chart_bars_html}
+    </div>
+    <div class="footer">
+        <div class="footer-text">As of {now_str} &middot; <span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>"""
+
+        temp_html = os.path.join(SCRIPT_DIR, "_sp_visa_card.html")
+        with open(temp_html, "w", encoding="utf-8") as f:
+            f.write(html)
+
+        try:
+            options = EdgeOptions()
+            options.add_argument("--headless=new")
+            options.add_argument("--force-device-scale-factor=2")
+            options.add_argument("--disable-notifications")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+
+            service = EdgeService()
+            driver = None
+            try:
+                driver = webdriver.Edge(service=service, options=options)
+                driver.set_window_size(1200, 1200)
+
+                driver.get(f"file:///{temp_html.replace(os.sep, '/')}")
+                time.sleep(3)
+
+                card = driver.find_element(By.ID, "card")
+                card.screenshot(SPOTIFY_VISA_IMAGE_PATH)
+
+                img = Image.open(SPOTIFY_VISA_IMAGE_PATH)
+                if img.width > 2400:
+                    ratio = 2400 / img.width
+                    img = img.resize((2400, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(SPOTIFY_VISA_IMAGE_PATH)
+                print(f"[INFO] Screenshot dimensions: {img.width}x{img.height}")
+                print(f"[SUCCESS] Screenshot saved: {SPOTIFY_VISA_IMAGE_PATH}")
+                return True
+            except Exception as e:
+                print(f"[ERR] Card screenshot failed: {e}")
+                return False
+            finally:
+                if driver:
+                    driver.quit()
+        except Exception as e:
+            print(f"[ERR] Screenshot setup failed: {e}")
+            return False
+        finally:
+            try:
+                os.remove(temp_html)
+            except OSError:
+                pass
+
     def _capture_album_screenshot(self, track_list=None, total_streams=0,
                                     total_change=0, date_str=""):
         """Capture a social-media-friendly album card screenshot."""
@@ -3877,6 +6338,35 @@ body {{
     color: #3b82f6;
     font-weight: 600;
 }}
+/* SB19 row: double-sized photo, labels, and bar */
+.artist-row:not(.solo) .artist-photo {{
+    width: 128px;
+    height: 128px;
+    border: 3px solid rgba(59, 130, 246, 0.8);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.15);
+}}
+.artist-row:not(.solo) .artist-name {{
+    font-size: 44px;
+}}
+.artist-row:not(.solo) .bar-container {{
+    height: 56px;
+    border-radius: 10px;
+}}
+.artist-row:not(.solo) .bar {{
+    border-radius: 10px;
+}}
+.artist-row:not(.solo) .artist-listeners {{
+    font-size: 48px;
+}}
+.artist-row:not(.solo) .artist-change {{
+    font-size: 32px;
+}}
+.artist-row:not(.solo) .artist-left {{
+    width: 360px;
+}}
+.artist-row.solo .artist-photo {{
+    margin-left: 32px;
+}}
 .artist-row.solo .artist-middle,
 .artist-row.solo .artist-right {{
     filter: blur(6px);
@@ -4177,6 +6667,12 @@ Examples:
   python social_media_agent.py solo-top --artist PABLO   # Post only PABLO's top tracks
   python social_media_agent.py youtube-visa              # Post VISA MV YouTube stats
   python social_media_agent.py youtube-visa --dry-run    # Preview YouTube VISA post
+  python social_media_agent.py spotify-visa              # Post VISA Spotify daily stats
+  python social_media_agent.py spotify-visa --dry-run    # Preview Spotify VISA post
+  python social_media_agent.py opm-top-tracks            # Post OPM top 20 tracks by daily streams
+  python social_media_agent.py opm-top-tracks --dry-run  # Preview OPM top tracks post
+  python social_media_agent.py opm-top-streams           # Post OPM top artists by total streams
+  python social_media_agent.py opm-top-streams --dry-run # Preview OPM top streams post
   python social_media_agent.py custom "msg" --image pic.png
         """,
     )
@@ -4185,7 +6681,8 @@ Examples:
         "command",
         choices=[
             "listeners", "daily", "top10", "solo-top10", "milestones", "spikes", "weekly",
-            "album", "solo-top", "opm-top", "ppop-top", "youtube-visa",
+            "album", "solo-top", "opm-top", "opm-top-tracks", "opm-top-streams", "ppop-top",
+            "youtube-visa", "spotify-visa",
             "custom", "preview", "status", "init-milestones",
         ],
         help="Post type or action to perform",
@@ -4414,6 +6911,44 @@ def main():
             )
             _report(success)
 
+        elif args.command == "opm-top-tracks":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_opm_tracks_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
+            message, auto_image = agent.generate_opm_top_tracks_post()
+            if not message:
+                print("[ERR] Could not generate OPM top tracks post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
+
+        elif args.command == "opm-top-streams":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_opm_tracks_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
+            message, auto_image = agent.generate_opm_top_streams_post()
+            if not message:
+                print("[ERR] Could not generate OPM top streams post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
+
         elif args.command == "ppop-top":
             message, auto_image = agent.generate_ppop_top_post()
             if not message:
@@ -4449,6 +6984,18 @@ def main():
             message, auto_image = agent.generate_youtube_visa_post()
             if not message:
                 print("[ERR] Could not generate YouTube VISA post.")
+                return
+
+            image_path = args.image or auto_image
+            success = agent.post(
+                message, dry_run=args.dry_run, test_mode=args.test, image_path=image_path,
+            )
+            _report(success)
+
+        elif args.command == "spotify-visa":
+            message, auto_image = agent.generate_spotify_visa_post()
+            if not message:
+                print("[ERR] Could not generate Spotify VISA post.")
                 return
 
             image_path = args.image or auto_image
