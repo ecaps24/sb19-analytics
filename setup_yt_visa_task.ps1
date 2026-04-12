@@ -1,12 +1,12 @@
-# YouTube VISA MV - X Post Task Scheduler Setup
+# YouTube EMOJI MV - X Post Task Scheduler Setup
 # Run this script as Administrator to create the scheduled task
 # Places the task under "OPM Insights" folder in Task Scheduler
 
 $taskFolder = "OPM Insights"
-$taskName = "SB19 YouTube VISA Post"
-$oldTaskName = "SB19 YouTube VISA Hourly Post"
+$taskName = "SB19 YouTube EMOJI Post"
+$oldTaskName = "SB19 YouTube VISA Post"
 $taskPath = "D:\dev\sb19\run_yt_visa_post.bat"
-$description = "Posts SB19 VISA MV YouTube stats (views, likes, comments) to X every 30 minutes"
+$description = "Posts SB19 EMOJI MV YouTube stats (views, likes, comments) to X every 30 minutes"
 
 # Remove old task from root if it exists
 Unregister-ScheduledTask -TaskName $oldTaskName -Confirm:$false -ErrorAction SilentlyContinue

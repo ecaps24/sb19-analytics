@@ -431,6 +431,62 @@
             box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
         }
 
+        .date-range-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .date-range-btn {
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .date-range-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #cbd5e1;
+        }
+
+        .date-range-btn.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.15));
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .custom-date-range {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .custom-date-input {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.7);
+            color: #e5e7eb;
+            font-size: 0.75rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.25s;
+        }
+
+        .custom-date-input:focus {
+            border-color: #3b82f6;
+        }
+
         .result-count {
             font-size: 0.78rem;
             color: #475569;
@@ -789,6 +845,19 @@
                     <input type="text" class="search-box" id="searchBox" placeholder="Search artists...">
                     <div class="genre-pills" id="genrePills"></div>
                 </div>
+                <div class="date-range-controls" id="dateRangeControls">
+                    <span style="color:#64748b;font-size:0.78rem;font-weight:600">Streams Range:</span>
+                    <button class="date-range-btn active" data-range="1d">1D</button>
+                    <button class="date-range-btn" data-range="7d">7D</button>
+                    <button class="date-range-btn" data-range="14d">14D</button>
+                    <button class="date-range-btn" data-range="mtd">MTD</button>
+                    <button class="date-range-btn" data-range="custom">Custom</button>
+                    <div class="custom-date-range" id="customDateRange" style="display:none">
+                        <input type="date" id="customStartDate" class="custom-date-input">
+                        <span style="color:#64748b;font-size:0.78rem">to</span>
+                        <input type="date" id="customEndDate" class="custom-date-input">
+                    </div>
+                </div>
                 <div id="resultCount" class="result-count"></div>
                 <div class="table-scroll">
                     <table class="data-table" id="leaderboardTable">
@@ -798,8 +867,10 @@
                                 <th data-sort="name">Artist <span class="sort-arrow"></span></th>
                                 <th data-sort="genre">Genre <span class="sort-arrow"></span></th>
                                 <th data-sort="listeners" style="text-align:right">Monthly Listeners <span class="sort-arrow"></span></th>
-                                <th data-sort="followers" style="text-align:right">Followers <span class="sort-arrow"></span></th>
                                 <th data-sort="change" style="text-align:right">Change <span class="sort-arrow"></span></th>
+                                <th data-sort="followers" style="text-align:right">Followers <span class="sort-arrow"></span></th>
+                                <th data-sort="totalStreams" style="text-align:right">Total Streams <span class="sort-arrow"></span></th>
+                                <th data-sort="dailyStreams" style="text-align:right">Daily Streams <span class="sort-arrow"></span></th>
                             </tr>
                         </thead>
                         <tbody id="leaderboardBody"></tbody>
@@ -845,6 +916,8 @@
                 this.artistGenreMap = {};
                 this.artistUrlMap = {};
                 this.tracksData = [];
+                this.opmStreamsData = [];
+                this.sb19StreamsData = [];
                 this.leaderboard = [];
                 this.genreStats = {};
                 this.latestDate = '';
@@ -853,6 +926,9 @@
                 this.searchQuery = '';
                 this.sortCol = 'listeners';
                 this.sortDir = 'desc';
+                this.dateRange = '1d';
+                this.customStart = '';
+                this.customEnd = '';
                 this.genreColors = {
                     'P-Pop': '#60a5fa',
                     'SB19 Solo': '#f97316',
@@ -1002,13 +1078,44 @@
                 return data;
             }
 
+            parseStreamsCSV(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim());
+                if (lines.length === 0) return [];
+                const headers = this.parseCSVLine(lines[0], ';');
+                const data = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const values = this.parseCSVLine(lines[i], ';');
+                    const row = {};
+                    headers.forEach((h, idx) => row[h.trim()] = (values[idx] || '').trim());
+                    const streams = parseInt((row.streams || '0').replace(/,/g, ''));
+                    let ts = row.timestamp || '';
+                    let dataDate = '';
+                    if (ts.includes('-') && ts.length >= 10) {
+                        dataDate = ts.substring(0, 10);
+                    } else if (ts.length >= 8) {
+                        dataDate = ts.substring(0,4)+'-'+ts.substring(4,6)+'-'+ts.substring(6,8);
+                    }
+                    if (row.song_title && !isNaN(streams) && dataDate) {
+                        data.push({
+                            date: dataDate,
+                            title: row.song_title,
+                            artist: row.artist || '',
+                            streams
+                        });
+                    }
+                }
+                return data;
+            }
+
             // --- Data Loading ---
 
             async loadData() {
-                const [listenersResp, artistsResp, tracksResp] = await Promise.all([
+                const [listenersResp, artistsResp, tracksResp, opmStreamsResp, sb19StreamsResp] = await Promise.all([
                     fetch('../monthly_listeners.csv?t=' + Date.now()),
                     fetch('../opm_artists_spotify.csv?t=' + Date.now()),
-                    fetch('../opm_top10_tracks.csv?t=' + Date.now()).catch(() => null)
+                    fetch('../opm_top10_tracks.csv?t=' + Date.now()).catch(() => null),
+                    fetch('../opm_tracks_results.csv?t=' + Date.now()).catch(() => null),
+                    fetch('../selenium_results.csv?t=' + Date.now()).catch(() => null)
                 ]);
 
                 if (!listenersResp.ok) throw new Error('Failed to load monthly_listeners.csv');
@@ -1035,10 +1142,19 @@
                     this.tracksData = this.parseTracksCSV(await tracksResp.text());
                 }
 
+                if (opmStreamsResp && opmStreamsResp.ok) {
+                    this.opmStreamsData = this.parseStreamsCSV(await opmStreamsResp.text());
+                }
+                if (sb19StreamsResp && sb19StreamsResp.ok) {
+                    this.sb19StreamsData = this.parseStreamsCSV(await sb19StreamsResp.text());
+                }
+
                 console.log('Data loaded:', {
                     listeners: this.listenersData.length,
                     genres: Object.keys(this.artistGenreMap).length,
-                    tracks: this.tracksData.length
+                    tracks: this.tracksData.length,
+                    opmStreams: this.opmStreamsData.length,
+                    sb19Streams: this.sb19StreamsData.length
                 });
             }
 
@@ -1082,6 +1198,8 @@
                     });
                 });
 
+                this.computeStreamsMetrics();
+
                 this.leaderboard.sort((a, b) => b.listeners - a.listeners);
 
                 this.genreStats = {};
@@ -1097,6 +1215,120 @@
                 if (subtitle) {
                     subtitle.textContent = `Spotify Performance Tracking for ${this.leaderboard.length} OPM Artists`;
                 }
+            }
+
+            computeStreamsMetrics() {
+                const allStreams = [...this.opmStreamsData, ...this.sb19StreamsData];
+                const streamDates = [...new Set(allStreams.map(d => d.date))].sort();
+
+                if (streamDates.length < 2) {
+                    this.leaderboard.forEach(a => { a.totalStreams = 0; a.dailyStreams = 0; a.dailyChange = 0; });
+                    return;
+                }
+
+                const latest = streamDates[streamDates.length - 1];
+
+                const findDate = (target) => {
+                    for (let i = streamDates.length - 1; i >= 0; i--) {
+                        if (streamDates[i] <= target) return streamDates[i];
+                    }
+                    return streamDates[0];
+                };
+
+                const subtractDays = (dateStr, days) => {
+                    const d = new Date(dateStr + 'T00:00:00');
+                    d.setDate(d.getDate() - days);
+                    return d.toISOString().substring(0, 10);
+                };
+
+                let endDate = latest, startDate, prevStartDate;
+
+                if (this.dateRange === '1d') {
+                    const idx = streamDates.length - 1;
+                    startDate = idx >= 1 ? streamDates[idx - 1] : latest;
+                    prevStartDate = idx >= 2 ? streamDates[idx - 2] : '';
+                } else if (this.dateRange === '7d') {
+                    startDate = findDate(subtractDays(latest, 7));
+                    const span = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+                    prevStartDate = span > 0 ? findDate(subtractDays(startDate, span)) : '';
+                } else if (this.dateRange === '14d') {
+                    startDate = findDate(subtractDays(latest, 14));
+                    const span = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+                    prevStartDate = span > 0 ? findDate(subtractDays(startDate, span)) : '';
+                } else if (this.dateRange === 'mtd') {
+                    startDate = findDate(latest.substring(0, 8) + '01');
+                    const span = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+                    prevStartDate = span > 0 ? findDate(subtractDays(startDate, span)) : '';
+                } else if (this.dateRange === 'custom') {
+                    endDate = this.customEnd ? findDate(this.customEnd) : latest;
+                    startDate = this.customStart ? findDate(this.customStart) : findDate(subtractDays(endDate, 7));
+                    const span = Math.round((new Date(endDate) - new Date(startDate)) / 86400000);
+                    prevStartDate = span > 0 ? findDate(subtractDays(startDate, span)) : '';
+                }
+
+                // Prevent startDate == endDate
+                if (startDate === endDate && streamDates.length >= 2) {
+                    const idx = streamDates.indexOf(endDate);
+                    startDate = idx > 0 ? streamDates[idx - 1] : streamDates[0];
+                }
+
+                // Build per-track maps for the 3 boundary dates
+                const endMap = new Map();
+                const startMap = new Map();
+                const prevMap = new Map();
+
+                allStreams.forEach(d => {
+                    const key = (d.title + '|||' + d.artist).toLowerCase();
+                    if (d.date === endDate) {
+                        if (!endMap.has(key) || d.streams > endMap.get(key).streams)
+                            endMap.set(key, d);
+                    }
+                    if (d.date === startDate) {
+                        if (!startMap.has(key) || d.streams > startMap.get(key).streams)
+                            startMap.set(key, d);
+                    }
+                    if (prevStartDate && d.date === prevStartDate) {
+                        if (!prevMap.has(key) || d.streams > prevMap.get(key).streams)
+                            prevMap.set(key, d);
+                    }
+                });
+
+                // Total streams from latest date
+                const artistTotalMap = new Map();
+                endMap.forEach(entry => {
+                    const akey = entry.artist.toLowerCase();
+                    artistTotalMap.set(akey, (artistTotalMap.get(akey) || 0) + entry.streams);
+                });
+
+                // Period gain: endDate - startDate
+                const artistGainMap = new Map();
+                endMap.forEach((entry, key) => {
+                    const start = startMap.get(key);
+                    if (!start) return;
+                    const gain = entry.streams - start.streams;
+                    const akey = entry.artist.toLowerCase();
+                    artistGainMap.set(akey, (artistGainMap.get(akey) || 0) + gain);
+                });
+
+                // Previous period gain for comparison
+                const artistPrevGainMap = new Map();
+                if (prevStartDate && prevStartDate !== startDate) {
+                    startMap.forEach((entry, key) => {
+                        const prev = prevMap.get(key);
+                        if (!prev) return;
+                        const gain = entry.streams - prev.streams;
+                        const akey = entry.artist.toLowerCase();
+                        artistPrevGainMap.set(akey, (artistPrevGainMap.get(akey) || 0) + gain);
+                    });
+                }
+
+                this.leaderboard.forEach(a => {
+                    const akey = a.name.toLowerCase();
+                    a.totalStreams = artistTotalMap.get(akey) || 0;
+                    a.dailyStreams = artistGainMap.get(akey) || 0;
+                    const prevGain = artistPrevGainMap.get(akey) || 0;
+                    a.dailyChange = (a.dailyStreams && prevGain) ? a.dailyStreams - prevGain : 0;
+                });
             }
 
             findGenre(name) {
@@ -1359,6 +1591,13 @@
             }
 
             renderLeaderboard() {
+                const rangeLabels = { '1d': '1D', '7d': '7D', '14d': '14D', 'mtd': 'MTD', 'custom': 'Custom' };
+                const dsHeader = document.querySelector('#leaderboardTable th[data-sort="dailyStreams"]');
+                if (dsHeader) {
+                    const arrow = dsHeader.querySelector('.sort-arrow');
+                    dsHeader.innerHTML = `${rangeLabels[this.dateRange] || '1D'} Streams <span class="sort-arrow">${arrow ? arrow.textContent : ''}</span>`;
+                }
+
                 let filtered = [...this.leaderboard];
 
                 if (this.activeGenre !== 'All') {
@@ -1376,8 +1615,10 @@
                         case 'name': va = a.name.toLowerCase(); vb = b.name.toLowerCase(); break;
                         case 'genre': va = a.genre; vb = b.genre; break;
                         case 'listeners': va = a.listeners; vb = b.listeners; break;
-                        case 'followers': va = a.followers; vb = b.followers; break;
                         case 'change': va = a.change; vb = b.change; break;
+                        case 'followers': va = a.followers; vb = b.followers; break;
+                        case 'totalStreams': va = a.totalStreams; vb = b.totalStreams; break;
+                        case 'dailyStreams': va = a.dailyStreams; vb = b.dailyStreams; break;
                         default: va = a.listeners; vb = b.listeners;
                     }
                     if (typeof va === 'string') {
@@ -1402,13 +1643,20 @@
 
                     const gc = this.getGenreColor(a.genre);
 
+                    const dsStr = a.dailyStreams ? (a.dailyStreams > 0 ? '+' : '') + a.dailyStreams.toLocaleString() : '-';
+                    const dsClass = a.dailyStreams > 0 ? 'change-up' : a.dailyStreams < 0 ? 'change-down' : 'change-neutral';
+                    const dcStr = a.dailyChange ? ' (' + (a.dailyChange > 0 ? '+' : '') + this.formatNumber(a.dailyChange) + ')' : '';
+                    const dcClass = a.dailyChange > 0 ? 'change-up' : a.dailyChange < 0 ? 'change-down' : 'change-neutral';
+
                     return `<tr>
                         <td class="rank-col">${rankCell}</td>
                         <td><a class="artist-link" href="../index.html#artist=${encodeURIComponent(a.name)}">${a.name}</a></td>
                         <td><span class="genre-badge" style="background:${gc}18;color:${gc};border:1px solid ${gc}33">${a.genre}</span></td>
                         <td class="num-col">${a.listeners.toLocaleString()}</td>
-                        <td class="num-col">${a.followers ? a.followers.toLocaleString() : '-'}</td>
                         <td class="num-col"><span class="${changeClass}">${changeStr}</span></td>
+                        <td class="num-col">${a.followers ? a.followers.toLocaleString() : '-'}</td>
+                        <td class="num-col">${a.totalStreams ? a.totalStreams.toLocaleString() : '-'}</td>
+                        <td class="num-col"><span class="${dsClass}">${dsStr}</span>${dcStr ? `<span class="${dcClass}" style="font-size:0.75em;margin-left:4px">${dcStr}</span>` : ''}</td>
                     </tr>`;
                 }).join('');
 
@@ -1490,6 +1738,36 @@
                         }
                         this.renderLeaderboard();
                     });
+                });
+
+                document.getElementById('dateRangeControls').addEventListener('click', (e) => {
+                    const btn = e.target.closest('.date-range-btn');
+                    if (!btn) return;
+                    this.dateRange = btn.dataset.range;
+                    document.querySelectorAll('.date-range-btn').forEach(b =>
+                        b.classList.toggle('active', b.dataset.range === this.dateRange));
+                    document.getElementById('customDateRange').style.display =
+                        this.dateRange === 'custom' ? 'flex' : 'none';
+                    if (this.dateRange !== 'custom') {
+                        this.computeStreamsMetrics();
+                        this.renderLeaderboard();
+                    }
+                });
+
+                document.getElementById('customStartDate').addEventListener('change', (e) => {
+                    this.customStart = e.target.value;
+                    if (this.customStart && this.customEnd) {
+                        this.computeStreamsMetrics();
+                        this.renderLeaderboard();
+                    }
+                });
+
+                document.getElementById('customEndDate').addEventListener('change', (e) => {
+                    this.customEnd = e.target.value;
+                    if (this.customStart && this.customEnd) {
+                        this.computeStreamsMetrics();
+                        this.renderLeaderboard();
+                    }
                 });
             }
         }

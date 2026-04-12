@@ -455,64 +455,73 @@
             backdrop-filter: blur(10px);
         }
 
-        /* VISA Single Hero Card — matches YouTube card layout */
-        .visa-hero-card {
+        /* Album Spotlight Hero Card — Wakas At Simula */
+        .was-hero-card {
             position: relative;
             border-radius: 12px;
             overflow: hidden;
             height: 290px;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
         }
-        .visa-hero-card:hover {
+        .was-hero-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.25) 0%, transparent 60%),
+                        radial-gradient(ellipse at 20% 80%, rgba(251,191,36,0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        .was-hero-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 24px rgba(88,28,135,0.5);
         }
-        .visa-hero-bg {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            filter: brightness(0.35);
-        }
-        .visa-hero-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(15,23,42,0.7) 0%, rgba(15,23,42,0.4) 40%, rgba(15,23,42,0.75) 100%);
-        }
-        .visa-hero-content {
+        .was-hero-content {
             position: relative; z-index: 1;
             height: 100%;
             display: flex; flex-direction: column;
             padding: 0;
         }
-        .visa-header {
+        .was-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             padding: 14px 16px 0 16px;
         }
-        .visa-identity {
-            display: flex; align-items: center; gap: 10px;
+        .was-identity {
+            display: flex; flex-direction: column; gap: 3px;
         }
-        .visa-title {
-            font-size: 1.8rem; font-weight: 800; color: #fff;
-            letter-spacing: 2px; line-height: 1;
+        .was-title-row {
+            display: flex; align-items: center; gap: 8px;
         }
-        .visa-artist {
-            font-size: 0.8rem; color: rgba(255,255,255,0.55);
+        .was-title {
+            font-size: 1.25rem; font-weight: 800; color: #fff;
+            letter-spacing: 1px; line-height: 1;
+        }
+        .was-subtitle {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .was-artist {
+            font-size: 0.7rem; color: rgba(255,255,255,0.55);
             font-weight: 600; letter-spacing: 1px;
             text-transform: uppercase;
         }
-        .visa-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: rgba(30,215,96,0.9);
-            color: #fff; font-size: 0.55rem; font-weight: 700;
-            padding: 3px 8px; border-radius: 999px;
-            letter-spacing: 1.5px;
+        .was-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(139,92,246,0.85);
+            color: #fff; font-size: 0.5rem; font-weight: 700;
+            padding: 2px 7px; border-radius: 999px;
+            letter-spacing: 1.2px;
         }
-        .visa-controls {
+        .was-badge.new-release {
+            background: rgba(251,191,36,0.9);
+            color: #1e1b4b;
+        }
+        .was-controls {
             display: flex; align-items: center; gap: 6px;
+            flex-shrink: 0;
         }
-        .visa-spotify-link {
+        .was-spotify-link {
             display: inline-flex; align-items: center; gap: 4px;
             background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
             font-size: 0.65rem; font-weight: 600;
@@ -521,54 +530,103 @@
             border: 1px solid rgba(255,255,255,0.15);
             transition: all 0.2s;
         }
-        .visa-spotify-link:hover {
-            background: rgba(30,215,96,0.85); color: #fff;
+        .was-spotify-link:hover {
+            background: rgba(139,92,246,0.85); color: #fff;
             border-color: transparent;
         }
-        /* Stats strip — mirrors YouTube card */
-        .visa-stats-strip {
+        /* Stats strip */
+        .was-stats-strip {
             display: flex;
             align-items: baseline;
             justify-content: center;
             gap: 20px;
-            padding: 10px 16px 6px;
+            padding: 8px 16px 4px;
         }
-        .visa-stat {
+        .was-stat {
             display: flex; flex-direction: column; align-items: center; gap: 2px;
             min-width: 0;
         }
-        .visa-stat-row {
+        .was-stat-row {
             display: flex; align-items: baseline; gap: 4px;
         }
-        .visa-stat-value {
-            font-size: 1.35rem; font-weight: 700; color: #fff;
+        .was-stat-value {
+            font-size: 1.2rem; font-weight: 700; color: #fff;
             line-height: 1; white-space: nowrap;
         }
-        .visa-stat-label {
-            font-size: 0.6rem; color: rgba(255,255,255,0.4);
+        .was-stat-label {
+            font-size: 0.55rem; color: rgba(255,255,255,0.4);
             text-transform: uppercase; letter-spacing: 0.5px;
             font-weight: 500;
         }
-        .visa-stat-change {
-            font-size: 0.65rem; font-weight: 600;
+        .was-stat-change {
+            font-size: 0.6rem; font-weight: 600;
         }
-        .visa-stat-change.positive { color: #34d399; }
-        .visa-stat-change.negative { color: #f87171; }
-        /* Chart area */
-        .visa-daily-chart {
+        .was-stat-change.positive { color: #a78bfa; }
+        .was-stat-change.negative { color: #f87171; }
+        /* Top tracks chart area */
+        .was-chart {
             position: absolute;
             bottom: 0; left: 0;
-            width: 100%; height: 65%;
+            width: 100%; height: 58%;
             z-index: 0;
             pointer-events: none;
         }
         /* Footer */
-        .visa-footer {
+        .was-footer {
             position: absolute; bottom: 6px; left: 0; right: 0;
             text-align: center; z-index: 1;
         }
-        .visa-last-refresh {
+        .was-last-refresh {
             font-size: 0.55rem; color: rgba(255,255,255,0.25);
+        }
+        /* Remaining tracks table below the hero card */
+        .was-remaining {
+            margin-top: 6px;
+            background: rgba(30,27,75,0.5);
+            border: 1px solid rgba(139,92,246,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .was-remaining-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 8px 12px 4px;
+        }
+        .was-remaining-title {
+            font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.4);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .was-remaining-body {
+            max-height: 160px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139,92,246,0.3) transparent;
+        }
+        .was-remaining-body::-webkit-scrollbar { width: 4px; }
+        .was-remaining-body::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.3); border-radius: 4px; }
+        .was-remaining-body::-webkit-scrollbar-track { background: transparent; }
+        .was-remaining-row {
+            display: flex; align-items: center; gap: 8px;
+            padding: 4px 12px;
+            transition: background 0.15s;
+        }
+        .was-remaining-row:hover {
+            background: rgba(139,92,246,0.1);
+        }
+        .was-remaining-rank {
+            font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.3);
+            min-width: 18px; text-align: right;
+        }
+        .was-remaining-name {
+            flex: 1; min-width: 0;
+            font-size: 0.7rem; font-weight: 500; color: rgba(255,255,255,0.7);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .was-remaining-feat {
+            font-size: 0.6rem; color: rgba(255,255,255,0.3); font-weight: 400;
+        }
+        .was-remaining-streams {
+            font-size: 0.65rem; font-weight: 600; color: rgba(167,139,250,0.9);
+            white-space: nowrap;
         }
 
         /* YouTube VISA Card */
@@ -1613,10 +1671,10 @@
                 min-width: 120px;
             }
 
-            .visa-hero-card { height: 260px; }
-            .visa-title { font-size: 1.6rem; }
-            .visa-stat-value { font-size: 1.15rem; }
-            .visa-stats-strip { gap: 14px; }
+            .was-hero-card { height: 260px; }
+            .was-title { font-size: 1.1rem; }
+            .was-stat-value { font-size: 1.05rem; }
+            .was-stats-strip { gap: 14px; }
 
             .yt-hero-card { height: 260px; }
             .yt-title { font-size: 1.6rem; }
@@ -1796,12 +1854,12 @@
                 max-height: 350px !important;
             }
 
-            .visa-hero-card { height: 230px; }
-            .visa-title { font-size: 1.4rem; }
-            .visa-stat-value { font-size: 1rem; }
-            .visa-stats-strip { gap: 10px; padding: 8px 12px 4px; }
-            .visa-stat-label { font-size: 0.55rem; }
-            .visa-spotify-link { font-size: 0.6rem; padding: 3px 8px; }
+            .was-hero-card { height: 230px; }
+            .was-title { font-size: 1rem; }
+            .was-stat-value { font-size: 0.9rem; }
+            .was-stats-strip { gap: 10px; padding: 8px 12px 4px; }
+            .was-stat-label { font-size: 0.5rem; }
+            .was-spotify-link { font-size: 0.6rem; padding: 3px 8px; }
 
             .yt-hero-card { height: 230px; }
             .yt-title { font-size: 1.4rem; }
@@ -2811,6 +2869,11 @@
                     <div class="stat-value" style="font-size: 1rem; cursor: pointer;" onclick="window.dashboard.openTrendsView()">View Trends</div>
                     <div class="growth">Compare artists & tracks</div>
                 </div>
+                <div class="stat-card" id="statOpmStreams">
+                    <h3>OPM Daily Streams</h3>
+                    <div class="stat-value" style="font-size: 1rem; cursor: pointer;" onclick="window.dashboard.openOpmStreamsView()">View Rankings</div>
+                    <div class="growth">Top artists by daily streams</div>
+                </div>
             </div>
 
             <!-- Filters -->
@@ -2866,7 +2929,7 @@
                 <div class="artist-pills-scroll" id="artistPillsScroll"></div>
             </div>
 
-            <!-- Charts Row: Album/Era Chart + VISA Single Card + YouTube Card -->
+            <!-- Charts Row: Album/Era Chart + Album Spotlight Card + YouTube Card -->
             <div class="charts-row" id="mainChartsRow" style="align-items: flex-start;">
                 <!-- Album/Era Chart -->
                 <div class="chart-half" id="albumChartSection" style="flex: 1;">
@@ -2878,63 +2941,78 @@
                     </div>
                 </div>
 
-                <!-- VISA Single Hero Card (Spotify) -->
-                <div class="chart-half" id="visaCardSection" style="flex: 1;">
-                    <div class="visa-hero-card" onclick="window.dashboard.filterToVisa()">
-                        <img src="photos/visa.png" class="visa-hero-bg" alt="VISA artwork" />
-                        <div class="visa-hero-overlay"></div>
-                        <canvas id="visaDailyChart" class="visa-daily-chart"></canvas>
-                        <div class="visa-hero-content">
-                            <div class="visa-header">
-                                <div class="visa-identity">
-                                    <span class="visa-title">VISA</span>
-                                    <span class="visa-artist">SB19</span>
-                                    <span class="visa-badge">SPOTIFY</span>
+                <!-- Album Spotlight Card (Wakas At Simula) -->
+                <div class="chart-half" id="wasCardSection" style="flex: 1;">
+                    <div class="was-hero-card" onclick="window.dashboard.filterToAlbum()">
+                        <canvas id="wasTopChart" class="was-chart"></canvas>
+                        <div class="was-hero-content">
+                            <div class="was-header">
+                                <div class="was-identity">
+                                    <div class="was-title-row">
+                                        <span class="was-title">Wakas At Simula</span>
+                                    </div>
+                                    <div class="was-subtitle">
+                                        <span class="was-artist">SB19</span>
+                                        <span class="was-badge">ALBUM</span>
+                                        <span class="was-badge new-release">NEW</span>
+                                    </div>
                                 </div>
-                                <div class="visa-controls">
-                                    <a href="https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7"
-                                       target="_blank" rel="noopener" class="visa-spotify-link"
+                                <div class="was-controls">
+                                    <a href="https://open.spotify.com/album/6PLZOVdjyDjbsuMMUdXJ7W"
+                                       target="_blank" rel="noopener" class="was-spotify-link"
                                        onclick="event.stopPropagation();">&#9654; Spotify</a>
                                 </div>
                             </div>
-                            <div class="visa-stats-strip">
-                                <div class="visa-stat">
-                                    <div class="visa-stat-row">
-                                        <span class="visa-stat-value" id="visaStreamCount">--</span>
-                                        <span class="visa-stat-label">streams</span>
+                            <div class="was-stats-strip">
+                                <div class="was-stat">
+                                    <div class="was-stat-row">
+                                        <span class="was-stat-value" id="wasTrackCount">24</span>
+                                        <span class="was-stat-label">tracks</span>
                                     </div>
-                                    <span class="visa-stat-change" id="visaStreamChange"></span>
                                 </div>
-                                <div class="visa-stat">
-                                    <div class="visa-stat-row">
-                                        <span class="visa-stat-value" id="visaDailyStreams">--</span>
-                                        <span class="visa-stat-label">daily</span>
+                                <div class="was-stat">
+                                    <div class="was-stat-row">
+                                        <span class="was-stat-value" id="wasTotalStreams">--</span>
+                                        <span class="was-stat-label">streams</span>
                                     </div>
-                                    <span class="visa-stat-change" id="visaDailyChange"></span>
+                                    <span class="was-stat-change" id="wasStreamChange"></span>
+                                </div>
+                                <div class="was-stat">
+                                    <div class="was-stat-row">
+                                        <span class="was-stat-value" id="wasDailyStreams">--</span>
+                                        <span class="was-stat-label">daily</span>
+                                    </div>
+                                    <span class="was-stat-change" id="wasDailyChange"></span>
                                 </div>
                             </div>
-                            <div class="visa-footer">
-                                <div class="visa-last-refresh" id="visaLastRefresh"></div>
+                            <div class="was-footer">
+                                <div class="was-last-refresh" id="wasLastRefresh"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="was-remaining" id="wasRemainingTable" style="display:none;">
+                        <div class="was-remaining-header">
+                            <span class="was-remaining-title">More tracks</span>
+                        </div>
+                        <div class="was-remaining-body" id="wasRemainingBody"></div>
+                    </div>
                 </div>
 
-                <!-- YouTube VISA Card -->
+                <!-- YouTube EMOJI Card -->
                 <div class="chart-half" id="youtubeCardSection" style="flex: 1;">
                     <div class="yt-hero-card">
-                        <img src="photos/visa.png" class="yt-hero-bg" alt="VISA artwork" />
+                        <img src="photos/emoji.png" class="yt-hero-bg" alt="EMOJI artwork" />
                         <div class="yt-hero-overlay"></div>
                         <canvas id="ytHourlyChart" class="yt-hourly-chart"></canvas>
                         <div class="yt-hero-content">
                             <div class="yt-header">
                                 <div class="yt-identity">
-                                    <span class="yt-title">VISA</span>
+                                    <span class="yt-title">EMOJI</span>
                                     <span class="yt-artist">SB19</span>
                                     <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
                                 </div>
                                 <div class="yt-controls">
-                                    <a href="https://www.youtube.com/watch?v=0t6GNcINKeU" target="_blank" rel="noopener" class="yt-watch-link"
+                                    <a href="https://www.youtube.com/watch?v=w6_sChrkvw8" target="_blank" rel="noopener" class="yt-watch-link"
                                        onclick="event.stopPropagation();">&#9654; YouTube</a>
                                     <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
                                         <span class="yt-refresh-icon">&#8635;</span>
@@ -3489,6 +3567,48 @@
                 </div>
             </div>
 
+            <!-- OPM Top Artists by Daily Streams View -->
+            <div id="opm-streams-view" class="listeners-detail-container" style="display: none;">
+                <div class="listeners-detail-header">
+                    <button class="song-back-btn" onclick="window.dashboard.closeOpmStreamsView()">Back to Dashboard</button>
+                    <div class="listeners-title-section">
+                        <h2>OPM Top Artists by Daily Streams</h2>
+                    </div>
+                </div>
+
+                <div class="listeners-stats-row" id="opmStreamsStatsRow">
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Total Daily Streams</span>
+                        <span class="listeners-stat-value" id="opmStreamsTotalDaily">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Artists Tracked</span>
+                        <span class="listeners-stat-value" id="opmStreamsArtistCount">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Date</span>
+                        <span class="listeners-stat-value" id="opmStreamsDate">-</span>
+                    </div>
+                </div>
+
+                <div class="table-wrapper" style="margin-top: 16px;">
+                    <table class="tracks-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px; text-align: right;">#</th>
+                                <th>Artist</th>
+                                <th style="width: 100px;">Genre</th>
+                                <th style="text-align: right;">Daily Streams</th>
+                                <th style="text-align: right; width: 110px;">vs Prev Day</th>
+                                <th style="text-align: right; width: 70px;">Tracks</th>
+                                <th style="text-align: right; width: 70px;">Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody id="opmStreamsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Bottom Ad -->
             <div class="ad-container" style="margin-top: 16px;">
                 <ins class="adsbygoogle"
@@ -4029,6 +4149,8 @@
                 this.chartCustomEnd = ''; // Custom date range end
                 // Trends view state
                 this.trendsViewOpen = false;
+                // OPM streams view state
+                this.opmStreamsViewOpen = false;
                 // Users view state (admin only)
                 this.usersViewOpen = false;
                 this.usersData = [];
@@ -4061,20 +4183,20 @@
                 this.allTracksMetadata = {};
                 this.youtubeConfig = {
                     apiKey: 'AIzaSyCG-ZWidx7LVzf8NSts4lvUwwEMMao34q8',
-                    videoId: '0t6GNcINKeU',
+                    videoId: 'w6_sChrkvw8',
                     refreshInterval: 60 * 1000,
-                    storageKey: 'sb19_yt_visa_history',
-                    cacheKey: 'sb19_yt_visa_cache',
-                    hourlyKey: 'sb19_yt_visa_hourly'
+                    storageKey: 'sb19_yt_emoji_history',
+                    cacheKey: 'sb19_yt_emoji_cache',
+                    hourlyKey: 'sb19_yt_emoji_hourly'
                 };
                 this.ytRefreshTimer = null;
                 this.ytHourlyChart = null;
-                this.visaDailyChart = null;
+                this.wasAlbumChart = null;
                 this.artistConfig = {
                     'SB19': {
                         ath: 2828289,
                         tracksCsvFile: './tracks.csv',
-                        mainAlbums: ['Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Simula at Wakas', 'Pagsibol'],
+                        mainAlbums: ['Wakas At Simula', 'Simula at Wakas Tour Kickoff', 'Pagtatag!', 'Pagsibol'],
                         hasMemberBreakdown: true,
                         hasVisaCard: true,
                         hasYoutubeCard: true
@@ -4166,13 +4288,6 @@
                     'KAIA': {
                         ath: null,
                         tracksCsvFile: './kaia_tracks.csv',
-                        mainAlbums: [],
-                        hasMemberBreakdown: false,
-                        hasVisaCard: false
-                    },
-                    'DIONE': {
-                        ath: null,
-                        tracksCsvFile: './dione_tracks.csv',
                         mainAlbums: [],
                         hasMemberBreakdown: false,
                         hasVisaCard: false
@@ -5016,12 +5131,18 @@
                     return d.artist_name === this.selectedArtist;
                 });
 
-                // Get latest entry per track (by highest streams count since timestamps may be same)
+                // Get latest entry per track (by most recent date, then highest streams as tiebreaker)
                 const latestByTrack = {};
                 artistStreams.forEach(d => {
                     const key = d.song_title;
-                    if (!latestByTrack[key] || d.total_streams > latestByTrack[key].total_streams) {
+                    if (!latestByTrack[key]) {
                         latestByTrack[key] = d;
+                    } else {
+                        const existingDate = latestByTrack[key].data_date || '';
+                        const newDate = d.data_date || '';
+                        if (newDate > existingDate || (newDate === existingDate && d.total_streams > latestByTrack[key].total_streams)) {
+                            latestByTrack[key] = d;
+                        }
                     }
                 });
 
@@ -5045,9 +5166,15 @@
 
                     if (!byDate[dateKey]) byDate[dateKey] = {};
                     const key = d.song_title;
-                    // Keep highest streams value for each track per date
-                    if (!byDate[dateKey][key] || d.total_streams > byDate[dateKey][key].total_streams) {
+                    // Keep latest entry for each track per date (by timestamp, then highest streams as tiebreaker)
+                    if (!byDate[dateKey][key]) {
                         byDate[dateKey][key] = d;
+                    } else {
+                        const existingDate = byDate[dateKey][key].data_date || '';
+                        const newDate = d.data_date || '';
+                        if (newDate > existingDate || (newDate === existingDate && d.total_streams > byDate[dateKey][key].total_streams)) {
+                            byDate[dateKey][key] = d;
+                        }
                     }
                 });
 
@@ -5226,30 +5353,54 @@
                 const endData = streamsByDate[endDate] || {};
 
                 const changes = {};
-                // Get all unique tracks from both periods
-                const allTracks = new Set([...Object.keys(startData), ...Object.keys(endData)]);
+                const fallbackTracks = new Set();
+                // Get all unique tracks across ALL dates (not just start/end)
+                const allTracksInData = new Set();
+                allDates.forEach(d => {
+                    Object.keys(streamsByDate[d] || {}).forEach(t => allTracksInData.add(t));
+                });
+                // Also include tracks from start/end
+                const allTracks = new Set([...allTracksInData, ...Object.keys(startData), ...Object.keys(endData)]);
                 allTracks.forEach(track => {
-                    const endStreams = endData[track]?.total_streams || 0;
-                    const startStreams = startData[track]?.total_streams || 0;
-                    // Only calculate change if track exists in BOTH periods
-                    // Otherwise change would equal total streams (misleading)
                     if (startData[track] && endData[track]) {
+                        const endStreams = endData[track].total_streams || 0;
+                        const startStreams = startData[track].total_streams || 0;
                         const rawChange = endStreams - startStreams;
-                        // Only apply OCR error filter to well-established tracks (>10M streams)
-                        // Newer/trending tracks can legitimately have >10% daily growth
                         const isEstablishedTrack = endStreams > 10000000;
                         if (isEstablishedTrack && endStreams > 0 && Math.abs(rawChange) / endStreams > 0.1) {
                             changes[track] = 0;
                         } else {
-                            // Normalize to daily average if more than 1 day gap (for last1 preset)
                             changes[track] = isNormalized ? Math.round(rawChange / daysDiff) : rawChange;
                         }
                     } else {
-                        changes[track] = 0; // No change data available
+                        // Track missing from end or start date — find last 2 valid data points
+                        const trackDates = allDates.filter(d => streamsByDate[d]?.[track]);
+                        if (trackDates.length >= 2) {
+                            const last = trackDates[trackDates.length - 1];
+                            const prev = trackDates[trackDates.length - 2];
+                            const lastStreams = streamsByDate[last][track].total_streams || 0;
+                            const prevStreams = streamsByDate[prev][track].total_streams || 0;
+                            const rawChange = lastStreams - prevStreams;
+                            const trackDaysDiff = this.getDaysBetween(prev, last);
+                            const isEstablishedTrack = lastStreams > 10000000;
+                            if (isEstablishedTrack && lastStreams > 0 && Math.abs(rawChange) / lastStreams > 0.1) {
+                                changes[track] = 0;
+                            } else {
+                                changes[track] = trackDaysDiff > 1 ? Math.round(rawChange / trackDaysDiff) : rawChange;
+                            }
+                            fallbackTracks.add(track);
+                        } else if (trackDates.length === 1) {
+                            // New track with only one data point — total streams are all new
+                            const only = trackDates[0];
+                            changes[track] = streamsByDate[only][track].total_streams || 0;
+                            fallbackTracks.add(track);
+                        } else {
+                            changes[track] = 0;
+                        }
                     }
                 });
 
-                return { changes, label, startDate, endDate };
+                return { changes, label, startDate, endDate, fallbackTracks };
             }
 
             getRankChanges() {
@@ -5453,7 +5604,7 @@
                 }
 
                 if (config && config.hasVisaCard) {
-                    this.renderVisaCard();
+                    this.renderAlbumSpotlight();
                 }
                 if (config && config.hasYoutubeCard) {
                     this.startYouTubeRefresh();
@@ -5609,8 +5760,8 @@
                 const albumEl = document.getElementById('albumChartSection');
                 if (albumEl) albumEl.style.display = hasTracks ? '' : 'none';
 
-                const visaEl = document.getElementById('visaCardSection');
-                if (visaEl) visaEl.style.display = hasVisaCard ? '' : 'none';
+                const wasEl = document.getElementById('wasCardSection');
+                if (wasEl) wasEl.style.display = hasVisaCard ? '' : 'none';
 
                 const hasYoutube = config && config.hasYoutubeCard;
                 const ytEl = document.getElementById('youtubeCardSection');
@@ -5901,6 +6052,7 @@
 
                 if (this.charts.listeners) {
                     this.charts.listeners.destroy();
+                    this.charts.listeners = null;
                 }
 
                 this.charts.listeners = new Chart(ctx, {
@@ -6007,7 +6159,7 @@
             populateTopTracks() {
                 const tbody = document.getElementById('top-tracks-body');
                 let latestStreams = this.getLatestStreams();
-                const { changes: periodChanges, label: changeLabel } = this.getPeriodChange();
+                const { changes: periodChanges, label: changeLabel, fallbackTracks } = this.getPeriodChange();
                 const { rankChanges, previousRanks, streakDays } = this.getRankChanges();
 
                 // Update column header with sort icon
@@ -6018,7 +6170,7 @@
                 // Update sort icons
                 this.updateSortIcons();
 
-                // Apply track filter if set (specific track from VISA card or chart click)
+                // Apply track filter if set (specific track from album card or chart click)
                 if (this.trackFilter) {
                     latestStreams = latestStreams.filter(track => track.song_title === this.trackFilter);
                 }
@@ -6091,12 +6243,14 @@
 
                     // Period change with rank indicator
                     const change = periodChanges[track.song_title] || 0;
+                    const isFallback = fallbackTracks && fallbackTracks.has(track.song_title);
                     const rankChange = rankChanges ? rankChanges[track.song_title] : null;
                     const prevRank = previousRanks ? previousRanks[track.song_title] : null;
                     const streak = streakDays ? streakDays[track.song_title] : 0;
 
                     const changeColor = change > 0 ? '#34d399' : change < 0 ? '#f87171' : '#9ca3af';
-                    const changeText = change !== 0 ? `${change > 0 ? '+' : ''}${change.toLocaleString()}` : '0';
+                    const fbPrefix = isFallback ? '~' : '';
+                    const changeText = change !== 0 ? `${fbPrefix}${change > 0 ? '+' : ''}${change.toLocaleString()}` : '0';
 
                     let rankHtml = '';
                     if (rankChange !== null && rankChange !== 0 && !isNaN(rankChange)) {
@@ -6367,6 +6521,7 @@
 
                 if (this.charts.album) {
                     this.charts.album.destroy();
+                    this.charts.album = null;
                 }
 
                 const albumLabels = sortedAlbums.map(a => a[0]);
@@ -6505,170 +6660,213 @@
                 if (am && am.initialized) this.applyAlbumChartGating(am);
             }
 
-            renderVisaCard() {
+            renderAlbumSpotlight() {
                 if (this.selectedArtist !== 'SB19') return;
+                const albumName = 'Wakas At Simula';
                 const latestStreams = this.getLatestStreams();
                 const { changes: periodChanges } = this.getPeriodChange();
 
-                const visaTrack = latestStreams.find(t => t.song_title === 'VISA');
-                const streamEl = document.getElementById('visaStreamCount');
-                const changeEl = document.getElementById('visaStreamChange');
-                const dailyEl = document.getElementById('visaDailyStreams');
-                const dailyChangeEl = document.getElementById('visaDailyChange');
-                const refreshEl = document.getElementById('visaLastRefresh');
+                // Collect all album tracks
+                const albumTracks = latestStreams.filter(t =>
+                    t.album === albumName && t.total_streams > 0
+                );
 
-                if (visaTrack && visaTrack.total_streams > 0) {
-                    streamEl.textContent = visaTrack.total_streams.toLocaleString();
-                    const change = periodChanges['VISA'] || 0;
-                    if (change > 0) {
-                        changeEl.textContent = '+' + change.toLocaleString();
-                        changeEl.className = 'visa-stat-change positive';
-                    } else if (change < 0) {
-                        changeEl.textContent = change.toLocaleString();
-                        changeEl.className = 'visa-stat-change negative';
+                const totalEl = document.getElementById('wasTotalStreams');
+                const changeEl = document.getElementById('wasStreamChange');
+                const dailyEl = document.getElementById('wasDailyStreams');
+                const dailyChangeEl = document.getElementById('wasDailyChange');
+                const countEl = document.getElementById('wasTrackCount');
+                const refreshEl = document.getElementById('wasLastRefresh');
+
+                // Total streams across all album tracks
+                const totalStreams = albumTracks.reduce((sum, t) => sum + (t.total_streams || 0), 0);
+                const totalDaily = albumTracks.reduce((sum, t) => sum + (t.daily_streams || 0), 0);
+                const totalChange = albumTracks.reduce((sum, t) => sum + (periodChanges[t.song_title] || 0), 0);
+
+                if (countEl) countEl.textContent = '24';
+
+                if (totalStreams > 0) {
+                    totalEl.textContent = totalStreams >= 1e6
+                        ? (totalStreams / 1e6).toFixed(1) + 'M'
+                        : totalStreams.toLocaleString();
+
+                    if (totalChange > 0) {
+                        changeEl.textContent = '+' + totalChange.toLocaleString();
+                        changeEl.className = 'was-stat-change positive';
+                    } else if (totalChange < 0) {
+                        changeEl.textContent = totalChange.toLocaleString();
+                        changeEl.className = 'was-stat-change negative';
                     } else {
                         changeEl.textContent = '';
-                        changeEl.className = 'visa-stat-change';
+                        changeEl.className = 'was-stat-change';
                     }
 
-                    // Show daily streams if available
                     if (dailyEl) {
-                        const daily = visaTrack.daily_streams || 0;
-                        dailyEl.textContent = daily > 0 ? daily.toLocaleString() : '--';
+                        dailyEl.textContent = totalDaily > 0
+                            ? (totalDaily >= 1e6 ? (totalDaily / 1e6).toFixed(1) + 'M' : totalDaily.toLocaleString())
+                            : '--';
                     }
 
-                    // Show last data date
-                    if (refreshEl && visaTrack.data_date) {
-                        const d = new Date(visaTrack.data_date);
-                        if (!isNaN(d.getTime())) {
-                            refreshEl.textContent = 'Last updated · ' + d.toLocaleString('en-US', {
-                                month: 'short', day: 'numeric', year: 'numeric'
-                            });
+                    // Last data date from most recent album track
+                    if (refreshEl && albumTracks.length > 0) {
+                        const latest = albumTracks.reduce((a, b) =>
+                            (a.data_date || '') > (b.data_date || '') ? a : b
+                        );
+                        if (latest.data_date) {
+                            const d = new Date(latest.data_date);
+                            if (!isNaN(d.getTime())) {
+                                refreshEl.textContent = 'Last updated \u00b7 ' + d.toLocaleString('en-US', {
+                                    month: 'short', day: 'numeric', year: 'numeric'
+                                });
+                            }
                         }
                     }
                 } else {
-                    streamEl.textContent = '--';
+                    totalEl.textContent = '--';
                     changeEl.textContent = '';
                     if (dailyEl) dailyEl.textContent = '--';
                 }
 
-                // Build daily streams bar chart from historical data
-                this.renderVisaDailyChart();
+                this.renderWasTopChart(albumTracks);
+                this.renderWasRemainingTable(albumTracks);
             }
 
-            renderVisaDailyChart() {
-                const streamsByDate = this.getStreamsByDate();
-                const canvas = document.getElementById('visaDailyChart');
+            renderWasTopChart(albumTracks) {
+                const canvas = document.getElementById('wasTopChart');
                 if (!canvas) return;
 
-                // Extract VISA daily totals across all dates
-                const dates = Object.keys(streamsByDate).sort();
-                const dailySnapshots = [];
-                dates.forEach(date => {
-                    const tracks = streamsByDate[date];
-                    const visa = Object.values(tracks).find(t => t.song_title === 'VISA');
-                    if (visa && visa.total_streams > 0) {
-                        dailySnapshots.push({ date, streams: visa.total_streams });
-                    }
-                });
+                // Sort by streams descending and take top 6 for the chart
+                const sorted = [...albumTracks]
+                    .filter(t => t.total_streams > 0)
+                    .sort((a, b) => b.total_streams - a.total_streams)
+                    .slice(0, 6);
 
-                if (dailySnapshots.length < 2) {
-                    // Not enough data for a chart yet
-                    if (this.visaDailyChart) {
-                        this.visaDailyChart.destroy();
-                        this.visaDailyChart = null;
+                if (sorted.length === 0) {
+                    if (this.wasAlbumChart) {
+                        this.wasAlbumChart.destroy();
+                        this.wasAlbumChart = null;
                     }
                     return;
                 }
 
-                // Compute daily gains (delta between consecutive days)
-                const labels = [];
-                const data = [];
-                for (let i = 1; i < dailySnapshots.length; i++) {
-                    const curr = dailySnapshots[i];
-                    const prev = dailySnapshots[i - 1];
-                    const delta = Math.max(0, curr.streams - prev.streams);
-                    // Format date as "M/D"
-                    const d = curr.date;
-                    const month = parseInt(d.substring(4, 6));
-                    const day = parseInt(d.substring(6, 8));
-                    labels.push(`${month}/${day}`);
-                    data.push(delta);
-                }
+                const labels = sorted.map(t => {
+                    const name = t.song_title.replace(/ \(Wakas At Simula\)/, '');
+                    return name.length > 18 ? name.substring(0, 16) + '\u2026' : name;
+                });
+                const data = sorted.map(t => t.total_streams);
 
                 const formatK = (v) => {
                     if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
-                    if (v >= 1000) return (v / 1000).toFixed(1) + 'K';
+                    if (v >= 1000) return Math.round(v / 1000) + 'K';
                     return v.toString();
                 };
 
-                if (this.visaDailyChart) {
-                    this.visaDailyChart.data.labels = labels;
-                    this.visaDailyChart.data.datasets[0].data = data;
-                    this.visaDailyChart.update('none');
+                if (this.wasAlbumChart) {
+                    this.wasAlbumChart.data.labels = labels;
+                    this.wasAlbumChart.data.datasets[0].data = data;
+                    this.wasAlbumChart.update('none');
                     return;
                 }
 
-                if (labels.length === 0) return;
-
                 const ctx = canvas.getContext('2d');
-                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                gradient.addColorStop(0, 'rgba(30,215,96,0.9)');
-                gradient.addColorStop(1, 'rgba(30,215,96,0.4)');
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0, 'rgba(139,92,246,0.85)');
+                gradient.addColorStop(1, 'rgba(167,139,250,0.6)');
 
-                this.visaDailyChart = new Chart(canvas, {
+                this.wasAlbumChart = new Chart(canvas, {
                     type: 'bar',
                     data: {
                         labels,
                         datasets: [{
                             data,
                             backgroundColor: gradient,
-                            borderColor: 'rgba(30,215,96,0.6)',
+                            borderColor: 'rgba(139,92,246,0.4)',
                             borderWidth: 1,
-                            borderRadius: 20,
+                            borderRadius: 6,
                             borderSkipped: false,
-                            barPercentage: 0.5,
-                            categoryPercentage: 0.8
+                            barPercentage: 0.65,
+                            categoryPercentage: 0.85
                         }]
                     },
                     options: {
+                        indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
                         animation: false,
                         layout: {
-                            padding: { top: 18, left: 4, right: 4 }
+                            padding: { top: 4, bottom: 16, left: 8, right: 40 }
                         },
                         plugins: {
                             legend: { display: false },
                             tooltip: { enabled: false },
                             datalabels: {
                                 anchor: 'end',
-                                align: 'top',
-                                color: '#fff',
-                                font: { size: 9, weight: '700' },
+                                align: 'right',
+                                color: 'rgba(255,255,255,0.8)',
+                                font: { size: 8, weight: '700' },
                                 textShadowColor: 'rgba(0,0,0,0.6)',
                                 textShadowBlur: 3,
                                 formatter: (v) => v > 0 ? formatK(v) : ''
                             }
                         },
                         scales: {
-                            x: {
+                            y: {
                                 grid: { display: false },
                                 ticks: {
-                                    color: 'rgba(255,255,255,0.45)',
-                                    font: { size: 8, weight: '500' }
+                                    color: 'rgba(255,255,255,0.5)',
+                                    font: { size: 8, weight: '600' },
+                                    mirror: true,
+                                    padding: 4
                                 },
                                 border: { display: false }
                             },
-                            y: {
+                            x: {
                                 display: false,
                                 beginAtZero: true,
-                                grace: '25%'
+                                grace: '20%'
                             }
                         }
                     },
                     plugins: [ChartDataLabels]
                 });
+            }
+
+            renderWasRemainingTable(albumTracks) {
+                const container = document.getElementById('wasRemainingTable');
+                const body = document.getElementById('wasRemainingBody');
+                if (!container || !body) return;
+
+                const sorted = [...albumTracks]
+                    .filter(t => t.total_streams > 0)
+                    .sort((a, b) => b.total_streams - a.total_streams);
+
+                // Skip top 6 (shown in chart), show the rest
+                const remaining = sorted.slice(6);
+
+                if (remaining.length === 0) {
+                    container.style.display = 'none';
+                    return;
+                }
+
+                const formatK = (v) => {
+                    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+                    if (v >= 1000) return Math.round(v / 1000) + 'K';
+                    return v.toString();
+                };
+
+                body.innerHTML = remaining.map((t, i) => {
+                    const name = t.song_title.replace(/ \(Wakas At Simula\)/, '');
+                    const feat = t.collaborating_artists
+                        ? `<span class="was-remaining-feat"> ft. ${t.collaborating_artists}</span>`
+                        : '';
+                    return `<div class="was-remaining-row">
+                        <span class="was-remaining-rank">${i + 7}</span>
+                        <span class="was-remaining-name">${name}${feat}</span>
+                        <span class="was-remaining-streams">${formatK(t.total_streams)}</span>
+                    </div>`;
+                }).join('');
+
+                container.style.display = '';
             }
 
             async fetchYouTubeStats() {
@@ -6850,7 +7048,7 @@
 
             async loadYtHourlyCSV() {
                 try {
-                    const resp = await fetch('./yt_visa_streams.csv');
+                    const resp = await fetch('./yt_emoji_streams.csv');
                     if (!resp.ok) return [];
                     const text = await resp.text();
                     const lines = text.trim().split('\n').slice(1);
@@ -6859,7 +7057,7 @@
                         return { ts: ts.trim(), views: parseInt(views) || 0 };
                     }).filter(r => r.views > 0);
                 } catch (e) {
-                    console.warn('Failed to load yt_visa_streams.csv:', e);
+                    console.warn('Failed to load yt_emoji_streams.csv:', e);
                     return [];
                 }
             }
@@ -6889,7 +7087,7 @@
 
             async seedYtDailyFromCSV() {
                 try {
-                    const resp = await fetch('./yt_visa_streams.csv');
+                    const resp = await fetch('./yt_emoji_streams.csv');
                     if (!resp.ok) return;
                     const text = await resp.text();
                     const lines = text.trim().split('\n').slice(1);
@@ -7137,7 +7335,7 @@
 
             async seedYtCacheFromCSV() {
                 try {
-                    const resp = await fetch('./yt_visa_streams.csv');
+                    const resp = await fetch('./yt_emoji_streams.csv');
                     if (!resp.ok) return;
                     const text = await resp.text();
                     const lines = text.trim().split('\n').slice(1);
@@ -7180,18 +7378,21 @@
                 }
             }
 
-            filterToVisa() {
-                if (this.trackFilter === 'VISA') {
+            filterToAlbum() {
+                const albumName = 'Wakas At Simula';
+                if (this.albumFilter === albumName) {
                     this.trackFilter = null;
                     this.albumFilter = null;
                     document.getElementById('album-filter-label').textContent = '';
                     document.getElementById('clearFilterBtn').style.display = 'none';
                     document.getElementById('albumDropdownFilter').value = '';
                 } else {
-                    this.trackFilter = 'VISA';
-                    this.albumFilter = 'Single';
+                    this.trackFilter = null;
+                    this.albumFilter = albumName;
                     document.getElementById('clearFilterBtn').style.display = 'inline-block';
-                    document.getElementById('album-filter-label').textContent = 'VISA';
+                    document.getElementById('album-filter-label').textContent = albumName;
+                    const dd = document.getElementById('albumDropdownFilter');
+                    if (dd) dd.value = albumName;
                 }
                 this.populateTopTracks();
             }
@@ -7282,6 +7483,7 @@
 
                 if (this.charts.member) {
                     this.charts.member.destroy();
+                    this.charts.member = null;
                 }
 
                 // Store original colors for highlighting
@@ -7974,7 +8176,7 @@
                 // If authManager isn't ready yet, gate everything by default
                 if (!am || !am.initialized) {
                     const defaultGating = [
-                        { selector: '#visaCardSection', requiredTier: 'daypass', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                        { selector: '#wasCardSection', requiredTier: 'daypass', label: 'Album Spotlight', desc: 'Wakas At Simula album streaming stats' },
                         { selector: '#youtubeCardSection', requiredTier: 'daypass', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
                         { selector: '#topTracksSection', requiredTier: 'daypass', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                         { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
@@ -8019,7 +8221,7 @@
                 }
 
                 const gatingMap = [
-                    { selector: '#visaCardSection', requiredTier: 'daypass', label: 'VISA Single', desc: 'Latest single streaming spotlight' },
+                    { selector: '#wasCardSection', requiredTier: 'daypass', label: 'Album Spotlight', desc: 'Wakas At Simula album streaming stats' },
                     { selector: '#youtubeCardSection', requiredTier: 'daypass', label: 'YouTube Views', desc: 'Real-time YouTube music video stats' },
                     { selector: '#topTracksSection', requiredTier: 'daypass', label: 'Top Tracks', desc: 'Complete track listing with stream counts and sorting' },
                     { selector: '#memberChartSection', requiredTier: 'basic', label: 'Solo Streams Chart', desc: 'Solo streams breakdown by member' },
@@ -8157,7 +8359,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'listeners-detail-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'trends-view' || el.id === 'users-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'trends-view' || el.id === 'users-view' || el.id === 'opm-streams-view') {
                         // Keep other detail views hidden
                         el.style.display = 'none';
                     } else {
@@ -8483,6 +8685,7 @@
 
                 if (this.charts.listenersHistory) {
                     this.charts.listenersHistory.destroy();
+                    this.charts.listenersHistory = null;
                 }
 
                 console.log('Creating listeners chart, selected artists:', this.selectedCompareArtists);
@@ -8818,7 +9021,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'trends-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'users-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'users-view' || el.id === 'opm-streams-view') {
                         el.style.display = 'none';
                     } else {
                         el.style.display = '';
@@ -9509,6 +9712,10 @@
                     if (!this.usersViewOpen) {
                         this.openUsersView();
                     }
+                } else if (hash === '#opm-streams') {
+                    if (!this.opmStreamsViewOpen) {
+                        this.openOpmStreamsView();
+                    }
                 } else {
                     if (this.currentSong) {
                         this.closeSongDetail();
@@ -9521,6 +9728,9 @@
                     }
                     if (this.usersViewOpen) {
                         this.closeUsersView();
+                    }
+                    if (this.opmStreamsViewOpen) {
+                        this.closeOpmStreamsView();
                     }
                 }
             }
@@ -9590,6 +9800,7 @@
 
                 if (this.charts.songStreams) {
                     this.charts.songStreams.destroy();
+                    this.charts.songStreams = null;
                 }
 
                 const colors = dailyStreams.map(d => d.streams >= 0 ? 'rgba(52, 211, 153, 0.8)' : 'rgba(248, 113, 113, 0.8)');
@@ -9832,7 +10043,7 @@
                 Array.from(dashboard.children).forEach(el => {
                     if (el.id === 'users-view') {
                         el.style.display = 'none';
-                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'trends-view') {
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'trends-view' || el.id === 'opm-streams-view') {
                         el.style.display = 'none';
                     } else {
                         el.style.display = '';
@@ -9841,6 +10052,242 @@
 
                 this.updateArtistHash();
                 this.updateSectionVisibility();
+            }
+
+            openOpmStreamsView() {
+                this.opmStreamsViewOpen = true;
+                window.location.hash = 'opm-streams';
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id !== 'opm-streams-view' &&
+                        !el.classList.contains('ad-container') &&
+                        !el.classList.contains('products-services-panel') &&
+                        !el.classList.contains('developer-footer')) {
+                        el.style.display = 'none';
+                    }
+                });
+                document.getElementById('opm-streams-view').style.display = 'block';
+
+                this.renderOpmStreamsView();
+            }
+
+            closeOpmStreamsView() {
+                this.opmStreamsViewOpen = false;
+
+                const dashboard = document.getElementById('dashboard');
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id === 'opm-streams-view') {
+                        el.style.display = 'none';
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' || el.id === 'year-view' || el.id === 'listeners-detail-view' || el.id === 'trends-view' || el.id === 'users-view') {
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = '';
+                    }
+                });
+
+                this.updateArtistHash();
+                this.updateSectionVisibility();
+            }
+
+            renderOpmStreamsView() {
+                const data = this.streamsData;
+                if (!data || data.length === 0) return;
+
+                // Separate SB19 tracks and OPM tracks
+                const soloArtists = new Set(['pablo', 'josh cullen', 'stell', 'felip', 'justin']);
+                const sb19Tracks = data.filter(e => e.artist && e.artist.toUpperCase() === 'SB19');
+                const opmTracks = data.filter(e => {
+                    if (!e.artist) return false;
+                    const aLower = e.artist.toLowerCase();
+                    return aLower !== 'sb19' && !soloArtists.has(aLower);
+                });
+
+                // Get latest 2 dates for OPM
+                const opmDates = [...new Set(opmTracks.map(e => e.date))].sort();
+                const sb19Dates = [...new Set(sb19Tracks.map(e => e.date))].sort();
+
+                if (opmDates.length < 2) {
+                    document.getElementById('opmStreamsTableBody').innerHTML =
+                        '<tr><td colspan="7" style="text-align:center; color:#9ca3af; padding:24px;">Need at least 2 days of data</td></tr>';
+                    return;
+                }
+
+                const today = opmDates[opmDates.length - 1];
+                const yesterday = opmDates[opmDates.length - 2];
+                const dayBefore = opmDates.length >= 3 ? opmDates[opmDates.length - 3] : null;
+
+                // Build per-track maps (dedup by song+artist keeping highest)
+                const buildMap = (tracks, date) => {
+                    const m = {};
+                    tracks.filter(e => e.date === date).forEach(e => {
+                        const key = e.song_title + '|||' + (e.artist || '').toLowerCase();
+                        if (!m[key] || e.streams > m[key].streams) {
+                            m[key] = e;
+                        }
+                    });
+                    return m;
+                };
+
+                const opmToday = buildMap(opmTracks, today);
+                const opmYest = buildMap(opmTracks, yesterday);
+                const opmDayBefore = dayBefore ? buildMap(opmTracks, dayBefore) : {};
+
+                // Aggregate daily gains per artist (today vs yesterday)
+                const artistDaily = {};
+                for (const [key, entry] of Object.entries(opmToday)) {
+                    if (!opmYest[key]) continue;
+                    const akey = (entry.artist || '').toLowerCase();
+                    if (!artistDaily[akey]) {
+                        artistDaily[akey] = { daily: 0, count: 0, name: entry.artist };
+                    }
+                    artistDaily[akey].daily += entry.streams - opmYest[key].streams;
+                    artistDaily[akey].count += 1;
+                }
+
+                // Previous day artist daily totals (yesterday vs day-before) for rank changes
+                const prevArtistDaily = {};
+                if (dayBefore) {
+                    for (const [key, entry] of Object.entries(opmYest)) {
+                        if (!opmDayBefore[key]) continue;
+                        const akey = (entry.artist || '').toLowerCase();
+                        prevArtistDaily[akey] = (prevArtistDaily[akey] || 0) + (entry.streams - opmDayBefore[key].streams);
+                    }
+                }
+
+                // SB19 daily total
+                let sb19Daily = 0, sb19PrevDaily = 0, sb19Count = 0;
+                if (sb19Dates.length >= 2) {
+                    const sb19Today = sb19Dates[sb19Dates.length - 1];
+                    const sb19Yest = sb19Dates[sb19Dates.length - 2];
+                    const sb19TodayMap = buildMap(sb19Tracks, sb19Today);
+                    const sb19YestMap = buildMap(sb19Tracks, sb19Yest);
+                    for (const [key, entry] of Object.entries(sb19TodayMap)) {
+                        if (sb19YestMap[key]) {
+                            sb19Daily += entry.streams - sb19YestMap[key].streams;
+                            sb19Count += 1;
+                        }
+                    }
+                    if (sb19Dates.length >= 3) {
+                        const sb19DB = sb19Dates[sb19Dates.length - 3];
+                        const sb19DBMap = buildMap(sb19Tracks, sb19DB);
+                        for (const [key, entry] of Object.entries(sb19YestMap)) {
+                            if (sb19DBMap[key]) {
+                                sb19PrevDaily += entry.streams - sb19DBMap[key].streams;
+                            }
+                        }
+                    }
+                }
+
+                // Build combined list
+                const combined = [];
+                for (const [akey, info] of Object.entries(artistDaily)) {
+                    const prevDaily = prevArtistDaily[akey] || 0;
+                    combined.push({
+                        artist: info.name,
+                        daily: info.daily,
+                        change: info.daily - prevDaily,
+                        tracks: info.count,
+                        isSb19: false,
+                        key: akey,
+                    });
+                }
+                if (sb19Count > 0) {
+                    combined.push({
+                        artist: 'SB19',
+                        daily: sb19Daily,
+                        change: sb19PrevDaily ? sb19Daily - sb19PrevDaily : 0,
+                        tracks: sb19Count,
+                        isSb19: true,
+                        key: 'sb19',
+                    });
+                }
+
+                combined.sort((a, b) => b.daily - a.daily);
+
+                // Previous ranking for rank changes
+                const prevTotals = { ...prevArtistDaily };
+                if (sb19PrevDaily > 0) prevTotals['sb19'] = sb19PrevDaily;
+                const prevRanked = Object.keys(prevTotals).sort((a, b) => prevTotals[b] - prevTotals[a]);
+                const prevRankMap = {};
+                prevRanked.forEach((k, i) => prevRankMap[k] = i + 1);
+
+                // Genre lookup
+                const genreMap = this.artistGenreMap || {};
+
+                // Format date
+                let dateStr = today;
+                try {
+                    const cleaned = today.replace(/-/g, '').substring(0, 8);
+                    const d = new Date(cleaned.substring(0, 4) + '-' + cleaned.substring(4, 6) + '-' + cleaned.substring(6, 8));
+                    dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                } catch (e) {}
+
+                // Update stats
+                const totalDaily = combined.reduce((s, c) => s + c.daily, 0);
+                document.getElementById('opmStreamsTotalDaily').textContent = totalDaily.toLocaleString();
+                document.getElementById('opmStreamsArtistCount').textContent = combined.length;
+                document.getElementById('opmStreamsDate').textContent = dateStr;
+
+                // Render top 20
+                const top20 = combined.slice(0, 20);
+                const tbody = document.getElementById('opmStreamsTableBody');
+                tbody.innerHTML = top20.map((g, i) => {
+                    const rank = i + 1;
+                    const prevRank = prevRankMap[g.key];
+                    let rankChangeHtml = '<span style="color:#9ca3af;">―</span>';
+                    if (prevRank !== undefined) {
+                        const diff = prevRank - rank;
+                        if (diff > 0) rankChangeHtml = `<span style="color:#34d399;">▲${diff}</span>`;
+                        else if (diff < 0) rankChangeHtml = `<span style="color:#f87171;">▼${Math.abs(diff)}</span>`;
+                    }
+                    const changeColor = g.change > 0 ? '#34d399' : g.change < 0 ? '#f87171' : '#9ca3af';
+                    const changeStr = g.change > 0 ? `+${g.change.toLocaleString()}` : g.change < 0 ? g.change.toLocaleString() : '―';
+                    const genre = genreMap[g.artist.toLowerCase()] || genreMap[g.key] || '';
+                    const rowStyle = g.isSb19 ? 'background: rgba(6, 182, 212, 0.10);' : '';
+                    const nameColor = g.isSb19 ? '#22d3ee' : '#e5e7eb';
+                    const dailyColor = g.isSb19 ? '#22d3ee' : '#e5e7eb';
+                    return `<tr style="${rowStyle} border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <td style="padding: 8px 10px; text-align: right; color: #6b7280; font-weight: 700;">${rank}</td>
+                        <td style="padding: 8px 10px; color: ${nameColor}; font-weight: 600;">${g.artist}</td>
+                        <td style="padding: 8px 10px; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">${genre}</td>
+                        <td style="padding: 8px 10px; text-align: right; color: ${dailyColor}; font-weight: 600;">${g.daily.toLocaleString()}</td>
+                        <td style="padding: 8px 10px; text-align: right; color: ${changeColor}; font-size: 0.85rem;">${changeStr}</td>
+                        <td style="padding: 8px 10px; text-align: right; color: #9ca3af;">${g.tracks}</td>
+                        <td style="padding: 8px 10px; text-align: right;">${rankChangeHtml}</td>
+                    </tr>`;
+                }).join('');
+
+                // If SB19 is not in top 20, show it separately
+                const sb19InTop = top20.some(g => g.isSb19);
+                if (!sb19InTop) {
+                    const sb19Entry = combined.find(g => g.isSb19);
+                    if (sb19Entry) {
+                        const sb19Rank = combined.indexOf(sb19Entry) + 1;
+                        const prevRank = prevRankMap['sb19'];
+                        let rcHtml = '<span style="color:#9ca3af;">―</span>';
+                        if (prevRank !== undefined) {
+                            const diff = prevRank - sb19Rank;
+                            if (diff > 0) rcHtml = `<span style="color:#34d399;">▲${diff}</span>`;
+                            else if (diff < 0) rcHtml = `<span style="color:#f87171;">▼${Math.abs(diff)}</span>`;
+                        }
+                        const chColor = sb19Entry.change > 0 ? '#34d399' : sb19Entry.change < 0 ? '#f87171' : '#9ca3af';
+                        const chStr = sb19Entry.change > 0 ? `+${sb19Entry.change.toLocaleString()}` : sb19Entry.change < 0 ? sb19Entry.change.toLocaleString() : '―';
+                        tbody.innerHTML += `
+                        <tr style="border-top: 2px dashed rgba(6, 182, 212, 0.3);">
+                            <td colspan="7" style="padding: 10px 10px 4px; color: #22d3ee; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.85rem;">SB19</td>
+                        </tr>
+                        <tr style="background: rgba(6, 182, 212, 0.10); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 8px 10px; text-align: right; color: #06b6d4; font-weight: 700;">${sb19Rank}</td>
+                            <td style="padding: 8px 10px; color: #22d3ee; font-weight: 600;">SB19</td>
+                            <td style="padding: 8px 10px; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">P-Pop</td>
+                            <td style="padding: 8px 10px; text-align: right; color: #22d3ee; font-weight: 600;">${sb19Entry.daily.toLocaleString()}</td>
+                            <td style="padding: 8px 10px; text-align: right; color: ${chColor}; font-size: 0.85rem;">${chStr}</td>
+                            <td style="padding: 8px 10px; text-align: right; color: #9ca3af;">${sb19Entry.tracks}</td>
+                            <td style="padding: 8px 10px; text-align: right;">${rcHtml}</td>
+                        </tr>`;
+                    }
+                }
             }
 
             async loadAndRenderUsers() {

@@ -7,59 +7,44 @@ import sys
 import time
 import unicodedata
 from datetime import datetime, timedelta
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service as EdgeService
-from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+
+from shared import setup_driver, slugify, git_push
+from config import (
+    TRACKS_CSV, SELENIUM_RESULTS_CSV, SAVED_PAGES_DIR,
+    FRESHNESS_CHECK_TRACKS, DELIMITER_TRACKS,
+    WAIT_INITIAL_PAGE_LOAD, WAIT_TITLE_CHANGE, WAIT_TITLE_CHANGE_RETRY,
+    WAIT_POST_SCROLL, WAIT_POST_SCROLL_LONG, WAIT_BETWEEN_TRACKS,
+    WAIT_BROWSER_RECOVERY, MAX_CONSECUTIVE_ERRORS,
+    MAX_STREAM_EXTRACTION_RETRIES, SCROLL_STANDARD,
+)
 
 
 class SB19SeleniumRPA:
-    def __init__(self, tracks_csv=None, results_csv=None, skip_freshness_check=False, override_date=None):
+    def __init__(self, tracks_csv=None, results_csv=None, skip_freshness_check=False, override_date=None, headless=False):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.saved_pages_dir = os.path.join(self.base_dir, "saved_pages")
+        self.saved_pages_dir = SAVED_PAGES_DIR
         os.makedirs(self.saved_pages_dir, exist_ok=True)
 
-        self.tracks_csv_path = tracks_csv or os.path.join(self.base_dir, "tracks.csv")
-        self.results_csv_path = results_csv or os.path.join(self.base_dir, "selenium_results.csv")
+        self.tracks_csv_path = tracks_csv or TRACKS_CSV
+        self.results_csv_path = results_csv or SELENIUM_RESULTS_CSV
         self.skip_freshness_check = skip_freshness_check
-        self.override_date = override_date  # Date string to use instead of current date (format: YYYY-MM-DD)
+        self.override_date = override_date
+        self.headless = headless
 
-        # Sample tracks for freshness check (high-traffic tracks that update frequently)
-        self.sample_tracks_for_check = [
-            "https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2",  # Gento
-            "https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ",  # MAPA
-            "https://open.spotify.com/track/5QZw4F3N3PvuKNKHm9L20b",  # Bazinga
-        ]
+        self.sample_tracks_for_check = FRESHNESS_CHECK_TRACKS
 
         # Setup Driver
-        self.driver = self._setup_driver()
+        self.driver = setup_driver(headless=self.headless)
 
     def _setup_driver(self):
-        print("[INIT] Setting up Edge WebDriver (using Selenium Manager)...")
-        options = EdgeOptions()
-        # options.add_argument("--headless=new") # Uncomment to run invisible
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-notifications")
-        # Anti-detection (basic)
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option("useAutomationExtension", False)
-
-        # Selenium 4.6+ automatically manages drivers if Service is initialized without a path
-        service = EdgeService()
-        try:
-            driver = webdriver.Edge(service=service, options=options)
-            return driver
-        except Exception as e:
-            print(f"[ERR] Failed to initialize Edge Driver: {e}")
-            raise
+        """Re-create driver (used after error recovery)."""
+        return setup_driver(headless=self.headless)
 
     def _slugify(self, text):
-        """Create a filename-safe slug."""
-        normalized = unicodedata.normalize("NFKD", text)
-        ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
-        slug = re.sub(r"[^a-z0-9]+", "_", ascii_text.lower()).strip("_")
-        return slug
+        return slugify(text)
 
     def save_page_source(self, html_content, slug):
         """Save HTML content to a file."""
@@ -349,21 +334,45 @@ class SB19SeleniumRPA:
                 result = None
                 try:
                     self.driver.get(url)
-                    time.sleep(5) # Wait for initial load
 
-                    # Scroll down a bit to ensure lazy-loaded elements trigger (sometimes needed)
+                    # Wait for SPA to render track content (title changes from generic shell)
+                    try:
+                        WebDriverWait(self.driver, 15).until(
+                            lambda d: d.title and d.title != "Spotify – Web Player" and d.title != "Spotify"
+                        )
+                    except Exception:
+                        print(f"       [WAIT] Page title didn't update, continuing anyway...")
+
+                    # Scroll to trigger lazy-loaded elements
                     self.driver.execute_script("window.scrollBy(0, 500);")
                     time.sleep(2)
 
                     page_source = self.driver.page_source
                     saved_path = self.save_page_source(page_source, slug)
-
                     streams = self.extract_streams_from_html(page_source)
+
+                    # Retry up to 2 times if extraction failed
+                    for retry in range(2):
+                        if streams:
+                            break
+                        print(f"       [RETRY {retry+1}/2] Stream count not found, reloading...")
+                        self.driver.get(url)
+                        try:
+                            WebDriverWait(self.driver, 20).until(
+                                lambda d: d.title and d.title != "Spotify – Web Player" and d.title != "Spotify"
+                            )
+                        except Exception:
+                            pass
+                        self.driver.execute_script("window.scrollBy(0, 500);")
+                        time.sleep(3)
+                        page_source = self.driver.page_source
+                        saved_path = self.save_page_source(page_source, slug)
+                        streams = self.extract_streams_from_html(page_source)
 
                     if streams:
                         print(f"       [SUCCESS] Streams: {streams}")
                     else:
-                        print(f"       [WARN] Could not extract streams.")
+                        print(f"       [WARN] Could not extract streams after retries.")
                         streams = "N/A"
 
                     # Use override date if provided, otherwise use current datetime
@@ -431,39 +440,7 @@ class SB19SeleniumRPA:
 
     def _git_push(self):
         """Commit and push results to git repository."""
-        print("\n[GIT] Pushing data update to repository...")
-        try:
-            # Change to base directory
-            os.chdir(self.base_dir)
-
-            # Add the results file
-            subprocess.run(["git", "add", "selenium_results.csv"], check=True, capture_output=True)
-
-            # Commit with auto-generated message
-            commit_msg = "Auto-push data update"
-            result = subprocess.run(
-                ["git", "commit", "-m", commit_msg],
-                capture_output=True,
-                text=True
-            )
-
-            if result.returncode == 0:
-                print(f"[GIT] Committed: {commit_msg}")
-                # Push to remote
-                push_result = subprocess.run(["git", "push"], capture_output=True, text=True)
-                if push_result.returncode == 0:
-                    print("[GIT] Successfully pushed to remote.")
-                else:
-                    print(f"[GIT] Push failed: {push_result.stderr}")
-            elif "nothing to commit" in result.stdout or "nothing to commit" in result.stderr:
-                print("[GIT] No changes to commit.")
-            else:
-                print(f"[GIT] Commit failed: {result.stderr}")
-
-        except subprocess.CalledProcessError as e:
-            print(f"[GIT] Git operation failed: {e}")
-        except Exception as e:
-            print(f"[GIT] Error during git push: {e}")
+        git_push(self.results_csv_path, base_dir=self.base_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SB19 Selenium RPA - Scrape Spotify track streams")
@@ -477,12 +454,15 @@ if __name__ == "__main__":
                         help="Skip the freshness check entirely (same as --force but clearer intent)")
     parser.add_argument("--date", "-d", default=None,
                         help="Override date for timestamps (format: YYYY-MM-DD, e.g., 2026-01-29)")
+    parser.add_argument("--headless", action="store_true",
+                        help="Run browser in headless mode (no visible window)")
     args = parser.parse_args()
 
     rpa = SB19SeleniumRPA(
         tracks_csv=args.tracks_csv,
         results_csv=args.output,
         skip_freshness_check=args.skip_check,
-        override_date=args.date
+        override_date=args.date,
+        headless=args.headless,
     )
     rpa.run(force=args.force)

@@ -940,8 +940,14 @@ class SB19TrackStreamsRPA:
 
                 match_score = max(direct_ratio, word_overlap, start_ratio)
 
-            # Lower threshold since we're using multiple detection strategies
-            is_match = match_score > 0.4
+            # Short titles (<=6 chars normalized) are unreliable for OCR verification
+            # since OCR often returns empty/garbled text for short titles like "Na Na Na"
+            # or "8". The Spotify URL navigation already ensures the correct track page,
+            # so we skip the fuzzy threshold for these titles.
+            if len(clean_expected) <= 6:
+                is_match = True  # Trust URL-based navigation for short titles
+            else:
+                is_match = match_score > 0.4
 
             # Log result
             preview = detected_text[:80].replace('\n', ' ') if detected_text else "(empty)"

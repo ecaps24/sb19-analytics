@@ -9,30 +9,17 @@ echo ======================================================================
 
 cd /d "D:\dev\sb19"
 
-REM Activate virtual environment if it exists
-if exist "venv\Scripts\activate.bat" (
-    call venv\Scripts\activate.bat
+REM Activate virtual environment
+if exist ".venv\Scripts\activate.bat" (
+    call .venv\Scripts\activate.bat
 )
 
 REM Run the Selenium RPA script for track streams
+REM Monthly listeners RPA runs separately at 3:00 AM
 python sb19_selenium_rpa.py
-
-echo.
-echo ======================================================================
-echo Running Monthly Listeners RPA...
-echo ======================================================================
-
-REM Run the Selenium RPA script for monthly listeners
-python artist_monthly_listeners_rpa.py
-
-echo.
-echo ======================================================================
-echo Running X Poster...
-echo ======================================================================
-
-REM Run X poster to check for updates to post (daily, milestones, spikes)
-REM Weekly summary only posts on Sundays automatically
-python x_poster.py --daily --milestones --spikes
+if %ERRORLEVEL% NEQ 0 (
+    python notify.py "FAILED: Daily Streams Scraper at %date% %time%"
+)
 
 echo.
 echo ======================================================================

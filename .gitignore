@@ -20,10 +20,17 @@ Thumbs.db
 
 # Scraped pages (too many files)
 saved_pages/
+monthly listeners/
 
 # Log files
 *.log
 
+# Debug screenshots
+debug_*.png
+
 # X (Twitter) API credentials - KEEP SECRET
 x_config.json
 x_posted_log.json
+
+# Environment variables - KEEP SECRET
+.env

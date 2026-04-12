@@ -6,52 +6,40 @@ import subprocess
 import time
 import unicodedata
 from datetime import datetime
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service as EdgeService
-from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from bs4 import BeautifulSoup
 
+from shared import setup_driver, slugify, git_push
+from config import (
+    OPM_ARTISTS_CSV, MONTHLY_LISTENERS_CSV, MONTHLY_LISTENERS_DIR,
+    WAIT_BUTTON_DETECTION, WAIT_DIALOG_OPEN, WAIT_INITIAL_PAGE_LOAD,
+    WAIT_POST_SCROLL, WAIT_BETWEEN_ARTISTS, SCROLL_ARTIST_PAGE,
+    DELIMITER_LISTENERS,
+)
+
+
 class ArtistMonthlyListenersRPA:
-    def __init__(self):
+    def __init__(self, headless=False):
+        self.headless = headless
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.output_dir = os.path.join(self.base_dir, "monthly listeners")
+        self.output_dir = MONTHLY_LISTENERS_DIR
         os.makedirs(self.output_dir, exist_ok=True)
-        
-        self.artists_csv_path = os.path.join(self.base_dir, "opm_artists_spotify.csv")
-        self.results_csv_path = os.path.join(self.base_dir, "monthly_listeners.csv")
-        
+
+        self.artists_csv_path = OPM_ARTISTS_CSV
+        self.results_csv_path = MONTHLY_LISTENERS_CSV
+
         # Setup Driver
-        self.driver = self._setup_driver()
+        self.driver = setup_driver(headless=self.headless)
 
     def _setup_driver(self):
-        print("[INIT] Setting up Edge WebDriver (using Selenium Manager)...")
-        options = EdgeOptions()
-        # options.add_argument("--headless=new") # Uncomment to run invisible
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-notifications")
-        # Anti-detection (basic)
-        options.add_argument("--disable-blink-features=AutomationControlled")
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option("useAutomationExtension", False)
-
-        service = EdgeService()
-        try:
-            driver = webdriver.Edge(service=service, options=options)
-            return driver
-        except Exception as e:
-            print(f"[ERR] Failed to initialize Edge Driver: {e}")
-            raise
+        """Re-create driver (used after error recovery)."""
+        return setup_driver(headless=self.headless)
 
     def _slugify(self, text):
-        """Create a filename-safe slug."""
-        normalized = unicodedata.normalize("NFKD", text)
-        ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
-        slug = re.sub(r"[^a-z0-9]+", "_", ascii_text.lower()).strip("_")
-        return slug
+        return slugify(text)
 
     def save_page_source(self, html_content, slug):
         """Save HTML content to a file."""
@@ -326,45 +314,15 @@ class ArtistMonthlyListenersRPA:
 
     def _git_push(self):
         """Commit and push results to git repository."""
-        print("\n[GIT] Pushing data update to repository...")
-        try:
-            # Change to base directory
-            os.chdir(self.base_dir)
-
-            # Add the results file
-            subprocess.run(["git", "add", "monthly_listeners.csv"], check=True, capture_output=True)
-
-            # Commit with auto-generated message
-            commit_msg = "Auto-push data update"
-            result = subprocess.run(
-                ["git", "commit", "-m", commit_msg],
-                capture_output=True,
-                text=True
-            )
-
-            if result.returncode == 0:
-                print(f"[GIT] Committed: {commit_msg}")
-                # Push to remote
-                push_result = subprocess.run(["git", "push"], capture_output=True, text=True)
-                if push_result.returncode == 0:
-                    print("[GIT] Successfully pushed to remote.")
-                else:
-                    print(f"[GIT] Push failed: {push_result.stderr}")
-            elif "nothing to commit" in result.stdout or "nothing to commit" in result.stderr:
-                print("[GIT] No changes to commit.")
-            else:
-                print(f"[GIT] Commit failed: {result.stderr}")
-
-        except subprocess.CalledProcessError as e:
-            print(f"[GIT] Git operation failed: {e}")
-        except Exception as e:
-            print(f"[GIT] Error during git push: {e}")
+        git_push("monthly_listeners.csv", base_dir=self.base_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Artist Monthly Listeners RPA")
     parser.add_argument("--force", "-f", action="store_true",
                         help="Force scrape even if data exists for today")
+    parser.add_argument("--headless", action="store_true",
+                        help="Run browser in headless mode (no visible window)")
     args = parser.parse_args()
 
-    rpa = ArtistMonthlyListenersRPA()
+    rpa = ArtistMonthlyListenersRPA(headless=args.headless)
     rpa.run(force=args.force)
