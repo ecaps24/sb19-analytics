@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0f172a;
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    color: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+.card {
+    width: 1080px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 20px;
+    padding: 48px 56px 40px;
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.08);
+}
+.header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+.card-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+.card-subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    font-weight: 400;
+}
+.stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 18px;
+}
+.stat-box { text-align: center; }
+.stat-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: #10b981;
+    letter-spacing: -0.5px;
+}
+.stat-label {
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+.podium-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.podium-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    border-radius: 14px;
+    padding: 16px 20px;
+}
+.podium-1 {
+    background: rgba(251, 191, 36, 0.10);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+}
+.podium-2 {
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}
+.podium-3 {
+    background: rgba(205, 127, 50, 0.08);
+    border: 1px solid rgba(205, 127, 50, 0.20);
+}
+.podium-rank {
+    font-size: 32px;
+    font-weight: 800;
+    width: 48px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.podium-1 .podium-rank { color: #fbbf24; }
+.podium-2 .podium-rank { color: #94a3b8; }
+.podium-3 .podium-rank { color: #cd7f32; }
+.podium-content {
+    flex: 1;
+    min-width: 0;
+}
+.podium-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.podium-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+.artist-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+.podium-rc {
+    font-size: 14px;
+    font-weight: 600;
+}
+.podium-bar-container {
+    height: 38px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.podium-bar {
+    height: 100%;
+    border-radius: 8px;
+}
+.podium-stats {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.podium-streams {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+.podium-change {
+    font-size: 14px;
+    font-weight: 500;
+}
+.section-divider {
+    border-top: 2px dashed rgba(148, 163, 184, 0.18);
+    margin: 24px 0 20px;
+}
+.section-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}
+.table-section {
+    width: 100%;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    text-align: left;
+}
+th.col-rank, th.col-streams, th.col-change, th.col-rc {
+    text-align: right;
+}
+td {
+    font-size: 14px;
+    padding: 7px 10px;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}
+td.col-rank {
+    font-weight: 700;
+    color: #64748b;
+    text-align: right;
+    width: 50px;
+}
+td.col-track {
+    font-weight: 600;
+    color: #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}
+td.col-artist {
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+}
+td.col-streams {
+    font-weight: 600;
+    color: #e2e8f0;
+    text-align: right;
+    white-space: nowrap;
+}
+td.col-change {
+    text-align: right;
+    font-size: 13px;
+    white-space: nowrap;
+}
+td.col-rc {
+    text-align: right;
+    font-size: 13px;
+    width: 60px;
+}
+tr:nth-child(even) {
+    background: rgba(51, 65, 85, 0.15);
+}
+.rank-up { color: #34d399; }
+.rank-down { color: #f87171; }
+.rank-same { color: #9ca3af; }
+.change-up { color: #34d399; }
+.change-down { color: #f87171; }
+.change-same { color: #9ca3af; }
+.footer {
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+}
+.footer-text {
+    font-size: 14px;
+    color: #475569;
+    letter-spacing: 0.5px;
+}
+.footer-site {
+    color: #3b82f6;
+    font-weight: 600;
+}
+</style></head><body>
+<div class="card" id="card">
+    <div class="header">
+        <div class="card-title">SB19 Solo Top Tracks by Daily Streams</div>
+        <div class="card-subtitle">As of April 16, 2026</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-value">+253,347</div>
+                <div class="stat-label">Total Daily Streams</div>
+            </div>
+        </div>
+    </div>
+    <div class="podium-section">
+            <div class="podium-row podium-1">
+                <div class="podium-rank">1</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">Room</span>
+                        <span class="artist-badge" style="background: #a855f7;">Stell</span>
+                        <span class="podium-rc"><span class="rank-same">23d</span></span>
+                    </div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: #a855f7;"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">12,866,818</span>
+                        <span class="podium-change"><span class="change-up">+15,089</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="podium-row podium-2">
+                <div class="podium-rank">2</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">Classic</span>
+                        <span class="artist-badge" style="background: #a855f7;">Stell</span>
+                        <span class="podium-rc"><span class="rank-up">&#9650;1</span></span>
+                    </div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: #a855f7;"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">7,246,375</span>
+                        <span class="podium-change"><span class="change-up">+10,405</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="podium-row podium-3">
+                <div class="podium-rank">3</div>
+                <div class="podium-content">
+                    <div class="podium-header">
+                        <span class="podium-name">'Di Ko Masabi</span>
+                        <span class="artist-badge" style="background: #a855f7;">Stell</span>
+                        <span class="podium-rc"><span class="rank-down">&#9660;1</span></span>
+                    </div>
+                    <div class="podium-bar-container">
+                        <div class="podium-bar" style="width: 100%; background: #a855f7;"></div>
+                    </div>
+                    <div class="podium-stats">
+                        <span class="podium-streams">8,368,398</span>
+                        <span class="podium-change"><span class="change-up">+10,025</span></span>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="section-divider"></div>
+    <div class="section-label">Remaining Tracks</div>
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-rank">#</th>
+                    <th>Track</th>
+                    <th>Artist</th>
+                    <th class="col-change">Change</th>
+                    <th class="col-streams">Streams</th>
+                    <th class="col-rc">Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-rank">4</td>
+                    <td class="col-track">Surreal</td>
+                    <td class="col-artist" style="color: #ec4899;">justin</td>
+                    <td class="col-change"><span class="change-up">+9,656</span></td>
+                    <td class="col-streams">15,660,724</td>
+                    <td class="col-rc"><span class="rank-same">3d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">5</td>
+                    <td class="col-track">Anino</td>
+                    <td class="col-artist" style="color: #a855f7;">Stell</td>
+                    <td class="col-change"><span class="change-up">+8,621</span></td>
+                    <td class="col-streams">6,695,398</td>
+                    <td class="col-rc"><span class="rank-same">3d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">6</td>
+                    <td class="col-track">Room (Stripped)</td>
+                    <td class="col-artist" style="color: #a855f7;">Stell</td>
+                    <td class="col-change"><span class="change-up">+7,493</span></td>
+                    <td class="col-streams">5,334,428</td>
+                    <td class="col-rc"><span class="rank-same">2d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">7</td>
+                    <td class="col-track">Kaibigan</td>
+                    <td class="col-artist" style="color: #ec4899;">justin</td>
+                    <td class="col-change"><span class="change-up">+7,261</span></td>
+                    <td class="col-streams">9,317,423</td>
+                    <td class="col-rc"><span class="rank-same">2d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">8</td>
+                    <td class="col-track">Fake Faces</td>
+                    <td class="col-artist" style="color: #10b981;">FELIP</td>
+                    <td class="col-change"><span class="change-up">+6,529</span></td>
+                    <td class="col-streams">9,161,202</td>
+                    <td class="col-rc"><span class="rank-up">&#9650;4</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">9</td>
+                    <td class="col-track">Sampung Mga Daliri</td>
+                    <td class="col-artist" style="color: #ec4899;">justin</td>
+                    <td class="col-change"><span class="change-up">+6,310</span></td>
+                    <td class="col-streams">8,109,500</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;1</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">10</td>
+                    <td class="col-track">Kanako</td>
+                    <td class="col-artist" style="color: #10b981;">FELIP</td>
+                    <td class="col-change"><span class="change-up">+5,795</span></td>
+                    <td class="col-streams">10,270,643</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;1</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">11</td>
+                    <td class="col-track">Yoko Na</td>
+                    <td class="col-artist" style="color: #f59e0b;">JOSH CULLEN</td>
+                    <td class="col-change"><span class="change-up">+5,468</span></td>
+                    <td class="col-streams">10,692,851</td>
+                    <td class="col-rc"><span class="rank-up">&#9650;6</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">12</td>
+                    <td class="col-track">Moving Closer</td>
+                    <td class="col-artist" style="color: #10b981;">FELIP</td>
+                    <td class="col-change"><span class="change-up">+5,417</span></td>
+                    <td class="col-streams">10,680,524</td>
+                    <td class="col-rc"><span class="rank-up">&#9650;7</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">13</td>
+                    <td class="col-track">1999</td>
+                    <td class="col-artist" style="color: #f59e0b;">JOSH CULLEN</td>
+                    <td class="col-change"><span class="change-up">+5,344</span></td>
+                    <td class="col-streams">6,649,738</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;2</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">14</td>
+                    <td class="col-track">Drowning in the Water</td>
+                    <td class="col-artist" style="color: #ef4444;">PABLO</td>
+                    <td class="col-change"><span class="change-up">+5,306</span></td>
+                    <td class="col-streams">6,080,838</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;4</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">15</td>
+                    <td class="col-track">Liwanag sa Dilim (from Incognito)</td>
+                    <td class="col-artist" style="color: #ef4444;">PABLO</td>
+                    <td class="col-change"><span class="change-up">+5,274</span></td>
+                    <td class="col-streams">6,805,533</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;1</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">16</td>
+                    <td class="col-track">Butata</td>
+                    <td class="col-artist" style="color: #ef4444;">PABLO</td>
+                    <td class="col-change"><span class="change-up">+5,243</span></td>
+                    <td class="col-streams">7,050,645</td>
+                    <td class="col-rc"><span class="rank-same">2d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">17</td>
+                    <td class="col-track">Micha!</td>
+                    <td class="col-artist" style="color: #ef4444;">PABLO</td>
+                    <td class="col-change"><span class="change-up">+4,438</span></td>
+                    <td class="col-streams">3,849,839</td>
+                    <td class="col-rc"><span class="rank-down">&#9660;4</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">18</td>
+                    <td class="col-track">Kumunoy</td>
+                    <td class="col-artist" style="color: #ef4444;">PABLO</td>
+                    <td class="col-change"><span class="change-up">+4,362</span></td>
+                    <td class="col-streams">4,329,952</td>
+                    <td class="col-rc"><span class="rank-same">2d</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">19</td>
+                    <td class="col-track">WILD TONIGHT</td>
+                    <td class="col-artist" style="color: #f59e0b;">JOSH CULLEN</td>
+                    <td class="col-change"><span class="change-up">+4,092</span></td>
+                    <td class="col-streams">10,114,572</td>
+                    <td class="col-rc"><span class="rank-up">&#9650;13</span></td>
+                </tr>
+                <tr>
+                    <td class="col-rank">20</td>
+                    <td class="col-track">ache</td>
+                    <td class="col-artist" style="color: #10b981;">FELIP</td>
+                    <td class="col-change"><span class="change-up">+3,953</span></td>
+                    <td class="col-streams">4,808,098</td>
+                    <td class="col-rc"><span class="rank-same">3d</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <div class="footer-text"><span class="footer-site">opminsights.com</span></div>
+    </div>
+</div>
+</body></html>

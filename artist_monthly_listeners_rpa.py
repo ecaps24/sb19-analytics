@@ -273,13 +273,11 @@ class ArtistMonthlyListenersRPA:
                     }
                     result.update(dialog_stats)
                     results.append(result)
-                    
+                    self._save_result(result)
+
                 except Exception as e:
                     print(f"       [ERR] Error processing artist: {e}")
-                    
-                # Save result immediately
-                self._save_result(results[-1])
-                
+
                 # Small pause between artists
                 time.sleep(2)
                 

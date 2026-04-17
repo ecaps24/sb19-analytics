@@ -813,6 +813,201 @@
             flex: 2;
         }
 
+        /* === OPM / P-Pop home side-by-side === */
+        .opm-ppop-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        .opm-ppop-row > section {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .home-section-card {
+            background: rgba(17, 24, 39, 0.7);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .home-section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 2px solid currentColor;
+        }
+        .home-section-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .home-section-header .home-section-count {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .home-section-header.opm-accent,
+        .home-section-header.opm-accent h2 { color: #fbbf24; }
+        .home-section-header.ppop-accent,
+        .home-section-header.ppop-accent h2 { color: #60a5fa; }
+        .home-viz {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .home-viz .chart-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #e5e7eb;
+        }
+        .home-chart-wrap {
+            position: relative;
+            height: 260px;
+        }
+        .home-donut-wrap {
+            position: relative;
+            height: 220px;
+        }
+        .home-mini-table-wrap {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+        .home-mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .home-mini-table th {
+            text-align: left;
+            color: #9ca3af;
+            font-weight: 600;
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            background: rgba(17, 24, 39, 0.95);
+            z-index: 1;
+        }
+        .home-mini-table td {
+            padding: 6px 8px;
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .home-mini-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .home-mini-table tbody tr:hover {
+            background: rgba(96, 165, 250, 0.08);
+        }
+        .home-mini-table .rank-col { width: 28px; text-align: right; color: #6b7280; }
+        .home-mini-table .num-col { text-align: right; white-space: nowrap; }
+        .home-mini-table .delta-pos { color: #34d399; }
+        .home-mini-table .delta-neg { color: #f87171; }
+        .home-mini-table .genre-cell { color: #9ca3af; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .home-summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        .home-summary-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #d1d5db;
+        }
+        .home-summary-stats .ss-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .home-summary-stats .ss-row:last-child { border-bottom: none; }
+        .home-summary-stats .ss-key { color: #9ca3af; }
+        .home-summary-stats .ss-val { color: #f9fafb; font-weight: 700; }
+
+        /* SB19 focus entry card */
+        .sb19-focus-entry {
+            position: relative;
+            margin: 12px 0;
+            padding: 18px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0891b2 100%);
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .sb19-focus-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(6, 182, 212, 0.35);
+        }
+        .sb19-focus-entry::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 90% 10%, rgba(34, 211, 238, 0.3) 0%, transparent 60%);
+        }
+        .sb19-focus-content { position: relative; z-index: 1; flex: 1; }
+        .sb19-focus-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #f0f9ff;
+            letter-spacing: 1px;
+        }
+        .sb19-focus-sub {
+            font-size: 0.85rem;
+            color: #cffafe;
+            margin-top: 4px;
+        }
+        .sb19-focus-cta {
+            position: relative;
+            z-index: 1;
+            color: #22d3ee;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 10px 18px;
+            border-radius: 8px;
+            background: rgba(6, 182, 212, 0.18);
+            border: 1px solid rgba(34, 211, 238, 0.45);
+            white-space: nowrap;
+        }
+        @media (max-width: 1023px) {
+            .opm-ppop-row { flex-direction: column; gap: 12px; }
+            .home-summary-row { grid-template-columns: 1fr; }
+            .sb19-focus-entry { flex-direction: column; align-items: stretch; }
+            .sb19-focus-cta { text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .home-section-card { padding: 12px; gap: 10px; }
+            .home-section-header h2 { font-size: 1rem; }
+            .home-mini-table { font-size: 0.72rem; }
+            .home-mini-table th, .home-mini-table td { padding: 4px 6px; }
+            .sb19-focus-entry { padding: 14px 16px; }
+            .sb19-focus-title { font-size: 1.05rem; }
+            .sb19-focus-sub { font-size: 0.78rem; }
+            .home-chart-wrap { height: 220px; }
+            .home-donut-wrap { height: 180px; }
+        }
+
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -2831,38 +3026,27 @@
         <div id="error" class="error" style="display: none;"></div>
 
         <div id="dashboard" style="display: none;">
-            <!-- Stats Cards -->
+            <!-- OPM-wide Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-card stat-card-listeners">
-                    <h3>Current Monthly Listeners</h3>
-                    <div class="stat-value" id="current-listeners">-</div>
-                    <div class="growth" id="listeners-change">-</div>
-                    <button class="stat-detail-btn" onclick="window.dashboard.openListenersDetail()">Show Details</button>
+                <div class="stat-card" id="statOpmTotalListeners">
+                    <h3>Total OPM Monthly Listeners</h3>
+                    <div class="stat-value" id="opm-total-listeners">-</div>
+                    <div class="growth" id="opm-total-listeners-sub">P-Pop: -</div>
                 </div>
-                <div class="stat-card">
-                    <h3>All-Time High</h3>
-                    <div class="stat-value" id="all-time-high">2,828,289</div>
-                    <div class="growth" id="ath-date">Peak reached</div>
+                <div class="stat-card" id="statOpmArtistCount">
+                    <h3>Artists Tracked</h3>
+                    <div class="stat-value" id="opm-artist-count">-</div>
+                    <div class="growth" id="opm-artist-count-sub">Across 8 OPM genres</div>
                 </div>
-                <div class="stat-card" id="statTotalTracks">
-                    <h3>Total Tracks</h3>
-                    <div class="stat-value" id="total-tracks">-</div>
-                    <div class="growth" id="tracks-info">On Spotify</div>
+                <div class="stat-card" id="statTopArtist" style="cursor: pointer;">
+                    <h3>Top Artist (Listeners)</h3>
+                    <div class="stat-value" id="opm-top-artist" style="font-size: 1.15rem;">-</div>
+                    <div class="growth" id="opm-top-artist-sub">-</div>
                 </div>
-                <div class="stat-card" id="statTotalStreams">
-                    <h3>Total Streams</h3>
-                    <div class="stat-value" id="total-streams">-</div>
-                    <div class="growth" id="streams-info">All tracks combined</div>
-                </div>
-                <div class="stat-card" id="statTopTrack">
-                    <h3>Top Track</h3>
-                    <div class="stat-value" id="top-track">-</div>
-                    <div class="growth" id="top-track-streams">-</div>
-                </div>
-                <div class="stat-card" id="statPeriodChange">
-                    <h3>Period Change</h3>
-                    <div class="stat-value" id="period-change">-</div>
-                    <div class="growth" id="period-info">Selected range</div>
+                <div class="stat-card" id="statBiggestGainer" style="cursor: pointer;">
+                    <h3>Biggest Weekly Gainer</h3>
+                    <div class="stat-value" id="opm-biggest-gainer" style="font-size: 1.15rem;">-</div>
+                    <div class="growth" id="opm-biggest-gainer-sub">-</div>
                 </div>
                 <div class="stat-card" id="statTrends">
                     <h3>Analytics & Trends</h3>
@@ -2881,7 +3065,7 @@
                 <div class="filter-group artist-selector">
                     <button id="artistSelectorBtn" class="artist-selector-btn" onclick="window.dashboard.toggleArtistDropdown()">
                         <span class="artist-dot has-tracks"></span>
-                        <span id="artistSelectorLabel">SB19</span>
+                        <span id="artistSelectorLabel">Pick an artist</span>
                         <span class="chevron">▼</span>
                     </button>
                     <div id="artistDropdown" class="artist-dropdown">
@@ -2929,217 +3113,112 @@
                 <div class="artist-pills-scroll" id="artistPillsScroll"></div>
             </div>
 
-            <!-- Charts Row: Album/Era Chart + Album Spotlight Card + YouTube Card -->
-            <div class="charts-row" id="mainChartsRow" style="align-items: flex-start;">
-                <!-- Album/Era Chart -->
-                <div class="chart-half" id="albumChartSection" style="flex: 1;">
-                    <div class="chart-container" style="margin-bottom: 0;">
-                        <div class="chart-title">Streams by Album/Era</div>
-                        <div class="chart-wrapper" style="height: 250px;">
-                            <canvas id="albumChart"></canvas>
+            <!-- OPM / P-Pop side-by-side home sections -->
+            <div class="opm-ppop-row" id="opmPpopRow">
+                <section class="home-section-card" id="opmHomeSection">
+                    <header class="home-section-header opm-accent">
+                        <h2>OPM — All Genres</h2>
+                        <span class="home-section-count" id="opmSectionArtistCount">–</span>
+                    </header>
+                    <div class="home-viz" id="opmTopArtistsViz">
+                        <div class="chart-title">Top 10 Artists by Monthly Listeners</div>
+                        <div class="home-chart-wrap">
+                            <canvas id="opmTopArtistsChart"></canvas>
                         </div>
                     </div>
-                </div>
+                    <div class="home-viz" id="opmTopTracksViz">
+                        <div class="chart-title">Top 10 Tracks by Daily Streams</div>
+                        <div class="home-mini-table-wrap">
+                            <table class="home-mini-table">
+                                <thead><tr>
+                                    <th class="rank-col">#</th>
+                                    <th>Track</th>
+                                    <th>Artist</th>
+                                    <th class="num-col">Daily</th>
+                                </tr></thead>
+                                <tbody id="opmTopTracksBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="home-viz" id="opmGainersViz">
+                        <div class="chart-title">Biggest Gainers (7-day Δ Monthly Listeners)</div>
+                        <div class="home-mini-table-wrap">
+                            <table class="home-mini-table">
+                                <thead><tr>
+                                    <th class="rank-col">#</th>
+                                    <th>Artist</th>
+                                    <th>Genre</th>
+                                    <th class="num-col">Δ 7D</th>
+                                    <th class="num-col">%</th>
+                                </tr></thead>
+                                <tbody id="opmGainersBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="home-viz" id="opmSummaryViz">
+                        <div class="chart-title">Genre Distribution & Summary</div>
+                        <div class="home-summary-row">
+                            <div class="home-donut-wrap">
+                                <canvas id="opmGenreDonut"></canvas>
+                            </div>
+                            <div class="home-summary-stats" id="opmSummaryStats"></div>
+                        </div>
+                    </div>
+                </section>
 
-                <!-- Album Spotlight Card (Wakas At Simula) -->
-                <div class="chart-half" id="wasCardSection" style="flex: 1;">
-                    <div class="was-hero-card" onclick="window.dashboard.filterToAlbum()">
-                        <canvas id="wasTopChart" class="was-chart"></canvas>
-                        <div class="was-hero-content">
-                            <div class="was-header">
-                                <div class="was-identity">
-                                    <div class="was-title-row">
-                                        <span class="was-title">Wakas At Simula</span>
-                                    </div>
-                                    <div class="was-subtitle">
-                                        <span class="was-artist">SB19</span>
-                                        <span class="was-badge">ALBUM</span>
-                                        <span class="was-badge new-release">NEW</span>
-                                    </div>
-                                </div>
-                                <div class="was-controls">
-                                    <a href="https://open.spotify.com/album/6PLZOVdjyDjbsuMMUdXJ7W"
-                                       target="_blank" rel="noopener" class="was-spotify-link"
-                                       onclick="event.stopPropagation();">&#9654; Spotify</a>
-                                </div>
-                            </div>
-                            <div class="was-stats-strip">
-                                <div class="was-stat">
-                                    <div class="was-stat-row">
-                                        <span class="was-stat-value" id="wasTrackCount">24</span>
-                                        <span class="was-stat-label">tracks</span>
-                                    </div>
-                                </div>
-                                <div class="was-stat">
-                                    <div class="was-stat-row">
-                                        <span class="was-stat-value" id="wasTotalStreams">--</span>
-                                        <span class="was-stat-label">streams</span>
-                                    </div>
-                                    <span class="was-stat-change" id="wasStreamChange"></span>
-                                </div>
-                                <div class="was-stat">
-                                    <div class="was-stat-row">
-                                        <span class="was-stat-value" id="wasDailyStreams">--</span>
-                                        <span class="was-stat-label">daily</span>
-                                    </div>
-                                    <span class="was-stat-change" id="wasDailyChange"></span>
-                                </div>
-                            </div>
-                            <div class="was-footer">
-                                <div class="was-last-refresh" id="wasLastRefresh"></div>
-                            </div>
+                <section class="home-section-card" id="ppopHomeSection">
+                    <header class="home-section-header ppop-accent">
+                        <h2>P-Pop</h2>
+                        <span class="home-section-count" id="ppopSectionArtistCount">–</span>
+                    </header>
+                    <div class="home-viz" id="ppopTopArtistsViz">
+                        <div class="chart-title">Top 10 Artists by Monthly Listeners</div>
+                        <div class="home-chart-wrap">
+                            <canvas id="ppopTopArtistsChart"></canvas>
                         </div>
                     </div>
-                    <div class="was-remaining" id="wasRemainingTable" style="display:none;">
-                        <div class="was-remaining-header">
-                            <span class="was-remaining-title">More tracks</span>
-                        </div>
-                        <div class="was-remaining-body" id="wasRemainingBody"></div>
-                    </div>
-                </div>
-
-                <!-- YouTube EMOJI Card -->
-                <div class="chart-half" id="youtubeCardSection" style="flex: 1;">
-                    <div class="yt-hero-card">
-                        <img src="photos/emoji.png" class="yt-hero-bg" alt="EMOJI artwork" />
-                        <div class="yt-hero-overlay"></div>
-                        <canvas id="ytHourlyChart" class="yt-hourly-chart"></canvas>
-                        <div class="yt-hero-content">
-                            <div class="yt-header">
-                                <div class="yt-identity">
-                                    <span class="yt-title">EMOJI</span>
-                                    <span class="yt-artist">SB19</span>
-                                    <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
-                                </div>
-                                <div class="yt-controls">
-                                    <a href="https://www.youtube.com/watch?v=w6_sChrkvw8" target="_blank" rel="noopener" class="yt-watch-link"
-                                       onclick="event.stopPropagation();">&#9654; YouTube</a>
-                                    <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
-                                        <span class="yt-refresh-icon">&#8635;</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="yt-stats-strip">
-                                <div class="yt-stat">
-                                    <div class="yt-stat-row">
-                                        <span class="yt-stat-value" id="ytViewCount">--</span>
-                                        <span class="yt-stat-label">views</span>
-                                    </div>
-                                    <span class="yt-stat-change" id="ytViewChange"></span>
-                                </div>
-                                <div class="yt-stat">
-                                    <div class="yt-stat-row">
-                                        <span class="yt-stat-value" id="ytLikeCount">--</span>
-                                        <span class="yt-stat-label">likes</span>
-                                    </div>
-                                    <span class="yt-stat-change" id="ytLikeChange"></span>
-                                </div>
-                                <div class="yt-stat">
-                                    <div class="yt-stat-row">
-                                        <span class="yt-stat-value" id="ytCommentCount">--</span>
-                                        <span class="yt-stat-label">comments</span>
-                                    </div>
-                                    <span class="yt-stat-change" id="ytCommentChange"></span>
-                                </div>
-                            </div>
-                            <div class="yt-footer">
-                                <div class="yt-last-refresh" id="ytLastRefresh"></div>
-                            </div>
+                    <div class="home-viz" id="ppopTopTracksViz">
+                        <div class="chart-title">Top 10 Tracks by Daily Streams</div>
+                        <div class="home-mini-table-wrap">
+                            <table class="home-mini-table">
+                                <thead><tr>
+                                    <th class="rank-col">#</th>
+                                    <th>Track</th>
+                                    <th>Artist</th>
+                                    <th class="num-col">Daily</th>
+                                </tr></thead>
+                                <tbody id="ppopTopTracksBody"></tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
+                    <div class="home-viz" id="ppopGainersViz">
+                        <div class="chart-title">Biggest Gainers (7-day Δ Monthly Listeners)</div>
+                        <div class="home-mini-table-wrap">
+                            <table class="home-mini-table">
+                                <thead><tr>
+                                    <th class="rank-col">#</th>
+                                    <th>Artist</th>
+                                    <th class="num-col">Δ 7D</th>
+                                    <th class="num-col">%</th>
+                                </tr></thead>
+                                <tbody id="ppopGainersBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="home-viz" id="ppopSummaryViz">
+                        <div class="chart-title">Summary</div>
+                        <div class="home-summary-stats" id="ppopSummaryStats"></div>
+                    </div>
+                </section>
             </div>
 
-            <!-- Full-width Top Tracks Table -->
-            <div class="chart-container" id="topTracksSection" style="width: 100%;">
-                <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
-                    <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
-                        <span>Top Tracks by Total Streams</span>
-                        <select id="albumDropdownFilter" style="background: #111827; border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
-                            <option value="">All Albums/EPs</option>
-                        </select>
-                        <span id="album-filter-label"
-                            style="font-size: 0.8rem; color: #60a5fa;"></span>
-                        <button id="clearFilterBtn"
-                            style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
-                            Filter</button>
-                        <button class="export-btn" style="display: none;" onclick="window.dashboard.exportTopTracks()">Export CSV</button>
-                    </div>
-                    <div id="tracks-view">
-                        <table id="topTracksTable" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px; text-align: center;">#</th>
-                                    <th data-sort="title" style="text-align: left; cursor: pointer;"
-                                        class="sortable-header">Track <span class="sort-icon"></span></th>
-                                    <th data-sort="streams"
-                                        style="text-align: right; white-space: nowrap; cursor: pointer;"
-                                        class="sortable-header">Total Streams <span class="sort-icon"></span></th>
-                                    <th id="change-header" data-sort="change"
-                                        style="text-align: right; white-space: nowrap; cursor: pointer;"
-                                        class="sortable-header">Change <span class="sort-icon"></span></th>
-                                    <th style="width: 100px; text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="top-tracks-body"></tbody>
-                            <tfoot id="top-tracks-foot"></tfoot>
-                        </table>
-                    </div>
+            <!-- SB19 Focus entry-point card -->
+            <div class="sb19-focus-entry" id="sb19FocusEntry" onclick="window.dashboard.openArtistDetailView('SB19')">
+                <div class="sb19-focus-content">
+                    <div class="sb19-focus-title">SB19 — Focus View</div>
+                    <div class="sb19-focus-sub">Wakas At Simula spotlight, YouTube EMOJI live, album eras, solo members</div>
                 </div>
-            </div>
-
-            <!-- Solo Streams by Member Chart (full-width) -->
-            <div class="chart-container" id="memberChartSection" style="width: 100%;">
-                <div class="chart-title"
-                    style="display: flex; justify-content: center; align-items: center; gap: 12px;">
-                    <span>Solo Streams by Member</span>
-                    <label
-                        style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
-                        <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
-                        <span>Show Listeners</span>
-                    </label>
-                </div>
-                <div class="chart-wrapper" style="height: 250px;">
-                    <canvas id="memberChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Full-width Solo Tracks Table -->
-            <div class="chart-container" id="memberTracksSection" style="width: 100%;">
-                <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
-                    <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
-                        <span>Solo Tracks by Member</span>
-                        <span id="member-filter-label"
-                            style="font-size: 0.8rem; color: #60a5fa;"></span>
-                        <button id="clearMemberFilterBtn"
-                            style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
-                            Filter</button>
-                        <button class="export-btn" style="display: none;" onclick="window.dashboard.exportMemberTracks()">Export CSV</button>
-                    </div>
-                    <div id="member-tracks-view">
-                        <table id="memberTracksTable" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th style="width: 35px; text-align: center;">#</th>
-                                    <th data-sort="title" style="text-align: left; cursor: pointer;"
-                                        class="sortable-header member-sort">Track <span class="sort-icon"></span>
-                                    </th>
-                                    <th data-sort="streams"
-                                        style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                        class="sortable-header member-sort">Total Streams <span
-                                            class="sort-icon"></span></th>
-                                    <th id="member-change-header" data-sort="change"
-                                        style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
-                                        class="sortable-header member-sort">Change <span class="sort-icon"></span>
-                                    </th>
-                                    <th style="width: 130px; text-align: center;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="member-tracks-body"></tbody>
-                            <tfoot id="member-tracks-foot"></tfoot>
-                        </table>
-                    </div>
-                </div>
+                <div class="sb19-focus-cta">Open SB19 Details →</div>
             </div>
 
             <!-- Hidden views for album/year breakdown -->
@@ -3414,7 +3493,7 @@
                 <!-- Stats Row -->
                 <div class="listeners-stats-row">
                     <div class="listeners-stat-item">
-                        <span class="listeners-stat-label">Current (SB19)</span>
+                        <span id="listenersCurrentLabel" class="listeners-stat-label">Current</span>
                         <span id="listenersCurrentValue" class="listeners-stat-value">-</span>
                     </div>
                     <div class="listeners-stat-item">
@@ -3606,6 +3685,259 @@
                         </thead>
                         <tbody id="opmStreamsTableBody"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Artist Detail View (used for SB19 and any drill-in artist) -->
+            <div id="artist-detail-view" class="listeners-detail-container" style="display: none;">
+                <div class="listeners-detail-header">
+                    <button class="song-back-btn" onclick="window.dashboard.closeArtistDetailView()">Back to Dashboard</button>
+                    <div class="listeners-title-section">
+                        <h2 id="artistDetailTitle">SB19 — Focus View</h2>
+                    </div>
+                </div>
+
+                <div class="listeners-stats-row" id="artistDetailStatsRow">
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">Current Monthly Listeners</span>
+                        <span class="listeners-stat-value" id="current-listeners">-</span>
+                    </div>
+                    <div class="listeners-stat-item">
+                        <span class="listeners-stat-label">All-Time High</span>
+                        <span class="listeners-stat-value" id="all-time-high">-</span>
+                    </div>
+                    <div class="listeners-stat-item" id="statTotalTracks">
+                        <span class="listeners-stat-label">Total Tracks</span>
+                        <span class="listeners-stat-value" id="total-tracks">-</span>
+                    </div>
+                    <div class="listeners-stat-item" id="statTotalStreams">
+                        <span class="listeners-stat-label">Total Streams</span>
+                        <span class="listeners-stat-value" id="total-streams">-</span>
+                    </div>
+                    <div class="listeners-stat-item" id="statTopTrack">
+                        <span class="listeners-stat-label">Top Track</span>
+                        <span class="listeners-stat-value" id="top-track">-</span>
+                    </div>
+                    <div class="listeners-stat-item" id="statPeriodChange">
+                        <span class="listeners-stat-label">Period Change</span>
+                        <span class="listeners-stat-value" id="period-change">-</span>
+                    </div>
+                </div>
+
+                <!-- Hidden bookkeeping spans used by legacy render methods -->
+                <span id="listeners-change" style="display:none;"></span>
+                <span id="ath-date" style="display:none;"></span>
+                <span id="tracks-info" style="display:none;"></span>
+                <span id="streams-info" style="display:none;"></span>
+                <span id="top-track-streams" style="display:none;"></span>
+                <span id="period-info" style="display:none;"></span>
+                <button class="stat-detail-btn" style="display:none;" onclick="window.dashboard.openListenersDetail()">Show Details</button>
+
+                <!-- Charts Row: Album/Era Chart + Album Spotlight Card + YouTube Card -->
+                <div class="charts-row" id="mainChartsRow" style="align-items: flex-start; margin-top: 16px;">
+                    <div class="chart-half" id="albumChartSection" style="flex: 1;">
+                        <div class="chart-container" style="margin-bottom: 0;">
+                            <div class="chart-title">Streams by Album/Era</div>
+                            <div class="chart-wrapper" style="height: 250px;">
+                                <canvas id="albumChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-half" id="wasCardSection" style="flex: 1;">
+                        <div class="was-hero-card" onclick="window.dashboard.filterToAlbum()">
+                            <canvas id="wasTopChart" class="was-chart"></canvas>
+                            <div class="was-hero-content">
+                                <div class="was-header">
+                                    <div class="was-identity">
+                                        <div class="was-title-row">
+                                            <span class="was-title">Wakas At Simula</span>
+                                        </div>
+                                        <div class="was-subtitle">
+                                            <span class="was-artist">SB19</span>
+                                            <span class="was-badge">ALBUM</span>
+                                            <span class="was-badge new-release">NEW</span>
+                                        </div>
+                                    </div>
+                                    <div class="was-controls">
+                                        <a href="https://open.spotify.com/album/6PLZOVdjyDjbsuMMUdXJ7W"
+                                           target="_blank" rel="noopener" class="was-spotify-link"
+                                           onclick="event.stopPropagation();">&#9654; Spotify</a>
+                                    </div>
+                                </div>
+                                <div class="was-stats-strip">
+                                    <div class="was-stat">
+                                        <div class="was-stat-row">
+                                            <span class="was-stat-value" id="wasTrackCount">24</span>
+                                            <span class="was-stat-label">tracks</span>
+                                        </div>
+                                    </div>
+                                    <div class="was-stat">
+                                        <div class="was-stat-row">
+                                            <span class="was-stat-value" id="wasTotalStreams">--</span>
+                                            <span class="was-stat-label">streams</span>
+                                        </div>
+                                        <span class="was-stat-change" id="wasStreamChange"></span>
+                                    </div>
+                                    <div class="was-stat">
+                                        <div class="was-stat-row">
+                                            <span class="was-stat-value" id="wasDailyStreams">--</span>
+                                            <span class="was-stat-label">daily</span>
+                                        </div>
+                                        <span class="was-stat-change" id="wasDailyChange"></span>
+                                    </div>
+                                </div>
+                                <div class="was-footer">
+                                    <div class="was-last-refresh" id="wasLastRefresh"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="was-remaining" id="wasRemainingTable" style="display:none;">
+                            <div class="was-remaining-header">
+                                <span class="was-remaining-title">More tracks</span>
+                            </div>
+                            <div class="was-remaining-body" id="wasRemainingBody"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-half" id="youtubeCardSection" style="flex: 1;">
+                        <div class="yt-hero-card">
+                            <img src="photos/emoji.png" class="yt-hero-bg" alt="EMOJI artwork" />
+                            <div class="yt-hero-overlay"></div>
+                            <canvas id="ytHourlyChart" class="yt-hourly-chart"></canvas>
+                            <div class="yt-hero-content">
+                                <div class="yt-header">
+                                    <div class="yt-identity">
+                                        <span class="yt-title">EMOJI</span>
+                                        <span class="yt-artist">SB19</span>
+                                        <span class="yt-live-badge"><span class="yt-live-dot"></span>LIVE</span>
+                                    </div>
+                                    <div class="yt-controls">
+                                        <a href="https://www.youtube.com/watch?v=w6_sChrkvw8" target="_blank" rel="noopener" class="yt-watch-link"
+                                           onclick="event.stopPropagation();">&#9654; YouTube</a>
+                                        <button class="yt-refresh-btn" onclick="event.stopPropagation(); window.dashboard.fetchYouTubeStats();" title="Refresh stats">
+                                            <span class="yt-refresh-icon">&#8635;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="yt-stats-strip">
+                                    <div class="yt-stat">
+                                        <div class="yt-stat-row">
+                                            <span class="yt-stat-value" id="ytViewCount">--</span>
+                                            <span class="yt-stat-label">views</span>
+                                        </div>
+                                        <span class="yt-stat-change" id="ytViewChange"></span>
+                                    </div>
+                                    <div class="yt-stat">
+                                        <div class="yt-stat-row">
+                                            <span class="yt-stat-value" id="ytLikeCount">--</span>
+                                            <span class="yt-stat-label">likes</span>
+                                        </div>
+                                        <span class="yt-stat-change" id="ytLikeChange"></span>
+                                    </div>
+                                    <div class="yt-stat">
+                                        <div class="yt-stat-row">
+                                            <span class="yt-stat-value" id="ytCommentCount">--</span>
+                                            <span class="yt-stat-label">comments</span>
+                                        </div>
+                                        <span class="yt-stat-change" id="ytCommentChange"></span>
+                                    </div>
+                                </div>
+                                <div class="yt-footer">
+                                    <div class="yt-last-refresh" id="ytLastRefresh"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container" id="topTracksSection" style="width: 100%;">
+                    <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
+                        <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
+                            <span>Top Tracks by Total Streams</span>
+                            <select id="albumDropdownFilter" style="background: #111827; border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                                <option value="">All Albums/EPs</option>
+                            </select>
+                            <span id="album-filter-label"
+                                style="font-size: 0.8rem; color: #60a5fa;"></span>
+                            <button id="clearFilterBtn"
+                                style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                                Filter</button>
+                            <button class="export-btn" style="display: none;" onclick="window.dashboard.exportTopTracks()">Export CSV</button>
+                        </div>
+                        <div id="tracks-view">
+                            <table id="topTracksTable" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">#</th>
+                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                            class="sortable-header">Track <span class="sort-icon"></span></th>
+                                        <th data-sort="streams"
+                                            style="text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header">Total Streams <span class="sort-icon"></span></th>
+                                        <th id="change-header" data-sort="change"
+                                            style="text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header">Change <span class="sort-icon"></span></th>
+                                        <th style="width: 100px; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="top-tracks-body"></tbody>
+                                <tfoot id="top-tracks-foot"></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container" id="memberChartSection" style="width: 100%;">
+                    <div class="chart-title"
+                        style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                        <span>Solo Streams by Member</span>
+                        <label
+                            style="display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #9ca3af; cursor: pointer;">
+                            <input type="checkbox" id="showListenersToggle" style="cursor: pointer;">
+                            <span>Show Listeners</span>
+                        </label>
+                    </div>
+                    <div class="chart-wrapper" style="height: 250px;">
+                        <canvas id="memberChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container" id="memberTracksSection" style="width: 100%;">
+                    <div class="top-tracks-table" style="max-height: 500px; overflow-y: auto;">
+                        <div class="section-title" style="display: flex; align-items: center; gap: 12px;">
+                            <span>Solo Tracks by Member</span>
+                            <span id="member-filter-label"
+                                style="font-size: 0.8rem; color: #60a5fa;"></span>
+                            <button id="clearMemberFilterBtn"
+                                style="display: none; background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Clear
+                                Filter</button>
+                            <button class="export-btn" style="display: none;" onclick="window.dashboard.exportMemberTracks()">Export CSV</button>
+                        </div>
+                        <div id="member-tracks-view">
+                            <table id="memberTracksTable" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 35px; text-align: center;">#</th>
+                                        <th data-sort="title" style="text-align: left; cursor: pointer;"
+                                            class="sortable-header member-sort">Track <span class="sort-icon"></span>
+                                        </th>
+                                        <th data-sort="streams"
+                                            style="width: 110px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header member-sort">Total Streams <span
+                                                class="sort-icon"></span></th>
+                                        <th id="member-change-header" data-sort="change"
+                                            style="width: 100px; text-align: right; white-space: nowrap; cursor: pointer;"
+                                            class="sortable-header member-sort">Change <span class="sort-icon"></span>
+                                        </th>
+                                        <th style="width: 130px; text-align: center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="member-tracks-body"></tbody>
+                                <tfoot id="member-tracks-foot"></tfoot>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4119,7 +4451,19 @@
             }
         }
 
-        class SB19Dashboard {
+        class ArtistDashboard {
+            // Escape HTML-unsafe chars in strings pulled from CSVs / external sources
+            // before embedding in innerHTML template literals. Accepts any input; stringifies.
+            static esc(v) {
+                if (v === null || v === undefined) return '';
+                return String(v)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
             constructor() {
                 this.listenersData = [];
                 this.streamsData = [];
@@ -4151,6 +4495,21 @@
                 this.trendsViewOpen = false;
                 // OPM streams view state
                 this.opmStreamsViewOpen = false;
+                // Artist detail view state (generic — also used for SB19)
+                this.artistDetailViewOpen = false;
+                this.homeAggregates = null;
+                this.genreColors = {
+                    'P-Pop': '#60a5fa',
+                    'SB19 Solo': '#f97316',
+                    'OPM Pop': '#34d399',
+                    'OPM Ballad': '#a78bfa',
+                    'OPM Rock': '#ef4444',
+                    'OPM Indie': '#fbbf24',
+                    'OPM Classic': '#ec4899',
+                    'OPM Hip-Hop': '#14b8a6'
+                };
+                this.ppopArtistSet = null; // built lazily from artistGenreMap
+                this.sb19SoloKeys = new Set(['pablo', 'josh cullen', 'stell', 'felip', 'justin']);
                 // Users view state (admin only)
                 this.usersViewOpen = false;
                 this.usersData = [];
@@ -4773,7 +5132,7 @@
 
                     data.push({
                         title: row['Song Title'] || '',
-                        artist: row['Artist'] || 'SB19',
+                        artist: row['Artist'] || 'Unknown',
                         year: parseInt(row['Year']) || 0,
                         album: row['Album/EP/Single'] || 'Single',
                         collaborators: row['Collaborating Artist(s)'] || '',
@@ -4807,7 +5166,7 @@
                     const streams = parseInt((row.streams || row.total_streams || '0').replace(/,/g, ''));
                     const dailyStreams = parseInt((row.daily_streams || '0').replace(/,/g, ''));
                     const songTitle = row.song_title || '';
-                    let artist = row.artist || row.artist_name || 'SB19';
+                    let artist = row.artist || row.artist_name || 'Unknown';
                     let year = parseInt(row.year) || 0;
                     let album = row.album || '';
                     let collaborators = row.collaborating_artists || '';
@@ -4832,7 +5191,7 @@
                         if (!collaborators) collaborators = meta.collaborators;
                         // Only override artist for SB19 solo member tracks, not external collabs
                         // (replacing 'SB19' with e.g. 'Ben&Ben' would hide collab tracks from SB19 view)
-                        if (!artist || artist === 'SB19') {
+                        if (!artist || artist === 'SB19' || artist === 'Unknown') {
                             const sb19Solo = ['pablo', 'josh cullen', 'stell', 'felip', 'justin'];
                             if (meta.artist && sb19Solo.includes(meta.artist.toLowerCase())) {
                                 artist = meta.artist;
@@ -5591,6 +5950,16 @@
             }
 
             render() {
+                if (this.artistDetailViewOpen) {
+                    this.renderArtistDetail();
+                } else {
+                    this.renderHome();
+                }
+                this.renderProductsServices();
+                this.applyContentGating();
+            }
+
+            renderArtistDetail() {
                 this.updateSectionVisibility();
                 this.updateStats();
 
@@ -5615,9 +5984,6 @@
                     this.createMemberChart();
                     this.populateMemberTracks();
                 }
-
-                this.renderProductsServices();
-                this.applyContentGating();
             }
 
             renderProductsServices() {
@@ -5791,11 +6157,606 @@
 
                 // Update artist selector button
                 const label = document.getElementById('artistSelectorLabel');
-                if (label) label.textContent = this.selectedArtist;
+                if (label) {
+                    label.textContent = this.artistDetailViewOpen ? this.selectedArtist : 'Pick an artist';
+                }
                 const dot = document.querySelector('#artistSelectorBtn .artist-dot');
                 if (dot) {
                     dot.className = 'artist-dot' + (hasTracks ? ' has-tracks' : '');
                 }
+            }
+
+            // =====================================================================
+            // Home aggregates + rendering (OPM + P-Pop side-by-side)
+            // =====================================================================
+
+            getPpopArtistSet() {
+                if (this.ppopArtistSet) return this.ppopArtistSet;
+                const set = new Set();
+                for (const [key, genre] of Object.entries(this.artistGenreMap || {})) {
+                    if (genre === 'P-Pop') set.add(key.toLowerCase());
+                }
+                // Always include SB19 as a P-Pop anchor even if genre map is empty
+                set.add('sb19');
+                this.ppopArtistSet = set;
+                return set;
+            }
+
+            getLatestListenersByArtist() {
+                const map = new Map();
+                for (const d of this.listenersData) {
+                    if (!d || !d.artist_name || !d.data_date) continue;
+                    if (!d.monthly_listeners || d.monthly_listeners < 100) continue;
+                    const key = d.artist_name;
+                    const prev = map.get(key);
+                    if (!prev || (d.data_date > prev.data_date)) {
+                        map.set(key, { artist_name: d.artist_name, monthly_listeners: d.monthly_listeners, data_date: d.data_date });
+                    }
+                }
+                return map;
+            }
+
+            getWoWListenerGainers() {
+                // For each artist, compute today vs 7-day-prior monthly listeners
+                const latest = this.getLatestListenersByArtist();
+                const result = [];
+                for (const [artist, entry] of latest) {
+                    const hist = this.getArtistHistoricalListeners(artist);
+                    if (!hist || hist.length < 2) continue;
+                    const latestDate = hist[hist.length - 1].data_date;
+                    const latestTs = new Date(latestDate).getTime();
+                    if (isNaN(latestTs)) continue;
+                    const targetTs = latestTs - 7 * 24 * 60 * 60 * 1000;
+                    // Find entry with date closest to (but <=) targetTs, else earliest available
+                    let bestIdx = -1;
+                    let bestDiff = Infinity;
+                    for (let i = 0; i < hist.length - 1; i++) {
+                        const ts = new Date(hist[i].data_date).getTime();
+                        if (isNaN(ts)) continue;
+                        const diff = Math.abs(ts - targetTs);
+                        if (diff < bestDiff) {
+                            bestDiff = diff;
+                            bestIdx = i;
+                        }
+                    }
+                    if (bestIdx === -1) continue;
+                    const prev = hist[bestIdx];
+                    const now = hist[hist.length - 1];
+                    const delta = now.monthly_listeners - prev.monthly_listeners;
+                    const pct = prev.monthly_listeners > 0
+                        ? (delta / prev.monthly_listeners) * 100
+                        : 0;
+                    result.push({
+                        artist,
+                        delta,
+                        pct,
+                        current: now.monthly_listeners,
+                        previous: prev.monthly_listeners,
+                        genre: this.artistGenreMap[artist.toLowerCase()] || ''
+                    });
+                }
+                return result.sort((a, b) => b.delta - a.delta);
+            }
+
+            computeArtistDailyStreams(scope = 'opm') {
+                // Returns [{artist, daily, change, tracks, isSb19, key}] sorted desc by daily.
+                // scope: 'opm' excludes SB19 solo members; 'ppop' keeps only P-Pop artists.
+                const data = this.streamsData;
+                if (!data || data.length === 0) return [];
+
+                const soloKeys = this.sb19SoloKeys;
+                const ppopSet = this.getPpopArtistSet();
+
+                const inScope = (artist) => {
+                    if (!artist) return false;
+                    const k = artist.toLowerCase();
+                    if (scope === 'opm') return !soloKeys.has(k);
+                    if (scope === 'ppop') return ppopSet.has(k);
+                    return true;
+                };
+
+                const scoped = data.filter(e => inScope(e.artist));
+                const dates = [...new Set(scoped.map(e => e.date))].sort();
+                if (dates.length < 2) return [];
+
+                const today = dates[dates.length - 1];
+                const yesterday = dates[dates.length - 2];
+                const dayBefore = dates.length >= 3 ? dates[dates.length - 3] : null;
+
+                const buildMap = (date) => {
+                    const m = {};
+                    scoped.filter(e => e.date === date).forEach(e => {
+                        const key = e.song_title + '|||' + (e.artist || '').toLowerCase();
+                        if (!m[key] || e.streams > m[key].streams) m[key] = e;
+                    });
+                    return m;
+                };
+
+                const todayMap = buildMap(today);
+                const yestMap = buildMap(yesterday);
+                const prevMap = dayBefore ? buildMap(dayBefore) : {};
+
+                const artistDaily = {};
+                for (const [key, entry] of Object.entries(todayMap)) {
+                    if (!yestMap[key]) continue;
+                    const akey = (entry.artist || '').toLowerCase();
+                    if (!artistDaily[akey]) {
+                        artistDaily[akey] = { daily: 0, count: 0, name: entry.artist };
+                    }
+                    artistDaily[akey].daily += entry.streams - yestMap[key].streams;
+                    artistDaily[akey].count += 1;
+                }
+
+                const prevArtistDaily = {};
+                if (dayBefore) {
+                    for (const [key, entry] of Object.entries(yestMap)) {
+                        if (!prevMap[key]) continue;
+                        const akey = (entry.artist || '').toLowerCase();
+                        prevArtistDaily[akey] = (prevArtistDaily[akey] || 0) + (entry.streams - prevMap[key].streams);
+                    }
+                }
+
+                const combined = [];
+                for (const [akey, info] of Object.entries(artistDaily)) {
+                    const prev = prevArtistDaily[akey] || 0;
+                    combined.push({
+                        artist: info.name,
+                        daily: info.daily,
+                        change: info.daily - prev,
+                        tracks: info.count,
+                        isSb19: akey === 'sb19',
+                        key: akey,
+                        prevDaily: prev
+                    });
+                }
+
+                combined.sort((a, b) => b.daily - a.daily);
+                return combined;
+            }
+
+            computeTopTracksByDailyStreams(scope = 'opm', limit = 10) {
+                const data = this.streamsData;
+                if (!data || data.length === 0) return [];
+
+                const soloKeys = this.sb19SoloKeys;
+                const ppopSet = this.getPpopArtistSet();
+                const inScope = (artist) => {
+                    if (!artist) return false;
+                    const k = artist.toLowerCase();
+                    if (scope === 'opm') return !soloKeys.has(k);
+                    if (scope === 'ppop') return ppopSet.has(k);
+                    return true;
+                };
+
+                const scoped = data.filter(e => inScope(e.artist));
+                const dates = [...new Set(scoped.map(e => e.date))].sort();
+                if (dates.length < 2) return [];
+
+                const today = dates[dates.length - 1];
+                const yesterday = dates[dates.length - 2];
+
+                const buildMap = (date) => {
+                    const m = {};
+                    scoped.filter(e => e.date === date).forEach(e => {
+                        const key = e.song_title + '|||' + (e.artist || '').toLowerCase();
+                        if (!m[key] || e.streams > m[key].streams) m[key] = e;
+                    });
+                    return m;
+                };
+
+                const todayMap = buildMap(today);
+                const yestMap = buildMap(yesterday);
+
+                const tracks = [];
+                for (const [key, entry] of Object.entries(todayMap)) {
+                    if (!yestMap[key]) continue;
+                    const daily = entry.streams - yestMap[key].streams;
+                    if (daily <= 0) continue;
+                    tracks.push({
+                        song_title: entry.song_title,
+                        artist: entry.artist,
+                        daily,
+                        total: entry.streams,
+                        url: entry.url || ''
+                    });
+                }
+
+                tracks.sort((a, b) => b.daily - a.daily);
+                return tracks.slice(0, limit);
+            }
+
+            computeGenreDistribution() {
+                const latest = this.getLatestListenersByArtist();
+                const byGenre = {};
+                for (const [artist, entry] of latest) {
+                    const genre = this.artistGenreMap[artist.toLowerCase()] || 'Unclassified';
+                    byGenre[genre] = (byGenre[genre] || 0) + entry.monthly_listeners;
+                }
+                return byGenre;
+            }
+
+            buildHomeAggregates() {
+                const latestMap = this.getLatestListenersByArtist();
+                const gainers = this.getWoWListenerGainers();
+                const soloKeys = this.sb19SoloKeys;
+                const ppopSet = this.getPpopArtistSet();
+
+                const opmArtists = [];
+                const ppopArtists = [];
+                let opmTotal = 0;
+                let ppopTotal = 0;
+                for (const [artist, entry] of latestMap) {
+                    const k = artist.toLowerCase();
+                    if (!soloKeys.has(k)) {
+                        opmArtists.push(entry);
+                        opmTotal += entry.monthly_listeners;
+                    }
+                    if (ppopSet.has(k)) {
+                        ppopArtists.push(entry);
+                        ppopTotal += entry.monthly_listeners;
+                    }
+                }
+                opmArtists.sort((a, b) => b.monthly_listeners - a.monthly_listeners);
+                ppopArtists.sort((a, b) => b.monthly_listeners - a.monthly_listeners);
+
+                const opmGainers = gainers.filter(g => !soloKeys.has(g.artist.toLowerCase()));
+                const ppopGainers = gainers.filter(g => ppopSet.has(g.artist.toLowerCase()));
+
+                this.homeAggregates = {
+                    opm: {
+                        topArtists: opmArtists.slice(0, 10),
+                        topTracks: this.computeTopTracksByDailyStreams('opm', 10),
+                        gainers: opmGainers.slice(0, 10),
+                        genreDist: this.computeGenreDistribution(),
+                        totals: { listeners: opmTotal, artistCount: opmArtists.length }
+                    },
+                    ppop: {
+                        topArtists: ppopArtists.slice(0, 10),
+                        topTracks: this.computeTopTracksByDailyStreams('ppop', 10),
+                        gainers: ppopGainers.slice(0, 10),
+                        totals: { listeners: ppopTotal, artistCount: ppopArtists.length }
+                    }
+                };
+                return this.homeAggregates;
+            }
+
+            renderHomeStats() {
+                if (!this.homeAggregates) this.buildHomeAggregates();
+                const { opm, ppop } = this.homeAggregates;
+
+                const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+
+                setText('opm-total-listeners', opm.totals.listeners.toLocaleString());
+                setText('opm-total-listeners-sub', `P-Pop: ${ppop.totals.listeners.toLocaleString()}`);
+                setText('opm-artist-count', opm.totals.artistCount.toLocaleString());
+                setText('opm-artist-count-sub', `P-Pop: ${ppop.totals.artistCount} tracked`);
+
+                const topArtist = opm.topArtists[0];
+                if (topArtist) {
+                    setText('opm-top-artist', topArtist.artist_name);
+                    setText('opm-top-artist-sub', `${topArtist.monthly_listeners.toLocaleString()} listeners`);
+                    const card = document.getElementById('statTopArtist');
+                    if (card) card.onclick = () => this.openArtistDetailView(topArtist.artist_name);
+                }
+
+                const topGainer = opm.gainers[0];
+                if (topGainer) {
+                    setText('opm-biggest-gainer', topGainer.artist);
+                    const pct = topGainer.pct.toFixed(1);
+                    setText('opm-biggest-gainer-sub', `+${topGainer.delta.toLocaleString()} (${pct}%)`);
+                    const card = document.getElementById('statBiggestGainer');
+                    if (card) card.onclick = () => this.openArtistDetailView(topGainer.artist);
+                }
+
+                // Last updated (from latest streams date)
+                if (this.streamsData && this.streamsData.length > 0) {
+                    const latestStreamDate = this.streamsData.reduce((max, curr) => {
+                        const currDate = new Date(curr.data_date);
+                        const maxDate = new Date(max);
+                        return currDate > maxDate ? curr.data_date : max;
+                    }, this.streamsData[0].data_date);
+                    const lastEl = document.getElementById('last-updated');
+                    if (lastEl && latestStreamDate) {
+                        lastEl.textContent = `Last updated: ${new Date(latestStreamDate).toLocaleString()}`;
+                    }
+                }
+            }
+
+            renderHomeSection(scope) {
+                if (!this.homeAggregates) this.buildHomeAggregates();
+                const agg = this.homeAggregates[scope];
+                if (!agg) return;
+                const prefix = scope; // 'opm' or 'ppop'
+                const countEl = document.getElementById(`${prefix}SectionArtistCount`);
+                if (countEl) countEl.textContent = `${agg.totals.artistCount} artists`;
+
+                // Top Artists bar chart
+                this.renderHomeTopArtistsChart(scope, agg.topArtists);
+
+                // Top Tracks table
+                this.renderHomeTopTracksTable(scope, agg.topTracks);
+
+                // Gainers table
+                this.renderHomeGainersTable(scope, agg.gainers);
+
+                // Summary + genre distribution (OPM only has donut)
+                this.renderHomeSummary(scope, agg);
+            }
+
+            renderHomeTopArtistsChart(scope, artists) {
+                const canvas = document.getElementById(`${scope}TopArtistsChart`);
+                if (!canvas || typeof Chart === 'undefined') return;
+                const ctx = canvas.getContext('2d');
+                const chartKey = `${scope}TopArtists`;
+                if (this.charts[chartKey]) { this.charts[chartKey].destroy(); }
+
+                const labels = artists.map(a => a.artist_name);
+                const values = artists.map(a => a.monthly_listeners);
+                const colors = artists.map(a => {
+                    const genre = this.artistGenreMap[a.artist_name.toLowerCase()] || '';
+                    return this.genreColors[genre] || '#60a5fa';
+                });
+
+                this.charts[chartKey] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Monthly Listeners',
+                            data: values,
+                            backgroundColor: colors,
+                            borderRadius: 6,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => ctx.parsed.x.toLocaleString() + ' listeners'
+                                }
+                            }
+                        },
+                        onClick: (evt, elements) => {
+                            if (elements && elements.length > 0) {
+                                const idx = elements[0].index;
+                                const name = labels[idx];
+                                if (name) this.openArtistDetailView(name);
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: '#9ca3af',
+                                    callback: (v) => this.formatNumber(v)
+                                },
+                                grid: { color: 'rgba(255,255,255,0.05)' }
+                            },
+                            y: {
+                                ticks: { color: '#e5e7eb', font: { size: 11 } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            renderHomeTopTracksTable(scope, tracks) {
+                const tbody = document.getElementById(`${scope}TopTracksBody`);
+                if (!tbody) return;
+                if (!tracks || tracks.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#6b7280; padding:16px;">Need ≥2 days of stream data</td></tr>';
+                    return;
+                }
+                const esc = ArtistDashboard.esc;
+                tbody.innerHTML = tracks.map((t, i) => `
+                    <tr data-artist="${esc(t.artist || '')}" data-song="${esc(t.song_title || '')}">
+                        <td class="rank-col">${i + 1}</td>
+                        <td style="color:#e5e7eb; font-weight:500;">${esc(t.song_title || '-')}</td>
+                        <td style="color:#9ca3af;">${esc(t.artist || '-')}</td>
+                        <td class="num-col delta-pos">+${(t.daily || 0).toLocaleString()}</td>
+                    </tr>
+                `).join('');
+                tbody.querySelectorAll('tr').forEach(tr => {
+                    tr.addEventListener('click', () => {
+                        const song = tr.getAttribute('data-song');
+                        const artist = tr.getAttribute('data-artist');
+                        if (song && artist) {
+                            this.openArtistDetailView(artist);
+                        }
+                    });
+                });
+            }
+
+            renderHomeGainersTable(scope, gainers) {
+                const tbody = document.getElementById(`${scope}GainersBody`);
+                if (!tbody) return;
+                if (!gainers || gainers.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="${scope === 'opm' ? 5 : 4}" style="text-align:center; color:#6b7280; padding:16px;">Need ≥7 days of listener data</td></tr>`;
+                    return;
+                }
+                const esc = ArtistDashboard.esc;
+                tbody.innerHTML = gainers.map((g, i) => {
+                    const deltaClass = g.delta >= 0 ? 'delta-pos' : 'delta-neg';
+                    const sign = g.delta >= 0 ? '+' : '';
+                    const genreCell = scope === 'opm'
+                        ? `<td class="genre-cell">${esc(g.genre || '-')}</td>`
+                        : '';
+                    return `
+                    <tr data-artist="${esc(g.artist || '')}">
+                        <td class="rank-col">${i + 1}</td>
+                        <td style="color:#e5e7eb; font-weight:500;">${esc(g.artist || '-')}</td>
+                        ${genreCell}
+                        <td class="num-col ${deltaClass}">${sign}${g.delta.toLocaleString()}</td>
+                        <td class="num-col ${deltaClass}">${sign}${g.pct.toFixed(1)}%</td>
+                    </tr>`;
+                }).join('');
+                tbody.querySelectorAll('tr').forEach(tr => {
+                    tr.addEventListener('click', () => {
+                        const artist = tr.getAttribute('data-artist');
+                        if (artist) this.openArtistDetailView(artist);
+                    });
+                });
+            }
+
+            renderHomeSummary(scope, agg) {
+                const statsEl = document.getElementById(`${scope}SummaryStats`);
+                if (statsEl) {
+                    const rows = [
+                        { key: 'Total Listeners', val: agg.totals.listeners.toLocaleString() },
+                        { key: 'Artists Tracked', val: agg.totals.artistCount.toLocaleString() },
+                    ];
+                    if (agg.topArtists[0]) {
+                        rows.push({ key: 'Top Artist', val: agg.topArtists[0].artist_name });
+                    }
+                    if (agg.gainers[0]) {
+                        const g = agg.gainers[0];
+                        rows.push({ key: 'Top Gainer (7D)', val: `${g.artist} (+${g.delta.toLocaleString()})` });
+                    }
+                    if (agg.topTracks[0]) {
+                        const t = agg.topTracks[0];
+                        rows.push({ key: 'Top Track (Daily)', val: `${t.song_title} — ${t.artist}` });
+                    }
+                    statsEl.innerHTML = rows.map(r => `
+                        <div class="ss-row"><span class="ss-key">${r.key}</span><span class="ss-val">${r.val}</span></div>
+                    `).join('');
+                }
+
+                // OPM donut chart
+                if (scope === 'opm') {
+                    this.renderOpmGenreDonut(agg.genreDist);
+                }
+            }
+
+            renderOpmGenreDonut(genreDist) {
+                const canvas = document.getElementById('opmGenreDonut');
+                if (!canvas || typeof Chart === 'undefined') return;
+                const ctx = canvas.getContext('2d');
+                if (this.charts.opmGenreDonut) { this.charts.opmGenreDonut.destroy(); }
+
+                const labels = Object.keys(genreDist).sort((a, b) => genreDist[b] - genreDist[a]);
+                const values = labels.map(l => genreDist[l]);
+                const colors = labels.map(l => this.genreColors[l] || '#6b7280');
+
+                this.charts.opmGenreDonut = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderColor: 'rgba(0,0,0,0.3)', borderWidth: 1 }] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '60%',
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { color: '#e5e7eb', font: { size: 10 }, boxWidth: 10, padding: 6 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => {
+                                        const total = values.reduce((s, v) => s + v, 0);
+                                        const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                                        return `${ctx.label}: ${ctx.parsed.toLocaleString()} (${pct}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            renderHome() {
+                this.buildHomeAggregates();
+                this.renderHomeStats();
+                this.renderHomeSection('opm');
+                this.renderHomeSection('ppop');
+                this.stopYouTubeRefresh();
+            }
+
+            // =====================================================================
+            // Artist Detail View (generic — used for SB19 and drill-in artists)
+            // =====================================================================
+
+            openArtistDetailView(name) {
+                if (!name) return;
+                this.artistDetailViewOpen = true;
+                this.selectedArtist = name;
+                this.tracksMetadata = this.allTracksMetadata[name] || [];
+                this.albumFilter = null;
+                this.trackFilter = null;
+                this.memberFilter = null;
+
+                // Update hash (do NOT trigger hashchange recursion — use replaceState)
+                const targetHash = (name === 'SB19') ? '#sb19' : '#artist=' + encodeURIComponent(name);
+                if (window.location.hash !== targetHash) {
+                    history.replaceState(null, '', window.location.pathname + window.location.search + targetHash);
+                }
+
+                const dashboard = document.getElementById('dashboard');
+                const detailView = document.getElementById('artist-detail-view');
+                if (!dashboard || !detailView) return;
+
+                // Hide all dashboard children except the detail view + footer/ads
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id !== 'artist-detail-view' &&
+                        !el.classList.contains('ad-container') &&
+                        !el.classList.contains('products-services-panel') &&
+                        !el.classList.contains('developer-footer') &&
+                        el.classList.contains('filter-bar') === false) {
+                        el.style.display = 'none';
+                    }
+                });
+                // Keep filter bar visible on detail view too
+                const filterBar = dashboard.querySelector('.filter-bar');
+                if (filterBar) filterBar.style.display = '';
+                detailView.style.display = 'block';
+
+                // Update title
+                const title = document.getElementById('artistDetailTitle');
+                if (title) title.textContent = (name === 'SB19') ? 'SB19 — Focus View' : `${name} — Details`;
+
+                // Render artist-specific content. Wrap chart creators in a tick to allow
+                // the detail view to gain layout before Chart.js measures canvas size.
+                setTimeout(() => {
+                    this.render();
+                    // Force resize to ensure canvases sized correctly
+                    Object.values(this.charts || {}).forEach(c => { if (c && c.resize) c.resize(); });
+                }, 30);
+            }
+
+            closeArtistDetailView() {
+                this.artistDetailViewOpen = false;
+                this.stopYouTubeRefresh();
+
+                const dashboard = document.getElementById('dashboard');
+                const detailView = document.getElementById('artist-detail-view');
+                if (!dashboard) return;
+
+                // Clear hash
+                if (window.location.hash === '#sb19' || window.location.hash.startsWith('#artist=')) {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+
+                Array.from(dashboard.children).forEach(el => {
+                    if (el.id === 'artist-detail-view') {
+                        el.style.display = 'none';
+                    } else if (el.id === 'song-detail-view' || el.id === 'album-view' ||
+                               el.id === 'year-view' || el.id === 'listeners-detail-view' ||
+                               el.id === 'trends-view' || el.id === 'users-view' ||
+                               el.id === 'opm-streams-view') {
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = '';
+                    }
+                });
+
+                if (detailView) detailView.style.display = 'none';
+
+                // Re-render home
+                this.renderHome();
             }
 
             populateArtistSelector(filter = '') {
@@ -6854,14 +7815,15 @@
                     return v.toString();
                 };
 
+                const esc = ArtistDashboard.esc;
                 body.innerHTML = remaining.map((t, i) => {
                     const name = t.song_title.replace(/ \(Wakas At Simula\)/, '');
                     const feat = t.collaborating_artists
-                        ? `<span class="was-remaining-feat"> ft. ${t.collaborating_artists}</span>`
+                        ? `<span class="was-remaining-feat"> ft. ${esc(t.collaborating_artists)}</span>`
                         : '';
                     return `<div class="was-remaining-row">
                         <span class="was-remaining-rank">${i + 7}</span>
-                        <span class="was-remaining-name">${name}${feat}</span>
+                        <span class="was-remaining-name">${esc(name)}${feat}</span>
                         <span class="was-remaining-streams">${formatK(t.total_streams)}</span>
                     </div>`;
                 }).join('');
@@ -7953,14 +8915,16 @@
                         changeHtml = `<span style="color: #9ca3af;">-</span>`;
                     }
 
+                    const esc = ArtistDashboard.esc;
+                    const safeTitleArg = esc(track.song_title).replace(/'/g, "\\'");
                     return `
-                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}')">
+                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${safeTitleArg}')">
                             <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
                             <td style="padding: 8px 10px;">
-                                <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
+                                <div style="font-weight: 500; color: #e5e7eb;">${esc(track.song_title)}</div>
                                 <div style="font-size: 0.7rem; color: ${track.memberColor}; display: flex; align-items: center; gap: 4px;">
                                     <span style="width: 6px; height: 6px; border-radius: 50%; background: ${track.memberColor};"></span>
-                                    ${track.memberName}
+                                    ${esc(track.memberName)}
                                 </div>
                             </td>
                             <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: #34d399;">
@@ -7972,7 +8936,7 @@
                             <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
                                 <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
                                     ${playButton}
-                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
+                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${safeTitleArg}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
                                 </div>
                             </td>
                         </tr>
@@ -8471,18 +9435,20 @@
                     ? artists.filter(a => a.toLowerCase().includes(query))
                     : artists;
 
+                const esc = ArtistDashboard.esc;
                 container.innerHTML = filtered.map(artist => {
                     const color = this.getArtistColor(artist);
                     const isSelected = this.selectedCompareArtists.includes(artist);
+                    const safeArg = esc(artist).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
                             <input type="checkbox"
-                                   value="${artist}"
+                                   value="${esc(artist)}"
                                    ${isSelected ? 'checked' : ''}
-                                   onchange="window.dashboard.toggleArtistComparison('${artist}')">
+                                   onchange="window.dashboard.toggleArtistComparison('${safeArg}')">
                             <span class="artist-dot"></span>
-                            <span class="artist-name">${artist}</span>
+                            <span class="artist-name">${esc(artist)}</span>
                         </label>
                     `;
                 }).join('');
@@ -8507,6 +9473,7 @@
                 }
 
                 this.renderArtistCheckboxes();
+                this.updateListenersStats();
                 this.createListenersHistoryChart();
                 this.populateListenersHistoryTable();
             }
@@ -8529,6 +9496,7 @@
                 }
 
                 this.renderArtistCheckboxes();
+                this.updateListenersStats();
                 this.createListenersHistoryChart();
                 this.populateListenersHistoryTable();
             }
@@ -8631,9 +9599,13 @@
 
 
             updateListenersStats() {
-                const sb19Data = this.getArtistHistoricalListeners('SB19');
+                const primaryArtist = this.selectedCompareArtists[0] || this.selectedArtist || 'SB19';
+                const artistData = this.getArtistHistoricalListeners(primaryArtist);
 
-                if (sb19Data.length === 0) {
+                const labelEl = document.getElementById('listenersCurrentLabel');
+                if (labelEl) labelEl.textContent = `Current (${primaryArtist})`;
+
+                if (artistData.length === 0) {
                     document.getElementById('listenersCurrentValue').textContent = '-';
                     document.getElementById('listenersAllTimeHigh').textContent = '-';
                     document.getElementById('listenersAllTimeLow').textContent = '-';
@@ -8643,18 +9615,18 @@
                     return;
                 }
 
-                const latest = sb19Data[sb19Data.length - 1];
-                const allTimeHigh = Math.max(...sb19Data.map(d => d.monthly_listeners));
-                const allTimeLow = Math.min(...sb19Data.map(d => d.monthly_listeners));
+                const latest = artistData[artistData.length - 1];
+                const allTimeHigh = Math.max(...artistData.map(d => d.monthly_listeners));
+                const allTimeLow = Math.min(...artistData.map(d => d.monthly_listeners));
 
                 document.getElementById('listenersCurrentValue').textContent = latest.monthly_listeners.toLocaleString();
                 document.getElementById('listenersAllTimeHigh').textContent = allTimeHigh.toLocaleString();
                 document.getElementById('listenersAllTimeLow').textContent = allTimeLow.toLocaleString();
-                document.getElementById('listenersDaysTracked').textContent = sb19Data.length.toString();
+                document.getElementById('listenersDaysTracked').textContent = artistData.length.toString();
 
                 // 7-day change
-                if (sb19Data.length >= 7) {
-                    const weekAgo = sb19Data[sb19Data.length - 7];
+                if (artistData.length >= 7) {
+                    const weekAgo = artistData[artistData.length - 7];
                     const change7 = latest.monthly_listeners - weekAgo.monthly_listeners;
                     const el7 = document.getElementById('listeners7DayChange');
                     el7.textContent = (change7 >= 0 ? '+' : '') + change7.toLocaleString();
@@ -8664,8 +9636,8 @@
                 }
 
                 // 30-day change
-                if (sb19Data.length >= 30) {
-                    const monthAgo = sb19Data[sb19Data.length - 30];
+                if (artistData.length >= 30) {
+                    const monthAgo = artistData[artistData.length - 30];
                     const change30 = latest.monthly_listeners - monthAgo.monthly_listeners;
                     const el30 = document.getElementById('listeners30DayChange');
                     el30.textContent = (change30 >= 0 ? '+' : '') + change30.toLocaleString();
@@ -9127,16 +10099,18 @@
                 }
                 const filtered = query ? artists.filter(a => a.toLowerCase().includes(query)) : artists;
 
+                const esc = ArtistDashboard.esc;
                 container.innerHTML = filtered.map(artist => {
                     const color = this.getArtistColor(artist);
                     const isSelected = this.trendsSelectedArtists.includes(artist);
+                    const safeArg = esc(artist).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
-                            <input type="checkbox" value="${artist}" ${isSelected ? 'checked' : ''}
-                                   onchange="window.dashboard.toggleTrendsArtist('${artist.replace(/'/g, "\\'")}')">
+                            <input type="checkbox" value="${esc(artist)}" ${isSelected ? 'checked' : ''}
+                                   onchange="window.dashboard.toggleTrendsArtist('${safeArg}')">
                             <span class="artist-dot"></span>
-                            <span class="artist-name">${artist}</span>
+                            <span class="artist-name">${esc(artist)}</span>
                         </label>`;
                 }).join('');
 
@@ -9371,18 +10345,19 @@
                 // Show top 50 only
                 tracks = tracks.slice(0, 50);
 
+                const esc = ArtistDashboard.esc;
                 container.innerHTML = tracks.map(track => {
                     const color = this.getArtistColor(track.artist_name);
                     const isSelected = this.trendsSelectedTracks.some(t => t.song_title === track.song_title && t.artist_name === track.artist_name);
-                    const safeTitle = track.song_title.replace(/'/g, "\\'");
-                    const safeArtist = track.artist_name.replace(/'/g, "\\'");
+                    const safeTitle = esc(track.song_title).replace(/'/g, "\\'");
+                    const safeArtist = esc(track.artist_name).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
                             <input type="checkbox" ${isSelected ? 'checked' : ''}
                                    onchange="window.dashboard.toggleTrendsTrack('${safeTitle}','${safeArtist}')">
                             <span class="artist-dot"></span>
-                            <span class="artist-name">${track.song_title} <small style="opacity:0.6">(${track.artist_name})</small></span>
+                            <span class="artist-name">${esc(track.song_title)} <small style="opacity:0.6">(${esc(track.artist_name)})</small></span>
                         </label>`;
                 }).join('');
 
@@ -9643,6 +10618,7 @@
                 // Top 20 artists table
                 const artistsBody = document.getElementById('summaryArtistsBody');
                 if (artistsBody) {
+                    const esc = ArtistDashboard.esc;
                     artistsBody.innerHTML = artistSummary.slice(0, 20).map((a, i) => {
                         const c1 = a.change1 !== null ? ((a.change1 >= 0 ? '+' : '') + a.change1.toLocaleString()) : '-';
                         const c7 = a.change7 !== null ? ((a.change7 >= 0 ? '+' : '') + a.change7.toLocaleString()) : '-';
@@ -9652,8 +10628,8 @@
                         const c30color = a.change30 > 0 ? '#34d399' : a.change30 < 0 ? '#f87171' : '#9ca3af';
                         return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
                             <td style="padding:6px 8px; color:#6b7280;">${i + 1}</td>
-                            <td style="padding:6px 8px; color:#e5e7eb;">${a.name}</td>
-                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${a.genre}</td>
+                            <td style="padding:6px 8px; color:#e5e7eb;">${esc(a.name)}</td>
+                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${esc(a.genre)}</td>
                             <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${a.listeners.toLocaleString()}</td>
                             <td style="padding:6px 8px; text-align:right; color:${c1color};">${c1}</td>
                             <td style="padding:6px 8px; text-align:right; color:${c7color};">${c7}</td>
@@ -9665,6 +10641,7 @@
                 // Top 20 tracks table
                 const tracksBody = document.getElementById('summaryTracksBody');
                 if (tracksBody) {
+                    const esc = ArtistDashboard.esc;
                     tracksBody.innerHTML = trackSummary.slice(0, 20).map((t, i) => {
                         const g1 = t.growth1 !== null ? ((t.growth1 >= 0 ? '+' : '') + t.growth1.toLocaleString()) : '-';
                         const g7 = t.growth7 !== null ? ((t.growth7 >= 0 ? '+' : '') + t.growth7.toLocaleString()) : '-';
@@ -9672,8 +10649,8 @@
                         const g7color = t.growth7 > 0 ? '#34d399' : t.growth7 < 0 ? '#f87171' : '#9ca3af';
                         return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05); font-size:0.8rem;">
                             <td style="padding:6px 8px; color:#6b7280;">${i + 1}</td>
-                            <td style="padding:6px 8px; color:#e5e7eb;">${t.title}</td>
-                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${t.artist}</td>
+                            <td style="padding:6px 8px; color:#e5e7eb;">${esc(t.title)}</td>
+                            <td style="padding:6px 8px; color:#9ca3af; font-size:0.7rem;">${esc(t.artist)}</td>
                             <td style="padding:6px 8px; text-align:right; color:#e5e7eb;">${t.streams.toLocaleString()}</td>
                             <td style="padding:6px 8px; text-align:right; color:${g1color};">${g1}</td>
                             <td style="padding:6px 8px; text-align:right; color:${g7color};">${g7}</td>
@@ -10232,6 +11209,7 @@
                 // Render top 20
                 const top20 = combined.slice(0, 20);
                 const tbody = document.getElementById('opmStreamsTableBody');
+                const esc = ArtistDashboard.esc;
                 tbody.innerHTML = top20.map((g, i) => {
                     const rank = i + 1;
                     const prevRank = prevRankMap[g.key];
@@ -10249,8 +11227,8 @@
                     const dailyColor = g.isSb19 ? '#22d3ee' : '#e5e7eb';
                     return `<tr style="${rowStyle} border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <td style="padding: 8px 10px; text-align: right; color: #6b7280; font-weight: 700;">${rank}</td>
-                        <td style="padding: 8px 10px; color: ${nameColor}; font-weight: 600;">${g.artist}</td>
-                        <td style="padding: 8px 10px; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">${genre}</td>
+                        <td style="padding: 8px 10px; color: ${nameColor}; font-weight: 600;">${esc(g.artist)}</td>
+                        <td style="padding: 8px 10px; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">${esc(genre)}</td>
                         <td style="padding: 8px 10px; text-align: right; color: ${dailyColor}; font-weight: 600;">${g.daily.toLocaleString()}</td>
                         <td style="padding: 8px 10px; text-align: right; color: ${changeColor}; font-size: 0.85rem;">${changeStr}</td>
                         <td style="padding: 8px 10px; text-align: right; color: #9ca3af;">${g.tracks}</td>
@@ -10319,7 +11297,7 @@
                     this.renderUsersView();
                 } catch (err) {
                     console.error('Failed to load users:', err.message);
-                    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#f87171; padding:24px;">Failed to load users: ${err.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#f87171; padding:24px;">Failed to load users: ${ArtistDashboard.esc(err.message)}</td></tr>`;
                 }
             }
 
@@ -10356,6 +11334,7 @@
                     return;
                 }
 
+                const esc = ArtistDashboard.esc;
                 tbody.innerHTML = users.map((u, i) => {
                     const name = u.full_name || '-';
                     const email = u.email || '-';
@@ -10377,9 +11356,9 @@
                     const lastLogin = u._last_sign_in ? new Date(u._last_sign_in).toLocaleDateString() : (u.updated_at ? new Date(u.updated_at).toLocaleDateString() : '-');
                     return `<tr>
                         <td style="color:#6b7280;">${i + 1}</td>
-                        <td>${name}</td>
-                        <td style="color:#9ca3af; font-size:0.75rem;">${email}</td>
-                        <td><span class="users-tier-pill t-${tier}">${tierLabel}</span></td>
+                        <td>${esc(name)}</td>
+                        <td style="color:#9ca3af; font-size:0.75rem;">${esc(email)}</td>
+                        <td><span class="users-tier-pill t-${esc(tier)}">${esc(tierLabel)}</span></td>
                         <td><span class="users-status-dot ${statusActive ? 'active' : 'inactive'}"></span>${statusActive ? 'Active' : 'Inactive'}</td>
                         <td style="font-size:0.75rem; ${expiresStyle}">${expiresStr}</td>
                         <td style="color:#9ca3af; font-size:0.75rem;">${lastLogin}</td>
@@ -10417,7 +11396,7 @@
         // Initialize auth manager and dashboard (store globally for onclick access)
         window.authManager = new AuthManager();
         window.authManager.init(); // async — doesn't block dashboard load
-        window.dashboard = new SB19Dashboard();
+        window.dashboard = new ArtistDashboard();
     </script>
 </body>
 

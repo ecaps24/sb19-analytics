@@ -399,6 +399,51 @@ class SocialMediaAgent:
                     latest_date = date
         return False, f"No OPM track data for today ({today}). Latest: {latest_date or 'unknown'}"
 
+    def check_streams_quality(self):
+        """Check that SB19 Emoji track has non-zero streams (canary for scraping)."""
+        data = load_streams_data()
+        if not data:
+            return False, "No stream data found"
+        latest_date = max(e["date"] for e in data)
+        emoji_entries = [
+            e for e in data
+            if e["date"] == latest_date
+            and e["song_title"].lower() == "emoji"
+            and e["artist"].upper() == "SB19"
+        ]
+        if not emoji_entries:
+            return False, f"Emoji track not found on {latest_date}"
+        streams = max(e["streams"] for e in emoji_entries)
+        if streams == 0:
+            return False, f"Emoji track has 0 streams on {latest_date} — scraping may have failed"
+        return True, f"Emoji streams OK ({streams:,} on {latest_date})"
+
+    def check_leaderboard_streams_quality(self):
+        """Check SB19 and BINI have non-zero streams (canary for leaderboard scraping)."""
+        sb19_data = load_streams_data()
+        opm_data = load_streams_data(file_path=OPM_TRACKS_FILE)
+        if not sb19_data:
+            return False, "No SB19 stream data found"
+        if not opm_data:
+            return False, "No OPM track data found"
+        # Check SB19
+        sb19_latest = max(e["date"] for e in sb19_data)
+        sb19_total = sum(
+            e["streams"] for e in sb19_data
+            if e["date"] == sb19_latest and e["artist"].upper() == "SB19"
+        )
+        if sb19_total == 0:
+            return False, f"SB19 streams are all zero on {sb19_latest} — scraping may have failed"
+        # Check BINI
+        bini_latest = max(e["date"] for e in opm_data)
+        bini_total = sum(
+            e["streams"] for e in opm_data
+            if e["date"] == bini_latest and e["artist"].upper() == "BINI"
+        )
+        if bini_total == 0:
+            return False, f"BINI streams are all zero on {bini_latest} — scraping may have failed"
+        return True, f"SB19 ({sb19_total:,}) and BINI ({bini_total:,}) streams OK"
+
     # ======================================================================
     # Content generators — each returns a message string (or None)
     # ======================================================================
@@ -2861,6 +2906,16 @@ class SocialMediaAgent:
         status_s = "READY" if has_s else "NOT READY"
         print(f"  Streams data:    [{status_s}] {msg_s}")
 
+        # Stream quality (Emoji canary)
+        has_sq, msg_sq = self.check_streams_quality()
+        status_sq = "READY" if has_sq else "NOT READY"
+        print(f"  Stream quality:  [{status_sq}] {msg_sq}")
+
+        # Leaderboard quality (SB19 + BINI)
+        has_lq, msg_lq = self.check_leaderboard_streams_quality()
+        status_lq = "READY" if has_lq else "NOT READY"
+        print(f"  Leaderboard:     [{status_lq}] {msg_lq}")
+
         # Posted log
         log = load_posted_log()
         milestone_count = len(log.get("milestones", {}))
@@ -3172,6 +3227,11 @@ def main():
                 if not ok:
                     print("[SKIP] Use --skip-validation to post anyway.")
                     return
+                ok, msg = agent.check_streams_quality()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
 
             message = agent.generate_daily_post()
             if not message:
@@ -3186,6 +3246,11 @@ def main():
         elif args.command == "top10":
             if not args.skip_validation and not args.dry_run:
                 ok, msg = agent.check_streams_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+                ok, msg = agent.check_streams_quality()
                 print(f"[VALIDATION] {msg}")
                 if not ok:
                     print("[SKIP] Use --skip-validation to post anyway.")
@@ -3205,6 +3270,11 @@ def main():
         elif args.command == "solo-top10":
             if not args.skip_validation and not args.dry_run:
                 ok, msg = agent.check_streams_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+                ok, msg = agent.check_streams_quality()
                 print(f"[VALIDATION] {msg}")
                 if not ok:
                     print("[SKIP] Use --skip-validation to post anyway.")
@@ -3298,6 +3368,13 @@ def main():
                 _report(success)
 
         elif args.command == "opm-top":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_leaderboard_streams_quality()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
             message, auto_image = agent.generate_opm_top_post()
             if not message:
                 print("[ERR] Could not generate OPM top post.")
@@ -3312,6 +3389,11 @@ def main():
         elif args.command == "opm-top-tracks":
             if not args.skip_validation and not args.dry_run:
                 ok, msg = agent.check_opm_tracks_data()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+                ok, msg = agent.check_leaderboard_streams_quality()
                 print(f"[VALIDATION] {msg}")
                 if not ok:
                     print("[SKIP] Use --skip-validation to post anyway.")
@@ -3335,6 +3417,11 @@ def main():
                 if not ok:
                     print("[SKIP] Use --skip-validation to post anyway.")
                     return
+                ok, msg = agent.check_leaderboard_streams_quality()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
 
             message, auto_image = agent.generate_opm_top_streams_post()
             if not message:
@@ -3348,6 +3435,13 @@ def main():
             _report(success)
 
         elif args.command == "ppop-top":
+            if not args.skip_validation and not args.dry_run:
+                ok, msg = agent.check_leaderboard_streams_quality()
+                print(f"[VALIDATION] {msg}")
+                if not ok:
+                    print("[SKIP] Use --skip-validation to post anyway.")
+                    return
+
             message, auto_image = agent.generate_ppop_top_post()
             if not message:
                 print("[ERR] Could not generate P-Pop top post.")
