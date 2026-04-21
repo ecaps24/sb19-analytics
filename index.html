@@ -99,6 +99,128 @@
             color: #f87171;
         }
 
+        .stat-delta {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(52, 211, 153, 0.12);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            letter-spacing: 0.02em;
+        }
+
+        .stat-delta.negative {
+            background: rgba(248, 113, 113, 0.12);
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.25);
+        }
+
+        .stat-delta.neutral {
+            background: rgba(148, 163, 184, 0.12);
+            color: #94a3b8;
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        .stat-delta-empty {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.7rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .highlights-panel {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.28) 0%, rgba(17, 24, 39, 0.72) 60%);
+            border: 1px solid rgba(96, 165, 250, 0.22);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .highlights-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+            margin-bottom: 10px;
+        }
+
+        .highlights-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
+        }
+
+        .highlights-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .highlight-item:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .highlight-icon {
+            font-size: 1.1rem;
+            line-height: 1.2;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .highlight-text {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            line-height: 1.45;
+        }
+
+        .highlight-bold {
+            color: #f9fafb;
+            font-weight: 600;
+        }
+
+        .highlight-pos { color: #34d399; font-weight: 600; }
+        .highlight-neg { color: #f87171; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .highlights-panel { padding: 12px 14px; }
+            .highlights-title { font-size: 0.72rem; }
+            .highlight-text { font-size: 0.78rem; }
+            .stat-delta { font-size: 0.7rem; padding: 2px 6px; }
+        }
+
         .stat-card-listeners {
             position: relative;
             padding-bottom: 32px;
@@ -860,6 +982,48 @@
         .home-section-header.opm-accent h2 { color: #fbbf24; }
         .home-section-header.ppop-accent,
         .home-section-header.ppop-accent h2 { color: #60a5fa; }
+
+        /* Engagement scatter */
+        .engagement-scatter-section { margin-bottom: 16px; }
+        .engagement-scatter-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            font-size: 0.78rem;
+            color: #cbd5e1;
+        }
+        .engagement-scatter-legend .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+        .engagement-scatter-legend .legend-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .engagement-scatter-legend .legend-item.muted { opacity: 0.35; }
+        .engagement-scatter-legend .legend-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .engagement-scatter-wrap {
+            position: relative;
+            height: 420px;
+        }
+        .engagement-scatter-hint {
+            font-size: 0.72rem;
+            color: #6b7280;
+            text-align: right;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .engagement-scatter-wrap { height: 320px; }
+        }
         .home-viz {
             display: flex;
             flex-direction: column;
@@ -3032,21 +3196,25 @@
                     <h3>Total OPM Monthly Listeners</h3>
                     <div class="stat-value" id="opm-total-listeners">-</div>
                     <div class="growth" id="opm-total-listeners-sub">P-Pop: -</div>
+                    <div id="opm-total-listeners-delta"></div>
                 </div>
                 <div class="stat-card" id="statOpmArtistCount">
                     <h3>Artists Tracked</h3>
                     <div class="stat-value" id="opm-artist-count">-</div>
                     <div class="growth" id="opm-artist-count-sub">Across 8 OPM genres</div>
+                    <div id="opm-artist-count-delta"></div>
                 </div>
-                <div class="stat-card" id="statTopArtist" style="cursor: pointer;">
+                <div class="stat-card" id="statTopArtist" style="cursor: pointer;" title="Click to open artist detail">
                     <h3>Top Artist (Listeners)</h3>
                     <div class="stat-value" id="opm-top-artist" style="font-size: 1.15rem;">-</div>
                     <div class="growth" id="opm-top-artist-sub">-</div>
+                    <div id="opm-top-artist-delta"></div>
                 </div>
-                <div class="stat-card" id="statBiggestGainer" style="cursor: pointer;">
+                <div class="stat-card" id="statBiggestGainer" style="cursor: pointer;" title="Click to open artist detail">
                     <h3>Biggest Weekly Gainer</h3>
                     <div class="stat-value" id="opm-biggest-gainer" style="font-size: 1.15rem;">-</div>
                     <div class="growth" id="opm-biggest-gainer-sub">-</div>
+                    <div id="opm-biggest-gainer-delta"></div>
                 </div>
                 <div class="stat-card" id="statTrends">
                     <h3>Analytics & Trends</h3>
@@ -3058,6 +3226,12 @@
                     <div class="stat-value" style="font-size: 1rem; cursor: pointer;" onclick="window.dashboard.openOpmStreamsView()">View Rankings</div>
                     <div class="growth">Top artists by daily streams</div>
                 </div>
+            </div>
+
+            <!-- This Week in OPM — data-driven highlights -->
+            <div class="highlights-panel" id="highlightsPanel" style="display: none;">
+                <div class="highlights-title">This Week in OPM</div>
+                <div class="highlights-list" id="highlightsList"></div>
             </div>
 
             <!-- Filters -->
@@ -3127,14 +3301,14 @@
                         </div>
                     </div>
                     <div class="home-viz" id="opmTopTracksViz">
-                        <div class="chart-title">Top 10 Tracks by Daily Streams</div>
+                        <div class="chart-title" id="opmTopTracksTitle">Top 10 Tracks by Daily Streams</div>
                         <div class="home-mini-table-wrap">
                             <table class="home-mini-table">
                                 <thead><tr>
                                     <th class="rank-col">#</th>
                                     <th>Track</th>
                                     <th>Artist</th>
-                                    <th class="num-col">Daily</th>
+                                    <th class="num-col" id="opmTopTracksValueCol">Daily</th>
                                 </tr></thead>
                                 <tbody id="opmTopTracksBody"></tbody>
                             </table>
@@ -3178,14 +3352,14 @@
                         </div>
                     </div>
                     <div class="home-viz" id="ppopTopTracksViz">
-                        <div class="chart-title">Top 10 Tracks by Daily Streams</div>
+                        <div class="chart-title" id="ppopTopTracksTitle">Top 10 Tracks by Daily Streams</div>
                         <div class="home-mini-table-wrap">
                             <table class="home-mini-table">
                                 <thead><tr>
                                     <th class="rank-col">#</th>
                                     <th>Track</th>
                                     <th>Artist</th>
-                                    <th class="num-col">Daily</th>
+                                    <th class="num-col" id="ppopTopTracksValueCol">Daily</th>
                                 </tr></thead>
                                 <tbody id="ppopTopTracksBody"></tbody>
                             </table>
@@ -3211,6 +3385,19 @@
                     </div>
                 </section>
             </div>
+
+            <!-- Engagement scatter: monthly listeners × daily streams -->
+            <section class="home-section-card engagement-scatter-section" id="engagementScatterSection" style="display: none;">
+                <header class="home-section-header opm-accent">
+                    <h2>Artist Engagement — Listeners × Daily Streams</h2>
+                    <span class="home-section-count" id="engagementScatterCount">–</span>
+                </header>
+                <div class="engagement-scatter-legend" id="engagementScatterLegend"></div>
+                <div class="engagement-scatter-wrap">
+                    <canvas id="engagementScatterChart"></canvas>
+                </div>
+                <div class="engagement-scatter-hint">Hover for details · click a dot to open that artist</div>
+            </section>
 
             <!-- SB19 Focus entry-point card -->
             <div class="sb19-focus-entry" id="sb19FocusEntry" onclick="window.dashboard.openArtistDetailView('SB19')">
@@ -4846,7 +5033,14 @@
 
             // Helper to normalize track titles for matching
             normalizeForMatch(title) {
-                return title
+                if (title == null) return '';
+                // Memoize: this function runs many times across parseStreamsCSV + findTrackMetadata
+                // so cache the result keyed by the raw input. Cache is bounded by unique titles
+                // which is naturally small (< 10k entries in practice).
+                const cache = this._normalizeCache || (this._normalizeCache = new Map());
+                const cached = cache.get(title);
+                if (cached !== undefined) return cached;
+                const out = title
                     .toLowerCase()
                     .replace(/[''`''""]/g, "'")  // Normalize quotes
                     .replace(/\s*-\s*from\s+["']?/g, ' (from ')  // "- from" to "(from"
@@ -4856,6 +5050,8 @@
                     .replace(/["]/g, '')  // Remove remaining quotes
                     .replace(/\s+/g, ' ')  // Normalize whitespace
                     .trim();
+                cache.set(title, out);
+                return out;
             }
 
             // Find matching track metadata with fuzzy matching
@@ -5006,7 +5202,7 @@
                     if (d.artist_name) this.artistsWithTracks.add(d.artist_name);
                 });
 
-                // Load artist genre map
+                // Load artist genre map (keys normalized to lowercase for case-insensitive lookup)
                 const artistsResponse = await fetch('./opm_artists_spotify.csv?t=' + Date.now());
                 if (artistsResponse.ok) {
                     const csv = await artistsResponse.text();
@@ -5016,7 +5212,7 @@
                         if (parts.length >= 3) {
                             const name = parts[0].trim();
                             const genre = parts[parts.length - 1].trim();
-                            if (name && genre) this.artistGenreMap[name] = genre;
+                            if (name && genre) this.artistGenreMap[name.toLowerCase()] = genre;
                         }
                     }
                 }
@@ -5173,13 +5369,14 @@
                     let timestamp = row.timestamp || '';
                     // Convert timestamp format 20260124_022608 to 2026-01-24 02:26:08
                     if (timestamp && timestamp.includes('_') && timestamp.length >= 15) {
-                        const year = timestamp.substring(0, 4);
-                        const month = timestamp.substring(4, 6);
-                        const day = timestamp.substring(6, 8);
-                        const hour = timestamp.substring(9, 11);
-                        const min = timestamp.substring(11, 13);
-                        const sec = timestamp.substring(13, 15);
-                        timestamp = `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+                        // Use different local names to avoid shadowing outer `year` / `album`
+                        const tsYear = timestamp.substring(0, 4);
+                        const tsMonth = timestamp.substring(4, 6);
+                        const tsDay = timestamp.substring(6, 8);
+                        const tsHour = timestamp.substring(9, 11);
+                        const tsMin = timestamp.substring(11, 13);
+                        const tsSec = timestamp.substring(13, 15);
+                        timestamp = `${tsYear}-${tsMonth}-${tsDay} ${tsHour}:${tsMin}:${tsSec}`;
                     }
                     const spotifyUrl = row.url || row['spotify_link'] || row['Spotify Link'] || '';
 
@@ -6327,9 +6524,10 @@
                     if (scope === 'ppop') return ppopSet.has(k);
                     return true;
                 };
+                const dayKey = (e) => (e.data_date || '').substring(0, 10);
 
-                const scoped = data.filter(e => inScope(e.artist));
-                const dates = [...new Set(scoped.map(e => e.date))].sort();
+                const scoped = data.filter(e => inScope(e.artist_name));
+                const dates = [...new Set(scoped.map(dayKey))].filter(Boolean).sort();
                 if (dates.length < 2) return [];
 
                 const today = dates[dates.length - 1];
@@ -6337,9 +6535,9 @@
 
                 const buildMap = (date) => {
                     const m = {};
-                    scoped.filter(e => e.date === date).forEach(e => {
-                        const key = e.song_title + '|||' + (e.artist || '').toLowerCase();
-                        if (!m[key] || e.streams > m[key].streams) m[key] = e;
+                    scoped.filter(e => dayKey(e) === date).forEach(e => {
+                        const key = e.song_title + '|||' + (e.artist_name || '').toLowerCase();
+                        if (!m[key] || e.total_streams > m[key].total_streams) m[key] = e;
                     });
                     return m;
                 };
@@ -6350,19 +6548,118 @@
                 const tracks = [];
                 for (const [key, entry] of Object.entries(todayMap)) {
                     if (!yestMap[key]) continue;
-                    const daily = entry.streams - yestMap[key].streams;
+                    const daily = entry.total_streams - yestMap[key].total_streams;
                     if (daily <= 0) continue;
                     tracks.push({
                         song_title: entry.song_title,
-                        artist: entry.artist,
+                        artist: entry.artist_name,
                         daily,
-                        total: entry.streams,
-                        url: entry.url || ''
+                        total: entry.total_streams,
+                        url: entry.spotify_url || ''
                     });
                 }
 
                 tracks.sort((a, b) => b.daily - a.daily);
                 return tracks.slice(0, limit);
+            }
+
+            computeDailyStreamsByArtist() {
+                const data = this.streamsData;
+                if (!data || data.length === 0) return [];
+
+                const dayKey = (e) => (e.data_date || '').substring(0, 10);
+                const dates = [...new Set(data.map(dayKey))].filter(Boolean).sort();
+                if (dates.length < 2) return [];
+
+                const today = dates[dates.length - 1];
+                const yesterday = dates[dates.length - 2];
+
+                const trackKey = (e) => e.song_title + '|||' + (e.artist_name || '').toLowerCase();
+                const buildMap = (date) => {
+                    const m = {};
+                    for (const e of data) {
+                        if (dayKey(e) !== date) continue;
+                        const k = trackKey(e);
+                        if (!m[k] || e.total_streams > m[k].total_streams) m[k] = e;
+                    }
+                    return m;
+                };
+
+                const todayMap = buildMap(today);
+                const yestMap = buildMap(yesterday);
+
+                const byArtist = new Map();
+                for (const [k, entry] of Object.entries(todayMap)) {
+                    if (!yestMap[k]) continue;
+                    const name = entry.artist_name;
+                    if (!name) continue;
+                    const daily = entry.total_streams - yestMap[k].total_streams;
+                    const prev = byArtist.get(name) || { artist_name: name, daily: 0, tracks: 0 };
+                    prev.daily += daily;
+                    prev.tracks += 1;
+                    byArtist.set(name, prev);
+                }
+
+                const listenersMap = this.getLatestListenersByArtist();
+                const out = [];
+                for (const [name, entry] of byArtist) {
+                    const lEntry = listenersMap.get(name);
+                    if (!lEntry || !lEntry.monthly_listeners) continue;
+                    const genre = this.artistGenreMap[name.toLowerCase()] || 'Unclassified';
+                    out.push({
+                        artist_name: name,
+                        daily: entry.daily,
+                        tracks: entry.tracks,
+                        listeners: lEntry.monthly_listeners,
+                        genre,
+                    });
+                }
+                return out;
+            }
+
+            computeTopTracksForHome(scope = 'opm', limit = 10) {
+                // Prefer daily deltas; fall back to total streams on latest date when <2 days available.
+                const daily = this.computeTopTracksByDailyStreams(scope, limit);
+                if (daily.length > 0) return { mode: 'daily', tracks: daily };
+
+                const data = this.streamsData;
+                if (!data || data.length === 0) return { mode: 'empty', tracks: [] };
+                const soloKeys = this.sb19SoloKeys;
+                const ppopSet = this.getPpopArtistSet();
+                const inScope = (artist) => {
+                    if (!artist) return false;
+                    const k = artist.toLowerCase();
+                    if (scope === 'opm') return !soloKeys.has(k);
+                    if (scope === 'ppop') return ppopSet.has(k);
+                    return true;
+                };
+                const dayKey = (e) => (e.data_date || '').substring(0, 10);
+                const scoped = data.filter(e => inScope(e.artist_name));
+                if (scoped.length === 0) return { mode: 'empty', tracks: [] };
+                const dates = [...new Set(scoped.map(dayKey))].filter(Boolean).sort();
+                if (dates.length === 0) return { mode: 'empty', tracks: [] };
+                const latest = dates[dates.length - 1];
+                const byTrack = new Map();
+                for (const e of scoped) {
+                    if (dayKey(e) !== latest) continue;
+                    const key = e.song_title + '|||' + (e.artist_name || '').toLowerCase();
+                    const existing = byTrack.get(key);
+                    if (!existing || e.total_streams > existing.total_streams) {
+                        byTrack.set(key, e);
+                    }
+                }
+                const tracks = [...byTrack.values()]
+                    .filter(e => (e.total_streams || 0) > 0)
+                    .sort((a, b) => b.total_streams - a.total_streams)
+                    .slice(0, limit)
+                    .map(e => ({
+                        song_title: e.song_title,
+                        artist: e.artist_name,
+                        total: e.total_streams,
+                        daily: 0,
+                        url: e.spotify_url || ''
+                    }));
+                return { mode: tracks.length > 0 ? 'total' : 'empty', tracks };
             }
 
             computeGenreDistribution() {
@@ -6405,14 +6702,14 @@
                 this.homeAggregates = {
                     opm: {
                         topArtists: opmArtists.slice(0, 10),
-                        topTracks: this.computeTopTracksByDailyStreams('opm', 10),
+                        topTracks: this.computeTopTracksForHome('opm', 10),
                         gainers: opmGainers.slice(0, 10),
                         genreDist: this.computeGenreDistribution(),
                         totals: { listeners: opmTotal, artistCount: opmArtists.length }
                     },
                     ppop: {
                         topArtists: ppopArtists.slice(0, 10),
-                        topTracks: this.computeTopTracksByDailyStreams('ppop', 10),
+                        topTracks: this.computeTopTracksForHome('ppop', 10),
                         gainers: ppopGainers.slice(0, 10),
                         totals: { listeners: ppopTotal, artistCount: ppopArtists.length }
                     }
@@ -6431,12 +6728,33 @@
                 setText('opm-artist-count', opm.totals.artistCount.toLocaleString());
                 setText('opm-artist-count-sub', `P-Pop: ${ppop.totals.artistCount} tracked`);
 
+                // Compute WoW deltas across the whole scene (not just top 10)
+                const soloKeys = this.sb19SoloKeys || new Set();
+                const allGainers = (typeof this.getWoWListenerGainers === 'function') ? this.getWoWListenerGainers() : [];
+                const opmAll = allGainers.filter(g => !soloKeys.has((g.artist || '').toLowerCase()));
+                const ppopSet = this.getPpopArtistSet ? this.getPpopArtistSet() : new Set();
+                const ppopAll = allGainers.filter(g => ppopSet.has((g.artist || '').toLowerCase()));
+
+                const sumField = (arr, f) => arr.reduce((s, x) => s + (f(x) || 0), 0);
+                const opmDelta = sumField(opmAll, g => g.delta);
+                const opmPrev = sumField(opmAll, g => g.previous);
+                const opmPct = opmPrev > 0 ? (opmDelta / opmPrev) * 100 : 0;
+
+                this.renderStatDelta('opm-total-listeners-delta', opmDelta, opmPct);
+
                 const topArtist = opm.topArtists[0];
                 if (topArtist) {
                     setText('opm-top-artist', topArtist.artist_name);
                     setText('opm-top-artist-sub', `${topArtist.monthly_listeners.toLocaleString()} listeners`);
                     const card = document.getElementById('statTopArtist');
                     if (card) card.onclick = () => this.openArtistDetailView(topArtist.artist_name);
+                    const taGain = allGainers.find(g => g.artist === topArtist.artist_name);
+                    if (taGain) {
+                        this.renderStatDelta('opm-top-artist-delta', taGain.delta, taGain.pct);
+                    } else {
+                        const el = document.getElementById('opm-top-artist-delta');
+                        if (el) el.innerHTML = '';
+                    }
                 }
 
                 const topGainer = opm.gainers[0];
@@ -6446,9 +6764,25 @@
                     setText('opm-biggest-gainer-sub', `+${topGainer.delta.toLocaleString()} (${pct}%)`);
                     const card = document.getElementById('statBiggestGainer');
                     if (card) card.onclick = () => this.openArtistDetailView(topGainer.artist);
+                    const gainEl = document.getElementById('opm-biggest-gainer-delta');
+                    if (gainEl && topGainer.current) {
+                        gainEl.innerHTML = `<span class="stat-delta-empty">Now at ${topGainer.current.toLocaleString()} listeners</span>`;
+                    }
                 }
 
-                // Last updated (from latest streams date)
+                // Artist-count card: show movers (up/down/flat) if we have comparable data
+                const countEl = document.getElementById('opm-artist-count-delta');
+                if (countEl) {
+                    if (opmAll.length > 0) {
+                        const up = opmAll.filter(g => g.delta > 0).length;
+                        const down = opmAll.filter(g => g.delta < 0).length;
+                        countEl.innerHTML = `<span class="stat-delta-empty">${up} up · ${down} down this week</span>`;
+                    } else {
+                        countEl.innerHTML = '';
+                    }
+                }
+
+                // Last updated — humanized, with precise datetime on hover
                 if (this.streamsData && this.streamsData.length > 0) {
                     const latestStreamDate = this.streamsData.reduce((max, curr) => {
                         const currDate = new Date(curr.data_date);
@@ -6457,9 +6791,113 @@
                     }, this.streamsData[0].data_date);
                     const lastEl = document.getElementById('last-updated');
                     if (lastEl && latestStreamDate) {
-                        lastEl.textContent = `Last updated: ${new Date(latestStreamDate).toLocaleString()}`;
+                        const d = new Date(latestStreamDate);
+                        lastEl.textContent = `Updated ${this.formatRelativeTime(d)}`;
+                        lastEl.title = d.toLocaleString();
                     }
                 }
+
+                // Populate the highlights panel
+                this.renderHighlights({ opm, ppop, opmAll, ppopAll, opmDelta, opmPct });
+            }
+
+            renderStatDelta(elementId, delta, pct) {
+                const el = document.getElementById(elementId);
+                if (!el) return;
+                if (delta === undefined || delta === null || !isFinite(delta)) {
+                    el.innerHTML = '';
+                    return;
+                }
+                const arrow = delta > 0 ? '▲' : (delta < 0 ? '▼' : '—');
+                const cls = delta > 0 ? '' : (delta < 0 ? ' negative' : ' neutral');
+                const sign = delta > 0 ? '+' : '';
+                const pctText = (isFinite(pct) && pct !== 0) ? ` (${sign}${pct.toFixed(1)}%)` : '';
+                el.innerHTML = `<span class="stat-delta${cls}" title="Change vs ~7 days ago">${arrow} ${sign}${delta.toLocaleString()}${pctText}</span>`;
+            }
+
+            formatRelativeTime(date) {
+                const diff = Date.now() - date.getTime();
+                if (!isFinite(diff) || diff < 0) return date.toLocaleString();
+                const mins = Math.floor(diff / 60000);
+                if (mins < 1) return 'just now';
+                if (mins < 60) return `${mins} min ago`;
+                const hours = Math.floor(mins / 60);
+                if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+                const days = Math.floor(hours / 24);
+                const timeStr = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                if (days === 1) return `yesterday at ${timeStr}`;
+                if (days < 7) return `${days} days ago`;
+                return `${date.toLocaleDateString([], { month: 'short', day: 'numeric' })}, ${timeStr}`;
+            }
+
+            renderHighlights({ opm, ppop, opmAll, ppopAll, opmDelta, opmPct }) {
+                const panel = document.getElementById('highlightsPanel');
+                const list = document.getElementById('highlightsList');
+                if (!panel || !list) return;
+                const esc = ArtistDashboard.esc;
+
+                const items = [];
+
+                // 1) Aggregate scene movement
+                if (opmAll && opmAll.length > 0) {
+                    const positives = opmAll.filter(g => g.delta > 0).length;
+                    const negatives = opmAll.filter(g => g.delta < 0).length;
+                    const sign = opmDelta >= 0 ? '+' : '−';
+                    const cls = opmDelta >= 0 ? 'highlight-pos' : 'highlight-neg';
+                    const direction = opmDelta >= 0 ? 'gained' : 'lost';
+                    const icon = opmDelta >= 0 ? '📈' : '📉';
+                    const pctStr = isFinite(opmPct) ? `${opmPct >= 0 ? '+' : ''}${opmPct.toFixed(2)}%` : '';
+                    items.push({
+                        icon,
+                        html: `OPM collectively <span class="${cls}">${direction} ${sign}${Math.abs(opmDelta).toLocaleString()}</span> monthly listeners this week${pctStr ? ` (<span class="${cls}">${pctStr}</span>)` : ''} — <span class="highlight-bold">${positives}</span> up, <span class="highlight-bold">${negatives}</span> down.`
+                    });
+                }
+
+                // 2) Biggest absolute gainer
+                const topAbs = opm.gainers[0];
+                if (topAbs && topAbs.delta > 0) {
+                    items.push({
+                        icon: '🚀',
+                        html: `<span class="highlight-bold">${esc(topAbs.artist)}</span> led all OPM with <span class="highlight-pos">+${topAbs.delta.toLocaleString()}</span> new listeners (+${topAbs.pct.toFixed(1)}%), now at ${topAbs.current.toLocaleString()}.`
+                    });
+                }
+
+                // 3) Fastest % mover (exclude tiny-base noise)
+                const pctCandidates = [...opmAll]
+                    .filter(g => g.previous >= 5000 && g.delta > 0)
+                    .sort((a, b) => b.pct - a.pct);
+                const topPct = pctCandidates[0];
+                if (topPct && (!topAbs || topPct.artist !== topAbs.artist)) {
+                    items.push({
+                        icon: '⚡',
+                        html: `Fastest % growth: <span class="highlight-bold">${esc(topPct.artist)}</span> at <span class="highlight-pos">+${topPct.pct.toFixed(1)}%</span> (+${topPct.delta.toLocaleString()}).`
+                    });
+                }
+
+                // 4) P-Pop collective
+                if (ppopAll && ppopAll.length > 0) {
+                    const ppopDelta = ppopAll.reduce((s, g) => s + (g.delta || 0), 0);
+                    const ppopPrev = ppopAll.reduce((s, g) => s + (g.previous || 0), 0);
+                    const ppopPct = ppopPrev > 0 ? (ppopDelta / ppopPrev) * 100 : 0;
+                    const sign = ppopDelta >= 0 ? '+' : '−';
+                    const cls = ppopDelta >= 0 ? 'highlight-pos' : 'highlight-neg';
+                    items.push({
+                        icon: '🎤',
+                        html: `P-Pop scene moved <span class="${cls}">${sign}${Math.abs(ppopDelta).toLocaleString()}</span> (<span class="${cls}">${ppopPct >= 0 ? '+' : ''}${ppopPct.toFixed(2)}%</span>) across <span class="highlight-bold">${ppopAll.length}</span> tracked acts.`
+                    });
+                }
+
+                if (items.length === 0) {
+                    panel.style.display = 'none';
+                    return;
+                }
+                panel.style.display = 'block';
+                list.innerHTML = items.slice(0, 4).map(it => `
+                    <div class="highlight-item">
+                        <div class="highlight-icon">${it.icon}</div>
+                        <div class="highlight-text">${it.html}</div>
+                    </div>
+                `).join('');
             }
 
             renderHomeSection(scope) {
@@ -6545,22 +6983,43 @@
                 });
             }
 
-            renderHomeTopTracksTable(scope, tracks) {
+            renderHomeTopTracksTable(scope, payload) {
                 const tbody = document.getElementById(`${scope}TopTracksBody`);
+                const titleEl = document.getElementById(`${scope}TopTracksTitle`);
+                const colEl = document.getElementById(`${scope}TopTracksValueCol`);
                 if (!tbody) return;
+
+                // Back-compat: accept raw arrays from older callers.
+                const normalized = Array.isArray(payload)
+                    ? { mode: payload.length > 0 ? 'daily' : 'empty', tracks: payload }
+                    : (payload || { mode: 'empty', tracks: [] });
+                const { mode, tracks } = normalized;
+
+                if (titleEl) {
+                    titleEl.textContent = mode === 'total'
+                        ? 'Top 10 Tracks by Total Streams'
+                        : 'Top 10 Tracks by Daily Streams';
+                }
+                if (colEl) colEl.textContent = mode === 'total' ? 'Streams' : 'Daily';
+
                 if (!tracks || tracks.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#6b7280; padding:16px;">Need ≥2 days of stream data</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#6b7280; padding:16px;">No track stream data available yet</td></tr>';
                     return;
                 }
                 const esc = ArtistDashboard.esc;
-                tbody.innerHTML = tracks.map((t, i) => `
+                tbody.innerHTML = tracks.map((t, i) => {
+                    const value = mode === 'total' ? (t.total || 0) : (t.daily || 0);
+                    const cellClass = mode === 'total' ? '' : 'delta-pos';
+                    const prefix = mode === 'total' ? '' : '+';
+                    return `
                     <tr data-artist="${esc(t.artist || '')}" data-song="${esc(t.song_title || '')}">
                         <td class="rank-col">${i + 1}</td>
                         <td style="color:#e5e7eb; font-weight:500;">${esc(t.song_title || '-')}</td>
                         <td style="color:#9ca3af;">${esc(t.artist || '-')}</td>
-                        <td class="num-col delta-pos">+${(t.daily || 0).toLocaleString()}</td>
+                        <td class="num-col ${cellClass}">${prefix}${value.toLocaleString()}</td>
                     </tr>
-                `).join('');
+                `;
+                }).join('');
                 tbody.querySelectorAll('tr').forEach(tr => {
                     tr.addEventListener('click', () => {
                         const song = tr.getAttribute('data-song');
@@ -6617,9 +7076,12 @@
                         const g = agg.gainers[0];
                         rows.push({ key: 'Top Gainer (7D)', val: `${g.artist} (+${g.delta.toLocaleString()})` });
                     }
-                    if (agg.topTracks[0]) {
-                        const t = agg.topTracks[0];
-                        rows.push({ key: 'Top Track (Daily)', val: `${t.song_title} — ${t.artist}` });
+                    const topTrackList = Array.isArray(agg.topTracks) ? agg.topTracks : (agg.topTracks && agg.topTracks.tracks) || [];
+                    const topTrackMode = Array.isArray(agg.topTracks) ? 'daily' : (agg.topTracks && agg.topTracks.mode) || 'empty';
+                    if (topTrackList[0]) {
+                        const t = topTrackList[0];
+                        const label = topTrackMode === 'total' ? 'Top Track (Total)' : 'Top Track (Daily)';
+                        rows.push({ key: label, val: `${t.song_title} — ${t.artist}` });
                     }
                     statsEl.innerHTML = rows.map(r => `
                         <div class="ss-row"><span class="ss-key">${r.key}</span><span class="ss-val">${r.val}</span></div>
@@ -6673,7 +7135,125 @@
                 this.renderHomeStats();
                 this.renderHomeSection('opm');
                 this.renderHomeSection('ppop');
+                this.renderEngagementScatter();
                 this.stopYouTubeRefresh();
+            }
+
+            renderEngagementScatter() {
+                const section = document.getElementById('engagementScatterSection');
+                const canvas = document.getElementById('engagementScatterChart');
+                const legendEl = document.getElementById('engagementScatterLegend');
+                const countEl = document.getElementById('engagementScatterCount');
+                if (!section || !canvas || typeof Chart === 'undefined') return;
+
+                const artists = this.computeDailyStreamsByArtist()
+                    .filter(a => a.daily > 0 && a.listeners > 0);
+
+                if (artists.length === 0) {
+                    section.style.display = 'none';
+                    return;
+                }
+                section.style.display = '';
+                if (countEl) countEl.textContent = `${artists.length} artists`;
+
+                // Group by genre for per-dataset coloring + toggleable legend
+                const byGenre = new Map();
+                for (const a of artists) {
+                    const g = a.genre || 'Unclassified';
+                    if (!byGenre.has(g)) byGenre.set(g, []);
+                    byGenre.get(g).push(a);
+                }
+                const genres = [...byGenre.keys()].sort((a, b) => byGenre.get(b).length - byGenre.get(a).length);
+
+                const datasets = genres.map(g => {
+                    const color = this.genreColors[g] || '#9ca3af';
+                    return {
+                        label: g,
+                        backgroundColor: color + 'cc',
+                        borderColor: color,
+                        borderWidth: 1,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        data: byGenre.get(g).map(a => ({
+                            x: a.listeners,
+                            y: a.daily,
+                            artist: a.artist_name,
+                            tracks: a.tracks,
+                            genre: g,
+                        })),
+                    };
+                });
+
+                if (this.charts.engagementScatter) this.charts.engagementScatter.destroy();
+
+                const ctx = canvas.getContext('2d');
+                this.charts.engagementScatter = new Chart(ctx, {
+                    type: 'scatter',
+                    data: { datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: (evt, elements) => {
+                            if (!elements || elements.length === 0) return;
+                            const el = elements[0];
+                            const point = datasets[el.datasetIndex].data[el.index];
+                            if (point && point.artist) this.openArtistDetailView(point.artist);
+                        },
+                        onHover: (evt, elements) => {
+                            evt.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => {
+                                        const p = ctx.raw;
+                                        return [
+                                            p.artist,
+                                            `Genre: ${p.genre}`,
+                                            `Monthly listeners: ${p.x.toLocaleString()}`,
+                                            `Daily streams: +${p.y.toLocaleString()}`,
+                                            `Tracks: ${p.tracks}`,
+                                        ];
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'logarithmic',
+                                title: { display: true, text: 'Monthly Listeners', color: '#9ca3af' },
+                                ticks: { color: '#9ca3af', callback: (v) => this.formatNumber(v) },
+                                grid: { color: 'rgba(255,255,255,0.05)' }
+                            },
+                            y: {
+                                type: 'logarithmic',
+                                title: { display: true, text: 'Daily Streams (today − yesterday)', color: '#9ca3af' },
+                                ticks: { color: '#9ca3af', callback: (v) => this.formatNumber(v) },
+                                grid: { color: 'rgba(255,255,255,0.05)' }
+                            }
+                        }
+                    }
+                });
+
+                // Custom toggleable legend
+                if (legendEl) {
+                    legendEl.innerHTML = genres.map((g, i) => {
+                        const color = this.genreColors[g] || '#9ca3af';
+                        return `<span class="legend-item" data-idx="${i}">
+                            <span class="legend-swatch" style="background:${color};"></span>${g} (${byGenre.get(g).length})
+                        </span>`;
+                    }).join('');
+                    legendEl.querySelectorAll('.legend-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            const idx = parseInt(item.dataset.idx, 10);
+                            const meta = this.charts.engagementScatter.getDatasetMeta(idx);
+                            meta.hidden = !meta.hidden;
+                            item.classList.toggle('muted', meta.hidden);
+                            this.charts.engagementScatter.update();
+                        });
+                    });
+                }
             }
 
             // =====================================================================
@@ -6688,6 +7268,13 @@
                 this.albumFilter = null;
                 this.trackFilter = null;
                 this.memberFilter = null;
+
+                const albumDropdown = document.getElementById('albumDropdownFilter');
+                if (albumDropdown) albumDropdown.value = '';
+                const albumLabel = document.getElementById('album-filter-label');
+                if (albumLabel) albumLabel.textContent = '';
+                const clearBtn = document.getElementById('clearFilterBtn');
+                if (clearBtn) clearBtn.style.display = 'none';
 
                 // Update hash (do NOT trigger hashchange recursion — use replaceState)
                 const targetHash = (name === 'SB19') ? '#sb19' : '#artist=' + encodeURIComponent(name);
@@ -6861,7 +7448,7 @@
                 allArtists.forEach(name => {
                     if (name === 'SB19') return;
                     if (filter && !name.toLowerCase().includes(filter)) return;
-                    if (genre && this.artistGenreMap[name] !== genre) return;
+                    if (genre && this.artistGenreMap[name.toLowerCase()] !== genre) return;
                     if (this.artistsWithTracks.has(name) || this.artistConfig[name]) {
                         withTracks.push(name);
                     } else {
@@ -6874,7 +7461,7 @@
                 let html = '';
 
                 // SB19 always first
-                const sb19Genre = this.artistGenreMap['SB19'] || 'P-Pop';
+                const sb19Genre = this.artistGenreMap['sb19'] || 'P-Pop';
                 if ((!filter || 'sb19'.includes(filter)) && (!genre || genre === sb19Genre)) {
                     const isActive = this.selectedArtist === 'SB19' ? ' active' : '';
                     html += `<div class="artist-pill${isActive}" data-artist="SB19"><span class="pill-dot has-tracks"></span>SB19</div>`;
@@ -6910,26 +7497,10 @@
             }
 
             selectArtist(name) {
-                if (name === this.selectedArtist) {
-                    this.closeArtistDropdown();
-                    return;
-                }
-                this.selectedArtist = name;
-                this.tracksMetadata = this.allTracksMetadata[name] || [];
-
-                // Reset filters
-                this.albumFilter = null;
-                this.trackFilter = null;
-                this.memberFilter = null;
-                document.getElementById('albumDropdownFilter').value = '';
-                document.getElementById('album-filter-label').textContent = '';
-                document.getElementById('clearFilterBtn').style.display = 'none';
-
+                if (!name) return;
                 this.closeArtistDropdown();
-                this.updateArtistHash();
-                this.populateDatePicker();
-                this.populateArtistPills();
-                this.render();
+                if (name === this.selectedArtist && this.artistDetailViewOpen) return;
+                this.openArtistDetailView(name);
             }
 
             toggleArtistDropdown() {
@@ -6968,7 +7539,12 @@
             }
 
             createListenersChart() {
-                const ctx = document.getElementById('listenersChart').getContext('2d');
+                // Note: canvas #listenersChart is not currently in the DOM
+                // (the active listeners chart uses #listenersHistoryChart via createListenersHistoryChart).
+                // Guard against null to avoid runtime errors if this is invoked before the canvas exists.
+                const canvas = document.getElementById('listenersChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
                 const filteredData = this.getFilteredListeners();
 
                 const allDates = [...new Set(filteredData.map(d => d.data_date.split(' ')[0]))].sort();
@@ -6990,13 +7566,19 @@
                     'Justin': { bg: 'rgba(45, 212, 191, 0.8)', border: '#2dd4bf', line: '#2dd4bf' }
                 };
 
+                // Build an artist+date -> listeners lookup once (avoid O(n*d*len) find() inside loops)
+                const listenersByKey = new Map();
+                for (const d of filteredData) {
+                    const key = `${d.artist_name}|${(d.data_date || '').split(' ')[0]}`;
+                    // Keep the last record for each (artist, date) pair
+                    listenersByKey.set(key, d.monthly_listeners);
+                }
+
                 artists.forEach(artist => {
                     const color = colors[artist] || { bg: 'rgba(156,163,175,0.8)', border: '#9ca3af' };
                     const values = allDates.map(date => {
-                        const record = filteredData.find(d =>
-                            d.artist_name === artist && d.data_date.startsWith(date)
-                        );
-                        return record ? record.monthly_listeners : null;
+                        const v = listenersByKey.get(`${artist}|${date}`);
+                        return v !== undefined ? v : null;
                     });
 
                     datasets.push({
@@ -7095,7 +7677,10 @@
             }
 
             populateDailyTable() {
+                // Note: this function is currently not wired into the UI (no #daily-table element).
+                // Kept as a guard so it doesn't throw if invoked before the DOM element exists.
                 const tbody = document.getElementById('daily-table');
+                if (!tbody) return;
                 const hist = this.getArtistHistoricalListeners(this.selectedArtist);
                 const entries = hist.slice(-15).reverse(); // Last 15 days, most recent first
 
@@ -7173,6 +7758,12 @@
                 const totalStreams = latestStreams.reduce((sum, t) => sum + t.total_streams, 0);
                 const totalPeriodChange = latestStreams.reduce((sum, t) => sum + (periodChanges[t.song_title] || 0), 0);
 
+                const esc = ArtistDashboard.esc;
+                // Only accept http(s) URLs to avoid javascript:/data: XSS via CSV
+                const safeSpotifyHref = (url) => {
+                    const s = String(url || '').trim();
+                    return /^https?:\/\//i.test(s) ? s : '';
+                };
                 const trackRows = latestStreams.map((track, i) => {
                     // Use album and collaborators from streams data directly, fallback to metadata
                     let album = track.album || '';
@@ -7198,8 +7789,9 @@
                             spotifyUrl = meta.spotify_url;
                         }
                     }
-                    const playButton = spotifyUrl
-                        ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
+                    const safeHref = safeSpotifyHref(spotifyUrl);
+                    const playButton = safeHref
+                        ? `<a href="${esc(safeHref)}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
                         : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
 
                     // Period change with rank indicator
@@ -7230,12 +7822,13 @@
                         <span style="min-width: 45px; text-align: left;">${rankHtml}</span>
                     </div>`;
 
+                    const safeTitleAttr = esc(track.song_title);
                     return `
-                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}')">
+                        <tr class="clickable-track" data-song="${safeTitleAttr}">
                             <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
                             <td style="padding: 8px 10px;">
-                                <div style="font-weight: 500; color: #e5e7eb;">${track.song_title}</div>
-                                <div style="font-size: 0.7rem; color: #9ca3af;">${album}${collab ? ' - ' + collab : ''}</div>
+                                <div style="font-weight: 500; color: #e5e7eb;">${esc(track.song_title)}</div>
+                                <div style="font-size: 0.7rem; color: #9ca3af;">${esc(album)}${collab ? ' - ' + esc(collab) : ''}</div>
                             </td>
                             <td style="padding: 8px 10px; text-align: right; font-weight: 600; color: #34d399;">
                                 ${track.total_streams.toLocaleString()}
@@ -7246,7 +7839,7 @@
                             <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
                                 <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
                                     ${playButton}
-                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${track.song_title.replace(/'/g, "\\'")}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
+                                    <a href="#" data-song="${safeTitleAttr}" class="top-tracks-view-btn" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
                                 </div>
                             </td>
                         </tr>
@@ -7274,6 +7867,21 @@
 
                 tbody.innerHTML = trackRows;
                 tfoot.innerHTML = totalRow;
+
+                // Wire up click handlers via event delegation (avoids inline handlers + XSS via song titles)
+                tbody.querySelectorAll('tr.clickable-track').forEach(tr => {
+                    tr.addEventListener('click', () => {
+                        const song = tr.getAttribute('data-song');
+                        if (song) this.openSongDetail(song);
+                    });
+                });
+                tbody.querySelectorAll('a.top-tracks-view-btn').forEach(a => {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const song = a.getAttribute('data-song');
+                        if (song) this.openSongDetail(song);
+                    });
+                });
             }
 
             renderAlbumView() {
@@ -7324,12 +7932,13 @@
                         return b[1].totalStreams - a[1].totalStreams;
                     });
 
+                const esc = ArtistDashboard.esc;
                 container.innerHTML = `
                     <div class="tracks-grid" style="padding: 16px;">
                         ${sortedAlbums.map(([album, data]) => `
                             <div class="album-card">
                                 <div class="album-header">
-                                    <h3>${album}</h3>
+                                    <h3>${esc(album)}</h3>
                                     <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
                                 </div>
                                 <div class="track-list">
@@ -7341,8 +7950,8 @@
                                         return `
                                         <div class="track-item">
                                             <div class="track-info">
-                                                <div class="track-title">${t.song_title}</div>
-                                                ${t.collaborators ? `<div class="track-collab">feat. ${t.collaborators}</div>` : ''}
+                                                <div class="track-title">${esc(t.song_title)}</div>
+                                                ${t.collaborators ? `<div class="track-collab">feat. ${esc(t.collaborators)}</div>` : ''}
                                             </div>
                                             <div class="track-streams">${t.total_streams.toLocaleString()}${changeStr}</div>
                                         </div>
@@ -7383,12 +7992,13 @@
                     .filter(([year]) => year !== 'Unknown' && year !== '0' && parseInt(year) > 0)
                     .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
 
+                const esc = ArtistDashboard.esc;
                 container.innerHTML = `
                     <div class="tracks-grid" style="padding: 16px;">
                         ${sortedYears.map(([year, data]) => `
                             <div class="album-card">
                                 <div class="album-header">
-                                    <h3>${year}</h3>
+                                    <h3>${esc(year)}</h3>
                                     <span>${data.tracks.length} tracks - ${data.totalStreams.toLocaleString()} total streams</span>
                                 </div>
                                 <div class="track-list">
@@ -7400,8 +8010,8 @@
                                         return `
                                         <div class="track-item">
                                             <div class="track-info">
-                                                <div class="track-title">${t.song_title}</div>
-                                                <div class="track-collab">${t.album || ''}</div>
+                                                <div class="track-title">${esc(t.song_title)}</div>
+                                                <div class="track-collab">${esc(t.album || '')}</div>
                                             </div>
                                             <div class="track-streams">${t.total_streams.toLocaleString()}${changeStr}</div>
                                         </div>
@@ -7414,7 +8024,9 @@
             }
 
             createAlbumChart() {
-                const ctx = document.getElementById('albumChart').getContext('2d');
+                const canvas = document.getElementById('albumChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
                 const latestStreams = this.getLatestStreams();
                 const { changes: periodChanges } = this.getPeriodChange();
 
@@ -7550,7 +8162,10 @@
                             }
                         },
                         onHover: (event, elements) => {
-                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                            const tgt = event && event.native && event.native.target;
+                            if (tgt && tgt.style) {
+                                tgt.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                            }
                         },
                         scales: {
                             x: {
@@ -7647,19 +8262,23 @@
                 if (countEl) countEl.textContent = '24';
 
                 if (totalStreams > 0) {
-                    totalEl.textContent = totalStreams >= 1e6
-                        ? (totalStreams / 1e6).toFixed(1) + 'M'
-                        : totalStreams.toLocaleString();
+                    if (totalEl) {
+                        totalEl.textContent = totalStreams >= 1e6
+                            ? (totalStreams / 1e6).toFixed(1) + 'M'
+                            : totalStreams.toLocaleString();
+                    }
 
-                    if (totalChange > 0) {
-                        changeEl.textContent = '+' + totalChange.toLocaleString();
-                        changeEl.className = 'was-stat-change positive';
-                    } else if (totalChange < 0) {
-                        changeEl.textContent = totalChange.toLocaleString();
-                        changeEl.className = 'was-stat-change negative';
-                    } else {
-                        changeEl.textContent = '';
-                        changeEl.className = 'was-stat-change';
+                    if (changeEl) {
+                        if (totalChange > 0) {
+                            changeEl.textContent = '+' + totalChange.toLocaleString();
+                            changeEl.className = 'was-stat-change positive';
+                        } else if (totalChange < 0) {
+                            changeEl.textContent = totalChange.toLocaleString();
+                            changeEl.className = 'was-stat-change negative';
+                        } else {
+                            changeEl.textContent = '';
+                            changeEl.className = 'was-stat-change';
+                        }
                     }
 
                     if (dailyEl) {
@@ -7683,8 +8302,8 @@
                         }
                     }
                 } else {
-                    totalEl.textContent = '--';
-                    changeEl.textContent = '';
+                    if (totalEl) totalEl.textContent = '--';
+                    if (changeEl) changeEl.textContent = '';
                     if (dailyEl) dailyEl.textContent = '--';
                 }
 
@@ -8425,7 +9044,9 @@
 
             createMemberChart() {
                 if (this.selectedArtist !== 'SB19') return;
-                const ctx = document.getElementById('memberChart').getContext('2d');
+                const canvas = document.getElementById('memberChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
                 const memberData = this.getMemberStreamsData();
                 const { changes: memberPeriodChanges } = this.getMemberPeriodChange();
 
@@ -8579,7 +9200,10 @@
                             }
                         },
                         onHover: (event, elements) => {
-                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                            const tgt = event && event.native && event.native.target;
+                            if (tgt && tgt.style) {
+                                tgt.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                            }
                         },
                         scales: scales,
                         plugins: {
@@ -8873,6 +9497,11 @@
                 const totalStreams = allTracks.reduce((sum, t) => sum + t.total_streams, 0);
                 const totalPeriodChange = allTracks.reduce((sum, t) => sum + (periodChanges[t.song_title] || 0), 0);
 
+                const esc = ArtistDashboard.esc;
+                const safeSpotifyHref = (url) => {
+                    const s = String(url || '').trim();
+                    return /^https?:\/\//i.test(s) ? s : '';
+                };
                 const trackRows = allTracks.map((track, i) => {
                     // Get Spotify URL
                     let spotifyUrl = track.spotify_url || '';
@@ -8882,8 +9511,9 @@
                             spotifyUrl = meta.spotify_url;
                         }
                     }
-                    const playButton = spotifyUrl
-                        ? `<a href="${spotifyUrl}" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
+                    const safeHref = safeSpotifyHref(spotifyUrl);
+                    const playButton = safeHref
+                        ? `<a href="${esc(safeHref)}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 4px; background: #1DB954; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#1ed760'" onmouseout="this.style.background='#1DB954'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Play</a>`
                         : `<span style="color: #6b7280; font-size: 0.75rem;">-</span>`;
 
                     // Period change with rank indicator
@@ -8915,15 +9545,15 @@
                         changeHtml = `<span style="color: #9ca3af;">-</span>`;
                     }
 
-                    const esc = ArtistDashboard.esc;
-                    const safeTitleArg = esc(track.song_title).replace(/'/g, "\\'");
+                    const safeTitleAttr = esc(track.song_title);
+                    const safeColor = esc(track.memberColor || '#9ca3af');
                     return `
-                        <tr class="clickable-track" onclick="window.dashboard.openSongDetail('${safeTitleArg}')">
+                        <tr class="clickable-track" data-song="${safeTitleAttr}">
                             <td style="padding: 8px 10px; text-align: center; color: #9ca3af; font-weight: 600;">${i + 1}</td>
                             <td style="padding: 8px 10px;">
                                 <div style="font-weight: 500; color: #e5e7eb;">${esc(track.song_title)}</div>
-                                <div style="font-size: 0.7rem; color: ${track.memberColor}; display: flex; align-items: center; gap: 4px;">
-                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: ${track.memberColor};"></span>
+                                <div style="font-size: 0.7rem; color: ${safeColor}; display: flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; border-radius: 50%; background: ${safeColor};"></span>
                                     ${esc(track.memberName)}
                                 </div>
                             </td>
@@ -8936,7 +9566,7 @@
                             <td style="padding: 8px 10px; text-align: center;" onclick="event.stopPropagation()">
                                 <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
                                     ${playButton}
-                                    <a href="#" onclick="event.preventDefault(); window.dashboard.openSongDetail('${safeTitleArg}');" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
+                                    <a href="#" data-song="${safeTitleAttr}" class="member-tracks-view-btn" style="display: inline-flex; align-items: center; gap: 4px; background: #3b82f6; color: white; padding: 4px 10px; border-radius: 20px; text-decoration: none; font-size: 0.75rem; font-weight: 600;" onmouseover="this.style.background='#60a5fa'" onmouseout="this.style.background='#3b82f6'">View</a>
                                 </div>
                             </td>
                         </tr>
@@ -8964,6 +9594,21 @@
 
                 tbody.innerHTML = trackRows;
                 tfoot.innerHTML = totalRow;
+
+                // Wire up click handlers via event delegation (avoids inline handlers + XSS)
+                tbody.querySelectorAll('tr.clickable-track').forEach(tr => {
+                    tr.addEventListener('click', () => {
+                        const song = tr.getAttribute('data-song');
+                        if (song) this.openSongDetail(song);
+                    });
+                });
+                tbody.querySelectorAll('a.member-tracks-view-btn').forEach(a => {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const song = a.getAttribute('data-song');
+                        if (song) this.openSongDetail(song);
+                    });
+                });
             }
 
             // Song Detail Methods
@@ -9343,15 +9988,6 @@
             }
 
             renderListenersDetail() {
-                console.log('Rendering listeners detail view');
-                console.log('Listeners data available:', this.listenersData.length);
-                if (this.listenersData.length > 0) {
-                    console.log('Sample data:', this.listenersData[0]);
-                    // List unique artists for debugging
-                    const uniqueArtists = [...new Set(this.listenersData.map(d => d.artist_name))];
-                    console.log('Unique artists in data:', uniqueArtists.slice(0, 10));
-                }
-
                 try {
                     this.populateGenreFilter();
                     this.renderArtistCheckboxes();
@@ -9428,7 +10064,7 @@
 
                 // Apply genre filter
                 if (this.selectedGenre && this.selectedGenre !== 'All') {
-                    artists = artists.filter(a => this.artistGenreMap[a] === this.selectedGenre);
+                    artists = artists.filter(a => this.artistGenreMap[a.toLowerCase()] === this.selectedGenre);
                 }
 
                 const filtered = query
@@ -9439,19 +10075,25 @@
                 container.innerHTML = filtered.map(artist => {
                     const color = this.getArtistColor(artist);
                     const isSelected = this.selectedCompareArtists.includes(artist);
-                    const safeArg = esc(artist).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
                             <input type="checkbox"
+                                   class="artist-compare-cb"
                                    value="${esc(artist)}"
-                                   ${isSelected ? 'checked' : ''}
-                                   onchange="window.dashboard.toggleArtistComparison('${safeArg}')">
+                                   ${isSelected ? 'checked' : ''}>
                             <span class="artist-dot"></span>
                             <span class="artist-name">${esc(artist)}</span>
                         </label>
                     `;
                 }).join('');
+
+                // Event delegation for checkboxes (avoids inline handler injection via artist names)
+                container.querySelectorAll('.artist-compare-cb').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        this.toggleArtistComparison(cb.value);
+                    });
+                });
 
                 // Update Select All button label based on visible artists
                 const allSelected = filtered.length > 0 && filtered.every(a => this.selectedCompareArtists.includes(a));
@@ -9481,7 +10123,7 @@
             toggleSelectAllArtists() {
                 let artists = this.getAvailableArtists();
                 if (this.selectedGenre && this.selectedGenre !== 'All') {
-                    artists = artists.filter(a => this.artistGenreMap[a] === this.selectedGenre);
+                    artists = artists.filter(a => this.artistGenreMap[a.toLowerCase()] === this.selectedGenre);
                 }
                 const allSelected = artists.every(a => this.selectedCompareArtists.includes(a));
 
@@ -9504,9 +10146,10 @@
             populateGenreFilter() {
                 const select = document.getElementById('genreFilter');
                 if (!select) return;
+                const esc = ArtistDashboard.esc;
                 const genres = [...new Set(Object.values(this.artistGenreMap))].sort();
                 select.innerHTML = '<option value="All">All Genres</option>' +
-                    genres.map(g => `<option value="${g}" ${g === this.selectedGenre ? 'selected' : ''}>${g}</option>`).join('');
+                    genres.map(g => `<option value="${esc(g)}" ${g === this.selectedGenre ? 'selected' : ''}>${esc(g)}</option>`).join('');
             }
 
             filterByGenre() {
@@ -9660,16 +10303,12 @@
                     this.charts.listenersHistory = null;
                 }
 
-                console.log('Creating listeners chart, selected artists:', this.selectedCompareArtists);
-                console.log('Total listeners data entries:', this.listenersData.length);
-
                 // Get all unique dates across all selected artists
                 const allDates = new Set();
                 const artistDatasets = {};
 
                 this.selectedCompareArtists.forEach(artist => {
                     const data = this.getArtistHistoricalListeners(artist);
-                    console.log(`Artist ${artist} has ${data.length} data points`);
                     artistDatasets[artist] = data;
                     data.forEach(d => allDates.add(d.data_date));
                 });
@@ -9686,11 +10325,8 @@
                     });
                 }
 
-                console.log('Total unique dates:', sortedDates.length);
-
                 const messageEl = document.getElementById('listenersChartMessage');
                 if (sortedDates.length === 0) {
-                    console.warn('No data available for chart');
                     if (messageEl) {
                         messageEl.style.display = 'block';
                         messageEl.textContent = 'No data available for the selected artists.';
@@ -9940,6 +10576,7 @@
                 // Take latest 100 entries
                 const displayData = filteredData.slice(0, 100);
 
+                const esc = ArtistDashboard.esc;
                 tbody.innerHTML = displayData.map(d => {
                     const color = this.getArtistColor(d.artist);
                     const changeClass = d.change >= 0 ? 'color: #34d399' : 'color: #f87171';
@@ -9955,7 +10592,7 @@
                     return `
                         <tr>
                             <td>${new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
-                            <td><span style="color: ${color.line}">${d.artist}</span></td>
+                            <td><span style="color: ${esc(color.line)}">${esc(d.artist)}</span></td>
                             <td>${d.listeners.toLocaleString()}</td>
                             <td style="${changeClass}">${changePrefix}${d.change.toLocaleString()}</td>
                             <td>${followersStr}</td>
@@ -10083,9 +10720,10 @@
             populateTrendsGenreFilter() {
                 const select = document.getElementById('trendsGenreFilter');
                 if (!select) return;
+                const esc = ArtistDashboard.esc;
                 const genres = [...new Set(Object.values(this.artistGenreMap))].sort();
                 select.innerHTML = '<option value="All">All Genres</option>' +
-                    genres.map(g => `<option value="${g}" ${g === this.trendsGenre ? 'selected' : ''}>${g}</option>`).join('');
+                    genres.map(g => `<option value="${esc(g)}" ${g === this.trendsGenre ? 'selected' : ''}>${esc(g)}</option>`).join('');
             }
 
             renderTrendsArtistCheckboxes(filter = '') {
@@ -10095,7 +10733,7 @@
                 const query = (filter || document.getElementById('trendsArtistSearch')?.value || '').toLowerCase().trim();
 
                 if (this.trendsGenre && this.trendsGenre !== 'All') {
-                    artists = artists.filter(a => this.artistGenreMap[a] === this.trendsGenre);
+                    artists = artists.filter(a => this.artistGenreMap[a.toLowerCase()] === this.trendsGenre);
                 }
                 const filtered = query ? artists.filter(a => a.toLowerCase().includes(query)) : artists;
 
@@ -10103,16 +10741,18 @@
                 container.innerHTML = filtered.map(artist => {
                     const color = this.getArtistColor(artist);
                     const isSelected = this.trendsSelectedArtists.includes(artist);
-                    const safeArg = esc(artist).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
-                            <input type="checkbox" value="${esc(artist)}" ${isSelected ? 'checked' : ''}
-                                   onchange="window.dashboard.toggleTrendsArtist('${safeArg}')">
+                            <input type="checkbox" class="trends-artist-cb" value="${esc(artist)}" ${isSelected ? 'checked' : ''}>
                             <span class="artist-dot"></span>
                             <span class="artist-name">${esc(artist)}</span>
                         </label>`;
                 }).join('');
+
+                container.querySelectorAll('.trends-artist-cb').forEach(cb => {
+                    cb.addEventListener('change', () => this.toggleTrendsArtist(cb.value));
+                });
 
                 const allSelected = filtered.length > 0 && filtered.every(a => this.trendsSelectedArtists.includes(a));
                 const btn = document.getElementById('trendsSelectAllBtn');
@@ -10143,7 +10783,7 @@
             toggleTrendsSelectAll() {
                 let artists = this.getAvailableArtists();
                 if (this.trendsGenre && this.trendsGenre !== 'All') {
-                    artists = artists.filter(a => this.artistGenreMap[a] === this.trendsGenre);
+                    artists = artists.filter(a => this.artistGenreMap[a.toLowerCase()] === this.trendsGenre);
                 }
                 const query = (document.getElementById('trendsArtistSearch')?.value || '').toLowerCase().trim();
                 if (query) artists = artists.filter(a => a.toLowerCase().includes(query));
@@ -10324,9 +10964,10 @@
             populateTrendsTrackArtistFilter() {
                 const select = document.getElementById('trendsTrackArtistFilter');
                 if (!select) return;
+                const esc = ArtistDashboard.esc;
                 const artists = [...new Set(this.streamsData.map(d => d.artist_name))].sort();
                 select.innerHTML = '<option value="All">All Artists</option>' +
-                    artists.map(a => `<option value="${a}" ${a === this.trendsTrackArtistFilter ? 'selected' : ''}>${a}</option>`).join('');
+                    artists.map(a => `<option value="${esc(a)}" ${a === this.trendsTrackArtistFilter ? 'selected' : ''}>${esc(a)}</option>`).join('');
             }
 
             renderTrendsTrackCheckboxes(filter = '') {
@@ -10349,17 +10990,25 @@
                 container.innerHTML = tracks.map(track => {
                     const color = this.getArtistColor(track.artist_name);
                     const isSelected = this.trendsSelectedTracks.some(t => t.song_title === track.song_title && t.artist_name === track.artist_name);
-                    const safeTitle = esc(track.song_title).replace(/'/g, "\\'");
-                    const safeArtist = esc(track.artist_name).replace(/'/g, "\\'");
                     return `
                         <label class="artist-checkbox-item ${isSelected ? 'selected' : ''}"
                                style="--artist-color: ${color.border}">
-                            <input type="checkbox" ${isSelected ? 'checked' : ''}
-                                   onchange="window.dashboard.toggleTrendsTrack('${safeTitle}','${safeArtist}')">
+                            <input type="checkbox" class="trends-track-cb"
+                                   data-song="${esc(track.song_title)}"
+                                   data-artist="${esc(track.artist_name)}"
+                                   ${isSelected ? 'checked' : ''}>
                             <span class="artist-dot"></span>
                             <span class="artist-name">${esc(track.song_title)} <small style="opacity:0.6">(${esc(track.artist_name)})</small></span>
                         </label>`;
                 }).join('');
+
+                container.querySelectorAll('.trends-track-cb').forEach(cb => {
+                    cb.addEventListener('change', () => {
+                        const song = cb.getAttribute('data-song');
+                        const artist = cb.getAttribute('data-artist');
+                        if (song && artist) this.toggleTrendsTrack(song, artist);
+                    });
+                });
 
                 const allSelected = tracks.length > 0 && tracks.every(t =>
                     this.trendsSelectedTracks.some(s => s.song_title === t.song_title && s.artist_name === t.artist_name));
@@ -10563,7 +11212,7 @@
                     if (hist.length >= 30) change30 = latest - hist[hist.length - 30].monthly_listeners;
                     artistSummary.push({
                         name: artist,
-                        genre: this.artistGenreMap[artist] || '-',
+                        genre: this.artistGenreMap[artist.toLowerCase()] || '-',
                         listeners: latest,
                         change1,
                         change7,
@@ -10773,7 +11422,9 @@
                 document.getElementById('songDaysTracked').textContent = daysTracked.toString();
 
                 // Create chart
-                const ctx = document.getElementById('songStreamsChart').getContext('2d');
+                const songCanvas = document.getElementById('songStreamsChart');
+                if (!songCanvas) return;
+                const ctx = songCanvas.getContext('2d');
 
                 if (this.charts.songStreams) {
                     this.charts.songStreams.destroy();
@@ -11071,18 +11722,20 @@
                 const data = this.streamsData;
                 if (!data || data.length === 0) return;
 
+                const dayKey = (e) => (e.data_date || '').substring(0, 10);
+
                 // Separate SB19 tracks and OPM tracks
                 const soloArtists = new Set(['pablo', 'josh cullen', 'stell', 'felip', 'justin']);
-                const sb19Tracks = data.filter(e => e.artist && e.artist.toUpperCase() === 'SB19');
+                const sb19Tracks = data.filter(e => e.artist_name && e.artist_name.toUpperCase() === 'SB19');
                 const opmTracks = data.filter(e => {
-                    if (!e.artist) return false;
-                    const aLower = e.artist.toLowerCase();
+                    if (!e.artist_name) return false;
+                    const aLower = e.artist_name.toLowerCase();
                     return aLower !== 'sb19' && !soloArtists.has(aLower);
                 });
 
                 // Get latest 2 dates for OPM
-                const opmDates = [...new Set(opmTracks.map(e => e.date))].sort();
-                const sb19Dates = [...new Set(sb19Tracks.map(e => e.date))].sort();
+                const opmDates = [...new Set(opmTracks.map(dayKey))].filter(Boolean).sort();
+                const sb19Dates = [...new Set(sb19Tracks.map(dayKey))].filter(Boolean).sort();
 
                 if (opmDates.length < 2) {
                     document.getElementById('opmStreamsTableBody').innerHTML =
@@ -11097,9 +11750,9 @@
                 // Build per-track maps (dedup by song+artist keeping highest)
                 const buildMap = (tracks, date) => {
                     const m = {};
-                    tracks.filter(e => e.date === date).forEach(e => {
-                        const key = e.song_title + '|||' + (e.artist || '').toLowerCase();
-                        if (!m[key] || e.streams > m[key].streams) {
+                    tracks.filter(e => dayKey(e) === date).forEach(e => {
+                        const key = e.song_title + '|||' + (e.artist_name || '').toLowerCase();
+                        if (!m[key] || e.total_streams > m[key].total_streams) {
                             m[key] = e;
                         }
                     });
@@ -11114,11 +11767,11 @@
                 const artistDaily = {};
                 for (const [key, entry] of Object.entries(opmToday)) {
                     if (!opmYest[key]) continue;
-                    const akey = (entry.artist || '').toLowerCase();
+                    const akey = (entry.artist_name || '').toLowerCase();
                     if (!artistDaily[akey]) {
-                        artistDaily[akey] = { daily: 0, count: 0, name: entry.artist };
+                        artistDaily[akey] = { daily: 0, count: 0, name: entry.artist_name };
                     }
-                    artistDaily[akey].daily += entry.streams - opmYest[key].streams;
+                    artistDaily[akey].daily += entry.total_streams - opmYest[key].total_streams;
                     artistDaily[akey].count += 1;
                 }
 
@@ -11127,8 +11780,8 @@
                 if (dayBefore) {
                     for (const [key, entry] of Object.entries(opmYest)) {
                         if (!opmDayBefore[key]) continue;
-                        const akey = (entry.artist || '').toLowerCase();
-                        prevArtistDaily[akey] = (prevArtistDaily[akey] || 0) + (entry.streams - opmDayBefore[key].streams);
+                        const akey = (entry.artist_name || '').toLowerCase();
+                        prevArtistDaily[akey] = (prevArtistDaily[akey] || 0) + (entry.total_streams - opmDayBefore[key].total_streams);
                     }
                 }
 
@@ -11141,7 +11794,7 @@
                     const sb19YestMap = buildMap(sb19Tracks, sb19Yest);
                     for (const [key, entry] of Object.entries(sb19TodayMap)) {
                         if (sb19YestMap[key]) {
-                            sb19Daily += entry.streams - sb19YestMap[key].streams;
+                            sb19Daily += entry.total_streams - sb19YestMap[key].total_streams;
                             sb19Count += 1;
                         }
                     }
@@ -11150,7 +11803,7 @@
                         const sb19DBMap = buildMap(sb19Tracks, sb19DB);
                         for (const [key, entry] of Object.entries(sb19YestMap)) {
                             if (sb19DBMap[key]) {
-                                sb19PrevDaily += entry.streams - sb19DBMap[key].streams;
+                                sb19PrevDaily += entry.total_streams - sb19DBMap[key].total_streams;
                             }
                         }
                     }
