@@ -59586,3 +59586,786 @@ timestamp;song_title;artist;streams;url;saved_file
 2026-04-21 05:16:38;Dalaw;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_dalaw_20260421_051638.html
 2026-04-21 05:16:49;Hilatsa;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_hilatsa_20260421_051649.html
 2026-04-21 05:17:00;Tagay;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_tagay_20260421_051700.html
+2026-04-22 04:00:30;Tilaluha;SB19;24264015;https://open.spotify.com/track/0fPJsVtCOXqjHxKS9kc13s;D:\dev\SB19\saved_pages\sb19_tilaluha_20260422_040030.html
+2026-04-22 04:00:36;Go Up;SB19;27440300;https://open.spotify.com/track/5VoY18OYEE2E6RJCBd2jki;D:\dev\SB19\saved_pages\sb19_go_up_20260422_040036.html
+2026-04-22 04:00:42;Alab (Burning);SB19;23171971;https://open.spotify.com/track/053ZzdU3Rya4NMxiWMPqnq;D:\dev\SB19\saved_pages\sb19_alab_burning_20260422_040042.html
+2026-04-22 04:00:48;Hanggang Sa Huli;SB19;33135498;https://open.spotify.com/track/2WUhR1SraSy0SVIQKohJb6;D:\dev\SB19\saved_pages\sb19_hanggang_sa_huli_20260422_040048.html
+2026-04-22 04:00:53;Love Goes;SB19;11459405;https://open.spotify.com/track/5p70OUKixtLRpnK5uSdqro;D:\dev\SB19\saved_pages\sb19_love_goes_20260422_040053.html
+2026-04-22 04:00:59;Love Goes (EDM Version);SB19;7354304;https://open.spotify.com/track/0LAh3hfeuUekvLm3Nq6MmA;D:\dev\SB19\saved_pages\sb19_love_goes_edm_version_20260422_040059.html
+2026-04-22 04:01:05;'Wag Mong Ikunot Ang Iyong Noo;SB19;9774142;https://open.spotify.com/track/5sJxhdzehdLq9iPzNnTR71;D:\dev\SB19\saved_pages\sb19_wag_mong_ikunot_ang_iyong_noo_20260422_040104.html
+2026-04-22 04:01:10;Tilaluha (Instrumental);SB19;2260547;https://open.spotify.com/track/5lMxdErNKHh797tOT3mBvk;D:\dev\SB19\saved_pages\sb19_tilaluha_instrumental_20260422_040110.html
+2026-04-22 04:01:16;Hanggang Sa Huli (Instrumental);SB19;2372509;https://open.spotify.com/track/6JZkWjVjOQAUPzNfGr4Dp0;D:\dev\SB19\saved_pages\sb19_hanggang_sa_huli_instrumental_20260422_040116.html
+2026-04-22 04:01:21;What?;SB19;26312420;https://open.spotify.com/track/1evZendZnEe8a8eXjd1Bcn;D:\dev\SB19\saved_pages\sb19_what_20260422_040121.html
+2026-04-22 04:01:27;MAPA;SB19;88627506;https://open.spotify.com/track/6Fz2TpxUD0YvAPsuG8nDMJ;D:\dev\SB19\saved_pages\sb19_mapa_20260422_040127.html
+2026-04-22 04:01:32;Bazinga;SB19;32536929;https://open.spotify.com/track/5QZw4F3N3PvuKNKHm9L20b;D:\dev\SB19\saved_pages\sb19_bazinga_20260422_040132.html
+2026-04-22 04:01:37;SLMT;SB19;17944462;https://open.spotify.com/track/0AbJoAxuqYgMrmXvtFOc0K;D:\dev\SB19\saved_pages\sb19_slmt_20260422_040137.html
+2026-04-22 04:01:43;Mana;SB19;21311974;https://open.spotify.com/track/0EtkP3TUHvTeDIgrpgMS8m;D:\dev\SB19\saved_pages\sb19_mana_20260422_040143.html
+2026-04-22 04:01:49;Ikako;SB19;15224394;https://open.spotify.com/track/5qHUmt5jIvDaOzMXiX533o;D:\dev\SB19\saved_pages\sb19_ikako_20260422_040149.html
+2026-04-22 04:01:54;Gento;SB19;78694989;https://open.spotify.com/track/1o6uF8VmXna99ysHTcQRI2;D:\dev\SB19\saved_pages\sb19_gento_20260422_040154.html
+2026-04-22 04:02:00;I Want You;SB19;32900690;https://open.spotify.com/track/16GGH8OF6LiSUTTbm8421f;D:\dev\SB19\saved_pages\sb19_i_want_you_20260422_040200.html
+2026-04-22 04:02:06;Ilaw;SB19;20919326;https://open.spotify.com/track/4zoqT3f80GyytJvnhVHgEl;D:\dev\SB19\saved_pages\sb19_ilaw_20260422_040206.html
+2026-04-22 04:02:14;Crimzone;SB19;26749585;https://open.spotify.com/track/5GcS9zT4iIL7l0JrqZeG6O;D:\dev\SB19\saved_pages\sb19_crimzone_20260422_040214.html
+2026-04-22 04:02:20;LIHAM;SB19;21411040;https://open.spotify.com/track/5MQ1nQ0MZMRO4yPQWdCeEb;D:\dev\SB19\saved_pages\sb19_liham_20260422_040219.html
+2026-04-22 04:02:25;Freedom;SB19;17405343;https://open.spotify.com/track/2CuYpdcx2f9XbMZhc3ST8E;D:\dev\SB19\saved_pages\sb19_freedom_20260422_040225.html
+2026-04-22 04:02:31;VISA;SB19;9968878;https://open.spotify.com/track/15lHQGq4FT6y0N2hzTjJOs;D:\dev\SB19\saved_pages\sb19_visa_20260422_040231.html
+2026-04-22 04:02:37;Memories;SB19;1625183;https://open.spotify.com/track/0IRNkYONmJJ4UdhyZxBiGM;D:\dev\SB19\saved_pages\sb19_memories_20260422_040237.html
+2026-04-22 04:02:42;Toyfriend;SB19;3206309;https://open.spotify.com/track/5PJRILmiqzK9V63MBTd1QZ;D:\dev\SB19\saved_pages\sb19_toyfriend_20260422_040242.html
+2026-04-22 04:02:48;Everblack;SB19;1272585;https://open.spotify.com/track/0khuz8U1SYRoQvNNxMwxsC;D:\dev\SB19\saved_pages\sb19_everblack_20260422_040248.html
+2026-04-22 04:02:54;Emoji;SB19;4437629;https://open.spotify.com/track/1WgkRboDwSJLVKvv9bthvR;D:\dev\SB19\saved_pages\sb19_emoji_20260422_040254.html
+2026-04-22 04:02:59;Wakas;SB19;2294210;https://open.spotify.com/track/1aJaq0rfqHBiHq38Hv8LhH;D:\dev\SB19\saved_pages\sb19_wakas_20260422_040259.html
+2026-04-22 04:03:05;What? (Wakas At Simula);SB19;906884;https://open.spotify.com/track/0RLKW1v1eT9bvzO0jfDi0p;D:\dev\SB19\saved_pages\sb19_what_wakas_at_simula_20260422_040305.html
+2026-04-22 04:03:11;MAPA (Wakas At Simula);SB19;806953;https://open.spotify.com/track/081tVf940bOkMCPCKrAqDD;D:\dev\SB19\saved_pages\sb19_mapa_wakas_at_simula_20260422_040311.html
+2026-04-22 04:03:16;Mana (Wakas At Simula);SB19;791393;https://open.spotify.com/track/03CjFKecGFNQABnLOI135y;D:\dev\SB19\saved_pages\sb19_mana_wakas_at_simula_20260422_040316.html
+2026-04-22 04:03:22;Bazinga (Wakas At Simula);SB19;733888;https://open.spotify.com/track/62yByiXz9Rwofhj9TEGtjB;D:\dev\SB19\saved_pages\sb19_bazinga_wakas_at_simula_20260422_040322.html
+2026-04-22 04:03:28;Ikako (Wakas At Simula);SB19;713477;https://open.spotify.com/track/4ad3oellESjLjUZUMroFmy;D:\dev\SB19\saved_pages\sb19_ikako_wakas_at_simula_20260422_040328.html
+2026-04-22 04:03:33;SLMT (Wakas At Simula);SB19;672393;https://open.spotify.com/track/1TjuClPvmafZTHpBgLWiJj;D:\dev\SB19\saved_pages\sb19_slmt_wakas_at_simula_20260422_040333.html
+2026-04-22 04:03:39;GENTO;SB19;78694989;https://open.spotify.com/track/4Rnrajs3F9SxRWtRHGXeb1;D:\dev\SB19\saved_pages\sb19_gento_20260422_040339.html
+2026-04-22 04:03:45;I WANT YOU;SB19;32900690;https://open.spotify.com/track/6A0UFR0O2GiBIOw3X9vH5n;D:\dev\SB19\saved_pages\sb19_i_want_you_20260422_040345.html
+2026-04-22 04:03:50;CRIMZONE;SB19;26749585;https://open.spotify.com/track/7e8Kx8GWSfYDqfnkVjs10d;D:\dev\SB19\saved_pages\sb19_crimzone_20260422_040350.html
+2026-04-22 04:03:56;ILAW;SB19;20919326;https://open.spotify.com/track/6GNq2ZyRCPfAcvsJGlXL3R;D:\dev\SB19\saved_pages\sb19_ilaw_20260422_040356.html
+2026-04-22 04:04:02;LIHAM;SB19;21411040;https://open.spotify.com/track/03gz2VWAM8Hs2c6Qy4xhSu;D:\dev\SB19\saved_pages\sb19_liham_20260422_040402.html
+2026-04-22 04:04:07;FREEDOM;SB19;17405343;https://open.spotify.com/track/0LjUvoP5b1Qwgc6twjJM3M;D:\dev\SB19\saved_pages\sb19_freedom_20260422_040407.html
+2026-04-22 04:04:13;DAM;SB19;64115975;https://open.spotify.com/track/7mOtKGNLK9bJhLDgSygSRj;D:\dev\SB19\saved_pages\sb19_dam_20260422_040413.html
+2026-04-22 04:04:19;Time;SB19;24111871;https://open.spotify.com/track/5gW92tuZnMi7Ruv3jkb3ld;D:\dev\SB19\saved_pages\sb19_time_20260422_040419.html
+2026-04-22 04:04:24;8TonBall;SB19;17566961;https://open.spotify.com/track/1AFWBMaZu2bOVFHyAO5FcO;D:\dev\SB19\saved_pages\sb19_8tonball_20260422_040424.html
+2026-04-22 04:04:30;Quit;SB19;18447676;https://open.spotify.com/track/0St0eJxglQ5Cv0p7MNs4IE;D:\dev\SB19\saved_pages\sb19_quit_20260422_040430.html
+2026-04-22 04:04:36;Shooting for the Stars;SB19;16436578;https://open.spotify.com/track/2h93ad2jOQXQ7rXMNX2WIE;D:\dev\SB19\saved_pages\sb19_shooting_for_the_stars_20260422_040436.html
+2026-04-22 04:04:41;DUNGKA!;SB19;30605243;https://open.spotify.com/track/2P2E73POKEymaxzze3QEut;D:\dev\SB19\saved_pages\sb19_dungka_20260422_040441.html
+2026-04-22 04:04:47;DAM (Extended Ver.);SB19;19429599;https://open.spotify.com/track/0pjhHUx21NsPuSCH0H3lW6;D:\dev\SB19\saved_pages\sb19_dam_extended_ver_20260422_040447.html
+2026-04-22 04:04:53;Prologue (Simula at Wakas Tour Kickoff);SB19;554806;https://open.spotify.com/track/55RzoCDxzbzN1VEZ8yYKU4?si=1d1d2027a66e4efb;D:\dev\SB19\saved_pages\sb19_prologue_simula_at_wakas_tour_kickoff_20260422_040453.html
+2026-04-22 04:04:58;What? (Simula at Wakas Tour Kickoff);SB19;1198502;https://open.spotify.com/track/4FEhO3lDTOseNLhBNBAvpW;D:\dev\SB19\saved_pages\sb19_what_simula_at_wakas_tour_kickoff_20260422_040458.html
+2026-04-22 04:05:04;GENTO (Simula at Wakas Tour Kickoff);SB19;1120551;https://open.spotify.com/track/1BYHhhwMf7QRr2a7p64tRU;D:\dev\SB19\saved_pages\sb19_gento_simula_at_wakas_tour_kickoff_20260422_040504.html
+2026-04-22 04:05:15;Mana (Simula at Wakas Tour Kickoff);SB19;1116534;https://open.spotify.com/track/4LPgthOM2aB1mbPIxgZy8P;D:\dev\SB19\saved_pages\sb19_mana_simula_at_wakas_tour_kickoff_20260422_040515.html
+2026-04-22 04:05:21;Moonlight (Simula at Wakas Tour Kickoff);SB19;1666229;https://open.spotify.com/track/5N3AnPqWcSDNLGbSr1etzb;D:\dev\SB19\saved_pages\sb19_moonlight_simula_at_wakas_tour_kickoff_20260422_040520.html
+2026-04-22 04:05:26;I WANT YOU (Simula at Wakas Tour Kickoff);SB19;2104385;https://open.spotify.com/track/5V0qUkMEIac9nis4SDb2XD;D:\dev\SB19\saved_pages\sb19_i_want_you_simula_at_wakas_tour_kickoff_20260422_040526.html
+2026-04-22 04:05:32;WYAT (Where You At) (Simula at Wakas Tour Kickoff);SB19;1082055;https://open.spotify.com/track/0VUpreONXiBKhTmg7LNWS6;D:\dev\SB19\saved_pages\sb19_wyat_where_you_at_simula_at_wakas_tour_kickoff_20260422_040532.html
+2026-04-22 04:05:37;DUNGKA! (Simula at Wakas Tour Kickoff);SB19;1084683;https://open.spotify.com/track/4ZUl5u7opmH0U5vULsSbPe;D:\dev\SB19\saved_pages\sb19_dungka_simula_at_wakas_tour_kickoff_20260422_040537.html
+2026-04-22 04:05:43;Bazinga (Simula at Wakas Tour Kickoff);SB19;1003810;https://open.spotify.com/track/6CfcGGotSNm6kpG0zxPXrc;D:\dev\SB19\saved_pages\sb19_bazinga_simula_at_wakas_tour_kickoff_20260422_040543.html
+2026-04-22 04:05:49;8TonBall (Simula at Wakas Tour Kickoff);SB19;1021137;https://open.spotify.com/track/54UfPbjMn8dwtYazgHrydY;D:\dev\SB19\saved_pages\sb19_8tonball_simula_at_wakas_tour_kickoff_20260422_040548.html
+2026-04-22 04:05:54;CRIMZONE (Simula at Wakas Tour Kickoff);SB19;1044647;https://open.spotify.com/track/1Sg2y4WDHzGRf4N03fUkep;D:\dev\SB19\saved_pages\sb19_crimzone_simula_at_wakas_tour_kickoff_20260422_040554.html
+2026-04-22 04:06:00;Nyebe (Simula at Wakas Tour Kickoff);SB19;951372;https://open.spotify.com/track/3o09uzJFcSGLneWp3rCmsT;D:\dev\SB19\saved_pages\sb19_nyebe_simula_at_wakas_tour_kickoff_20260422_040600.html
+2026-04-22 04:06:05;Time (Simula at Wakas Tour Kickoff);SB19;870212;https://open.spotify.com/track/1Qdo5W5rPNWhcHQOq1Pdl8;D:\dev\SB19\saved_pages\sb19_time_simula_at_wakas_tour_kickoff_20260422_040605.html
+2026-04-22 04:06:11;ILAW (Simula at Wakas Tour Kickoff);SB19;918046;https://open.spotify.com/track/64BRHIKmpuMU7k435yRDAI;D:\dev\SB19\saved_pages\sb19_ilaw_simula_at_wakas_tour_kickoff_20260422_040611.html
+2026-04-22 04:06:17;Quit (Simula at Wakas Tour Kickoff);SB19;1015150;https://open.spotify.com/track/7ynFrYbCvOaqiwDmeQrWjt;D:\dev\SB19\saved_pages\sb19_quit_simula_at_wakas_tour_kickoff_20260422_040617.html
+2026-04-22 04:06:22;MAPA (Simula at Wakas Tour Kickoff);SB19;804437;https://open.spotify.com/track/7v40dop6L3zF1ErVi1X4pj;D:\dev\SB19\saved_pages\sb19_mapa_simula_at_wakas_tour_kickoff_20260422_040622.html
+2026-04-22 04:06:28;Shooting for the Stars (Simula at Wakas Tour Kickoff);SB19;862000;https://open.spotify.com/track/5ECgqO3ufZvZ4o3m2Ji3PA;D:\dev\SB19\saved_pages\sb19_shooting_for_the_stars_simula_at_wakas_tour_kickoff_20260422_040628.html
+2026-04-22 04:06:34;FREEDOM (Simula at Wakas Tour Kickoff);SB19;793521;https://open.spotify.com/track/72b7uRYHaeLspB9rJqqd6e;D:\dev\SB19\saved_pages\sb19_freedom_simula_at_wakas_tour_kickoff_20260422_040634.html
+2026-04-22 04:06:39;SLMT (Simula at Wakas Tour Kickoff);SB19;782775;https://open.spotify.com/track/0ABh4wrkVAalF1tY8H8lNc;D:\dev\SB19\saved_pages\sb19_slmt_simula_at_wakas_tour_kickoff_20260422_040639.html
+2026-04-22 04:06:45;DAM (Simula at Wakas Tour Kickoff);SB19;831326;https://open.spotify.com/track/6r7bRefIOKOsImYLZLus3S;D:\dev\SB19\saved_pages\sb19_dam_simula_at_wakas_tour_kickoff_20260422_040645.html
+2026-04-22 04:06:50;WYAT (Where You At);SB19;25592083;https://open.spotify.com/track/1z50Hub2XCsAPWo8zgoePu;D:\dev\SB19\saved_pages\sb19_wyat_where_you_at_20260422_040650.html
+2026-04-22 04:06:56;Nyebe;SB19;18683316;https://open.spotify.com/track/6aLjE6peuaJQRWRgfjxrRw;D:\dev\SB19\saved_pages\sb19_nyebe_20260422_040656.html
+2026-04-22 04:07:02;No Stopping You;SB19;9062034;https://open.spotify.com/track/3KDOf2p1DrKhiqX78R82sh;D:\dev\SB19\saved_pages\sb19_no_stopping_you_20260422_040702.html
+2026-04-22 04:07:07;Ligaya;SB19;9906377;https://open.spotify.com/track/2lwaPRPgP9EaaMsbzVaZ3O;D:\dev\SB19\saved_pages\sb19_ligaya_20260422_040707.html
+2026-04-22 04:07:13;MAPA (Band Version);SB19;28415877;https://open.spotify.com/track/0QQoU68nnBRWJqr9ak3mnS;D:\dev\SB19\saved_pages\sb19_mapa_band_version_20260422_040713.html
+2026-04-22 04:07:19;Kabataang Pinoy;SB19;9291318;https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ;D:\dev\SB19\saved_pages\sb19_kabataang_pinoy_20260422_040719.html
+2026-04-22 04:07:24;Win Your Heart;SB19;11493190;https://open.spotify.com/track/0DnNMu0v71ICscsyuQgmu3;D:\dev\SB19\saved_pages\sb19_win_your_heart_20260422_040724.html
+2026-04-22 04:07:30;Christmas Party (SB19 Version);SB19;4556389;https://open.spotify.com/track/387ZTKanhRfPXazSyzTWUj;D:\dev\SB19\saved_pages\sb19_christmas_party_sb19_version_20260422_040730.html
+2026-04-22 04:07:36;golden hour (SB19 Remix);SB19;21659010;https://open.spotify.com/track/4cGKycusCcECMX79k4NQwS;D:\dev\SB19\saved_pages\sb19_golden_hour_sb19_remix_20260422_040736.html
+2026-04-22 04:07:41;Moonlight;SB19;23200817;https://open.spotify.com/track/1xAYG31LamC5qlykRhbWxd;D:\dev\SB19\saved_pages\sb19_moonlight_20260422_040741.html
+2026-04-22 04:07:47;Ready;SB19;10112197;https://open.spotify.com/track/4JZocgyzKHdRF0iSOcodJn;D:\dev\SB19\saved_pages\sb19_ready_20260422_040747.html
+2026-04-22 04:07:53;KALAKAL;SB19;22506135;https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP;D:\dev\SB19\saved_pages\sb19_kalakal_20260422_040753.html
+2026-04-22 04:07:58;MAPA (Indonesian Version);SB19;7882885;https://open.spotify.com/track/23FJNFAeNLzAuFORNvyBFf;D:\dev\SB19\saved_pages\sb19_mapa_indonesian_version_20260422_040758.html
+2026-04-22 04:08:04;Umaaligid;SB19;14110912;https://open.spotify.com/track/5XYYmsZJG5qIBAniny4bHe;D:\dev\SB19\saved_pages\sb19_umaaligid_20260422_040804.html
+2026-04-22 04:08:10;Burn The Flame;SB19;3708104;https://open.spotify.com/track/3mvN8n8mg7X41CbGvc7xYU;D:\dev\SB19\saved_pages\sb19_burn_the_flame_20260422_040810.html
+2026-04-22 04:08:15;Burn The Flame (Taglish Version);SB19;960106;https://open.spotify.com/track/0aKGIF1iGjV6D6vXYDJgyy;D:\dev\SB19\saved_pages\sb19_burn_the_flame_taglish_version_20260422_040815.html
+2026-04-22 04:08:21;Burn The Flame (Karaoke Version);SB19;228219;https://open.spotify.com/track/38UTDIDP582bP8ZAU20bsT;D:\dev\SB19\saved_pages\sb19_burn_the_flame_karaoke_version_20260422_040821.html
+2026-04-22 04:08:27;Burn The Flame (Instrumental);SB19;149722;https://open.spotify.com/track/1MLMEY4ahXUjTcmi01s4jA;D:\dev\SB19\saved_pages\sb19_burn_the_flame_instrumental_20260422_040826.html
+2026-04-22 04:08:32;VISA;SB19;9968878;https://open.spotify.com/track/6RYMQDnY4zPaLSfvfRdXT7;D:\dev\SB19\saved_pages\sb19_visa_20260422_040832.html
+2026-04-22 04:08:38;Love Yours;SB19;5700218;https://open.spotify.com/track/62iq4hiMI4CxLek4nYI14R;D:\dev\SB19\saved_pages\sb19_love_yours_20260422_040838.html
+2026-04-22 04:08:44;Kapangyarihan;SB19;24469247;https://open.spotify.com/track/6FFtbC1K2aNeCS376paoHN;D:\dev\SB19\saved_pages\sb19_kapangyarihan_20260422_040844.html
+2026-04-22 04:08:50;The One;SB19;9196926;https://open.spotify.com/track/5SZPGItm64sVZ8KVYmoV4N;D:\dev\SB19\saved_pages\sb19_the_one_20260422_040849.html
+2026-04-22 04:08:55;Merry Munchkins (SB19 Version);SB19;2763171;https://open.spotify.com/track/3r3U5OpESU60BAVT11KuYS;D:\dev\SB19\saved_pages\sb19_merry_munchkins_sb19_version_20260422_040855.html
+2026-04-22 04:09:01;Live It Up;SB19;4062265;https://open.spotify.com/track/42D9L3kTskZ5anDWGBhtEk;D:\dev\SB19\saved_pages\sb19_live_it_up_20260422_040901.html
+2026-04-22 04:09:06;Make Your Green Mark;SB19;2535503;https://open.spotify.com/track/0thBJj3R0mM8mLwe2WMJI1;D:\dev\SB19\saved_pages\sb19_make_your_green_mark_20260422_040906.html
+2026-04-22 04:09:12;Ace Your World;SB19;3224962;https://open.spotify.com/track/3lgJ5YAfc6wxVB9xpUDyH9;D:\dev\SB19\saved_pages\sb19_ace_your_world_20260422_040912.html
+2026-04-22 04:09:18;Reset;SB19;3256390;https://open.spotify.com/track/6a7itY9YQTkmb8oMwwmhRp;D:\dev\SB19\saved_pages\sb19_reset_20260422_040918.html
+2026-04-22 04:09:23;Tahanan;SB19;1954520;https://open.spotify.com/track/6XOT8LCjly8StKCooz6pp1;D:\dev\SB19\saved_pages\sb19_tahanan_20260422_040923.html
+2026-04-22 04:09:29;G Pa Rin Ang Pasko;SB19;796732;https://open.spotify.com/track/0JYEUl8iJovowKP7Xi6mSM;D:\dev\SB19\saved_pages\sb19_g_pa_rin_ang_pasko_20260422_040929.html
+2026-04-22 04:09:35;Ready, Set, G!;SB19;1134886;https://open.spotify.com/track/3RFGJAl8B1MiW4Ti6qvGeq;D:\dev\SB19\saved_pages\sb19_ready_set_g_20260422_040935.html
+2026-04-22 04:09:40;We Wish You A Merry GCash;SB19;1364812;https://open.spotify.com/track/7H2N6amk6lmn9oahy3qxQl;D:\dev\SB19\saved_pages\sb19_we_wish_you_a_merry_gcash_20260422_040940.html
+2026-04-22 04:09:46;Make It Merry, I-GCash Mo;SB19;1065165;https://open.spotify.com/track/1cTLpJs2LHvA0q5Z6YWzbD;D:\dev\SB19\saved_pages\sb19_make_it_merry_i_gcash_mo_20260422_040946.html
+2026-04-22 04:09:52;Tara, Summer Na!;SB19;1997487;https://open.spotify.com/track/5RbO3gk0BiIfoFop0un9Dn;D:\dev\SB19\saved_pages\sb19_tara_summer_na_20260422_040952.html
+2026-04-22 04:09:57;TM Doble Dekada (Samahang Pina-Easy);SB19;2945308;https://open.spotify.com/track/5pSDEveqgXTvPU102hAIY1;D:\dev\SB19\saved_pages\sb19_tm_doble_dekada_samahang_pina_easy_20260422_040957.html
+2026-04-22 04:10:03;Dobleng GV sa FunPasko (Noon, Ngayon, Palagi);SB19;689432;https://open.spotify.com/track/5hVNG3wLy8rSSCqShicG4I;D:\dev\SB19\saved_pages\sb19_dobleng_gv_sa_funpasko_noon_ngayon_palagi_20260422_041003.html
+2026-04-22 04:10:09;TM FunPasko (Samahang Pina-Easy);SB19;920972;https://open.spotify.com/track/1ZLVZ75W0ZNqiuzQPbz3ZG;D:\dev\SB19\saved_pages\sb19_tm_funpasko_samahang_pina_easy_20260422_041009.html
+2026-04-22 04:10:14;Push Ang Pusuan;SB19;3639937;https://open.spotify.com/track/2hUZkOBSRlp6uB9hXvYgPi;D:\dev\SB19\saved_pages\sb19_push_ang_pusuan_20260422_041014.html
+2026-04-22 04:10:20;Team Tayo;SB19;1080755;https://open.spotify.com/track/3aKVPphQZ3kjwY7Tn1TUhP;D:\dev\SB19\saved_pages\sb19_team_tayo_20260422_041020.html
+2026-04-22 04:10:26;Ating Pasko;SB19;2441645;https://open.spotify.com/track/7y5C9pM3gt7WNoiSzFHcGN;D:\dev\SB19\saved_pages\sb19_ating_pasko_20260422_041026.html
+2026-04-22 04:10:31;La Luna;PABLO;17726210;https://open.spotify.com/track/01NEcBpMXPQNxONQnObJJ3;D:\dev\SB19\saved_pages\pablo_la_luna_20260422_041031.html
+2026-04-22 04:10:37;Presyon;PABLO;2856123;https://open.spotify.com/track/7cErqp4Jg64PcqAE0uYeZP;D:\dev\SB19\saved_pages\pablo_presyon_20260422_041037.html
+2026-04-22 04:10:43;Wala;PABLO;3125321;https://open.spotify.com/track/5gLNDt687YE0Zgad2yaaAD;D:\dev\SB19\saved_pages\pablo_wala_20260422_041042.html
+2026-04-22 04:10:48;The Boy Who Cried Wolf;PABLO;5293836;https://open.spotify.com/track/3dNKnbTBjliNTwCeLqlMG3;D:\dev\SB19\saved_pages\pablo_the_boy_who_cried_wolf_20260422_041048.html
+2026-04-22 04:10:54;Kumunoy;PABLO;4353061;https://open.spotify.com/track/6WkQrra0cZQAo42aMxdT2X;D:\dev\SB19\saved_pages\pablo_kumunoy_20260422_041054.html
+2026-04-22 04:11:00;Kelan;PABLO;2623681;https://open.spotify.com/track/39aItIaR9sIBz3EP8RXuhs;D:\dev\SB19\saved_pages\pablo_kelan_20260422_041059.html
+2026-04-22 04:11:05;Drowning in the Water;PABLO;6110270;https://open.spotify.com/track/6065mStxNxs8sCy3yCrg8H;D:\dev\SB19\saved_pages\pablo_drowning_in_the_water_20260422_041105.html
+2026-04-22 04:11:11;Breathe (Outro);PABLO;2015990;https://open.spotify.com/track/2lKyuf60Q5qSwTF0dl7qM6;D:\dev\SB19\saved_pages\pablo_breathe_outro_20260422_041111.html
+2026-04-22 04:11:16;Neumun;PABLO;3898280;https://open.spotify.com/track/4DF1e91DMTM4oTpW8jgsP2;D:\dev\SB19\saved_pages\pablo_neumun_20260422_041116.html
+2026-04-22 04:11:22;Don't Care;PABLO;3005483;https://open.spotify.com/track/06YsrZvTJmdPNXY5La1jFK;D:\dev\SB19\saved_pages\pablo_don_t_care_20260422_041122.html
+2026-04-22 04:11:28;Butata;PABLO;7074982;https://open.spotify.com/track/68hXl4L5vCusj8U2QlC73D;D:\dev\SB19\saved_pages\pablo_butata_20260422_041128.html
+2026-04-22 04:11:33;Puyat;PABLO;3453778;https://open.spotify.com/track/5EiD5Pk0Wv6dkHS1ZpNvzE;D:\dev\SB19\saved_pages\pablo_puyat_20260422_041133.html
+2026-04-22 04:11:39;Blessed;PABLO;4406245;https://open.spotify.com/track/4hdPboEAxOZjaaHML4q62u;D:\dev\SB19\saved_pages\pablo_blessed_20260422_041139.html
+2026-04-22 04:11:45;Tambol (Ibang Planeta);PABLO;2668279;https://open.spotify.com/track/753jWXJVBxK6cuYDUVbeux;D:\dev\SB19\saved_pages\pablo_tambol_ibang_planeta_20260422_041145.html
+2026-04-22 04:11:50;Micha!;PABLO;3873116;https://open.spotify.com/track/7F3NzrsN3zNGcIP2FbUYUo;D:\dev\SB19\saved_pages\pablo_micha_20260422_041150.html
+2026-04-22 04:11:56;DETERMINADO;PABLO;6554260;https://open.spotify.com/track/0hQJzMEbXg8ssQwgMbJUbw;D:\dev\SB19\saved_pages\pablo_determinado_20260422_041156.html
+2026-04-22 04:12:02;AKALA;PABLO;5585552;https://open.spotify.com/track/5w4CLRxwroocAzFiJ568oY;D:\dev\SB19\saved_pages\pablo_akala_20260422_041201.html
+2026-04-22 04:12:07;edsa;PABLO;8158527;https://open.spotify.com/track/64p2tRd4zsBsJUucEnfWrX;D:\dev\SB19\saved_pages\pablo_edsa_20260422_041207.html
+2026-04-22 04:12:13;Liwanag sa Dilim (from Incognito);PABLO;6834598;https://open.spotify.com/track/3Ynpt5qseTmDdl9bN21FNJ;D:\dev\SB19\saved_pages\pablo_liwanag_sa_dilim_from_incognito_20260422_041213.html
+2026-04-22 04:12:18;Palayo;FELIP;12583845;https://open.spotify.com/track/3FvYLNM5ShB5vDCzGw8syX;D:\dev\SB19\saved_pages\felip_palayo_20260422_041218.html
+2026-04-22 04:12:24;Bulan;FELIP;6871220;https://open.spotify.com/track/2qYmu6Obx3NW1VeNOiCFMK;D:\dev\SB19\saved_pages\felip_bulan_20260422_041224.html
+2026-04-22 04:12:30;ROCKSTA;FELIP;6563524;https://open.spotify.com/track/5UhtleGyBZJCvG8cstjLkr;D:\dev\SB19\saved_pages\felip_rocksta_20260422_041230.html
+2026-04-22 04:12:35;SUPERIORITY;FELIP;3789847;https://open.spotify.com/track/3Tzmy7ExNOlP0tdDr9sjUT;D:\dev\SB19\saved_pages\felip_superiority_20260422_041235.html
+2026-04-22 04:12:41;MICTEST;FELIP;4321966;https://open.spotify.com/track/5MC8Oxr5FTIQYJ6f7Cg6gR;D:\dev\SB19\saved_pages\felip_mictest_20260422_041241.html
+2026-04-22 04:12:47;DRINKSMOKE;FELIP;5380150;https://open.spotify.com/track/29UIvWBrkjWtVuSEyexLt1;D:\dev\SB19\saved_pages\felip_drinksmoke_20260422_041246.html
+2026-04-22 04:12:52;CRIMINAL;FELIP;6802517;https://open.spotify.com/track/4YPz66cDppOl9KVUOCpBV5;D:\dev\SB19\saved_pages\felip_criminal_20260422_041252.html
+2026-04-22 04:12:58;STRAYDOGS;FELIP;5733222;https://open.spotify.com/track/03aFaNBeCXmFl194HuyWKe;D:\dev\SB19\saved_pages\felip_straydogs_20260422_041258.html
+2026-04-22 04:13:04;Kanako;FELIP;10302542;https://open.spotify.com/track/76hOMoRACZOQq5CfqSNU9i;D:\dev\SB19\saved_pages\felip_kanako_20260422_041304.html
+2026-04-22 04:13:09;Moving Closer;FELIP;10706015;https://open.spotify.com/track/59PCn7ObERln3cPl84CGx6;D:\dev\SB19\saved_pages\felip_moving_closer_20260422_041309.html
+2026-04-22 04:13:15;FLYYY;FELIP;3611713;https://open.spotify.com/track/0PWBx43woMnsyUC72NC1Gl;D:\dev\SB19\saved_pages\felip_flyyy_20260422_041315.html
+2026-04-22 04:13:21;Pagdali;FELIP;3560223;https://open.spotify.com/track/7fMR5ryCo3m38yyj1PCym4;D:\dev\SB19\saved_pages\felip_pagdali_20260422_041321.html
+2026-04-22 04:13:26;Fake Faces;FELIP;9193049;https://open.spotify.com/track/4ntKnZnztFdovszJpIoeVO;D:\dev\SB19\saved_pages\felip_fake_faces_20260422_041326.html
+2026-04-22 04:13:32;foes;FELIP;2495657;https://open.spotify.com/track/5IyWs6bAMeT9vPUiUVgSdd;D:\dev\SB19\saved_pages\felip_foes_20260422_041332.html
+2026-04-22 04:13:38;envy;FELIP;3564835;https://open.spotify.com/track/6uJggzzrSE5tK9CRTZejgm;D:\dev\SB19\saved_pages\felip_envy_20260422_041338.html
+2026-04-22 04:13:43;wrath;FELIP;2132928;https://open.spotify.com/track/12VANuhDUHnXRtRG6YP72a;D:\dev\SB19\saved_pages\felip_wrath_20260422_041343.html
+2026-04-22 04:13:49;greed;FELIP;3531000;https://open.spotify.com/track/3foNAstTb7fdbbfFnKwn28;D:\dev\SB19\saved_pages\felip_greed_20260422_041349.html
+2026-04-22 04:13:55;pride;FELIP;2006953;https://open.spotify.com/track/1jZET8rPE5RWZZrkCM2toY;D:\dev\SB19\saved_pages\felip_pride_20260422_041354.html
+2026-04-22 04:14:00;gluttony;FELIP;1800241;https://open.spotify.com/track/216LlnUj3GfZ0yE2hXZxm0;D:\dev\SB19\saved_pages\felip_gluttony_20260422_041400.html
+2026-04-22 04:14:06;lust;FELIP;3693924;https://open.spotify.com/track/70kZ4pCeZ0WIanftduEDov;D:\dev\SB19\saved_pages\felip_lust_20260422_041406.html
+2026-04-22 04:14:12;sloth;FELIP;2699942;https://open.spotify.com/track/6PJLoGD9KpyMSx8j7vVWHq;D:\dev\SB19\saved_pages\felip_sloth_20260422_041412.html
+2026-04-22 04:14:17;ache;FELIP;4828815;https://open.spotify.com/track/3G3ZYOLBcjbIv0GDlIoZeh;D:\dev\SB19\saved_pages\felip_ache_20260422_041417.html
+2026-04-22 04:14:23;ID;FELIP;2531710;https://open.spotify.com/track/2cXkFKFgEW5Myc0yNy6CqL;D:\dev\SB19\saved_pages\felip_id_20260422_041423.html
+2026-04-22 04:14:29;KAWASAKI;FELIP;1855144;https://open.spotify.com/track/37ifPBg9M2NzlRNHe9WUIy;D:\dev\SB19\saved_pages\felip_kawasaki_20260422_041429.html
+2026-04-22 04:14:35;Palayo - Live Band Ver;FELIP;2268683;https://open.spotify.com/track/6gdcXFz1q9WKAlB2ybVM3F;D:\dev\SB19\saved_pages\felip_palayo_live_band_ver_20260422_041435.html
+2026-04-22 04:14:41;Bulan - Live Band Ver;FELIP;1985200;https://open.spotify.com/track/048YgXKAXF8eTwMCfYylhD;D:\dev\SB19\saved_pages\felip_bulan_live_band_ver_20260422_041441.html
+2026-04-22 04:14:46;Palayo Inst.;FELIP;1274776;https://open.spotify.com/track/2RfXO3QnM6gG75Pxu04OqS;D:\dev\SB19\saved_pages\felip_palayo_inst_20260422_041446.html
+2026-04-22 04:14:52;Bulan Inst.;FELIP;1208571;https://open.spotify.com/track/4iGoucvzYCbJtG4n4wnJjB;D:\dev\SB19\saved_pages\felip_bulan_inst_20260422_041452.html
+2026-04-22 04:14:58;Moving Closer - From The Cafe;FELIP;2314661;https://open.spotify.com/track/1kAyLWCiJfTDhm56kaOXnO;D:\dev\SB19\saved_pages\felip_moving_closer_from_the_cafe_20260422_041457.html
+2026-04-22 04:15:03;Moving Closer - From The Lounge;FELIP;1657464;https://open.spotify.com/track/0cd2BCuzH8Vub1cS2eKU7M;D:\dev\SB19\saved_pages\felip_moving_closer_from_the_lounge_20260422_041503.html
+2026-04-22 04:15:09;ID (new version);FELIP;352973;https://open.spotify.com/track/7Fu45FLLaE1s0eg8DF5UqT;D:\dev\SB19\saved_pages\felip_id_new_version_20260422_041509.html
+2026-04-22 04:15:14;ROCKSTA (Superior Session Live);FELIP;1537924;https://open.spotify.com/track/5EP2vLFwMHpWFWeZVvt3jU;D:\dev\SB19\saved_pages\felip_rocksta_superior_session_live_20260422_041514.html
+2026-04-22 04:15:20;SUPERIORITY (Superior Session Live);FELIP;1438926;https://open.spotify.com/track/5VmjG0uTHcrn43Ynetfomd;D:\dev\SB19\saved_pages\felip_superiority_superior_session_live_20260422_041520.html
+2026-04-22 04:15:26;MICTEST (Superior Session Live);FELIP;1365519;https://open.spotify.com/track/0FW1fvsv00RCGNPjVHJg3x;D:\dev\SB19\saved_pages\felip_mictest_superior_session_live_20260422_041526.html
+2026-04-22 04:15:31;DRINKSMOKE (Superior Session Live);FELIP;1552823;https://open.spotify.com/track/5Iw7boOrwCpWlaJtNTTHG6;D:\dev\SB19\saved_pages\felip_drinksmoke_superior_session_live_20260422_041531.html
+2026-04-22 04:15:37;CRIMINAL (Superior Session Live);FELIP;1750408;https://open.spotify.com/track/2FxQjJcpsdHQHTqjVhlqP4;D:\dev\SB19\saved_pages\felip_criminal_superior_session_live_20260422_041537.html
+2026-04-22 04:15:43;STRAYDOGS (Superior Session Live);FELIP;1374191;https://open.spotify.com/track/4W28quZaVhLdbpojBeooaZ;D:\dev\SB19\saved_pages\felip_straydogs_superior_session_live_20260422_041543.html
+2026-04-22 04:15:48;to sin is human, to forgive is divine - live;FELIP;202721;https://open.spotify.com/track/5lbuH5ieouWZ43qHAcCK08;D:\dev\SB19\saved_pages\felip_to_sin_is_human_to_forgive_is_divine_live_20260422_041548.html
+2026-04-22 04:15:54;foes - live;FELIP;214176;https://open.spotify.com/track/44TFeq1FSLniRzbThYVWom;D:\dev\SB19\saved_pages\felip_foes_live_20260422_041554.html
+2026-04-22 04:15:59;envy - live;FELIP;175150;https://open.spotify.com/track/41gwpmt6wVdwDgjE430dm6;D:\dev\SB19\saved_pages\felip_envy_live_20260422_041559.html
+2026-04-22 04:16:05;greed - live;FELIP;189294;https://open.spotify.com/track/5fWWoFfmqwBhBq93Rc6YqB;D:\dev\SB19\saved_pages\felip_greed_live_20260422_041605.html
+2026-04-22 04:16:11;lust - live;FELIP;193680;https://open.spotify.com/track/2hlY0jd3uRy5i7SuN1oz7Z;D:\dev\SB19\saved_pages\felip_lust_live_20260422_041611.html
+2026-04-22 04:16:16;pride - live;FELIP;161999;https://open.spotify.com/track/45ZCoFCk3DL7d84d7bwWdz;D:\dev\SB19\saved_pages\felip_pride_live_20260422_041616.html
+2026-04-22 04:16:22;gluttony (feat. PLAYERTWO) - live;FELIP;165062;https://open.spotify.com/track/0HaZMHBzZOYqdEcCtzAHEU;D:\dev\SB19\saved_pages\felip_gluttony_feat_playertwo_live_20260422_041622.html
+2026-04-22 04:16:28;wrath - live;FELIP;179415;https://open.spotify.com/track/5ykca7sZJ8OAUepkUGIdRE;D:\dev\SB19\saved_pages\felip_wrath_live_20260422_041627.html
+2026-04-22 04:16:33;tokyo - live;FELIP;820515;https://open.spotify.com/track/5KKi1lmsdHfm4IYZ1YSy94;D:\dev\SB19\saved_pages\felip_tokyo_live_20260422_041633.html
+2026-04-22 04:16:39;sloth - live;FELIP;176980;https://open.spotify.com/track/6dmzbxC4WjfB3ucXZUUaO5;D:\dev\SB19\saved_pages\felip_sloth_live_20260422_041639.html
+2026-04-22 04:16:44;grace - live;FELIP;188288;https://open.spotify.com/track/6HsmDcIbYCn7YzWBUKEucW;D:\dev\SB19\saved_pages\felip_grace_live_20260422_041644.html
+2026-04-22 04:16:50;ache - live;FELIP;218292;https://open.spotify.com/track/4lQY03QyHAKDj6XdDgVDcL;D:\dev\SB19\saved_pages\felip_ache_live_20260422_041650.html
+2026-04-22 04:16:56;WILD TONIGHT;JOSH CULLEN;10133948;https://open.spotify.com/track/4yBwaJUom5dOYp54wU6hA2;D:\dev\SB19\saved_pages\josh_cullen_wild_tonight_20260422_041655.html
+2026-04-22 04:17:01;Pakiusap Lang;JOSH CULLEN;5365589;https://open.spotify.com/track/6trU06kJgdYaPqRUvz5K9e;D:\dev\SB19\saved_pages\josh_cullen_pakiusap_lang_20260422_041701.html
+2026-04-22 04:17:07;GET RIGHT;JOSH CULLEN;4797331;https://open.spotify.com/track/56FnjRDkdoCV5lVSyuQ9MU;D:\dev\SB19\saved_pages\josh_cullen_get_right_20260422_041707.html
+2026-04-22 04:17:12;Yoko Na;JOSH CULLEN;10720003;https://open.spotify.com/track/6SIaYQUPOJpO8XFWeTl5dC;D:\dev\SB19\saved_pages\josh_cullen_yoko_na_20260422_041712.html
+2026-04-22 04:17:18;1999;JOSH CULLEN;6676432;https://open.spotify.com/track/0PMfgKba5PLGETb02cDcMg;D:\dev\SB19\saved_pages\josh_cullen_1999_20260422_041718.html
+2026-04-22 04:17:23;See Me;JOSH CULLEN;3111991;https://open.spotify.com/track/5jH6p468HtmNHdJiubGQ6t;D:\dev\SB19\saved_pages\josh_cullen_see_me_20260422_041723.html
+2026-04-22 04:17:29;Silent Cries;JOSH CULLEN;4042146;https://open.spotify.com/track/1x0Y2jS5oJW4Q3aU9jZBER;D:\dev\SB19\saved_pages\josh_cullen_silent_cries_20260422_041729.html
+2026-04-22 04:17:35;Honest;JOSH CULLEN;2784847;https://open.spotify.com/track/1Rl5KDAu4wrUsQZZtD2hiy;D:\dev\SB19\saved_pages\josh_cullen_honest_20260422_041735.html
+2026-04-22 04:17:40;No Control;JOSH CULLEN;2327408;https://open.spotify.com/track/0Rg0DIhiShdvZvF7snNZIt;D:\dev\SB19\saved_pages\josh_cullen_no_control_20260422_041740.html
+2026-04-22 04:17:46;Lights Out;JOSH CULLEN;2103605;https://open.spotify.com/track/2TQQX4gYeQmobxNEXwtrZ3;D:\dev\SB19\saved_pages\josh_cullen_lights_out_20260422_041746.html
+2026-04-22 04:17:51;Sumaya;JOSH CULLEN;5531915;https://open.spotify.com/track/2qKu8tPpilCBJqxzGWcOaC;D:\dev\SB19\saved_pages\josh_cullen_sumaya_20260422_041751.html
+2026-04-22 04:17:57;Silent Cries (Instrumental);JOSH CULLEN;568419;https://open.spotify.com/track/5FQodaxJAZTUPjdpbDT9pa;D:\dev\SB19\saved_pages\josh_cullen_silent_cries_instrumental_20260422_041757.html
+2026-04-22 04:18:03;No Control (Instrumental);JOSH CULLEN;557214;https://open.spotify.com/track/65LG9NubWQtyImpyNXotHo;D:\dev\SB19\saved_pages\josh_cullen_no_control_instrumental_20260422_041803.html
+2026-04-22 04:18:08;Takbuhan;JOSH CULLEN;1050275;https://open.spotify.com/track/3RCVzaTWA7h1SR0nWQtIk1;D:\dev\SB19\saved_pages\josh_cullen_takbuhan_20260422_041808.html
+2026-04-22 04:18:14;Re: Thinkin' About You;JOSH CULLEN;4466855;https://open.spotify.com/track/2R1CjdVdXz7frvQRwCdQa6;D:\dev\SB19\saved_pages\josh_cullen_re_thinkin_about_you_20260422_041814.html
+2026-04-22 04:18:19;Room;Stell;12935306;https://open.spotify.com/track/1PLKN0HC7m5drBHg0jarZE;D:\dev\SB19\saved_pages\stell_room_20260422_041819.html
+2026-04-22 04:18:25;Anino;Stell;6744700;https://open.spotify.com/track/5tMJZOyBv8t49i9elHuQZF;D:\dev\SB19\saved_pages\stell_anino_20260422_041825.html
+2026-04-22 04:18:31;'Di Ko Masabi;Stell;8426866;https://open.spotify.com/track/3JEE0hhTI6u9CEZCZWalKe;D:\dev\SB19\saved_pages\stell_di_ko_masabi_20260422_041831.html
+2026-04-22 04:18:36;Classic;Stell;7299904;https://open.spotify.com/track/15bdfvbGida1Z8OVZ0YvSQ;D:\dev\SB19\saved_pages\stell_classic_20260422_041836.html
+2026-04-22 04:18:42;Room (Stripped);Stell;5378543;https://open.spotify.com/track/6fwpkEZRQZ8Kr5Ws4q0Kyn;D:\dev\SB19\saved_pages\stell_room_stripped_20260422_041842.html
+2026-04-22 04:18:47;Surreal;justin;15711075;https://open.spotify.com/track/5TT4xi1HEPTkVTO59jY3tz;D:\dev\SB19\saved_pages\justin_surreal_20260422_041847.html
+2026-04-22 04:18:53;Sunday Morning;justin;5811074;https://open.spotify.com/track/3sp427zYHOXL3LPCYgwuRv;D:\dev\SB19\saved_pages\justin_sunday_morning_20260422_041853.html
+2026-04-22 04:18:58;Kaibigan;justin;9355353;https://open.spotify.com/track/3rwioq6hSNjwynK8rVPCma;D:\dev\SB19\saved_pages\justin_kaibigan_20260422_041858.html
+2026-04-22 04:19:04;Sampung Mga Daliri;justin;8149451;https://open.spotify.com/track/2MHg2BVPaTgiCUDWp2jZqf;D:\dev\SB19\saved_pages\justin_sampung_mga_daliri_20260422_041904.html
+2026-04-22 04:19:10;Sampung Mga Daliri (Reimagined Version);justin;817531;https://open.spotify.com/track/4nnhn2O5oQmPC2HedN5W4b;D:\dev\SB19\saved_pages\justin_sampung_mga_daliri_reimagined_version_20260422_041910.html
+2026-04-22 04:19:15;Sampung Mga Daliri (Acoustic Version);justin;1794144;https://open.spotify.com/track/0WoGaGmUip0OPQ662Drdlj;D:\dev\SB19\saved_pages\justin_sampung_mga_daliri_acoustic_version_20260422_041915.html
+2026-04-22 04:19:21;GENTO - From THE FIRST TAKE;SB19;7348693;https://open.spotify.com/track/2h7syqD1QScej4PqMxJfp2;D:\dev\SB19\saved_pages\sb19_gento_from_the_first_take_20260422_041921.html
+2026-04-22 04:19:27;MAPA - From THE FIRST TAKE;SB19;5446900;https://open.spotify.com/track/4MZbVDIPOYmPkjcVqpPe9v;D:\dev\SB19\saved_pages\sb19_mapa_from_the_first_take_20260422_041927.html
+2026-04-22 04:19:32;DAM - From THE FIRST TAKE;SB19;2467508;https://open.spotify.com/track/14WOLW4oTwD7Mh9eb0hLDs;D:\dev\SB19\saved_pages\sb19_dam_from_the_first_take_20260422_041932.html
+2026-04-22 04:19:38;Time - From THE FIRST TAKE;SB19;2688621;https://open.spotify.com/track/1ctnGFHyklJbmHLyaDYtyg;D:\dev\SB19\saved_pages\sb19_time_from_the_first_take_20260422_041938.html
+2026-04-22 04:19:44;Moonlight (Ian Asher Club Mix);SB19;3113100;https://open.spotify.com/track/5YYzdzlunDyLDwlM40W0Gc;D:\dev\SB19\saved_pages\sb19_moonlight_ian_asher_club_mix_20260422_041943.html
+2026-04-22 04:19:49;Umaaligid (Extended Ver.);SB19;2937494;https://open.spotify.com/track/1XFHLGwXrlL0FpJgRcFYTI;D:\dev\SB19\saved_pages\sb19_umaaligid_extended_ver_20260422_041949.html
+2026-04-22 04:19:55;Love Yours (DIOR & RealBros Remix);SB19;906885;https://open.spotify.com/track/3qw9D8YC0sezDriUMx5lRG;D:\dev\SB19\saved_pages\sb19_love_yours_dior_realbros_remix_20260422_041955.html
+2026-04-22 04:20:01;What? - Extended Version;SB19;6487261;https://open.spotify.com/track/7jn2llkeDI9IRROCYNa7sL;D:\dev\SB19\saved_pages\sb19_what_extended_version_20260422_042000.html
+2026-04-22 04:20:06;Da Coconut Nut;BINI;16592428;https://open.spotify.com/track/0oSyeQT1PrwyPreTBq2dDN;D:\dev\SB19\saved_pages\bini_da_coconut_nut_20260422_042006.html
+2026-04-22 04:20:12;Born To Win;BINI;18870390;https://open.spotify.com/track/5ZzJXBVQCTolSrzUdPJduW;D:\dev\SB19\saved_pages\bini_born_to_win_20260422_042012.html
+2026-04-22 04:20:17;Golden Arrow;BINI;17725695;https://open.spotify.com/track/4XQV9Qs6N1sjfOq83IhILo;D:\dev\SB19\saved_pages\bini_golden_arrow_20260422_042017.html
+2026-04-22 04:20:23;B HU U R;BINI;4456513;https://open.spotify.com/track/6B8LtMPhqUFuqQIxi5y8yb;D:\dev\SB19\saved_pages\bini_b_hu_u_r_20260422_042023.html
+2026-04-22 04:20:29;Na Na Na;BINI;68357491;https://open.spotify.com/track/4aqkICleG6HLRc2ygpWqN1;D:\dev\SB19\saved_pages\bini_na_na_na_20260422_042029.html
+2026-04-22 04:20:34;Kinikilig;BINI;14232207;https://open.spotify.com/track/2t76tRFVKZOz0nzTEnVV7u;D:\dev\SB19\saved_pages\bini_kinikilig_20260422_042034.html
+2026-04-22 04:20:40;Kapit Lang;BINI;6669166;https://open.spotify.com/track/47FtbLmQPMVEGbmKTmNnbb;D:\dev\SB19\saved_pages\bini_kapit_lang_20260422_042040.html
+2026-04-22 04:20:46;8;BINI;15549901;https://open.spotify.com/track/6i6gQ9Mqnv4Sn7OlfObobC;D:\dev\SB19\saved_pages\bini_8_20260422_042046.html
+2026-04-22 04:20:54;Here With You;BINI;11822996;https://open.spotify.com/track/1Q6UGbt7c2l4HnopdXNHpS;D:\dev\SB19\saved_pages\bini_here_with_you_20260422_042054.html
+2026-04-22 04:20:59;Born To Win (Bahasa Version);BINI;823104;https://open.spotify.com/track/394JRt671aKXriMkSgQdlX;D:\dev\SB19\saved_pages\bini_born_to_win_bahasa_version_20260422_042059.html
+2026-04-22 04:21:05;Born To Win (Japanese Version);BINI;816391;https://open.spotify.com/track/6tPZhsZ88xN6qeoiB2jMSh;D:\dev\SB19\saved_pages\bini_born_to_win_japanese_version_20260422_042105.html
+2026-04-22 04:21:11;Born To Win (Thai Version);BINI;706185;https://open.spotify.com/track/2LFxumraiSEPCBIo7rGQwH;D:\dev\SB19\saved_pages\bini_born_to_win_thai_version_20260422_042111.html
+2026-04-22 04:21:16;Born To Win (Spanish Version);BINI;688631;https://open.spotify.com/track/1OHZoYZUc7RmPqISO7aKCS;D:\dev\SB19\saved_pages\bini_born_to_win_spanish_version_20260422_042116.html
+2026-04-22 04:21:22;Born To Win (Acapella);BINI;685999;https://open.spotify.com/track/3wOh9gU88iPeQO4eHBq23z;D:\dev\SB19\saved_pages\bini_born_to_win_acapella_20260422_042122.html
+2026-04-22 04:21:28;Born To Win (EDM Version);BINI;434328;https://open.spotify.com/track/1vJuqN76Wrrxl9FcGc8JCi;D:\dev\SB19\saved_pages\bini_born_to_win_edm_version_20260422_042127.html
+2026-04-22 04:21:33;Born To Win (String Quartet Version);BINI;383451;https://open.spotify.com/track/6DrXWDcVYh933uk9ygjFyT;D:\dev\SB19\saved_pages\bini_born_to_win_string_quartet_version_20260422_042133.html
+2026-04-22 04:21:39;Born To Win (Instrumental);BINI;294979;https://open.spotify.com/track/2RisvAWnWIxFGz3cSFknSY;D:\dev\SB19\saved_pages\bini_born_to_win_instrumental_20260422_042139.html
+2026-04-22 04:21:44;Born To Win (Latin Version);BINI;275434;https://open.spotify.com/track/7CCXN1euWg5yU21YTYbR0K;D:\dev\SB19\saved_pages\bini_born_to_win_latin_version_20260422_042144.html
+2026-04-22 04:21:50;Pit a Pat;BINI;10918946;https://open.spotify.com/track/5uo819IFkx2XeL5cLNhfsU;D:\dev\SB19\saved_pages\bini_pit_a_pat_20260422_042150.html
+2026-04-22 04:21:55;Love Yourself;BINI;7739579;https://open.spotify.com/track/7uB49FMeQDpoVwTSYnYsdz;D:\dev\SB19\saved_pages\bini_love_yourself_20260422_042155.html
+2026-04-22 04:22:01;Up!;BINI;1893091;https://open.spotify.com/track/7aii4AQA1uyyzGcfqtApy1;D:\dev\SB19\saved_pages\bini_up_20260422_042201.html
+2026-04-22 04:22:07;Kabataang Pinoy;BINI;9291318;https://open.spotify.com/track/6aXWWGw7sQJLx82jZndSQZ;D:\dev\SB19\saved_pages\bini_kabataang_pinoy_20260422_042207.html
+2026-04-22 04:22:12;Made for All;BINI;7057537;https://open.spotify.com/track/580EzR9sfqKVUTRGAcPzcN;D:\dev\SB19\saved_pages\bini_made_for_all_20260422_042212.html
+2026-04-22 04:22:18;No Fear;BINI;12157687;https://open.spotify.com/track/5xNbWnsQJ9lyzPlK36J1cm;D:\dev\SB19\saved_pages\bini_no_fear_20260422_042218.html
+2026-04-22 04:22:23;Lagi;BINI;95524262;https://open.spotify.com/track/5YV9UyeC3dMV4kuRiTMGJs;D:\dev\SB19\saved_pages\bini_lagi_20260422_042223.html
+2026-04-22 04:22:29;I Feel Good;BINI;39016153;https://open.spotify.com/track/4ugPBlOXJtKOkOxQRQpUVE;D:\dev\SB19\saved_pages\bini_i_feel_good_20260422_042229.html
+2026-04-22 04:22:35;Huwag Muna Tayong Umuwi;BINI;68975627;https://open.spotify.com/track/7haQq014RoahMX6spW4z1z;D:\dev\SB19\saved_pages\bini_huwag_muna_tayong_umuwi_20260422_042235.html
+2026-04-22 04:22:40;Strings;BINI;20654737;https://open.spotify.com/track/4J20QVGtdAAOYMpb8iY2GG;D:\dev\SB19\saved_pages\bini_strings_20260422_042240.html
+2026-04-22 04:22:46;Lagi (Acoustic Version);BINI;5405792;https://open.spotify.com/track/4o9MuuglWRF9SqZ9hDDHE4;D:\dev\SB19\saved_pages\bini_lagi_acoustic_version_20260422_042246.html
+2026-04-22 04:22:51;Strings (Dance Version);BINI;3643803;https://open.spotify.com/track/2u12rBuVmArXK9N1iGsaIa;D:\dev\SB19\saved_pages\bini_strings_dance_version_20260422_042251.html
+2026-04-22 04:22:57;Karera;BINI;125871382;https://open.spotify.com/track/1RL9cRcuzCrs75Wb2aq9Op;D:\dev\SB19\saved_pages\bini_karera_20260422_042257.html
+2026-04-22 04:23:03;Pantropiko;BINI;205987722;https://open.spotify.com/track/03vwhCqyxupZDVEncdnCSc;D:\dev\SB19\saved_pages\bini_pantropiko_20260422_042302.html
+2026-04-22 04:23:08;Super Crush;BINI;6475896;https://open.spotify.com/track/56wTbR92GiVk86sH3KWR34;D:\dev\SB19\saved_pages\bini_super_crush_20260422_042308.html
+2026-04-22 04:23:14;Salamin, Salamin;BINI;202745019;https://open.spotify.com/track/1iIJtD9hkzw4ZHfR7ND9yb;D:\dev\SB19\saved_pages\bini_salamin_salamin_20260422_042314.html
+2026-04-22 04:23:19;Ang Huling Cha Cha;BINI;24117941;https://open.spotify.com/track/7Dx27QY6OJmWv4ZSCW9OpF;D:\dev\SB19\saved_pages\bini_ang_huling_cha_cha_20260422_042319.html
+2026-04-22 04:23:25;Na Na Nandito Lang;BINI;27135871;https://open.spotify.com/track/3iiFRTfSUP34KVekvWoV3F;D:\dev\SB19\saved_pages\bini_na_na_nandito_lang_20260422_042325.html
+2026-04-22 04:23:31;Diyan Ka Lang;BINI;20756376;https://open.spotify.com/track/7j3FzXqlvcSpe58Ska2tes;D:\dev\SB19\saved_pages\bini_diyan_ka_lang_20260422_042330.html
+2026-04-22 04:23:36;Bata, Kaya Mo!;BINI;8703182;https://open.spotify.com/track/4UTORTDvblo2N3PNWifEzp;D:\dev\SB19\saved_pages\bini_bata_kaya_mo_20260422_042336.html
+2026-04-22 04:23:42;Cherry On Top;BINI;73895834;https://open.spotify.com/track/2JniqTObhmaYjn83J6qiED;D:\dev\SB19\saved_pages\bini_cherry_on_top_20260422_042342.html
+2026-04-22 04:23:47;Cherry On Top (BiniMo Remix);BINI;4578679;https://open.spotify.com/track/0x4uB9NwFEmYrGlUFI9Kci;D:\dev\SB19\saved_pages\bini_cherry_on_top_binimo_remix_20260422_042347.html
+2026-04-22 04:23:53;Blooming;BINI;6523415;https://open.spotify.com/track/52YkZd4cJahDlGxQquQqSa;D:\dev\SB19\saved_pages\bini_blooming_20260422_042353.html
+2026-04-22 04:23:59;Gandang Vitakeratin;BINI;5425850;https://open.spotify.com/track/5tQvi25iQvL5Raxg4rkdEN;D:\dev\SB19\saved_pages\bini_gandang_vitakeratin_20260422_042359.html
+2026-04-22 04:24:04;Hairkada, Ilugay Mo!;BINI;1393593;https://open.spotify.com/track/3QK0nqizj5doSadlfkcbL1;D:\dev\SB19\saved_pages\bini_hairkada_ilugay_mo_20260422_042404.html
+2026-04-22 04:24:10;Icon;BINI;3962423;https://open.spotify.com/track/5nqKckFx3jU5JM3bd1EwGB;D:\dev\SB19\saved_pages\bini_icon_20260422_042410.html
+2026-04-22 04:24:16;Laging Fudgee, Fudgee Lagi;BINI;1405412;https://open.spotify.com/track/6Rne3AZj7AcRcrmnKT3nRM;D:\dev\SB19\saved_pages\bini_laging_fudgee_fudgee_lagi_20260422_042415.html
+2026-04-22 04:24:21;Joy To The World;BINI;3584917;https://open.spotify.com/track/0SpVJoztP97waXXnu0GjbL;D:\dev\SB19\saved_pages\bini_joy_to_the_world_20260422_042421.html
+2026-04-22 04:24:27;Our Stories Shine This Christmas;BINI;2036436;https://open.spotify.com/track/5YleyXVovexQBfPTQx6dJt;D:\dev\SB19\saved_pages\bini_our_stories_shine_this_christmas_20260422_042427.html
+2026-04-22 04:24:32;Blink Twice;BINI;42212343;https://open.spotify.com/track/0G2SvoKHnMnoX5UQDCIx51;D:\dev\SB19\saved_pages\bini_blink_twice_20260422_042432.html
+2026-04-22 04:24:38;Zero Pressure;BINI;10965870;https://open.spotify.com/track/4xWZwHrIn5uS3Nft08Rk5O;D:\dev\SB19\saved_pages\bini_zero_pressure_20260422_042438.html
+2026-04-22 04:24:43;Secrets;BINI;6735505;https://open.spotify.com/track/0hzFVTCkNnMgRrBiTgRuXC;D:\dev\SB19\saved_pages\bini_secrets_20260422_042443.html
+2026-04-22 04:24:49;Out Of My Head;BINI;7564602;https://open.spotify.com/track/6SKjhbUSGDjTPCEGYYonWO;D:\dev\SB19\saved_pages\bini_out_of_my_head_20260422_042449.html
+2026-04-22 04:24:55;Blink Twice (Dos Veces Remix);BINI;2899966;https://open.spotify.com/track/6SNHfk6CipQOSALhblynof;D:\dev\SB19\saved_pages\bini_blink_twice_dos_veces_remix_20260422_042455.html
+2026-04-22 04:25:00;Blink Twice (Taglish Version);BINI;768982;https://open.spotify.com/track/12dI6qK0w7Grhim6Gx7Xzx;D:\dev\SB19\saved_pages\bini_blink_twice_taglish_version_20260422_042500.html
+2026-04-22 04:25:06;TOP;BINI;3665771;https://open.spotify.com/track/2XZsdeacLnuHfQCetOSIdX;D:\dev\SB19\saved_pages\bini_top_20260422_042506.html
+2026-04-22 04:25:12;OXYGEN;BINI;4753233;https://open.spotify.com/track/2rvqMC6SRBCHcwFdMmaHfK;D:\dev\SB19\saved_pages\bini_oxygen_20260422_042512.html
+2026-04-22 04:25:17;First Luv;BINI;11342491;https://open.spotify.com/track/0qHbCeNAPB7EaKxWiyaAMP;D:\dev\SB19\saved_pages\bini_first_luv_20260422_042517.html
+2026-04-22 04:25:23;Sweet Tooth;BINI;5944981;https://open.spotify.com/track/4255eE0aWSyfbIWTpIE1qu;D:\dev\SB19\saved_pages\bini_sweet_tooth_20260422_042523.html
+2026-04-22 04:25:28;Paruparo;BINI;5466084;https://open.spotify.com/track/0waZh26XErLP0Za4Dgc3T0;D:\dev\SB19\saved_pages\bini_paruparo_20260422_042528.html
+2026-04-22 04:25:34;Infinity;BINI;5274189;https://open.spotify.com/track/6rKlGBShPmNsQkzvEvdwqq;D:\dev\SB19\saved_pages\bini_infinity_20260422_042534.html
+2026-04-22 04:25:40;Katabi;BINI;5758149;https://open.spotify.com/track/01R8mmP7FyotvSQkjlxK7v;D:\dev\SB19\saved_pages\bini_katabi_20260422_042540.html
+2026-04-22 04:25:45;Bikini;BINI;11685712;https://open.spotify.com/track/03Tt2qPSQKaXMkLtZ3Zwg9;D:\dev\SB19\saved_pages\bini_bikini_20260422_042545.html
+2026-04-22 04:25:51;Shagidi;BINI;15013076;https://open.spotify.com/track/7zKYsYbbC7N8C5QOOtTlZx;D:\dev\SB19\saved_pages\bini_shagidi_20260422_042551.html
+2026-04-22 04:25:57;Unang Kilig;BINI;4868757;https://open.spotify.com/track/7mfaRuBDtbywhmLSoPSscp;D:\dev\SB19\saved_pages\bini_unang_kilig_20260422_042557.html
+2026-04-22 04:26:02;Honey Honey;BINI;3330960;https://open.spotify.com/track/282XNtIdfDh0NupdD8zBzp;D:\dev\SB19\saved_pages\bini_honey_honey_20260422_042602.html
+2026-04-22 04:26:08;Nag-Iisang Muli;Cup of Joe;64117923;https://open.spotify.com/track/3TMiRvIG2vYjmQh8VwZDeH;D:\dev\SB19\saved_pages\cup_of_joe_nag_iisang_muli_20260422_042608.html
+2026-04-22 04:26:13;Sinderela;Cup of Joe;56104441;https://open.spotify.com/track/4MsOWApwFYowURf1CsztXP;D:\dev\SB19\saved_pages\cup_of_joe_sinderela_20260422_042613.html
+2026-04-22 04:26:19;Alas Dose;Cup of Joe;22178335;https://open.spotify.com/track/3cOgXHh7vFpw2jyj4Ppxxz;D:\dev\SB19\saved_pages\cup_of_joe_alas_dose_20260422_042619.html
+2026-04-22 04:26:25;Sagada;Cup of Joe;63156152;https://open.spotify.com/track/2wh4fGevm9QWeZtUXEJYCp;D:\dev\SB19\saved_pages\cup_of_joe_sagada_20260422_042625.html
+2026-04-22 04:26:30;Hayaan;Cup of Joe;21664481;https://open.spotify.com/track/0GEelfsg0vii5yYCVYsvQ8;D:\dev\SB19\saved_pages\cup_of_joe_hayaan_20260422_042630.html
+2026-04-22 04:26:36;Bukod-Tangi;Cup of Joe;36557344;https://open.spotify.com/track/66tKd60oZUTAK0PdmXJl09;D:\dev\SB19\saved_pages\cup_of_joe_bukod_tangi_20260422_042636.html
+2026-04-22 04:26:41;Ikaw Pa Rin Ang Pipiliin Ko;Cup of Joe;146911144;https://open.spotify.com/track/3LvrJEPQ61Vvj1t3Edg20X;D:\dev\SB19\saved_pages\cup_of_joe_ikaw_pa_rin_ang_pipiliin_ko_20260422_042641.html
+2026-04-22 04:26:47;Tingin;Cup of Joe;370113459;https://open.spotify.com/track/3Avsya1f8cxvSzyRlrFIhP;D:\dev\SB19\saved_pages\cup_of_joe_tingin_20260422_042647.html
+2026-04-22 04:26:53;Patutunguhan;Cup of Joe;112846593;https://open.spotify.com/track/1EP2WyCX9Q7y24bKPSZ0tc;D:\dev\SB19\saved_pages\cup_of_joe_patutunguhan_20260422_042653.html
+2026-04-22 04:26:58;Wag Na Lang;Cup of Joe;37034499;https://open.spotify.com/track/7I5o8fJ2W4WWckv6LGQLIo;D:\dev\SB19\saved_pages\cup_of_joe_wag_na_lang_20260422_042658.html
+2026-04-22 04:27:04;Tataya;Cup of Joe;43650428;https://open.spotify.com/track/1iySC9sEJX8yfNf6rQrCBf;D:\dev\SB19\saved_pages\cup_of_joe_tataya_20260422_042704.html
+2026-04-22 04:27:09;Estranghero;Cup of Joe;211124648;https://open.spotify.com/track/27x4kbvoIKA4fD9TUnWuoE;D:\dev\SB19\saved_pages\cup_of_joe_estranghero_20260422_042709.html
+2026-04-22 04:27:15;Mananatili;Cup of Joe;70902965;https://open.spotify.com/track/5yPLY8rf05g2T3KcBCNFLl;D:\dev\SB19\saved_pages\cup_of_joe_mananatili_20260422_042715.html
+2026-04-22 04:27:21;Lahat Ng Bukas;Cup of Joe;13632500;https://open.spotify.com/track/3s39TR3Iarc2013cuvDGQ7;D:\dev\SB19\saved_pages\cup_of_joe_lahat_ng_bukas_20260422_042721.html
+2026-04-22 04:27:26;Ikaw;Cup of Joe;1524301;https://open.spotify.com/track/1MFgKlV9XOrqKcVLlDEGIQ;D:\dev\SB19\saved_pages\cup_of_joe_ikaw_20260422_042726.html
+2026-04-22 04:27:32;Ikaw;Cup of Joe;570707;https://open.spotify.com/track/28bvkaJWrZVDACONPAIQWg;D:\dev\SB19\saved_pages\cup_of_joe_ikaw_20260422_042732.html
+2026-04-22 04:27:38;Ikaw Pa Rin Ang Pipiliin Ko;Cup of Joe;146911144;https://open.spotify.com/track/34gun9nJelVyrsE2ctZhse;D:\dev\SB19\saved_pages\cup_of_joe_ikaw_pa_rin_ang_pipiliin_ko_20260422_042737.html
+2026-04-22 04:27:43;Misteryoso;Cup of Joe;199422435;https://open.spotify.com/track/0kE1SmlJNLg14dgdo9kJws;D:\dev\SB19\saved_pages\cup_of_joe_misteryoso_20260422_042743.html
+2026-04-22 04:27:49;Multo;Cup of Joe;568392544;https://open.spotify.com/track/5tlb0AxuzsMWL2GtEppXGX;D:\dev\SB19\saved_pages\cup_of_joe_multo_20260422_042749.html
+2026-04-22 04:27:54;Bagyo;Cup of Joe;23888561;https://open.spotify.com/track/0I2ugiLWhuMPSxpmEeRpZA;D:\dev\SB19\saved_pages\cup_of_joe_bagyo_20260422_042754.html
+2026-04-22 04:28:00;Wine;Cup of Joe;7171707;https://open.spotify.com/track/2BNoUBAaT0H2IxxdZeQIQu;D:\dev\SB19\saved_pages\cup_of_joe_wine_20260422_042800.html
+2026-04-22 04:28:06;Kanelang Mata;Cup of Joe;9857424;https://open.spotify.com/track/2ksChKYUmNwaIRsaIdOLca;D:\dev\SB19\saved_pages\cup_of_joe_kanelang_mata_20260422_042805.html
+2026-04-22 04:28:11;Bubog;Cup of Joe;20100523;https://open.spotify.com/track/7n1BbFCtHq4cRA5rXaWOaD;D:\dev\SB19\saved_pages\cup_of_joe_bubog_20260422_042811.html
+2026-04-22 04:28:17;Siping;Cup of Joe;9523883;https://open.spotify.com/track/1wBb0ntM6p136xh5Y0btw8;D:\dev\SB19\saved_pages\cup_of_joe_siping_20260422_042817.html
+2026-04-22 04:28:22;Pahina;Cup of Joe;106466362;https://open.spotify.com/track/0jGL1ApJ7QrVWL7nRqLdij;D:\dev\SB19\saved_pages\cup_of_joe_pahina_20260422_042822.html
+2026-04-22 04:28:28;'Di Maaari;Cup of Joe;8391539;https://open.spotify.com/track/3if1BKuZFDr3nhxhGBtPfG;D:\dev\SB19\saved_pages\cup_of_joe_di_maaari_20260422_042828.html
+2026-04-22 04:28:34;Hinga;Cup of Joe;8095218;https://open.spotify.com/track/1GnKxS0EqOON4xiKTVmFJQ;D:\dev\SB19\saved_pages\cup_of_joe_hinga_20260422_042834.html
+2026-04-22 04:28:39;Silakbo;Cup of Joe;19979297;https://open.spotify.com/track/0xW6HjCyIEN81xIKpmp6td;D:\dev\SB19\saved_pages\cup_of_joe_silakbo_20260422_042839.html
+2026-04-22 04:28:45;Sandali;Cup of Joe;21950993;https://open.spotify.com/track/01yAdrgd5cjxUyebfX4VGa;D:\dev\SB19\saved_pages\cup_of_joe_sandali_20260422_042845.html
+2026-04-22 04:28:50;Bagyo - Live;Cup of Joe;731000;https://open.spotify.com/track/55DxXImh8BhfYNFEcKCAQC;D:\dev\SB19\saved_pages\cup_of_joe_bagyo_live_20260422_042850.html
+2026-04-22 04:28:56;Wag Na Lang - Live;Cup of Joe;754864;https://open.spotify.com/track/12x7TSP187cLtNrr2BcAjt;D:\dev\SB19\saved_pages\cup_of_joe_wag_na_lang_live_20260422_042856.html
+2026-04-22 04:29:02;Patutunguhan - Live;Cup of Joe;667424;https://open.spotify.com/track/7aZUKE6vnjk6xJWTtyqb7Q;D:\dev\SB19\saved_pages\cup_of_joe_patutunguhan_live_20260422_042902.html
+2026-04-22 04:29:07;Wine - Live;Cup of Joe;519700;https://open.spotify.com/track/1YxR2PvEQKU0oFOUokfeJm;D:\dev\SB19\saved_pages\cup_of_joe_wine_live_20260422_042907.html
+2026-04-22 04:29:13;Kanelang Mata - Live;Cup of Joe;558638;https://open.spotify.com/track/3W2ejWy1OT93GYehErewsW;D:\dev\SB19\saved_pages\cup_of_joe_kanelang_mata_live_20260422_042913.html
+2026-04-22 04:29:18;Bubog - Live;Cup of Joe;686212;https://open.spotify.com/track/2qxRtPJyZ2BZgjb4wxXPTF;D:\dev\SB19\saved_pages\cup_of_joe_bubog_live_20260422_042918.html
+2026-04-22 04:29:24;Pahina - Live;Cup of Joe;1813940;https://open.spotify.com/track/5YsvZYuoJGtsLY41E2UcSn;D:\dev\SB19\saved_pages\cup_of_joe_pahina_live_20260422_042924.html
+2026-04-22 04:29:30;Siping - Live;Cup of Joe;534445;https://open.spotify.com/track/6EtDNiyltLziipX02AGT6X;D:\dev\SB19\saved_pages\cup_of_joe_siping_live_20260422_042930.html
+2026-04-22 04:29:35;Lahat Ng Bukas - Live;Cup of Joe;454273;https://open.spotify.com/track/7svxM2vHiXNSYj0tLDpw66;D:\dev\SB19\saved_pages\cup_of_joe_lahat_ng_bukas_live_20260422_042935.html
+2026-04-22 04:29:41;Estranghero - Live;Cup of Joe;514817;https://open.spotify.com/track/7vhFN8mkUQ3h00s4ChV4R1;D:\dev\SB19\saved_pages\cup_of_joe_estranghero_live_20260422_042941.html
+2026-04-22 04:29:46;Hayaan - Live;Cup of Joe;516176;https://open.spotify.com/track/0FvyoJ6Pd4iMaWuDduNfk4;D:\dev\SB19\saved_pages\cup_of_joe_hayaan_live_20260422_042946.html
+2026-04-22 04:29:52;Tataya - Live;Cup of Joe;463478;https://open.spotify.com/track/4JYf6mLIn8VhfRbi1VLv2t;D:\dev\SB19\saved_pages\cup_of_joe_tataya_live_20260422_042952.html
+2026-04-22 04:29:57;Misteryoso - Live;Cup of Joe;582142;https://open.spotify.com/track/3UZYQ0rw1EuuVOC0EyQiAV;D:\dev\SB19\saved_pages\cup_of_joe_misteryoso_live_20260422_042957.html
+2026-04-22 04:30:03;Tingin - Live;Cup of Joe;581727;https://open.spotify.com/track/3JY7kazhPp7qljwi916t3i;D:\dev\SB19\saved_pages\cup_of_joe_tingin_live_20260422_043003.html
+2026-04-22 04:30:09;Multo - Live;Cup of Joe;2218115;https://open.spotify.com/track/2FglJMvJovfOdJU72TDqit;D:\dev\SB19\saved_pages\cup_of_joe_multo_live_20260422_043009.html
+2026-04-22 04:30:14;'Di Maaari - Live;Cup of Joe;486793;https://open.spotify.com/track/4b1V1pOzdkIBHHyzFR5DDe;D:\dev\SB19\saved_pages\cup_of_joe_di_maaari_live_20260422_043014.html
+2026-04-22 04:30:20;Nag-iisang Muli - Live;Cup of Joe;530248;https://open.spotify.com/track/0GeGkheSINUxlSVMNCj71x;D:\dev\SB19\saved_pages\cup_of_joe_nag_iisang_muli_live_20260422_043020.html
+2026-04-22 04:30:25;Sagada - Live;Cup of Joe;632762;https://open.spotify.com/track/3LYKCBuVTAItncxkcdaUC2;D:\dev\SB19\saved_pages\cup_of_joe_sagada_live_20260422_043025.html
+2026-04-22 04:30:31;Hinga - Live;Cup of Joe;411082;https://open.spotify.com/track/2AkmK7B1f7eD1GvN0RpxaX;D:\dev\SB19\saved_pages\cup_of_joe_hinga_live_20260422_043031.html
+2026-04-22 04:30:37;Silakbo - Live;Cup of Joe;460931;https://open.spotify.com/track/0kE40Al0eC97k4r2p9CoBV;D:\dev\SB19\saved_pages\cup_of_joe_silakbo_live_20260422_043037.html
+2026-04-22 04:30:42;Mananatili - Live;Cup of Joe;449524;https://open.spotify.com/track/6khLp1vBQ0WQGBmSvOtAe7;D:\dev\SB19\saved_pages\cup_of_joe_mananatili_live_20260422_043042.html
+2026-04-22 04:30:48;Sinderela - Live;Cup of Joe;479372;https://open.spotify.com/track/0WCSlLEM8qju9TU7dz0VWF;D:\dev\SB19\saved_pages\cup_of_joe_sinderela_live_20260422_043048.html
+2026-04-22 04:30:53;Multo (Stripped Down);Cup of Joe;18397981;https://open.spotify.com/track/1GSv3y0eL50grXOaro8BTn;D:\dev\SB19\saved_pages\cup_of_joe_multo_stripped_down_20260422_043053.html
+2026-04-22 04:30:59;Tingin;Cup of Joe;370113459;https://open.spotify.com/track/5O7dHERnvoKGz201gAnVQv;D:\dev\SB19\saved_pages\cup_of_joe_tingin_20260422_043059.html
+2026-04-22 04:31:05;Multo;Cup of Joe;568392544;https://open.spotify.com/track/0y3JZzwAoXC91c8Z7oW57n;D:\dev\SB19\saved_pages\cup_of_joe_multo_20260422_043105.html
+2026-04-22 04:31:10;Easy Ka Lang;Eraserheads;872053;https://open.spotify.com/track/54IQTXCB66XNnqJwZLXwUy;D:\dev\SB19\saved_pages\eraserheads_easy_ka_lang_20260422_043110.html
+2026-04-22 04:31:16;Maling Akala;Eraserheads;6089788;https://open.spotify.com/track/3sapcDx86Nr3Uc3bEQcu21;D:\dev\SB19\saved_pages\eraserheads_maling_akala_20260422_043116.html
+2026-04-22 04:31:21;Pare Ko;Eraserheads;102210930;https://open.spotify.com/track/7uuirrtCr8O8fz7kQS6VUR;D:\dev\SB19\saved_pages\eraserheads_pare_ko_20260422_043121.html
+2026-04-22 04:31:27;Shake Yer Head;Eraserheads;6170764;https://open.spotify.com/track/1wWLp3ZHBp3NU3DUOWpA76;D:\dev\SB19\saved_pages\eraserheads_shake_yer_head_20260422_043127.html
+2026-04-22 04:31:33;Ganjazz;Eraserheads;1393752;https://open.spotify.com/track/550Pos0IpTkIsExFSl47r0;D:\dev\SB19\saved_pages\eraserheads_ganjazz_20260422_043133.html
+2026-04-22 04:31:38;Toyang;Eraserheads;22861719;https://open.spotify.com/track/0MOcNURhC9dUbQ2pIOEaZe;D:\dev\SB19\saved_pages\eraserheads_toyang_20260422_043138.html
+2026-04-22 04:31:44;Ligaya;Eraserheads;145027633;https://open.spotify.com/track/5Ro6MdZGgce4PEuaFCJYPq;D:\dev\SB19\saved_pages\eraserheads_ligaya_20260422_043144.html
+2026-04-22 04:31:49;Tindahan Ni Aling Nena;Eraserheads;18745205;https://open.spotify.com/track/1FsVa6q1CStHdgqZjaKwNk;D:\dev\SB19\saved_pages\eraserheads_tindahan_ni_aling_nena_20260422_043149.html
+2026-04-22 04:31:55;Honky-Toinks Granny;Eraserheads;1504866;https://open.spotify.com/track/6OrAVMWL85Uew4SvWV2x3J;D:\dev\SB19\saved_pages\eraserheads_honky_toinks_granny_20260422_043155.html
+2026-04-22 04:32:01;Shirley;Eraserheads;2078962;https://open.spotify.com/track/4NUAsaQUuZm8k6CdbdjxRq;D:\dev\SB19\saved_pages\eraserheads_shirley_20260422_043201.html
+2026-04-22 04:32:06;Walang Hiyang Pare Ko;Eraserheads;102210930;https://open.spotify.com/track/6drnFu40MUcjdGxzfExIbd;D:\dev\SB19\saved_pages\eraserheads_walang_hiyang_pare_ko_20260422_043206.html
+2026-04-22 04:32:12;Combo On The Run;Eraserheads;411486;https://open.spotify.com/track/4pSdKSCXc2kiYKvFQXIAjm;D:\dev\SB19\saved_pages\eraserheads_combo_on_the_run_20260422_043212.html
+2026-04-22 04:32:17;Bato;Eraserheads;414324;https://open.spotify.com/track/6VWq9Q8uToSOe75hCJp38C;D:\dev\SB19\saved_pages\eraserheads_bato_20260422_043217.html
+2026-04-22 04:32:23;Sembreak;Eraserheads;8249186;https://open.spotify.com/track/6g5obKN94RJAjha3luUExe;D:\dev\SB19\saved_pages\eraserheads_sembreak_20260422_043223.html
+2026-04-22 04:32:29;Alapaap;Eraserheads;84999720;https://open.spotify.com/track/0GGfPhGuWC2JGc7hlvjLXa;D:\dev\SB19\saved_pages\eraserheads_alapaap_20260422_043229.html
+2026-04-22 04:32:34;Hey Jay;Eraserheads;3361384;https://open.spotify.com/track/77iPHNWpTtjrUYYwa5gaky;D:\dev\SB19\saved_pages\eraserheads_hey_jay_20260422_043234.html
+2026-04-22 04:32:40;Minsan;Eraserheads;38152950;https://open.spotify.com/track/4iuAGPs5hlZqsKsS0ZnyWB;D:\dev\SB19\saved_pages\eraserheads_minsan_20260422_043240.html
+2026-04-22 04:32:45;Punk Zappa;Eraserheads;198386632;https://open.spotify.com/track/0lSYEOcLD7ZM3AQXLetelw;D:\dev\SB19\saved_pages\eraserheads_punk_zappa_20260422_043245.html
+2026-04-22 04:32:51;Insomya;Eraserheads;579946;https://open.spotify.com/track/2NUD4FI3nNERL0eEWMQAAs;D:\dev\SB19\saved_pages\eraserheads_insomya_20260422_043251.html
+2026-04-22 04:32:57;With A Smile;Eraserheads;171254427;https://open.spotify.com/track/1NopgVCMVhCKIm64tF7auX;D:\dev\SB19\saved_pages\eraserheads_with_a_smile_20260422_043257.html
+2026-04-22 04:33:02;Alkohol;Eraserheads;1794238;https://open.spotify.com/track/5MpIy9GYWw8AWsBL6Bneyi;D:\dev\SB19\saved_pages\eraserheads_alkohol_20260422_043302.html
+2026-04-22 04:33:08;Wishing Wells;Eraserheads;2227157;https://open.spotify.com/track/3T8P0JOPUMN4Wc5fuLAx4l;D:\dev\SB19\saved_pages\eraserheads_wishing_wells_20260422_043308.html
+2026-04-22 04:33:14;Kailan;Eraserheads;11949189;https://open.spotify.com/track/66LwDCA8wJpTNXXonCMplI;D:\dev\SB19\saved_pages\eraserheads_kailan_20260422_043313.html
+2026-04-22 04:33:19;No Royality Album Filler No. 9;Eraserheads;448426;https://open.spotify.com/track/2G0cXs9iFAcFr9O0fNz2q4;D:\dev\SB19\saved_pages\eraserheads_no_royality_album_filler_no_9_20260422_043319.html
+2026-04-22 04:33:25;Magasin;Eraserheads;98506528;https://open.spotify.com/track/1lan3CApvveTezmBBGzsGu;D:\dev\SB19\saved_pages\eraserheads_magasin_20260422_043325.html
+2026-04-22 04:33:31;Butterscotch;Eraserheads;1719551;https://open.spotify.com/track/11z9XKmqywLusY7r3zPWaB;D:\dev\SB19\saved_pages\eraserheads_butterscotch_20260422_043330.html
+2026-04-22 04:33:36;Sa Wakas;Eraserheads;1570710;https://open.spotify.com/track/2oxpnUxDY07G0DSTKYQYvv;D:\dev\SB19\saved_pages\eraserheads_sa_wakas_20260422_043336.html
+2026-04-22 04:33:42;Prof. Banlaoi's Transcendental Medication After Every Six Months or Punk Zappa Three;Eraserheads;365118;https://open.spotify.com/track/5JvXHaqchNppElX7JaS4Nc;D:\dev\SB19\saved_pages\eraserheads_prof_banlaoi_s_transcendental_medication_after_every_six_months_or_punk_zappa_three_20260422_043342.html
+2026-04-22 04:33:47;Wating;Eraserheads;478724;https://open.spotify.com/track/76tlJoc8zjnDktjQttAaPg;D:\dev\SB19\saved_pages\eraserheads_wating_20260422_043347.html
+2026-04-22 04:33:53;Kailan Lounge;Eraserheads;1836353;https://open.spotify.com/track/74YaExGhMibH7DDpAVgpPe;D:\dev\SB19\saved_pages\eraserheads_kailan_lounge_20260422_043353.html
+2026-04-22 04:33:59;Run Barbi Run;Eraserheads;711846;https://open.spotify.com/track/5JRwSnjp8bip417cVQiYHr;D:\dev\SB19\saved_pages\eraserheads_run_barbi_run_20260422_043358.html
+2026-04-22 04:34:04;Superproxy;Eraserheads;7988554;https://open.spotify.com/track/0NZmhezRAiqvGQfvWv57hN;D:\dev\SB19\saved_pages\eraserheads_superproxy_20260422_043404.html
+2026-04-22 04:34:10;Back2Me;Eraserheads;1621368;https://open.spotify.com/track/3sCgZZoLkrojyuoD0C4lhf;D:\dev\SB19\saved_pages\eraserheads_back2me_20260422_043410.html
+2026-04-22 04:34:15;Waiting For The Bus;Eraserheads;2676238;https://open.spotify.com/track/3Yb2JVsh33v17rAou2mNnN;D:\dev\SB19\saved_pages\eraserheads_waiting_for_the_bus_20260422_043415.html
+2026-04-22 04:34:21;Fine Time;Eraserheads;3498385;https://open.spotify.com/track/5aeUAKVIJseJpFQetiDard;D:\dev\SB19\saved_pages\eraserheads_fine_time_20260422_043421.html
+2026-04-22 04:34:26;Kamasupra;Eraserheads;3247566;https://open.spotify.com/track/4GEOX1Y6efeflmZyYwo2vj;D:\dev\SB19\saved_pages\eraserheads_kamasupra_20260422_043426.html
+2026-04-22 04:34:32;Overdrive;Eraserheads;40196988;https://open.spotify.com/track/0s1FYiiNy57vqAStlQMHsy;D:\dev\SB19\saved_pages\eraserheads_overdrive_20260422_043432.html
+2026-04-22 04:34:38;Slo Mo;Eraserheads;1261870;https://open.spotify.com/track/4HznNTMxrATnBtKBHaazaz;D:\dev\SB19\saved_pages\eraserheads_slo_mo_20260422_043438.html
+2026-04-22 04:34:43;Torpedo;Eraserheads;15917504;https://open.spotify.com/track/4dyDo6u2t5fqo2OgVZuHSy;D:\dev\SB19\saved_pages\eraserheads_torpedo_20260422_043443.html
+2026-04-22 04:34:49;Huwag Mo Nang Itanong;Eraserheads;43442547;https://open.spotify.com/track/2A3CzmtFj1sK6W1qQtBz86;D:\dev\SB19\saved_pages\eraserheads_huwag_mo_nang_itanong_20260422_043449.html
+2026-04-22 04:34:55;Paru-Parong Ningning;Eraserheads;827212;https://open.spotify.com/track/1J65Q6QUn1ep5WilBY6rbd;D:\dev\SB19\saved_pages\eraserheads_paru_parong_ningning_20260422_043454.html
+2026-04-22 04:35:00;Walang Nagbago;Eraserheads;2485529;https://open.spotify.com/track/133CI87OOZMTysivNrd31z;D:\dev\SB19\saved_pages\eraserheads_walang_nagbago_20260422_043500.html
+2026-04-22 04:35:06;Poorman's Grave;Eraserheads;3439493;https://open.spotify.com/track/6ipDHEjNSklyvKsPlxDnnD;D:\dev\SB19\saved_pages\eraserheads_poorman_s_grave_20260422_043506.html
+2026-04-22 04:35:11;Yoko;Eraserheads;555728;https://open.spotify.com/track/0o3FQUy5NnspZTQTtJ4Gip;D:\dev\SB19\saved_pages\eraserheads_yoko_20260422_043511.html
+2026-04-22 04:35:17;Fill Her;Eraserheads;4205132;https://open.spotify.com/track/6vZY4qmjHQw8BkocWY6LdO;D:\dev\SB19\saved_pages\eraserheads_fill_her_20260422_043517.html
+2026-04-22 04:35:23;Ang Huling El Bimbo;Eraserheads;198386632;https://open.spotify.com/track/135ggzbjOogZ75IQ0LQi8r;D:\dev\SB19\saved_pages\eraserheads_ang_huling_el_bimbo_20260422_043523.html
+2026-04-22 04:35:28;Cutterpillow;Eraserheads;904816;https://open.spotify.com/track/6ggPAKbdUMkDSFzou2La1B;D:\dev\SB19\saved_pages\eraserheads_cutterpillow_20260422_043528.html
+2026-04-22 04:35:34;Overdrive (Reprise);Eraserheads;748616;https://open.spotify.com/track/2LuPyBiRXfedHG9zXXnUFD;D:\dev\SB19\saved_pages\eraserheads_overdrive_reprise_20260422_043534.html
+2026-04-22 04:35:40;Fruitcake;Eraserheads;2583062;https://open.spotify.com/track/720V7AnwXjC8IJnSRLokEw;D:\dev\SB19\saved_pages\eraserheads_fruitcake_20260422_043539.html
+2026-04-22 04:35:45;Shadow;Eraserheads;523992;https://open.spotify.com/track/0XQJBON0zlZAGjAzqECd3K;D:\dev\SB19\saved_pages\eraserheads_shadow_20260422_043545.html
+2026-04-22 04:35:51;Flat Tire;Eraserheads;157831;https://open.spotify.com/track/0du5majyJyrdhYenAqJGBb;D:\dev\SB19\saved_pages\eraserheads_flat_tire_20260422_043551.html
+2026-04-22 04:35:56;Shadow Boxes Accountants;Eraserheads;181934;https://open.spotify.com/track/5O7MyPsm7fOsOYpPmhZLCj;D:\dev\SB19\saved_pages\eraserheads_shadow_boxes_accountants_20260422_043556.html
+2026-04-22 04:36:02;Gatekeeper;Eraserheads;399361;https://open.spotify.com/track/5BtSAEDfCXA8cAAutOTTo8;D:\dev\SB19\saved_pages\eraserheads_gatekeeper_20260422_043602.html
+2026-04-22 04:36:08;Old Fashioned Christmas Carol;Eraserheads;263846;https://open.spotify.com/track/2UprLQsSW9PhyqOgIIWFy0;D:\dev\SB19\saved_pages\eraserheads_old_fashioned_christmas_carol_20260422_043608.html
+2026-04-22 04:36:13;Styrosnow;Eraserheads;153785;https://open.spotify.com/track/39SWucsAKRaXoHKm4lyRvA;D:\dev\SB19\saved_pages\eraserheads_styrosnow_20260422_043613.html
+2026-04-22 04:36:19;Trip To Jerusalem;Eraserheads;467194;https://open.spotify.com/track/4D7fbbvwE6os8ZalI8F9c1;D:\dev\SB19\saved_pages\eraserheads_trip_to_jerusalem_20260422_043619.html
+2026-04-22 04:36:24;Shadow Reads The News Today, Oh Boy;Eraserheads;198386632;https://open.spotify.com/track/2jBnFjxyO77tansK0xPmqK;D:\dev\SB19\saved_pages\eraserheads_shadow_reads_the_news_today_oh_boy_20260422_043624.html
+2026-04-22 04:36:30;Fruit Fairy;Eraserheads;122606;https://open.spotify.com/track/45mmXueFTbRtbhQCW4XuN5;D:\dev\SB19\saved_pages\eraserheads_fruit_fairy_20260422_043630.html
+2026-04-22 04:36:36;The Fabulous Baker Boy;Eraserheads;136774;https://open.spotify.com/track/0OOvreGaSu8XHaqOlWMd4c;D:\dev\SB19\saved_pages\eraserheads_the_fabulous_baker_boy_20260422_043636.html
+2026-04-22 04:36:41;Lord Of The Rhum;Eraserheads;109524;https://open.spotify.com/track/0CjpFeFR3wLNpm5f75pPvP;D:\dev\SB19\saved_pages\eraserheads_lord_of_the_rhum_20260422_043641.html
+2026-04-22 04:36:47;Lightyears;Eraserheads;739565;https://open.spotify.com/track/47FBi8vqUr5nH2j2QWD4RR;D:\dev\SB19\saved_pages\eraserheads_lightyears_20260422_043647.html
+2026-04-22 04:36:52;Christmas Ball;Eraserheads;119928;https://open.spotify.com/track/6Pquz6Huiy0wP5vxSYCS4G;D:\dev\SB19\saved_pages\eraserheads_christmas_ball_20260422_043652.html
+2026-04-22 04:36:58;Mono Virus;Eraserheads;100414;https://open.spotify.com/track/0lA4vsPfH4oIQ0T2zRkK6R;D:\dev\SB19\saved_pages\eraserheads_mono_virus_20260422_043658.html
+2026-04-22 04:37:04;Shadow@Buttholesurfscom;Eraserheads;86332;https://open.spotify.com/track/6Sf59ddHOe5uKNgwmIlS91;D:\dev\SB19\saved_pages\eraserheads_shadow_buttholesurfscom_20260422_043704.html
+2026-04-22 04:37:09;Rise And Shine;Eraserheads;116787;https://open.spotify.com/track/3A6l9iol2V4QqLZ9BeD6VY;D:\dev\SB19\saved_pages\eraserheads_rise_and_shine_20260422_043709.html
+2026-04-22 04:37:15;Santa Ain't Comin' No Mo;Eraserheads;135051;https://open.spotify.com/track/60rkq0VvIG13zzwdTFlzdA;D:\dev\SB19\saved_pages\eraserheads_santa_ain_t_comin_no_mo_20260422_043715.html
+2026-04-22 04:37:20;Christmas Party;Eraserheads;568501;https://open.spotify.com/track/0keQ1tBbYve33j3D827bAO;D:\dev\SB19\saved_pages\eraserheads_christmas_party_20260422_043720.html
+2026-04-22 04:37:26;Hitchin' A Ride;Eraserheads;101512;https://open.spotify.com/track/5TnQHZnBmcrm3yBR9yTQ36;D:\dev\SB19\saved_pages\eraserheads_hitchin_a_ride_20260422_043726.html
+2026-04-22 04:37:32;Christmas Morning;Eraserheads;167015;https://open.spotify.com/track/6TAshhZUKKDhDDdkJOIne2;D:\dev\SB19\saved_pages\eraserheads_christmas_morning_20260422_043731.html
+2026-04-22 04:37:37;Merry Christmas Everybody Happy New Year Too - Reprise;Eraserheads;191186;https://open.spotify.com/track/4mUJAobNaCu4FfrlB02rkn;D:\dev\SB19\saved_pages\eraserheads_merry_christmas_everybody_happy_new_year_too_reprise_20260422_043737.html
+2026-04-22 04:37:43;Harana;Eraserheads;16321757;https://open.spotify.com/track/0aui1glEVwPzUIKsThu4YQ;D:\dev\SB19\saved_pages\eraserheads_harana_20260422_043743.html
+2026-04-22 04:37:48;Tikman;Eraserheads;2289555;https://open.spotify.com/track/6qp2TL2GTBChcOzAKsu5Kh;D:\dev\SB19\saved_pages\eraserheads_tikman_20260422_043748.html
+2026-04-22 04:37:54;Police Woman;Eraserheads;469314;https://open.spotify.com/track/5U8gOl7DuQLcIoieeRliY3;D:\dev\SB19\saved_pages\eraserheads_police_woman_20260422_043754.html
+2026-04-22 04:38:00;Prologue;Eraserheads;1340;https://open.spotify.com/track/5KQyOnhcHhdo0IM8kpLYaC;D:\dev\SB19\saved_pages\eraserheads_prologue_20260422_043800.html
+2026-04-22 04:38:05;Futuristic;Eraserheads;847823;https://open.spotify.com/track/5ZtAEHXvAjXEmZIb3yJoUH;D:\dev\SB19\saved_pages\eraserheads_futuristic_20260422_043805.html
+2026-04-22 04:38:11;Kaliwete;Eraserheads;9154849;https://open.spotify.com/track/5hagctxftYOW3FREpLevH7;D:\dev\SB19\saved_pages\eraserheads_kaliwete_20260422_043811.html
+2026-04-22 04:38:16;Milk An Money;Eraserheads;417406;https://open.spotify.com/track/5Eb45cH374n5p4mogkS2Z4;D:\dev\SB19\saved_pages\eraserheads_milk_an_money_20260422_043816.html
+2026-04-22 04:38:22;Bogchi Hokbu;Eraserheads;1039559;https://open.spotify.com/track/1kWaBkEk6RHYexZ6YPTjU4;D:\dev\SB19\saved_pages\eraserheads_bogchi_hokbu_20260422_043822.html
+2026-04-22 04:38:28;Maalalahanin;Eraserheads;552159;https://open.spotify.com/track/1JMAJACFz9fOiVKyB1NGrg;D:\dev\SB19\saved_pages\eraserheads_maalalahanin_20260422_043828.html
+2026-04-22 04:38:33;Balikbayan Box;Eraserheads;2438495;https://open.spotify.com/track/6wGyV4BOdrtWYgHY6F9IUD;D:\dev\SB19\saved_pages\eraserheads_balikbayan_box_20260422_043833.html
+2026-04-22 04:38:39;Andalusian Dog;Eraserheads;1285832;https://open.spotify.com/track/3jsLWr8uc5M5aZbgwK632s;D:\dev\SB19\saved_pages\eraserheads_andalusian_dog_20260422_043839.html
+2026-04-22 04:38:44;Ha Ha Ha;Eraserheads;1269510;https://open.spotify.com/track/4B4W2YJB2BpeOY9sKJ1ttM;D:\dev\SB19\saved_pages\eraserheads_ha_ha_ha_20260422_043844.html
+2026-04-22 04:38:50;Downtown;Eraserheads;247806;https://open.spotify.com/track/0MKq7nk2IXFIHHWuXBKz7u;D:\dev\SB19\saved_pages\eraserheads_downtown_20260422_043850.html
+2026-04-22 04:38:56;Kananete;Eraserheads;250597;https://open.spotify.com/track/53Wl4ITtV2cr5EJmG4ycR4;D:\dev\SB19\saved_pages\eraserheads_kananete_20260422_043855.html
+2026-04-22 04:39:01;Hard To Believe;Eraserheads;7508709;https://open.spotify.com/track/7lLdrBmH63e9P1BDRx9eQI;D:\dev\SB19\saved_pages\eraserheads_hard_to_believe_20260422_043901.html
+2026-04-22 04:39:07;Everything They Say;Eraserheads;152155;https://open.spotify.com/track/0tfHnXl33O1sB9bWM44CT7;D:\dev\SB19\saved_pages\eraserheads_everything_they_say_20260422_043907.html
+2026-04-22 04:39:12;Spoliarium;Eraserheads;60632001;https://open.spotify.com/track/0I5Z0p0cLWdyJNC6sqMTwD;D:\dev\SB19\saved_pages\eraserheads_spoliarium_20260422_043912.html
+2026-04-22 04:39:18;Ambi Dextrose;Eraserheads;341039;https://open.spotify.com/track/1Zw2jBNXfjAiZIysCvsbwB;D:\dev\SB19\saved_pages\eraserheads_ambi_dextrose_20260422_043918.html
+2026-04-22 04:39:24;Para Sa Masa;Eraserheads;13673279;https://open.spotify.com/track/0WNVchaF5OfTe2MpvyWDAp;D:\dev\SB19\saved_pages\eraserheads_para_sa_masa_20260422_043924.html
+2026-04-22 04:39:29;Sticker Happy;Eraserheads;167204;https://open.spotify.com/track/6qKgBptHy91O5wbEs5x9on;D:\dev\SB19\saved_pages\eraserheads_sticker_happy_20260422_043929.html
+2026-04-22 04:39:35;Tapsilogue;Eraserheads;135053;https://open.spotify.com/track/4eMq3VfP8tBK2iV08gRiCE;D:\dev\SB19\saved_pages\eraserheads_tapsilogue_20260422_043935.html
+2026-04-22 04:39:41;Julie Tearjerky;Eraserheads;4430292;https://open.spotify.com/track/2d7NEsj5lvDCTzsK07MRlW;D:\dev\SB19\saved_pages\eraserheads_julie_tearjerky_20260422_043940.html
+2026-04-22 04:39:46;Tamagotchi Baby;Eraserheads;999654;https://open.spotify.com/track/4OfFOwvtRkokLR89c0Zqpc;D:\dev\SB19\saved_pages\eraserheads_tamagotchi_baby_20260422_043946.html
+2026-04-22 04:39:52;Saturn Return;Eraserheads;1057707;https://open.spotify.com/track/6RNtJftZfryrP69ybCLfq1;D:\dev\SB19\saved_pages\eraserheads_saturn_return_20260422_043952.html
+2026-04-22 04:39:57;Scorpio Rising;Eraserheads;842682;https://open.spotify.com/track/4lHMDy9rVJN9vXkOHBRh3q;D:\dev\SB19\saved_pages\eraserheads_scorpio_rising_20260422_043957.html
+2026-04-22 04:40:03;Small Room;Eraserheads;79998;https://open.spotify.com/track/0RSvklKFMHUc7k4mm2nSph;D:\dev\SB19\saved_pages\eraserheads_small_room_20260422_044003.html
+2026-04-22 04:40:09;Sinturong Pangkalistasan;Eraserheads;168470;https://open.spotify.com/track/66BoJm4StYCq5RkVqvMCbp;D:\dev\SB19\saved_pages\eraserheads_sinturong_pangkalistasan_20260422_044008.html
+2026-04-22 04:40:14;Dahan Dahan;Eraserheads;325074;https://open.spotify.com/track/1MfpBGKm2dScQsUGYVjpWN;D:\dev\SB19\saved_pages\eraserheads_dahan_dahan_20260422_044014.html
+2026-04-22 04:40:20;Kahit Ano;Eraserheads;637879;https://open.spotify.com/track/050Ky8ESC3FxhsvgNRVpvD;D:\dev\SB19\saved_pages\eraserheads_kahit_ano_20260422_044020.html
+2026-04-22 04:40:25;Sino Sa Atin;Eraserheads;525482;https://open.spotify.com/track/1WancAQivxcGBg0xzHK4Qz;D:\dev\SB19\saved_pages\eraserheads_sino_sa_atin_20260422_044025.html
+2026-04-22 04:40:31;Maselang Bahaghari;Eraserheads;18199051;https://open.spotify.com/track/4NjS2z98pXSuBTrEQya3w8;D:\dev\SB19\saved_pages\eraserheads_maselang_bahaghari_20260422_044031.html
+2026-04-22 04:40:37;Tama Ka;Eraserheads;1611722;https://open.spotify.com/track/7or6wH5vTLXT01DTWNGvMb;D:\dev\SB19\saved_pages\eraserheads_tama_ka_20260422_044037.html
+2026-04-22 04:40:42;May Sumasayaw;Eraserheads;189043;https://open.spotify.com/track/2pUk3d1bcONiSj5n4bafXU;D:\dev\SB19\saved_pages\eraserheads_may_sumasayaw_20260422_044042.html
+2026-04-22 04:40:48;Peace It Together;Eraserheads;192753;https://open.spotify.com/track/5N1zuyUhFloFBIYyocYunv;D:\dev\SB19\saved_pages\eraserheads_peace_it_together_20260422_044048.html
+2026-04-22 04:40:53;Salamin;Eraserheads;1980779;https://open.spotify.com/track/24Af4slADatun8WsNs7Uon;D:\dev\SB19\saved_pages\eraserheads_salamin_20260422_044053.html
+2026-04-22 04:40:59;Pop Machine;Eraserheads;1398259;https://open.spotify.com/track/6YqBTDYYT7xTtv2tXNXbXk;D:\dev\SB19\saved_pages\eraserheads_pop_machine_20260422_044059.html
+2026-04-22 04:41:05;Kilala;Eraserheads;166923;https://open.spotify.com/track/4VAojOjeTCaTEcTCuBxE0R;D:\dev\SB19\saved_pages\eraserheads_kilala_20260422_044105.html
+2026-04-22 04:41:10;Huwag Kang Matakot;Eraserheads;44040365;https://open.spotify.com/track/6q8Hzgy0AUALt14m5hUb1e;D:\dev\SB19\saved_pages\eraserheads_huwag_kang_matakot_20260422_044110.html
+2026-04-22 04:41:16;South Superhighway;Eraserheads;194893;https://open.spotify.com/track/1ZoSl1BYaW8gpd48SgY17m;D:\dev\SB19\saved_pages\eraserheads_south_superhighway_20260422_044116.html
+2026-04-22 04:41:22;68 Dr. Sixto Antonio Avenue;Eraserheads;1365251;https://open.spotify.com/track/4VvDmNEiUp9id0h4GCovbv;D:\dev\SB19\saved_pages\eraserheads_68_dr_sixto_antonio_avenue_20260422_044122.html
+2026-04-22 04:41:27;Game, Tama Na!;Eraserheads;132043;https://open.spotify.com/track/5xGpAf4yPabwD8gZOpGfZB;D:\dev\SB19\saved_pages\eraserheads_game_tama_na_20260422_044127.html
+2026-04-22 04:41:33;Ultrasound;Eraserheads;240674;https://open.spotify.com/track/2PdYxT9PL8ZCam9wIh2za2;D:\dev\SB19\saved_pages\eraserheads_ultrasound_20260422_044133.html
+2026-04-22 04:41:39;Maskara;Eraserheads;4483336;https://open.spotify.com/track/5qLJ2VnqsSejaXjg4A3Bfr;D:\dev\SB19\saved_pages\eraserheads_maskara_20260422_044138.html
+2026-04-22 04:41:44;How Far Will U Go;Eraserheads;682838;https://open.spotify.com/track/2V293T6T4SUFaVygnpBuFi;D:\dev\SB19\saved_pages\eraserheads_how_far_will_u_go_20260422_044144.html
+2026-04-22 04:41:50;Bloodtest;Eraserheads;76960;https://open.spotify.com/track/6dgFuUn7uNNFP5Dpje0EtN;D:\dev\SB19\saved_pages\eraserheads_bloodtest_20260422_044150.html
+2026-04-22 04:41:55;Wala;Eraserheads;156808;https://open.spotify.com/track/5gLcKKMyEbUSQoW8EPqf9N;D:\dev\SB19\saved_pages\eraserheads_wala_20260422_044155.html
+2026-04-22 04:42:01;Hula;Eraserheads;773950;https://open.spotify.com/track/3MYCUm6xNivnd5jfMgUTfq;D:\dev\SB19\saved_pages\eraserheads_hula_20260422_044201.html
+2026-04-22 04:42:07;Photo Synth;Eraserheads;73150;https://open.spotify.com/track/3tVGTTSjMcSVcDcsbrVLx6;D:\dev\SB19\saved_pages\eraserheads_photo_synth_20260422_044207.html
+2026-04-22 04:42:12;Palamig;Eraserheads;379183;https://open.spotify.com/track/6ZUqWcjXdChZZVesQyG4sf;D:\dev\SB19\saved_pages\eraserheads_palamig_20260422_044212.html
+2026-04-22 04:42:18;Out Of Sight;Eraserheads;89448;https://open.spotify.com/track/5RlvRQprNBGlRE29saGNK0;D:\dev\SB19\saved_pages\eraserheads_out_of_sight_20260422_044218.html
+2026-04-22 04:42:24;Super Vision;Eraserheads;198386632;https://open.spotify.com/track/4kFyfFhOzOb2FYfQlOIYk5;D:\dev\SB19\saved_pages\eraserheads_super_vision_20260422_044224.html
+2026-04-22 04:42:29;Paint Stripper;Eraserheads;126318;https://open.spotify.com/track/6Nl0AWb5rDJSfA4Zxsharp;D:\dev\SB19\saved_pages\eraserheads_paint_stripper_20260422_044229.html
+2026-04-22 04:42:35;Escalator Alligator;Eraserheads;340340;https://open.spotify.com/track/0ocLyOx1GZDvQg08MeTwo8;D:\dev\SB19\saved_pages\eraserheads_escalator_alligator_20260422_044235.html
+2026-04-22 04:42:41;Playground;Eraserheads;342023;https://open.spotify.com/track/2jNLC56xo5NATdWraVccNT;D:\dev\SB19\saved_pages\eraserheads_playground_20260422_044240.html
+2026-04-22 04:42:46;Omnesia;Eraserheads;100366;https://open.spotify.com/track/0i2cveVD55FH24T9EteQEI;D:\dev\SB19\saved_pages\eraserheads_omnesia_20260422_044246.html
+2026-04-22 04:42:52;OK Comprende;Eraserheads;198386632;https://open.spotify.com/track/4pwIUp1Pu3pyUAnasRykZk;D:\dev\SB19\saved_pages\eraserheads_ok_comprende_20260422_044252.html
+2026-04-22 04:42:57;Pula;Eraserheads;97556;https://open.spotify.com/track/4yXIEAYdpyb7LslpPCncFA;D:\dev\SB19\saved_pages\eraserheads_pula_20260422_044257.html
+2026-04-22 04:43:03;Outside;Eraserheads;571895;https://open.spotify.com/track/3N6k8Uuwu5U2DQCpCFWXe0;D:\dev\SB19\saved_pages\eraserheads_outside_20260422_044303.html
+2026-04-22 04:43:09;Acid Eyes;Eraserheads;198386632;https://open.spotify.com/track/2hR5HlMOevBF0rf4osbVxL;D:\dev\SB19\saved_pages\eraserheads_acid_eyes_20260422_044308.html
+2026-04-22 04:43:14;Tuwing Umuulan At Kapiling Ka;Eraserheads;17172278;https://open.spotify.com/track/61jPZwzRkdQ0dZP3bDtyTX;D:\dev\SB19\saved_pages\eraserheads_tuwing_umuulan_at_kapiling_ka_20260422_044314.html
+2026-04-22 04:43:20;Sa Tollgate;Eraserheads;1020291;https://open.spotify.com/track/1QBqZLhjJhJQ7rYfqAxP5u;D:\dev\SB19\saved_pages\eraserheads_sa_tollgate_20260422_044320.html
+2026-04-22 04:43:26;Sabado;Eraserheads;890859;https://open.spotify.com/track/60CLBZiaIJd6xWSN8unUeK;D:\dev\SB19\saved_pages\eraserheads_sabado_20260422_044325.html
+2026-04-22 04:43:31;1995;Eraserheads;706291;https://open.spotify.com/track/1vs6z4nS8JGI6UZ7yqzvc5;D:\dev\SB19\saved_pages\eraserheads_1995_20260422_044331.html
+2026-04-22 04:43:37;Janice;Dilaw;109205015;https://open.spotify.com/track/0BewsYUbEIKdJmdap9oI7V;D:\dev\SB19\saved_pages\dilaw_janice_20260422_044337.html
+2026-04-22 04:43:42;3019;Dilaw;3155834;https://open.spotify.com/track/06e64wh6xM9EmFDkzu7S3n;D:\dev\SB19\saved_pages\dilaw_3019_20260422_044342.html
+2026-04-22 04:43:48;Kaloy;Dilaw;3274277;https://open.spotify.com/track/655gfZ80siU67IXldvNx5C;D:\dev\SB19\saved_pages\dilaw_kaloy_20260422_044348.html
+2026-04-22 04:43:54;Uhaw;Dilaw;62468447;https://open.spotify.com/track/5SyigMsSY8uAV1m27fhnLD;D:\dev\SB19\saved_pages\dilaw_uhaw_20260422_044354.html
+2026-04-22 04:43:59;Uhaw (Tayong Lahat);Dilaw;251031276;https://open.spotify.com/track/47OFMuRu5lzJHRbtEXPBbs;D:\dev\SB19\saved_pages\dilaw_uhaw_tayong_lahat_20260422_044359.html
+2026-04-22 04:44:05;Sansinukob;Dilaw;9339555;https://open.spotify.com/track/7jOqzJjLxMTg6yScO5nYDb;D:\dev\SB19\saved_pages\dilaw_sansinukob_20260422_044405.html
+2026-04-22 04:44:11;Maskara;Dilaw;1194269;https://open.spotify.com/track/38nyyKG2e1vH9dYXXhbzUl;D:\dev\SB19\saved_pages\dilaw_maskara_20260422_044411.html
+2026-04-22 04:44:16;Orasa;Dilaw;18430988;https://open.spotify.com/track/7tEmYgysfhAr3s5hEa8nlc;D:\dev\SB19\saved_pages\dilaw_orasa_20260422_044416.html
+2026-04-22 04:44:22;Chinelas;Dilaw;369314;https://open.spotify.com/track/2vexlgpCphgC1jDSFHUyiB;D:\dev\SB19\saved_pages\dilaw_chinelas_20260422_044422.html
+2026-04-22 04:44:28;Hithit Buwang;Dilaw;278685;https://open.spotify.com/track/6PH3500JAAT80LChdRIJAf;D:\dev\SB19\saved_pages\dilaw_hithit_buwang_20260422_044428.html
+2026-04-22 04:44:33;Walwal;Dilaw;419000;https://open.spotify.com/track/7CTf09mQUx0tn5i5NbcOmY;D:\dev\SB19\saved_pages\dilaw_walwal_20260422_044433.html
+2026-04-22 04:44:39;Goodnight Prayer;Dilaw;213194;https://open.spotify.com/track/4XH17sGMa7haJ4FFDzaZzo;D:\dev\SB19\saved_pages\dilaw_goodnight_prayer_20260422_044439.html
+2026-04-22 04:44:45;Sa Kahapon;Dilaw;802591;https://open.spotify.com/track/13MbhFKhfggZCUxZcJjB3b;D:\dev\SB19\saved_pages\dilaw_sa_kahapon_20260422_044444.html
+2026-04-22 04:44:50;Nilalang;Dilaw;7394747;https://open.spotify.com/track/7eMn5OCApyTgqrPPoLJWBq;D:\dev\SB19\saved_pages\dilaw_nilalang_20260422_044450.html
+2026-04-22 04:44:56;YIEE;Dilaw;1864289;https://open.spotify.com/track/3Jt1u39DvQbrXJ1FfARklr;D:\dev\SB19\saved_pages\dilaw_yiee_20260422_044456.html
+2026-04-22 04:45:01;Mahal;Dilaw;3068490;https://open.spotify.com/track/17k0CnwqLbTPeR8UL0rNZs;D:\dev\SB19\saved_pages\dilaw_mahal_20260422_044501.html
+2026-04-22 04:45:07;FLYING KISS;Dilaw;1231101;https://open.spotify.com/track/7FM8EdwFO6n4v6vFoHpGDE;D:\dev\SB19\saved_pages\dilaw_flying_kiss_20260422_044507.html
+2026-04-22 04:45:13;BLACK N' WHITE;Dilaw;1121832;https://open.spotify.com/track/463Qg3HAd8KjE1YrSHgm6X;D:\dev\SB19\saved_pages\dilaw_black_n_white_20260422_044513.html
+2026-04-22 04:45:18;ALL IN;Dilaw;204612;https://open.spotify.com/track/6RBI05udevzEfIr5pdEKLs;D:\dev\SB19\saved_pages\dilaw_all_in_20260422_044518.html
+2026-04-22 04:45:24;SEYP;Dilaw;272789;https://open.spotify.com/track/1tONCy1XK4830cTvrk18sK;D:\dev\SB19\saved_pages\dilaw_seyp_20260422_044524.html
+2026-04-22 04:45:30;LAMYERDA;Dilaw;171328;https://open.spotify.com/track/3GBP45m2RHmMYjcu1VuYle;D:\dev\SB19\saved_pages\dilaw_lamyerda_20260422_044530.html
+2026-04-22 04:45:35;!;Dilaw;301541;https://open.spotify.com/track/1dc920Zf2upaX1zlNrWown;D:\dev\SB19\saved_pages\dilaw_20260422_044535.html
+2026-04-22 04:45:41;IKAW AT AKO AY;Dilaw;196983;https://open.spotify.com/track/4QUmLoBr3snF495FDrOS8C;D:\dev\SB19\saved_pages\dilaw_ikaw_at_ako_ay_20260422_044541.html
+2026-04-22 04:45:47;H.O.Y. (HANG OVER YOU);Dilaw;180267;https://open.spotify.com/track/2fzvmKkVkjVG7eCTysetek;D:\dev\SB19\saved_pages\dilaw_h_o_y_hang_over_you_20260422_044547.html
+2026-04-22 04:45:52;RARARA;Dilaw;631373;https://open.spotify.com/track/29LpgyzY0QsvhsNO6XXQ6c;D:\dev\SB19\saved_pages\dilaw_rarara_20260422_044552.html
+2026-04-22 04:45:58;AMISTAD;Dilaw;141461;https://open.spotify.com/track/3c3OCi8kwKDsV0b0bAXUCp;D:\dev\SB19\saved_pages\dilaw_amistad_20260422_044558.html
+2026-04-22 04:46:03;Hintay;Sugarfree;957583;https://open.spotify.com/track/5I4c76Wb6v1rwXTAQEhegk;D:\dev\SB19\saved_pages\sugarfree_hintay_20260422_044603.html
+2026-04-22 04:46:09;Mundong Malungkot;Sugarfree;769419;https://open.spotify.com/track/4d4G1xKOCri19atWZ8bZ7K;D:\dev\SB19\saved_pages\sugarfree_mundong_malungkot_20260422_044609.html
+2026-04-22 04:46:15;Taguan;Sugarfree;484996;https://open.spotify.com/track/5yC82a54sOtQ2LCCFtvxqB;D:\dev\SB19\saved_pages\sugarfree_taguan_20260422_044615.html
+2026-04-22 04:46:20;Fade Away;Sugarfree;476537;https://open.spotify.com/track/6JAuGCKj3B3nMiE0DSMFW6;D:\dev\SB19\saved_pages\sugarfree_fade_away_20260422_044620.html
+2026-04-22 04:46:26;Unang Araw;Sugarfree;997162;https://open.spotify.com/track/6XMbw97Y3AKrupBNYWoMpr;D:\dev\SB19\saved_pages\sugarfree_unang_araw_20260422_044626.html
+2026-04-22 04:46:32;Mariposa;Sugarfree;5127376;https://open.spotify.com/track/0UoD87S2X0X4eIpaYdPggn;D:\dev\SB19\saved_pages\sugarfree_mariposa_20260422_044632.html
+2026-04-22 04:46:37;Telepono;Sugarfree;2092672;https://open.spotify.com/track/0DYRMkZrtfbsu48tTgMQ7A;D:\dev\SB19\saved_pages\sugarfree_telepono_20260422_044637.html
+2026-04-22 04:46:43;Tummy Ache;Sugarfree;315121;https://open.spotify.com/track/26wmL5RrqCYZtdQdnq6a5Z;D:\dev\SB19\saved_pages\sugarfree_tummy_ache_20260422_044643.html
+2026-04-22 04:46:49;Los Banos;Sugarfree;887383;https://open.spotify.com/track/5DHaC29M4v9UGEtT8QWnUS;D:\dev\SB19\saved_pages\sugarfree_los_banos_20260422_044649.html
+2026-04-22 04:46:54;Insomya;Sugarfree;411593;https://open.spotify.com/track/1diwNRGyLEHD4IYJtOKH8F;D:\dev\SB19\saved_pages\sugarfree_insomya_20260422_044654.html
+2026-04-22 04:47:00;The Allan Song;Sugarfree;247952;https://open.spotify.com/track/47m5VLjpp2gWXt2A83DGsh;D:\dev\SB19\saved_pages\sugarfree_the_allan_song_20260422_044700.html
+2026-04-22 04:47:05;Sinta;Sugarfree;1517992;https://open.spotify.com/track/4w04MynsqG8a099v11oqXG;D:\dev\SB19\saved_pages\sugarfree_sinta_20260422_044705.html
+2026-04-22 04:47:11;Prom;Sugarfree;10290356;https://open.spotify.com/track/4wPMIp2wQfJuC8oi8xwM6C;D:\dev\SB19\saved_pages\sugarfree_prom_20260422_044711.html
+2026-04-22 04:47:17;Kwentuhan;Sugarfree;1015437;https://open.spotify.com/track/2d5fvWIICycBcc0J33z15O;D:\dev\SB19\saved_pages\sugarfree_kwentuhan_20260422_044717.html
+2026-04-22 04:47:22;Martir;Sugarfree;283508;https://open.spotify.com/track/3FKaW8dU68ecJIjeOQqGUE;D:\dev\SB19\saved_pages\sugarfree_martir_20260422_044722.html
+2026-04-22 04:47:28;Hari Ng Sablay;Sugarfree;22029903;https://open.spotify.com/track/32A32A7DicwrCUVcwOQZuO;D:\dev\SB19\saved_pages\sugarfree_hari_ng_sablay_20260422_044728.html
+2026-04-22 04:47:34;Tulog Na;Sugarfree;59542729;https://open.spotify.com/track/5ZPlhCh8KnB0bEnElxm1Et;D:\dev\SB19\saved_pages\sugarfree_tulog_na_20260422_044734.html
+2026-04-22 04:47:39;Limbo;Sugarfree;293183;https://open.spotify.com/track/1g4cjMHFfmhjX0WavxnqxO;D:\dev\SB19\saved_pages\sugarfree_limbo_20260422_044739.html
+2026-04-22 04:47:45;Kandila;Sugarfree;813535;https://open.spotify.com/track/5dRpCllltEPQ5h3rltLgxm;D:\dev\SB19\saved_pages\sugarfree_kandila_20260422_044745.html
+2026-04-22 04:47:51;Kwarto;Sugarfree;4467319;https://open.spotify.com/track/2eRjivfFnSuTPfSu0NTjby;D:\dev\SB19\saved_pages\sugarfree_kwarto_20260422_044750.html
+2026-04-22 04:47:56;Alinlangan;Sugarfree;233845;https://open.spotify.com/track/0BJiNTkmYc2ylP1kokor3b;D:\dev\SB19\saved_pages\sugarfree_alinlangan_20260422_044756.html
+2026-04-22 04:48:02;Tao;Sugarfree;184298;https://open.spotify.com/track/3PRhdtyp6lfCJTMxOxMlyB;D:\dev\SB19\saved_pages\sugarfree_tao_20260422_044802.html
+2026-04-22 04:48:07;Dramachine;Sugarfree;269162;https://open.spotify.com/track/2EiXBSjCHF1dcSQ0hUA3L8;D:\dev\SB19\saved_pages\sugarfree_dramachine_20260422_044807.html
+2026-04-22 04:48:13;Reprise;Sugarfree;32006;https://open.spotify.com/track/0BBLunQSGOyBAVsvHbGfiB;D:\dev\SB19\saved_pages\sugarfree_reprise_20260422_044813.html
+2026-04-22 04:48:19;Cuida;Sugarfree;1690032;https://open.spotify.com/track/7909GI7njPhuaW2TUoy4Xl;D:\dev\SB19\saved_pages\sugarfree_cuida_20260422_044819.html
+2026-04-22 04:48:24;Makita Kang Muli;Sugarfree;42823119;https://open.spotify.com/track/6mNCnQIhnurPP7lhC1zHEU;D:\dev\SB19\saved_pages\sugarfree_makita_kang_muli_20260422_044824.html
+2026-04-22 04:48:30;Dear Kuya;Sugarfree;4505175;https://open.spotify.com/track/3InHjI5KOvo2AKc57W06Kl;D:\dev\SB19\saved_pages\sugarfree_dear_kuya_20260422_044830.html
+2026-04-22 04:48:36;Kailan Ka Ba?;Sugarfree;723067;https://open.spotify.com/track/5L5DOZP9hxwgItPy52clJC;D:\dev\SB19\saved_pages\sugarfree_kailan_ka_ba_20260422_044836.html
+2026-04-22 04:48:41;Kung Ayaw Mo Na Sa Akin;Sugarfree;25541958;https://open.spotify.com/track/4VFt5sStQhpOYEYb5ggeuI;D:\dev\SB19\saved_pages\sugarfree_kung_ayaw_mo_na_sa_akin_20260422_044841.html
+2026-04-22 04:48:47;Huling Gabi;Sugarfree;840108;https://open.spotify.com/track/02yziMGnkCjhU0encuUyi4;D:\dev\SB19\saved_pages\sugarfree_huling_gabi_20260422_044847.html
+2026-04-22 04:48:53;Salamin;Sugarfree;203550;https://open.spotify.com/track/2Fzfp47z8gA1vrF5A3CqO2;D:\dev\SB19\saved_pages\sugarfree_salamin_20260422_044853.html
+2026-04-22 04:48:58;Nangangawit;Sugarfree;476960;https://open.spotify.com/track/6nONPhdObKyc8E7qnhFCV9;D:\dev\SB19\saved_pages\sugarfree_nangangawit_20260422_044858.html
+2026-04-22 04:49:04;Pasyal;Sugarfree;190743;https://open.spotify.com/track/4meTSK2YLHeewwczorj2b1;D:\dev\SB19\saved_pages\sugarfree_pasyal_20260422_044904.html
+2026-04-22 04:49:10;Wari Ko'y;Sugarfree;231656;https://open.spotify.com/track/4O5gOI25UIjvlen6XmMeE7;D:\dev\SB19\saved_pages\sugarfree_wari_ko_y_20260422_044910.html
+2026-04-22 04:49:15;Ang Pinakamagaling Na Tao Sa Balat Ng Lupa;Sugarfree;191417;https://open.spotify.com/track/4lrnXoDt0YbxELJp0W9zJY;D:\dev\SB19\saved_pages\sugarfree_ang_pinakamagaling_na_tao_sa_balat_ng_lupa_20260422_044915.html
+2026-04-22 04:49:21;Reunion;Sugarfree;472667;https://open.spotify.com/track/1gojE3POljvCBDOmK9TlHD;D:\dev\SB19\saved_pages\sugarfree_reunion_20260422_044921.html
+2026-04-22 04:49:27;Wag Ka Nang Umiyak;Sugarfree;6050673;https://open.spotify.com/track/32ji0OatJNPwRN89IPdoLW;D:\dev\SB19\saved_pages\sugarfree_wag_ka_nang_umiyak_20260422_044927.html
+2026-04-22 04:49:32;Ikaw Pala;Sugarfree;1163624;https://open.spotify.com/track/0VBPsMZtuMXAeCTDP2opa3;D:\dev\SB19\saved_pages\sugarfree_ikaw_pala_20260422_044932.html
+2026-04-22 04:49:38;Batang-Bata Ka Pa;Sugarfree;3089404;https://open.spotify.com/track/5pH1NVl8xaMxbjPGRHDLby;D:\dev\SB19\saved_pages\sugarfree_batang_bata_ka_pa_20260422_044938.html
+2026-04-22 04:49:44;Overture (Live);Sugarfree;40445;https://open.spotify.com/track/1k4QRBhgQ6k3O7R1RGLN5R;D:\dev\SB19\saved_pages\sugarfree_overture_live_20260422_044944.html
+2026-04-22 04:49:49;Prom (Live);Sugarfree;17086;https://open.spotify.com/track/32o6A4bLxm0wKXqR912gnw;D:\dev\SB19\saved_pages\sugarfree_prom_live_20260422_044949.html
+2026-04-22 04:49:55;Hari Ng Sablay (Live);Sugarfree;14038;https://open.spotify.com/track/4YCbkVvQI27mC6LlCegvzm;D:\dev\SB19\saved_pages\sugarfree_hari_ng_sablay_live_20260422_044955.html
+2026-04-22 04:50:01;Kwentuhan (Live);Sugarfree;13426;https://open.spotify.com/track/7a58nQLvMQ2tkR8sAHAqv3;D:\dev\SB19\saved_pages\sugarfree_kwentuhan_live_20260422_045001.html
+2026-04-22 04:50:06;Kwarto (Live);Sugarfree;13016;https://open.spotify.com/track/5jqZHHmJ0ducKsGmed8RUC;D:\dev\SB19\saved_pages\sugarfree_kwarto_live_20260422_045006.html
+2026-04-22 04:50:12;Telepono (Live);Sugarfree;12716;https://open.spotify.com/track/4dV13UT6W8Tlcudf7WEcfb;D:\dev\SB19\saved_pages\sugarfree_telepono_live_20260422_045012.html
+2026-04-22 04:50:18;Kung Ayaw Mo Na Sa Akin (Live);Sugarfree;13791;https://open.spotify.com/track/2tN3Y0i7ro3pU3I72E1Yo5;D:\dev\SB19\saved_pages\sugarfree_kung_ayaw_mo_na_sa_akin_live_20260422_045018.html
+2026-04-22 04:50:23;Still Fighting It (Live);Sugarfree;45152;https://open.spotify.com/track/0xACDGohfhzefkiI1Pt3rt;D:\dev\SB19\saved_pages\sugarfree_still_fighting_it_live_20260422_045023.html
+2026-04-22 04:50:29;Tulog Na (Live);Sugarfree;14862;https://open.spotify.com/track/5wgaZPDijuMoFGNSRC3UmP;D:\dev\SB19\saved_pages\sugarfree_tulog_na_live_20260422_045029.html
+2026-04-22 04:50:35;Mariposa (Live);Sugarfree;12538;https://open.spotify.com/track/0nkwaVDcocfnBDR4lsWSZa;D:\dev\SB19\saved_pages\sugarfree_mariposa_live_20260422_045035.html
+2026-04-22 04:50:40;Huling Gabi (Live);Sugarfree;9642;https://open.spotify.com/track/1iba95uUJl81aE4FDgIyE1;D:\dev\SB19\saved_pages\sugarfree_huling_gabi_live_20260422_045040.html
+2026-04-22 04:50:46;Unang Araw (Live);Sugarfree;8893;https://open.spotify.com/track/6GT8kyLLjv9gIr52yso0Hr;D:\dev\SB19\saved_pages\sugarfree_unang_araw_live_20260422_045046.html
+2026-04-22 04:50:52;Wag Ka Nang Umiyak (Live);Sugarfree;12617;https://open.spotify.com/track/63FdPIXDlYh9mcV6vs4uFu;D:\dev\SB19\saved_pages\sugarfree_wag_ka_nang_umiyak_live_20260422_045052.html
+2026-04-22 04:50:57;Kailan Ka Ba (Live);Sugarfree;8594;https://open.spotify.com/track/2tMnUo66TjrM6ahd54TOgT;D:\dev\SB19\saved_pages\sugarfree_kailan_ka_ba_live_20260422_045057.html
+2026-04-22 04:51:03;Ikaw Pala (Live);Sugarfree;9262;https://open.spotify.com/track/2nBmOpYsicboMpfNWe2AcU;D:\dev\SB19\saved_pages\sugarfree_ikaw_pala_live_20260422_045103.html
+2026-04-22 04:51:08;Burnout (Live);Sugarfree;21670;https://open.spotify.com/track/6ZeVmwL0J0wBNxad1agoqC;D:\dev\SB19\saved_pages\sugarfree_burnout_live_20260422_045108.html
+2026-04-22 04:51:14;Makita Kang Muli (Live);Sugarfree;11516;https://open.spotify.com/track/6dbo6LjHJq26jEu2dYCwKs;D:\dev\SB19\saved_pages\sugarfree_makita_kang_muli_live_20260422_045114.html
+2026-04-22 04:51:20;Batang-Bata Ka Pa (Live);Sugarfree;9540;https://open.spotify.com/track/3pTRTycKcrcruS71u6yX28;D:\dev\SB19\saved_pages\sugarfree_batang_bata_ka_pa_live_20260422_045120.html
+2026-04-22 04:51:25;Dear Kuya (Live);Sugarfree;8487;https://open.spotify.com/track/2MomG51WP2LPtqKkAi6Rhi;D:\dev\SB19\saved_pages\sugarfree_dear_kuya_live_20260422_045125.html
+2026-04-22 04:51:31;Hay Buhay;Sugarfree;1056625;https://open.spotify.com/track/27npF5wEOo6EGHpBxLOrAA;D:\dev\SB19\saved_pages\sugarfree_hay_buhay_20260422_045131.html
+2026-04-22 04:51:37;Feels Like;Sugarfree;570922;https://open.spotify.com/track/2vnwCZbo21phjwXKDiMnNk;D:\dev\SB19\saved_pages\sugarfree_feels_like_20260422_045137.html
+2026-04-22 04:51:42;Mornings and Airports;Sugarfree;348562;https://open.spotify.com/track/4iP227s3Qod0poExbIS4Xb;D:\dev\SB19\saved_pages\sugarfree_mornings_and_airports_20260422_045142.html
+2026-04-22 04:51:48;Wala Nang Hihilingin;Sugarfree;874140;https://open.spotify.com/track/1wydswMxXLMQYKj7TmLp9I;D:\dev\SB19\saved_pages\sugarfree_wala_nang_hihilingin_20260422_045148.html
+2026-04-22 04:51:54;Hang Over;Sugarfree;1247208;https://open.spotify.com/track/6P5xHX2VBugdRpDW6Cyy5Y;D:\dev\SB19\saved_pages\sugarfree_hang_over_20260422_045154.html
+2026-04-22 04:51:59;Patawad;Sugarfree;319131;https://open.spotify.com/track/6nPmJk7v5GIfRFRtI199lv;D:\dev\SB19\saved_pages\sugarfree_patawad_20260422_045159.html
+2026-04-22 04:52:05;Get Over It;Sugarfree;213599;https://open.spotify.com/track/3wl9t619yLXCSEBRAIV8Wi;D:\dev\SB19\saved_pages\sugarfree_get_over_it_20260422_045205.html
+2026-04-22 04:52:11;Pagkatapos Ng Lahat;Sugarfree;194462;https://open.spotify.com/track/0R3KK2tlyFsgZtcbONF73C;D:\dev\SB19\saved_pages\sugarfree_pagkatapos_ng_lahat_20260422_045211.html
+2026-04-22 04:52:16;Wala;Sugarfree;256133;https://open.spotify.com/track/0M93AR3FXc8sm9KUpfUOHf;D:\dev\SB19\saved_pages\sugarfree_wala_20260422_045216.html
+2026-04-22 04:52:22;Mamang Driver;Sugarfree;142695;https://open.spotify.com/track/3KvOPynn3UsAChyEMdGH37;D:\dev\SB19\saved_pages\sugarfree_mamang_driver_20260422_045222.html
+2026-04-22 04:52:28;Heto Na Naman Tayo;Sugarfree;171021;https://open.spotify.com/track/1hm3q2tFhI7l4yT6rFT6rm;D:\dev\SB19\saved_pages\sugarfree_heto_na_naman_tayo_20260422_045228.html
+2026-04-22 04:52:33;Where Do We Go;Sugarfree;123141;https://open.spotify.com/track/2PHrLVCzbtMB3Ea8yRMZvO;D:\dev\SB19\saved_pages\sugarfree_where_do_we_go_20260422_045233.html
+2026-04-22 04:52:39;Form Factor;Sugarfree;126766;https://open.spotify.com/track/1O915sIt5JhFCHOPpx7H9c;D:\dev\SB19\saved_pages\sugarfree_form_factor_20260422_045239.html
+2026-04-22 04:52:45;Walang Paalam;Sugarfree;143921;https://open.spotify.com/track/1efneoC2Ax96tHMbW9UYRR;D:\dev\SB19\saved_pages\sugarfree_walang_paalam_20260422_045245.html
+2026-04-22 04:52:50;Nagkita Muli;Sugarfree;178748;https://open.spotify.com/track/6r6aJCHyHl7oyI2umeGRvp;D:\dev\SB19\saved_pages\sugarfree_nagkita_muli_20260422_045250.html
+2026-04-22 04:52:56;Sorry;Cueshé;18118046;https://open.spotify.com/track/36TmbWEYoNKtAk91ch8aY7;D:\dev\SB19\saved_pages\cueshe_sorry_20260422_045256.html
+2026-04-22 04:53:02;Ulan;Cueshé;102827885;https://open.spotify.com/track/6s97fltVQXax4ZFkZJdGdP;D:\dev\SB19\saved_pages\cueshe_ulan_20260422_045301.html
+2026-04-22 04:53:07;Hump Ahead;Cueshé;2024381;https://open.spotify.com/track/6IMPu2N7NIMO0qT9ekbZ7L;D:\dev\SB19\saved_pages\cueshe_hump_ahead_20260422_045307.html
+2026-04-22 04:53:13;Here For You;Cueshé;679831;https://open.spotify.com/track/6jrqrTzWaGUD5EP6y1fqBN;D:\dev\SB19\saved_pages\cueshe_here_for_you_20260422_045313.html
+2026-04-22 04:53:18;Never Leave;Cueshé;665215;https://open.spotify.com/track/62OJVx817GUxEmmqJzfit9;D:\dev\SB19\saved_pages\cueshe_never_leave_20260422_045318.html
+2026-04-22 04:53:24;24 Hours;Cueshé;12311068;https://open.spotify.com/track/2QCclKN3S3hWdq3emjWpQQ;D:\dev\SB19\saved_pages\cueshe_24_hours_20260422_045324.html
+2026-04-22 04:53:30;Sky;Cueshé;1177429;https://open.spotify.com/track/4I0vz8IVm4WudZ73DUEgQa;D:\dev\SB19\saved_pages\cueshe_sky_20260422_045330.html
+2026-04-22 04:53:35;Love Me Now, Hate Me Soon;Cueshé;643045;https://open.spotify.com/track/1oX1vI4QAOwwTYx50PiCGk;D:\dev\SB19\saved_pages\cueshe_love_me_now_hate_me_soon_20260422_045335.html
+2026-04-22 04:53:41;Can't Let You Go;Cueshé;27762757;https://open.spotify.com/track/6eYuYqJ9IqYWbH8rFhm7jC;D:\dev\SB19\saved_pages\cueshe_can_t_let_you_go_20260422_045341.html
+2026-04-22 04:53:47;When I'm With You;Cueshé;646942;https://open.spotify.com/track/4w7AyBnJXm5JU7tvc3j48l;D:\dev\SB19\saved_pages\cueshe_when_i_m_with_you_20260422_045347.html
+2026-04-22 04:53:52;Stay (Acoustic);Cueshé;3760793;https://open.spotify.com/track/12qMGQ5k2lt49NtwA9isOp;D:\dev\SB19\saved_pages\cueshe_stay_acoustic_20260422_045352.html
+2026-04-22 04:53:58;Hard To Believe;Cueshé;1520358;https://open.spotify.com/track/35TvpVB0nRHRk5nQqao1L8;D:\dev\SB19\saved_pages\cueshe_hard_to_believe_20260422_045358.html
+2026-04-22 04:54:03;Borrowed Time;Cueshé;84558562;https://open.spotify.com/track/4rmxojAE3CI7vuIvKVBCkT;D:\dev\SB19\saved_pages\cueshe_borrowed_time_20260422_045403.html
+2026-04-22 04:54:09;Back To Me;Cueshé;42266870;https://open.spotify.com/track/2naBC3Io7lDTYZEUHu34Or;D:\dev\SB19\saved_pages\cueshe_back_to_me_20260422_045409.html
+2026-04-22 04:54:15;I Won't Let You Down;Cueshé;1027623;https://open.spotify.com/track/1cFwqsauMs8aPn1RmXqhMp;D:\dev\SB19\saved_pages\cueshe_i_won_t_let_you_down_20260422_045414.html
+2026-04-22 04:54:20;All I Want;Cueshé;2417026;https://open.spotify.com/track/75OEwP50O54w5bWEBrIWZi;D:\dev\SB19\saved_pages\cueshe_all_i_want_20260422_045420.html
+2026-04-22 04:54:26;I Do;Cueshé;1075105;https://open.spotify.com/track/4K196gSdvB6CFEbts5Bq4c;D:\dev\SB19\saved_pages\cueshe_i_do_20260422_045426.html
+2026-04-22 04:54:31;Bakit?;Cueshé;13594176;https://open.spotify.com/track/7IOhHRFxTZZ4CQjBvESowE;D:\dev\SB19\saved_pages\cueshe_bakit_20260422_045431.html
+2026-04-22 04:54:37;Broken Into Pieces;Cueshé;2341608;https://open.spotify.com/track/4KQhBsm0TQvjCaTjZdTiKp;D:\dev\SB19\saved_pages\cueshe_broken_into_pieces_20260422_045437.html
+2026-04-22 04:54:43;Today;Cueshé;816817;https://open.spotify.com/track/2fhOQFwGrC1P1HkZd7wQYD;D:\dev\SB19\saved_pages\cueshe_today_20260422_045443.html
+2026-04-22 04:54:48;If You Need Me;Cueshé;766977;https://open.spotify.com/track/5dRwv4yt7bZsYN7IswSRHv;D:\dev\SB19\saved_pages\cueshe_if_you_need_me_20260422_045448.html
+2026-04-22 04:54:54;Missing You;Cueshé;693180;https://open.spotify.com/track/3z5O5VSNxHJJCtwM0AKEf0;D:\dev\SB19\saved_pages\cueshe_missing_you_20260422_045454.html
+2026-04-22 04:54:59;Pasensya Na;Cueshé;32914993;https://open.spotify.com/track/49pOQUAKwPvjUqQxrZTKfq;D:\dev\SB19\saved_pages\cueshe_pasensya_na_20260422_045459.html
+2026-04-22 04:55:05;Jealous Guy;Cueshé;1064145;https://open.spotify.com/track/5hzsMzTzK2c35KBd3UUg6Q;D:\dev\SB19\saved_pages\cueshe_jealous_guy_20260422_045505.html
+2026-04-22 04:55:11;Walang Yamang Mas Hihigit Sa Iyo;Cueshé;7078804;https://open.spotify.com/track/2p96CyFHfHN4AGBXiO8Ntu;D:\dev\SB19\saved_pages\cueshe_walang_yamang_mas_hihigit_sa_iyo_20260422_045511.html
+2026-04-22 04:55:16;Laki Sa Layaw;Cueshé;1185592;https://open.spotify.com/track/2WZPJQokMEVzQ3TsEzYVrI;D:\dev\SB19\saved_pages\cueshe_laki_sa_layaw_20260422_045516.html
+2026-04-22 04:55:22;BMD;Cueshé;10617323;https://open.spotify.com/track/0IcfBtS3auRsjxErGNr0Zi;D:\dev\SB19\saved_pages\cueshe_bmd_20260422_045522.html
+2026-04-22 04:55:28;Back 2 U;Cueshé;2004381;https://open.spotify.com/track/0aXV2CwFTPNjXqeNhHr6aI;D:\dev\SB19\saved_pages\cueshe_back_2_u_20260422_045528.html
+2026-04-22 04:55:33;Minsan;Cueshé;3848922;https://open.spotify.com/track/7aWmdiK44GYNa4TaZOFSeO;D:\dev\SB19\saved_pages\cueshe_minsan_20260422_045533.html
+2026-04-22 04:55:39;Drift;Cueshé;589031;https://open.spotify.com/track/2SKHacZx97R2OwOCBikqJ1;D:\dev\SB19\saved_pages\cueshe_drift_20260422_045539.html
+2026-04-22 04:55:44;Superstar;Cueshé;468450;https://open.spotify.com/track/5xygkKMQl2sF5FZuYdJR74;D:\dev\SB19\saved_pages\cueshe_superstar_20260422_045544.html
+2026-04-22 04:55:50;Ala-ala;Cueshé;1107306;https://open.spotify.com/track/0WNKIIMBvrO2ZQK0dxsESo;D:\dev\SB19\saved_pages\cueshe_ala_ala_20260422_045550.html
+2026-04-22 04:55:58;Please Naman;Cueshé;504508;https://open.spotify.com/track/7LPdZGZ4HNAusuXdrq3eGY;D:\dev\SB19\saved_pages\cueshe_please_naman_20260422_045558.html
+2026-04-22 04:56:04;There Was You;Cueshé;2372219;https://open.spotify.com/track/1uFn0uyUB1PparQ2Mvvh4X;D:\dev\SB19\saved_pages\cueshe_there_was_you_20260422_045604.html
+2026-04-22 04:56:09;One;Cueshé;1056419;https://open.spotify.com/track/1GXwy3iu7ulPnEKG2A5IsU;D:\dev\SB19\saved_pages\cueshe_one_20260422_045609.html
+2026-04-22 04:56:15;Quicksand;Cueshé;456578;https://open.spotify.com/track/2SgNagIVXRdVeZIFUHGB1N;D:\dev\SB19\saved_pages\cueshe_quicksand_20260422_045615.html
+2026-04-22 04:56:21;Babe;Cueshé;435710;https://open.spotify.com/track/1t6tOyEJRnPMy0OoKprLQH;D:\dev\SB19\saved_pages\cueshe_babe_20260422_045621.html
+2026-04-22 04:56:26;Over (Live);Cueshé;424377;https://open.spotify.com/track/6MIxvA4QEOKdUXDcGsjbvq;D:\dev\SB19\saved_pages\cueshe_over_live_20260422_045626.html
+2026-04-22 04:56:32;Pangako;Cueshé;57146305;https://open.spotify.com/track/4ztvNcm17Ol4yhhUElRIBs;D:\dev\SB19\saved_pages\cueshe_pangako_20260422_045632.html
+2026-04-22 04:56:38;Tara Na;Cueshé;1926348;https://open.spotify.com/track/2kRxJ3KAWNeTj0dCmk2SkF;D:\dev\SB19\saved_pages\cueshe_tara_na_20260422_045637.html
+2026-04-22 04:56:43;Damage;Cueshé;2773713;https://open.spotify.com/track/0NxReqKeprxX2ifwNqXNXu;D:\dev\SB19\saved_pages\cueshe_damage_20260422_045643.html
+2026-04-22 04:56:49;Lupit;Cueshé;2501194;https://open.spotify.com/track/59njPOHLwfeGf7V8EYne5t;D:\dev\SB19\saved_pages\cueshe_lupit_20260422_045649.html
+2026-04-22 04:56:54;Still;Cueshé;1773563;https://open.spotify.com/track/40Q6wc4j5SkG8ft7hjuLCT;D:\dev\SB19\saved_pages\cueshe_still_20260422_045654.html
+2026-04-22 04:57:00;Sana;Cueshé;2750549;https://open.spotify.com/track/2tkIWDMcGrbfu00E0D3Iyq;D:\dev\SB19\saved_pages\cueshe_sana_20260422_045700.html
+2026-04-22 04:57:06;Alone;Cueshé;728615;https://open.spotify.com/track/1I9IaAGSTPISOiT6zkv0s6;D:\dev\SB19\saved_pages\cueshe_alone_20260422_045706.html
+2026-04-22 04:57:11;Fade;Cueshé;802701;https://open.spotify.com/track/50jx6GtcfXHpQUNuMnpzNq;D:\dev\SB19\saved_pages\cueshe_fade_20260422_045711.html
+2026-04-22 04:57:17;Sweet Surrender;Cueshé;589669;https://open.spotify.com/track/0czX6lfqbKbXZX1uAK6bG6;D:\dev\SB19\saved_pages\cueshe_sweet_surrender_20260422_045717.html
+2026-04-22 04:57:23;Breathe;Cueshé;677182;https://open.spotify.com/track/1STeFDcKMStc2BGa3J4IjM;D:\dev\SB19\saved_pages\cueshe_breathe_20260422_045722.html
+2026-04-22 04:57:28;Over Now;Cueshé;646781;https://open.spotify.com/track/2EnLExotwpDCHh5lsVuwdU;D:\dev\SB19\saved_pages\cueshe_over_now_20260422_045728.html
+2026-04-22 04:57:34;Now;Cueshé;674699;https://open.spotify.com/track/33Q7pKQOtRykwxILLvs2OT;D:\dev\SB19\saved_pages\cueshe_now_20260422_045734.html
+2026-04-22 04:57:39;Ikaw Lamang;Cueshé;206695;https://open.spotify.com/track/6GhUC0cVeltnlJu6jNWmjO;D:\dev\SB19\saved_pages\cueshe_ikaw_lamang_20260422_045739.html
+2026-04-22 04:57:45;Isang Araw;Gloc-9;354445;https://open.spotify.com/track/5oDUtdz4R7Jh905SBtVFhZ;D:\dev\SB19\saved_pages\gloc_9_isang_araw_20260422_045745.html
+2026-04-22 04:57:51;Sikat Na Si Pepe;Gloc-9;586745;https://open.spotify.com/track/2sLe9x1IaFnBIxIbLo4Jds;D:\dev\SB19\saved_pages\gloc_9_sikat_na_si_pepe_20260422_045751.html
+2026-04-22 04:57:57;Ayoko Na Sana;Gloc-9;289611;https://open.spotify.com/track/1dWBtBLd8yJJzV9DzerXaD;D:\dev\SB19\saved_pages\gloc_9_ayoko_na_sana_20260422_045756.html
+2026-04-22 04:58:02;Sayang;Gloc-9;265583;https://open.spotify.com/track/3zXDhw0Ph6npExKzeDvAaR;D:\dev\SB19\saved_pages\gloc_9_sayang_20260422_045802.html
+2026-04-22 04:58:08;Simpleng Tao;Gloc-9;138065715;https://open.spotify.com/track/7K6g55fp09yQLBhgni3xqV;D:\dev\SB19\saved_pages\gloc_9_simpleng_tao_20260422_045808.html
+2026-04-22 04:58:14;Si Raul;Gloc-9;306848;https://open.spotify.com/track/48zT76HHdYOb9nYAlQIDBu;D:\dev\SB19\saved_pages\gloc_9_si_raul_20260422_045813.html
+2026-04-22 04:58:19;Hinahanap Ng Puso;Gloc-9;40353479;https://open.spotify.com/track/1r50q0lRt8LhVOrwm8JjRg;D:\dev\SB19\saved_pages\gloc_9_hinahanap_ng_puso_20260422_045819.html
+2026-04-22 04:58:25;Bakit;Gloc-9;4618312;https://open.spotify.com/track/2VmZhRWy8iDsTTBRGYSTg6;D:\dev\SB19\saved_pages\gloc_9_bakit_20260422_045825.html
+2026-04-22 04:58:31;Laklak;Gloc-9;4606590;https://open.spotify.com/track/7oGqva1pK2EoaVMt9eSyqa;D:\dev\SB19\saved_pages\gloc_9_laklak_20260422_045831.html
+2026-04-22 04:58:36;Masama Yan;Gloc-9;217099;https://open.spotify.com/track/2XPXCGUdzqC60kjwl0wGqt;D:\dev\SB19\saved_pages\gloc_9_masama_yan_20260422_045836.html
+2026-04-22 04:58:42;Jologs;Gloc-9;202410;https://open.spotify.com/track/7dAsOYvF6p428UYk3q52nH;D:\dev\SB19\saved_pages\gloc_9_jologs_20260422_045842.html
+2026-04-22 04:58:48;Ako Si;Gloc-9;220852;https://open.spotify.com/track/5ZomIq5rXA7xasLWsBFZeV;D:\dev\SB19\saved_pages\gloc_9_ako_si_20260422_045848.html
+2026-04-22 04:58:54;D Intro;Gloc-9;152677;https://open.spotify.com/track/51EDstsQ6H4Za5jv1oCfXz;D:\dev\SB19\saved_pages\gloc_9_d_intro_20260422_045854.html
+2026-04-22 04:58:59;Slick n Sly;Gloc-9;194012;https://open.spotify.com/track/6kwBCPeEMXsfI6I5WJ7z4X;D:\dev\SB19\saved_pages\gloc_9_slick_n_sly_20260422_045859.html
+2026-04-22 04:59:05;Tula;Gloc-9;1316328;https://open.spotify.com/track/7vUMFsED3QnkVJP7Q2faYa;D:\dev\SB19\saved_pages\gloc_9_tula_20260422_045905.html
+2026-04-22 04:59:11;Ipagpatawad Mo;Gloc-9;22029074;https://open.spotify.com/track/3BqDp6yewmSm2FcmC0jpXa;D:\dev\SB19\saved_pages\gloc_9_ipagpatawad_mo_20260422_045911.html
+2026-04-22 04:59:16;Love Story Ko;Gloc-9;46580377;https://open.spotify.com/track/7f3S33lB0WEQCSMGNs0GC4;D:\dev\SB19\saved_pages\gloc_9_love_story_ko_20260422_045916.html
+2026-04-22 04:59:22;English Tracks;Gloc-9;138065715;https://open.spotify.com/track/35J8qVFL9bWPk7KEhFRuSH;D:\dev\SB19\saved_pages\gloc_9_english_tracks_20260422_045922.html
+2026-04-22 04:59:28;Get 2 Know You;Gloc-9;251703;https://open.spotify.com/track/5R7ho75ctmwGKbGCUvJhB2;D:\dev\SB19\saved_pages\gloc_9_get_2_know_you_20260422_045928.html
+2026-04-22 04:59:33;My Number;Gloc-9;184338;https://open.spotify.com/track/03noRJ4NKNDJgokdH87tGl;D:\dev\SB19\saved_pages\gloc_9_my_number_20260422_045933.html
+2026-04-22 04:59:39;Pa'no Kaya;Gloc-9;151040;https://open.spotify.com/track/0ersHTw5GoDk2Vq500IZiU;D:\dev\SB19\saved_pages\gloc_9_pa_no_kaya_20260422_045939.html
+2026-04-22 04:59:45;Liwanag;Gloc-9;1055034;https://open.spotify.com/track/2o8ylmkMiciNuWgAZ4Y8oF;D:\dev\SB19\saved_pages\gloc_9_liwanag_20260422_045945.html
+2026-04-22 04:59:50;Usap Tayo;Gloc-9;156609;https://open.spotify.com/track/5S840AaVQRu57Pvx8XvBc0;D:\dev\SB19\saved_pages\gloc_9_usap_tayo_20260422_045950.html
+2026-04-22 04:59:56;Nag-Iisang Mundo;Gloc-9;288735;https://open.spotify.com/track/5TOCNI9SqaYGyIr80vBr0n;D:\dev\SB19\saved_pages\gloc_9_nag_iisang_mundo_20260422_045956.html
+2026-04-22 05:00:02;Diploma;Gloc-9;1320358;https://open.spotify.com/track/6Pb0O4mvgYLSNuLOERodPT;D:\dev\SB19\saved_pages\gloc_9_diploma_20260422_050002.html
+2026-04-22 05:00:08;Lando;Gloc-9;15050422;https://open.spotify.com/track/2aBUWilZt3uX4wfgHg4g6S;D:\dev\SB19\saved_pages\gloc_9_lando_20260422_050008.html
+2026-04-22 05:00:14;The Task Is Done;Gloc-9;187430;https://open.spotify.com/track/1MJbfEAEI6UzHKTnzUoLrE;D:\dev\SB19\saved_pages\gloc_9_the_task_is_done_20260422_050014.html
+2026-04-22 05:00:19;Sumayaw Ka;Gloc-9;12958661;https://open.spotify.com/track/3pfXzXbRJNXOT7f2IQ1s2p;D:\dev\SB19\saved_pages\gloc_9_sumayaw_ka_20260422_050019.html
+2026-04-22 05:00:25;B.I.;Gloc-9;409296;https://open.spotify.com/track/4ZqYzweu17Z92mWBGxOymB;D:\dev\SB19\saved_pages\gloc_9_b_i_20260422_050025.html
+2026-04-22 05:00:31;Lov Na Lov;Gloc-9;231124;https://open.spotify.com/track/5UczNibiXAHtRFIhMC2BR9;D:\dev\SB19\saved_pages\gloc_9_lov_na_lov_20260422_050031.html
+2026-04-22 05:00:37;Blues Niyang Itim;Gloc-9;292789;https://open.spotify.com/track/0Nx8WsTv00JASnL4MYpnfH;D:\dev\SB19\saved_pages\gloc_9_blues_niyang_itim_20260422_050036.html
+2026-04-22 05:00:42;Sila;Gloc-9;666137;https://open.spotify.com/track/6FR8JUmXzd816JqDC9uQlU;D:\dev\SB19\saved_pages\gloc_9_sila_20260422_050042.html
+2026-04-22 05:00:48;Lapis At Papel;Gloc-9;2510881;https://open.spotify.com/track/4RkUx7wJWD17fZ7PXrPBCM;D:\dev\SB19\saved_pages\gloc_9_lapis_at_papel_20260422_050048.html
+2026-04-22 05:00:54;Torpedo;Gloc-9;4259935;https://open.spotify.com/track/5LATqHltRr9AvQj2ZPL5rF;D:\dev\SB19\saved_pages\gloc_9_torpedo_20260422_050054.html
+2026-04-22 05:01:03;Kayo;Gloc-9;209179;https://open.spotify.com/track/3jp1KiuyujrO5LSuccGeJW;D:\dev\SB19\saved_pages\gloc_9_kayo_20260422_050102.html
+2026-04-22 05:01:08;Lando (feat. Chito Miranda);Gloc-9;523520;https://open.spotify.com/track/0on6uc9TBfpkHfoSjm3LvN;D:\dev\SB19\saved_pages\gloc_9_lando_feat_chito_miranda_20260422_050108.html
+2026-04-22 05:01:14;Lipat Mo;Gloc-9;138065715;https://open.spotify.com/track/3ju7jg7JRYUoEcSYNaJpkW;D:\dev\SB19\saved_pages\gloc_9_lipat_mo_20260422_050114.html
+2026-04-22 05:01:20;Martilyo;Gloc-9;4498602;https://open.spotify.com/track/7LtMm9yR9n5tpQMGkqSPcs;D:\dev\SB19\saved_pages\gloc_9_martilyo_20260422_050120.html
+2026-04-22 05:01:26;Tinta;Gloc-9;2965768;https://open.spotify.com/track/4zoyZEOZj9Vxjcs7lQBHki;D:\dev\SB19\saved_pages\gloc_9_tinta_20260422_050126.html
+2026-04-22 05:01:32;Balita;Gloc-9;3409;https://open.spotify.com/track/6aVgfjeJcjELn8D5TJdGJk;D:\dev\SB19\saved_pages\gloc_9_balita_20260422_050132.html
+2026-04-22 05:01:38;Upuan;Gloc-9;80677108;https://open.spotify.com/track/5sSG2CQBI3perj0gMbhXd1;D:\dev\SB19\saved_pages\gloc_9_upuan_20260422_050138.html
+2026-04-22 05:01:44;Bituwin;Gloc-9;453343;https://open.spotify.com/track/2h72dv2I6rOlAA0vwIIQsk;D:\dev\SB19\saved_pages\gloc_9_bituwin_20260422_050144.html
+2026-04-22 05:01:50;Bayad Ko;Gloc-9;1237217;https://open.spotify.com/track/1iqdzuc7CeMmutSMeNtyBw;D:\dev\SB19\saved_pages\gloc_9_bayad_ko_20260422_050150.html
+2026-04-22 05:01:56;Bahala Na;Gloc-9;343799;https://open.spotify.com/track/2ZJMGAsE7H3sZYEv0ckhs3;D:\dev\SB19\saved_pages\gloc_9_bahala_na_20260422_050156.html
+2026-04-22 05:02:02;The Bobo Song;Gloc-9;1645454;https://open.spotify.com/track/1I5AovO86hDK002yNCcpOi;D:\dev\SB19\saved_pages\gloc_9_the_bobo_song_20260422_050202.html
+2026-04-22 05:02:08;Pangarap;Gloc-9;378637;https://open.spotify.com/track/2HsrOHBWX6DFEs0ugeyJiX;D:\dev\SB19\saved_pages\gloc_9_pangarap_20260422_050208.html
+2026-04-22 05:02:13;Kaibigan Ko;Gloc-9;282144;https://open.spotify.com/track/2oI8hPjrIX4q77NFhNxrgm;D:\dev\SB19\saved_pages\gloc_9_kaibigan_ko_20260422_050213.html
+2026-04-22 05:02:19;Tao;Gloc-9;145876;https://open.spotify.com/track/2j3gUSvyhcBe297VZAY9JK;D:\dev\SB19\saved_pages\gloc_9_tao_20260422_050219.html
+2026-04-22 05:02:25;Buti Na Lang;Gloc-9;441915;https://open.spotify.com/track/0CRB5oqNbrxXAMRMeIXunh;D:\dev\SB19\saved_pages\gloc_9_buti_na_lang_20260422_050225.html
+2026-04-22 05:02:31;Bugtong;Gloc-9;763766;https://open.spotify.com/track/4n13C26lsDX8bjgvnrkgHX;D:\dev\SB19\saved_pages\gloc_9_bugtong_20260422_050231.html
+2026-04-22 05:02:37;Akin Lang Naman;Gloc-9;485262;https://open.spotify.com/track/3Rbh5VJFeSfZqx590SNDxl;D:\dev\SB19\saved_pages\gloc_9_akin_lang_naman_20260422_050237.html
+2026-04-22 05:02:42;Walang Natira;Gloc-9;16047642;https://open.spotify.com/track/21FPqoc0NyXVB3wiB3iFRg;D:\dev\SB19\saved_pages\gloc_9_walang_natira_20260422_050242.html
+2026-04-22 05:02:48;Baon;Gloc-9;1716426;https://open.spotify.com/track/7L27335sVPt1pvXv3NHLXg;D:\dev\SB19\saved_pages\gloc_9_baon_20260422_050248.html
+2026-04-22 05:02:54;Atik Laham;Gloc-9;675361;https://open.spotify.com/track/5bl0E5aGSapiCO121kEt7y;D:\dev\SB19\saved_pages\gloc_9_atik_laham_20260422_050254.html
+2026-04-22 05:03:00;Tissue;Gloc-9;243295;https://open.spotify.com/track/1CBsYh03ZqvCiGLles6fJ5;D:\dev\SB19\saved_pages\gloc_9_tissue_20260422_050300.html
+2026-04-22 05:03:06;Salbahe;Gloc-9;506549;https://open.spotify.com/track/3FJvTG8s8de8qlvN9h4Pil;D:\dev\SB19\saved_pages\gloc_9_salbahe_20260422_050305.html
+2026-04-22 05:03:11;Elmer;Gloc-9;6201158;https://open.spotify.com/track/6QjV34ahEDX3i7QMyEHQtF;D:\dev\SB19\saved_pages\gloc_9_elmer_20260422_050311.html
+2026-04-22 05:03:17;Gusto Ko;Gloc-9;411752;https://open.spotify.com/track/1Mu4WRsDZUauITBSegLkdG;D:\dev\SB19\saved_pages\gloc_9_gusto_ko_20260422_050317.html
+2026-04-22 05:03:23;Kislap;Gloc-9;687556;https://open.spotify.com/track/4IXBNPnwZr3F39Zln4jUeb;D:\dev\SB19\saved_pages\gloc_9_kislap_20260422_050323.html
+2026-04-22 05:03:29;Talumpati;Gloc-9;495836;https://open.spotify.com/track/4LWwPvFZfgyv1JsQrvo8m2;D:\dev\SB19\saved_pages\gloc_9_talumpati_20260422_050329.html
+2026-04-22 05:03:34;Balak Ni Syke;Gloc-9;227038;https://open.spotify.com/track/3LMtdT5LauGmSz5UYaGTQ4;D:\dev\SB19\saved_pages\gloc_9_balak_ni_syke_20260422_050334.html
+2026-04-22 05:03:40;Apatnapungbara;Gloc-9;398726;https://open.spotify.com/track/1iqm3arDhVOPntUvgWrWGv;D:\dev\SB19\saved_pages\gloc_9_apatnapungbara_20260422_050340.html
+2026-04-22 05:03:46;Silup;Gloc-9;605694;https://open.spotify.com/track/2Ta4hJKrhLme4GVmmJI6Rq;D:\dev\SB19\saved_pages\gloc_9_silup_20260422_050346.html
+2026-04-22 05:03:52;Alalay Ng Hari;Gloc-9;7322913;https://open.spotify.com/track/33rRIlt2quHU3yyyhXZCmc;D:\dev\SB19\saved_pages\gloc_9_alalay_ng_hari_20260422_050352.html
+2026-04-22 05:03:57;Sirena;Gloc-9;33038176;https://open.spotify.com/track/1y8uWtPF64SEAkU2RWvYpr;D:\dev\SB19\saved_pages\gloc_9_sirena_20260422_050357.html
+2026-04-22 05:04:03;Hindi Mo Nadinig;Gloc-9;5239447;https://open.spotify.com/track/1Gw9b7z2fbgPhCFpeN1aX8;D:\dev\SB19\saved_pages\gloc_9_hindi_mo_nadinig_20260422_050403.html
+2026-04-22 05:04:09;Salarin;Gloc-9;1266096;https://open.spotify.com/track/1kDBhks4IVHqAV27X66YqB;D:\dev\SB19\saved_pages\gloc_9_salarin_20260422_050409.html
+2026-04-22 05:04:15;Inday;Gloc-9;320042;https://open.spotify.com/track/5R8b0OHNiXb6Ij2KStAWKV;D:\dev\SB19\saved_pages\gloc_9_inday_20260422_050415.html
+2026-04-22 05:04:20;Bakit Hindi;Gloc-9;1165859;https://open.spotify.com/track/2tr9QT64qmf3A1COnUn5SZ;D:\dev\SB19\saved_pages\gloc_9_bakit_hindi_20260422_050420.html
+2026-04-22 05:04:26;Pison;Gloc-9;467977;https://open.spotify.com/track/7oPUOLk4CQzDvP5AQD2qjH;D:\dev\SB19\saved_pages\gloc_9_pison_20260422_050426.html
+2026-04-22 05:04:32;Thankful;Gloc-9;285579;https://open.spotify.com/track/0psMtCqZmcFddMCjqKso9n;D:\dev\SB19\saved_pages\gloc_9_thankful_20260422_050432.html
+2026-04-22 05:04:38;Hari Ng Tondo;Gloc-9;7698507;https://open.spotify.com/track/6xI7tHjhXtyw45funQLtO0;D:\dev\SB19\saved_pages\gloc_9_hari_ng_tondo_20260422_050438.html
+2026-04-22 05:04:44;Kung Tama Siya;Gloc-9;423772;https://open.spotify.com/track/5EpgViIqC2s17kdnJrHXk8;D:\dev\SB19\saved_pages\gloc_9_kung_tama_siya_20260422_050444.html
+2026-04-22 05:04:50;Huminahon Ka;Gloc-9;319595;https://open.spotify.com/track/7wHSA1HERwTBxnU4VTFpcs;D:\dev\SB19\saved_pages\gloc_9_huminahon_ka_20260422_050450.html
+2026-04-22 05:04:56;Takip Silim;Gloc-9;1755820;https://open.spotify.com/track/0E0hcGdI2AH1i35GCkCta7;D:\dev\SB19\saved_pages\gloc_9_takip_silim_20260422_050456.html
+2026-04-22 05:05:02;KMT;Gloc-9;720509;https://open.spotify.com/track/7DLKa4O1NrpGS0ab38sBS8;D:\dev\SB19\saved_pages\gloc_9_kmt_20260422_050502.html
+2026-04-22 05:05:08;Magda;Gloc-9;20328623;https://open.spotify.com/track/3rmvXHlqIGiQndabkh5hxY;D:\dev\SB19\saved_pages\gloc_9_magda_20260422_050507.html
+2026-04-22 05:05:14;Rap Ka Nga;Gloc-9;862548;https://open.spotify.com/track/2yCn466IFckhnEa4o401FE;D:\dev\SB19\saved_pages\gloc_9_rap_ka_nga_20260422_050513.html
+2026-04-22 05:05:20;Kwento Mo;Gloc-9;460071;https://open.spotify.com/track/0FV14rMuLytdsiaigQSUoQ;D:\dev\SB19\saved_pages\gloc_9_kwento_mo_20260422_050519.html
+2026-04-22 05:05:25;Tsinelas Sa Putikan;Gloc-9;296832;https://open.spotify.com/track/2XdDjnxXvjdAuQq2yeLaT5;D:\dev\SB19\saved_pages\gloc_9_tsinelas_sa_putikan_20260422_050525.html
+2026-04-22 05:05:31;Siga;Gloc-9;308181;https://open.spotify.com/track/26gbGTrAghwsMH4t0ZgxEb;D:\dev\SB19\saved_pages\gloc_9_siga_20260422_050531.html
+2026-04-22 05:05:37;Hindi Sapat;Gloc-9;403990;https://open.spotify.com/track/3QnJwa8Gs1hGv1nSOILn77;D:\dev\SB19\saved_pages\gloc_9_hindi_sapat_20260422_050537.html
+2026-04-22 05:05:43;Katulad Ng Iba;Gloc-9;3864896;https://open.spotify.com/track/30bcWJHIZwwmjdTnm39D3m;D:\dev\SB19\saved_pages\gloc_9_katulad_ng_iba_20260422_050543.html
+2026-04-22 05:05:49;Kunwari;Gloc-9;1359877;https://open.spotify.com/track/1uVR17Tx00Ctcy6FAORl7k;D:\dev\SB19\saved_pages\gloc_9_kunwari_20260422_050549.html
+2026-04-22 05:05:55;Itak Ni Andres;Gloc-9;490088;https://open.spotify.com/track/78FzKdEFW69rZScx0JN5mw;D:\dev\SB19\saved_pages\gloc_9_itak_ni_andres_20260422_050555.html
+2026-04-22 05:06:01;Businessman;Gloc-9;1717400;https://open.spotify.com/track/5HshOwid7vfMjpN3XxPkjH;D:\dev\SB19\saved_pages\gloc_9_businessman_20260422_050601.html
+2026-04-22 05:06:06;Magda (Acoustic Version);Gloc-9;9103557;https://open.spotify.com/track/5wyu8spCmlGYPH0W8Aw8mn;D:\dev\SB19\saved_pages\gloc_9_magda_acoustic_version_20260422_050606.html
+2026-04-22 05:06:12;Ito Ang Liga;Gloc-9;1241325;https://open.spotify.com/track/4GYomFci7kMaJ7dwFvUXgy;D:\dev\SB19\saved_pages\gloc_9_ito_ang_liga_20260422_050612.html
+2026-04-22 05:06:18;Barya Lang Intro;Gloc-9;138065715;https://open.spotify.com/track/4xydsmQ9o3E1gSRVSvJ6v2;D:\dev\SB19\saved_pages\gloc_9_barya_lang_intro_20260422_050618.html
+2026-04-22 05:06:24;Hoy;Gloc-9;2835258;https://open.spotify.com/track/1bU6pV13d8DlyVJbz6N9WS;D:\dev\SB19\saved_pages\gloc_9_hoy_20260422_050624.html
+2026-04-22 05:06:30;Sukli;Gloc-9;2055261;https://open.spotify.com/track/47wQMZvUYKeRN73I6Qg735;D:\dev\SB19\saved_pages\gloc_9_sukli_20260422_050630.html
+2026-04-22 05:06:35;Industriya;Gloc-9;4923694;https://open.spotify.com/track/68EeBn2gJHvaeDhciiBT38;D:\dev\SB19\saved_pages\gloc_9_industriya_20260422_050635.html
+2026-04-22 05:06:41;Sagwan;Gloc-9;2118477;https://open.spotify.com/track/5Gs41kjOuodffD0qsmqWuW;D:\dev\SB19\saved_pages\gloc_9_sagwan_20260422_050641.html
+2026-04-22 05:06:47;Kalye;Gloc-9;731435;https://open.spotify.com/track/0Qa9nup3Yn6altEyv0KC3t;D:\dev\SB19\saved_pages\gloc_9_kalye_20260422_050647.html
+2026-04-22 05:06:53;Payag;Gloc-9;980243;https://open.spotify.com/track/53KHKkcd7p8Hf5ASPMNgf8;D:\dev\SB19\saved_pages\gloc_9_payag_20260422_050653.html
+2026-04-22 05:06:59;Ang Probinsyano;Gloc-9;4328527;https://open.spotify.com/track/5gGlJBxEBdZfcGhLqGk4ur;D:\dev\SB19\saved_pages\gloc_9_ang_probinsyano_20260422_050659.html
+2026-04-22 05:07:04;Rico J;Gloc-9;137389;https://open.spotify.com/track/4MwY00BEtj0htkG6SJLp1r;D:\dev\SB19\saved_pages\gloc_9_rico_j_20260422_050704.html
+2026-04-22 05:07:10;Ice Tubig;Gloc-9;123151;https://open.spotify.com/track/4bHJVWRMTqkqiQfA45Wroq;D:\dev\SB19\saved_pages\gloc_9_ice_tubig_20260422_050710.html
+2026-04-22 05:07:16;TRPKNNMN;Gloc-9;2750978;https://open.spotify.com/track/7LGJxaqmM8vwDBX2TDG90Z;D:\dev\SB19\saved_pages\gloc_9_trpknnmn_20260422_050716.html
+2026-04-22 05:07:22;Norem;Gloc-9;28027224;https://open.spotify.com/track/1ECl4vFF1IiBcXIF5rNy8X;D:\dev\SB19\saved_pages\gloc_9_norem_20260422_050722.html
+2026-04-22 05:07:28;Rotonda;Gloc-9;638405;https://open.spotify.com/track/18zz75MV8zH37xMlCsMn0F;D:\dev\SB19\saved_pages\gloc_9_rotonda_20260422_050728.html
+2026-04-22 05:07:34;Ang Panday;Gloc-9;931523;https://open.spotify.com/track/3a7c8dRD2v3afhAPPnFOfp;D:\dev\SB19\saved_pages\gloc_9_ang_panday_20260422_050734.html
+2026-04-22 05:07:45;Lagi;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_lagi_20260422_050745.html
+2026-04-22 05:07:50;Pamaypay;Gloc-9;364811;https://open.spotify.com/track/7bQUWJgdJQ2nsGTlgPNAx3;D:\dev\SB19\saved_pages\gloc_9_pamaypay_20260422_050750.html
+2026-04-22 05:07:56;Bintana;Gloc-9;410918;https://open.spotify.com/track/6gYT8DrUcJ5NnPdr4WLF5H;D:\dev\SB19\saved_pages\gloc_9_bintana_20260422_050756.html
+2026-04-22 05:08:02;Dungaw;Gloc-9;2051175;https://open.spotify.com/track/3kijcyXHIMt5ErTq83t3TX;D:\dev\SB19\saved_pages\gloc_9_dungaw_20260422_050802.html
+2026-04-22 05:08:08;Maleta;Gloc-9;722700;https://open.spotify.com/track/5P9zw8oJG5FZI79KiTuk6Y;D:\dev\SB19\saved_pages\gloc_9_maleta_20260422_050808.html
+2026-04-22 05:08:14;Pulubi;Gloc-9;281689;https://open.spotify.com/track/0oOeTAdUwdjpgB3qjpA05Q;D:\dev\SB19\saved_pages\gloc_9_pulubi_20260422_050814.html
+2026-04-22 05:08:20;Pati Pato;Gloc-9;4624799;https://open.spotify.com/track/0ufb6vNjoTRv1lG8gwY5SC;D:\dev\SB19\saved_pages\gloc_9_pati_pato_20260422_050820.html
+2026-04-22 05:08:26;Bahaghari;Gloc-9;267746;https://open.spotify.com/track/7wTPhdplnstwbnPjIe8obR;D:\dev\SB19\saved_pages\gloc_9_bahaghari_20260422_050826.html
+2026-04-22 05:08:32;Halik;Gloc-9;36336793;https://open.spotify.com/track/340mIDGqsUc0HqBa8CuYKi;D:\dev\SB19\saved_pages\gloc_9_halik_20260422_050832.html
+2026-04-22 05:08:43;Macho Rap;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_macho_rap_20260422_050843.html
+2026-04-22 05:08:54;Otochun;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_otochun_20260422_050854.html
+2026-04-22 05:09:00;Alitaptap;Gloc-9;109191;https://open.spotify.com/track/1n5PNCwkHyaAYBRfQwRvxe;D:\dev\SB19\saved_pages\gloc_9_alitaptap_20260422_050900.html
+2026-04-22 05:09:05;Di Marunong;Gloc-9;417045;https://open.spotify.com/track/2sveuLkxDFMu0pvV2ZxbS2;D:\dev\SB19\saved_pages\gloc_9_di_marunong_20260422_050905.html
+2026-04-22 05:09:11;Sana;Gloc-9;99822;https://open.spotify.com/track/19yrc2wSYX1IUHOJXY0T6V;D:\dev\SB19\saved_pages\gloc_9_sana_20260422_050911.html
+2026-04-22 05:09:17;Payong;Gloc-9;205732;https://open.spotify.com/track/6cMi8y4pDj3GDgWwJ2xztA;D:\dev\SB19\saved_pages\gloc_9_payong_20260422_050917.html
+2026-04-22 05:09:23;Oka;Gloc-9;163844;https://open.spotify.com/track/7oonHGmiJomoed1DGjBgkj;D:\dev\SB19\saved_pages\gloc_9_oka_20260422_050923.html
+2026-04-22 05:09:29;B.P.B.;Gloc-9;92894;https://open.spotify.com/track/27Ws8fDWQv2XtM8cPshpSi;D:\dev\SB19\saved_pages\gloc_9_b_p_b_20260422_050929.html
+2026-04-22 05:09:35;Langit Lupa;Gloc-9;1689835;https://open.spotify.com/track/2LZOJykPDpYozSbdzaea6g;D:\dev\SB19\saved_pages\gloc_9_langit_lupa_20260422_050935.html
+2026-04-22 05:09:46;Maulit Man;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_maulit_man_20260422_050946.html
+2026-04-22 05:09:52;Pag Nagising Ako;Gloc-9;44386;https://open.spotify.com/track/6DMWAvjxrjbFTTbqP0nutr;D:\dev\SB19\saved_pages\gloc_9_pag_nagising_ako_20260422_050952.html
+2026-04-22 05:09:58;Pasan;Gloc-9;1050345;https://open.spotify.com/track/2ySjZnBAf3B4mulqXipw9t;D:\dev\SB19\saved_pages\gloc_9_pasan_20260422_050958.html
+2026-04-22 05:10:03;Sanib;Gloc-9;87083;https://open.spotify.com/track/7z66omaHVmtiKPYKrTGhP5;D:\dev\SB19\saved_pages\gloc_9_sanib_20260422_051003.html
+2026-04-22 05:10:09;Saranggola;Gloc-9;571510;https://open.spotify.com/track/6O0MsheL0s86YyWda1F2hV;D:\dev\SB19\saved_pages\gloc_9_saranggola_20260422_051009.html
+2026-04-22 05:10:20;Tablan;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_tablan_20260422_051020.html
+2026-04-22 05:10:26;Tindero;Gloc-9;76362;https://open.spotify.com/track/6UQIoZhubvbdw5I4G07kpv;D:\dev\SB19\saved_pages\gloc_9_tindero_20260422_051026.html
+2026-04-22 05:10:37;Tunay;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_tunay_20260422_051037.html
+2026-04-22 05:10:48;Bahay Yugyugan;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_bahay_yugyugan_20260422_051048.html
+2026-04-22 05:10:54;Kagat Ni Eba;Gloc-9;80184;https://open.spotify.com/track/4ZmYIzCOvxg82j32OLLQ1F;D:\dev\SB19\saved_pages\gloc_9_kagat_ni_eba_20260422_051054.html
+2026-04-22 05:11:05;Halina Sa Arena;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_halina_sa_arena_20260422_051105.html
+2026-04-22 05:11:11;Kwentong Barbero;Gloc-9;199471;https://open.spotify.com/track/2KZDOdhVulGnuLydmIPpBV;D:\dev\SB19\saved_pages\gloc_9_kwentong_barbero_20260422_051111.html
+2026-04-22 05:11:17;ABAKADA;Gloc-9;463889;https://open.spotify.com/track/4S9czi8Xa5eSHePLGgB98N;D:\dev\SB19\saved_pages\gloc_9_abakada_20260422_051117.html
+2026-04-22 05:11:23;Sa Duyan Ng Bayan;Gloc-9;143002;https://open.spotify.com/track/59Wh5D1C1eXpgr6CT9wcck;D:\dev\SB19\saved_pages\gloc_9_sa_duyan_ng_bayan_20260422_051122.html
+2026-04-22 05:11:28;Pilak;Gloc-9;580981;https://open.spotify.com/track/4BtBGr5lm4CtiIVFGEI8Fu;D:\dev\SB19\saved_pages\gloc_9_pilak_20260422_051128.html
+2026-04-22 05:11:34;Buhat;Gloc-9;305401;https://open.spotify.com/track/5Q7UvY8IEicx1unql1smm5;D:\dev\SB19\saved_pages\gloc_9_buhat_20260422_051134.html
+2026-04-22 05:11:40;Kamusta Ka Na;Gloc-9;286771;https://open.spotify.com/track/6m5SZunxILQQsndmmNYVhf;D:\dev\SB19\saved_pages\gloc_9_kamusta_ka_na_20260422_051140.html
+2026-04-22 05:11:46;Bahay Yugyugan (feat. Flow G);Gloc-9;16903948;https://open.spotify.com/track/0xlTnx065c58AcFW5Ntkqd;D:\dev\SB19\saved_pages\gloc_9_bahay_yugyugan_feat_flow_g_20260422_051146.html
+2026-04-22 05:11:51;Di Umiinom;Gloc-9;186135;https://open.spotify.com/track/765oGHywvMXMw5aMX98NfR;D:\dev\SB19\saved_pages\gloc_9_di_umiinom_20260422_051151.html
+2026-04-22 05:11:57;Paliwanag;Gloc-9;1723708;https://open.spotify.com/track/7fjHvAgoTGFa8nvEZgqNOu;D:\dev\SB19\saved_pages\gloc_9_paliwanag_20260422_051157.html
+2026-04-22 05:12:03;Buhok;Gloc-9;104756;https://open.spotify.com/track/0NIkboOpsurwBTtIXcOfWl;D:\dev\SB19\saved_pages\gloc_9_buhok_20260422_051203.html
+2026-04-22 05:12:09;Kumpisal;Gloc-9;3951597;https://open.spotify.com/track/5jeri3XIO8naGP3oor2Xaz;D:\dev\SB19\saved_pages\gloc_9_kumpisal_20260422_051209.html
+2026-04-22 05:12:15;RESBAK;Gloc-9;5004857;https://open.spotify.com/track/42VIujSqZczaIWYAAgq7ko;D:\dev\SB19\saved_pages\gloc_9_resbak_20260422_051214.html
+2026-04-22 05:12:20;Walang Pumapalakpak;Gloc-9;367604;https://open.spotify.com/track/7KiM2LUbjnFA5M96uRlTJP;D:\dev\SB19\saved_pages\gloc_9_walang_pumapalakpak_20260422_051220.html
+2026-04-22 05:12:26;Panulat Mo;Gloc-9;104311;https://open.spotify.com/track/4eTB1L2kV6BWeAG0i0oQsi;D:\dev\SB19\saved_pages\gloc_9_panulat_mo_20260422_051226.html
+2026-04-22 05:12:32;Gatas At Asukal;Gloc-9;106270;https://open.spotify.com/track/0AdXwkXQ22kD0uccxHVARy;D:\dev\SB19\saved_pages\gloc_9_gatas_at_asukal_20260422_051232.html
+2026-04-22 05:12:38;Utang Clan;Gloc-9;111149;https://open.spotify.com/track/3LVYX4Alp7x3HcGD1EJSPc;D:\dev\SB19\saved_pages\gloc_9_utang_clan_20260422_051238.html
+2026-04-22 05:12:44;Puyat;Gloc-9;78682;https://open.spotify.com/track/1Fi5x3n9pDspcYT5RFLVly;D:\dev\SB19\saved_pages\gloc_9_puyat_20260422_051244.html
+2026-04-22 05:12:50;Sagip;Gloc-9;53402;https://open.spotify.com/track/2YDSCe6JL99wvUTW4j9Ov1;D:\dev\SB19\saved_pages\gloc_9_sagip_20260422_051249.html
+2026-04-22 05:12:55;Tinda Ni Linda;Gloc-9;211300;https://open.spotify.com/track/2A7Thm3V01aLD3r5NiAZlB;D:\dev\SB19\saved_pages\gloc_9_tinda_ni_linda_20260422_051255.html
+2026-04-22 05:13:01;Tatlong Taon;Gloc-9;64280;https://open.spotify.com/track/2yxF4j7rXFsIVMpSKJgl19;D:\dev\SB19\saved_pages\gloc_9_tatlong_taon_20260422_051301.html
+2026-04-22 05:13:07;Alimpungatan;Gloc-9;35513;https://open.spotify.com/track/1wy78gQNMum7uY3votIBgX;D:\dev\SB19\saved_pages\gloc_9_alimpungatan_20260422_051307.html
+2026-04-22 05:13:13;Yakap;Gloc-9;43282;https://open.spotify.com/track/6rww4DGMOxPGKCUAxtTBvw;D:\dev\SB19\saved_pages\gloc_9_yakap_20260422_051313.html
+2026-04-22 05:13:18;Idol;Gloc-9;77606;https://open.spotify.com/track/1mNkpYJbUCFxbZsROsoApv;D:\dev\SB19\saved_pages\gloc_9_idol_20260422_051318.html
+2026-04-22 05:13:24;KALAKAL;Gloc-9;22506135;https://open.spotify.com/track/1cFGU7MQu0mHS5uVyD1STP;D:\dev\SB19\saved_pages\gloc_9_kalakal_20260422_051324.html
+2026-04-22 05:13:30;4424;Gloc-9;187671;https://open.spotify.com/track/34YaH5GUiPAEx0nvyJMX4B;D:\dev\SB19\saved_pages\gloc_9_4424_20260422_051330.html
+2026-04-22 05:13:36;Debu;Gloc-9;277178;https://open.spotify.com/track/2pPQuk15fOOjWVwoJtJHR6;D:\dev\SB19\saved_pages\gloc_9_debu_20260422_051336.html
+2026-04-22 05:13:42;Labandero;Gloc-9;425200;https://open.spotify.com/track/0IS7JDrebCNxoCn5G8yOxf;D:\dev\SB19\saved_pages\gloc_9_labandero_20260422_051341.html
+2026-04-22 05:13:53;Naspi;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_naspi_20260422_051353.html
+2026-04-22 05:13:58;Palalo;Gloc-9;172871;https://open.spotify.com/track/4qbzBmKbUvXjHum0hyFCb8;D:\dev\SB19\saved_pages\gloc_9_palalo_20260422_051358.html
+2026-04-22 05:14:04;KB;Gloc-9;31114;https://open.spotify.com/track/43aLcHNUwPjxN9AHBniMhS;D:\dev\SB19\saved_pages\gloc_9_kb_20260422_051404.html
+2026-04-22 05:14:10;Dating Gawi;Gloc-9;669256;https://open.spotify.com/track/71gWvvuLLKW9Tj7mHaB0LT;D:\dev\SB19\saved_pages\gloc_9_dating_gawi_20260422_051410.html
+2026-04-22 05:14:16;Taksil;Gloc-9;163514;https://open.spotify.com/track/7DzMukhW3V46jyLBgr6ncA;D:\dev\SB19\saved_pages\gloc_9_taksil_20260422_051416.html
+2026-04-22 05:14:22;Kuya Cesar;Gloc-9;186670;https://open.spotify.com/track/42eVkPFejQuGLziRT0R3b6;D:\dev\SB19\saved_pages\gloc_9_kuya_cesar_20260422_051422.html
+2026-04-22 05:14:28;Ambag;Gloc-9;3166188;https://open.spotify.com/track/0XtXVrzM6FUTKX7kB60NS5;D:\dev\SB19\saved_pages\gloc_9_ambag_20260422_051428.html
+2026-04-22 05:14:34;Halimaw;Gloc-9;951216;https://open.spotify.com/track/0cm8VrhYcuZFnSmnpzdiGC;D:\dev\SB19\saved_pages\gloc_9_halimaw_20260422_051433.html
+2026-04-22 05:14:39;Anghel;Gloc-9;374866;https://open.spotify.com/track/4iKhQocq1mA238f7NKG9f8;D:\dev\SB19\saved_pages\gloc_9_anghel_20260422_051439.html
+2026-04-22 05:14:46;BLGBGN;Gloc-9;774270;https://open.spotify.com/track/7ki7IIYqmqq6YgDLHFkpee;D:\dev\SB19\saved_pages\gloc_9_blgbgn_20260422_051446.html
+2026-04-22 05:14:52;Bonethugs;Gloc-9;683016;https://open.spotify.com/track/2ad7jxmkaE15mEagLaC62D;D:\dev\SB19\saved_pages\gloc_9_bonethugs_20260422_051452.html
+2026-04-22 05:14:57;Kakampi;Gloc-9;351939;https://open.spotify.com/track/18TVarHHqilsCOlQ2f1Esg;D:\dev\SB19\saved_pages\gloc_9_kakampi_20260422_051457.html
+2026-04-22 05:15:03;Magarang Kotse;Gloc-9;234174;https://open.spotify.com/track/3vLhRis9vHRrkR86qxTnso;D:\dev\SB19\saved_pages\gloc_9_magarang_kotse_20260422_051503.html
+2026-04-22 05:15:14;All Day;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_all_day_20260422_051514.html
+2026-04-22 05:15:25;Dalaw;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_dalaw_20260422_051525.html
+2026-04-22 05:15:36;Hilatsa;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_hilatsa_20260422_051536.html
+2026-04-22 05:15:47;Tagay;Gloc-9;N/A;https://open.spotify.com/track/;D:\dev\SB19\saved_pages\gloc_9_tagay_20260422_051547.html
