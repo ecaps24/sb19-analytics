@@ -6952,7 +6952,15 @@
                     borderRadius: 6,
                     borderSkipped: false,
                     yAxisID: 'y',
-                    order: 2
+                    order: 2,
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        offset: 4,
+                        color: '#e5e7eb',
+                        font: { size: 10, weight: '600' },
+                        formatter: (v) => this.formatNumber(v)
+                    }
                 }];
                 if (hasAnyDaily) {
                     datasets.push({
@@ -6969,14 +6977,24 @@
                         borderWidth: 2,
                         tension: 0.35,
                         yAxisID: 'y2',
-                        order: 1
+                        order: 1,
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            offset: 6,
+                            color: dailyAccent,
+                            font: { size: 10, weight: '700' },
+                            formatter: (v) => v > 0 ? '+' + this.formatNumber(v) : ''
+                        }
                     });
                 }
 
                 this.charts[chartKey] = new Chart(ctx, {
                     type: 'bar',
                     data: { labels, datasets },
+                    plugins: [ChartDataLabels],
                     options: {
+                        layout: { padding: { top: 24 } },
                         responsive: true,
                         maintainAspectRatio: false,
                         interaction: { mode: 'index', intersect: false },
