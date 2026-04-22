@@ -1036,7 +1036,7 @@
         }
         .home-chart-wrap {
             position: relative;
-            height: 260px;
+            height: 320px;
         }
         .home-donut-wrap {
             position: relative;
@@ -1168,7 +1168,7 @@
             .sb19-focus-entry { padding: 14px 16px; }
             .sb19-focus-title { font-size: 1.05rem; }
             .sb19-focus-sub { font-size: 0.78rem; }
-            .home-chart-wrap { height: 220px; }
+            .home-chart-wrap { height: 280px; }
             .home-donut-wrap { height: 180px; }
         }
 
@@ -6935,27 +6935,75 @@
                     return this.genreColors[genre] || '#60a5fa';
                 });
 
+                // Build per-artist daily-streams lookup from computeDailyStreamsByArtist()
+                const dailyStreamsList = this.computeDailyStreamsByArtist() || [];
+                const dailyStreamsByName = new Map(
+                    dailyStreamsList.map(d => [d.artist_name.toLowerCase(), d.daily || 0])
+                );
+                const dailyValues = artists.map(a => dailyStreamsByName.get(a.artist_name.toLowerCase()) || 0);
+                const hasAnyDaily = dailyValues.some(v => v > 0);
+                const dailyAccent = '#f59e0b';
+
+                const datasets = [{
+                    label: 'Monthly Listeners',
+                    data: values,
+                    backgroundColor: colors,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    xAxisID: 'x',
+                    barPercentage: hasAnyDaily ? 0.42 : 0.8,
+                    categoryPercentage: 0.9,
+                    order: 2
+                }];
+                if (hasAnyDaily) {
+                    datasets.push({
+                        label: 'Added Streams Today',
+                        data: dailyValues,
+                        backgroundColor: dailyAccent + 'cc',
+                        borderColor: dailyAccent,
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        borderSkipped: false,
+                        xAxisID: 'x2',
+                        barPercentage: 0.42,
+                        categoryPercentage: 0.9,
+                        order: 1
+                    });
+                }
+
                 this.charts[chartKey] = new Chart(ctx, {
                     type: 'bar',
-                    data: {
-                        labels,
-                        datasets: [{
-                            label: 'Monthly Listeners',
-                            data: values,
-                            backgroundColor: colors,
-                            borderRadius: 6,
-                            borderSkipped: false
-                        }]
-                    },
+                    data: { labels, datasets },
                     options: {
                         indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
+                        interaction: { mode: 'index', axis: 'y', intersect: false },
                         plugins: {
-                            legend: { display: false },
+                            legend: hasAnyDaily ? {
+                                display: true,
+                                position: 'top',
+                                align: 'end',
+                                labels: {
+                                    color: '#e5e7eb',
+                                    font: { size: 11 },
+                                    boxWidth: 12,
+                                    boxHeight: 12,
+                                    padding: 10
+                                }
+                            } : { display: false },
                             tooltip: {
+                                mode: 'index',
+                                axis: 'y',
+                                intersect: false,
                                 callbacks: {
-                                    label: (ctx) => ctx.parsed.x.toLocaleString() + ' listeners'
+                                    label: (ctx) => {
+                                        const v = ctx.parsed.x || 0;
+                                        if (ctx.dataset.label === 'Added Streams Today') {
+                                            return `+${v.toLocaleString()} streams today`;
+                                        }
+                                        return `${v.toLocaleString()} listeners`;
+                                    }
                                 }
                             }
                         },
@@ -6968,12 +7016,37 @@
                         },
                         scales: {
                             x: {
+                                position: 'bottom',
+                                beginAtZero: true,
+                                title: hasAnyDaily ? {
+                                    display: true,
+                                    text: 'Monthly Listeners',
+                                    color: '#9ca3af',
+                                    font: { size: 10 }
+                                } : { display: false },
                                 ticks: {
                                     color: '#9ca3af',
                                     callback: (v) => this.formatNumber(v)
                                 },
                                 grid: { color: 'rgba(255,255,255,0.05)' }
                             },
+                            ...(hasAnyDaily ? {
+                                x2: {
+                                    position: 'top',
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Added Streams Today',
+                                        color: dailyAccent,
+                                        font: { size: 10 }
+                                    },
+                                    ticks: {
+                                        color: dailyAccent,
+                                        callback: (v) => this.formatNumber(v)
+                                    },
+                                    grid: { display: false }
+                                }
+                            } : {}),
                             y: {
                                 ticks: { color: '#e5e7eb', font: { size: 11 } },
                                 grid: { display: false }
